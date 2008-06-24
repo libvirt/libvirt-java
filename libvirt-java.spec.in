@@ -1,0 +1,94 @@
+Summary:	Java bindings for the libvirt virtualization API
+Name:		libvirt-java
+Version:	@VERSION@
+Release:	1%{?dist}
+License:	LGPL
+Group:		Development/Libraries
+Source:		libvirt-java-%{version}.tar.gz
+URL:		http://libvirt.org/
+BuildRoot:	%{_tmppath}/%{name}-%{version}-root
+
+Requires:	libvirt >= @LIBVIRT_REQUIRED_VERSION@
+Requires:	java >= 1.6.0
+BuildRequires:	libvirt-devel >= @LIBVIRT_REQUIRED_VERSION@
+BuildRequires:	java-devel >= 1.6.0
+BuildRequires:	pkgconfig
+
+%description
+Libvirt-java is a base framework allowing to use libvirt, the virtualization
+API though the Java programming language.
+It requires libvirt >= @LIBVIRT_REQUIRED_VERSION@
+
+%package	devel
+Summary:	Compressed Java source files for %{name}
+Group:		Development/Libraries
+Requires:	%{name} = %{version}-%{release}
+Requires:	libvirt-devel >= @LIBVIRT_REQUIRED_VERSION@
+Requires:	pkgconfig
+
+%description	devel
+Libvirt-java is a base framework allowing to use libvirt, the virtualization
+API though the Java programming language. This is the development part needed
+to build applications with Libvirt-java.
+
+%package	javadoc
+Summary:	Java documentation for %{name}
+Group:		Development/Documentation
+
+%description	javadoc
+API documentation for %{name}.
+%prep
+%setup -q
+
+%build
+%configure
+make %{?_smp_mflags}
+
+# pack up the java source
+find src/org -name \*.java -newer ChangeLog | xargs touch -r ChangeLog
+(cd src && find . -name \*.java | sort | xargs zip -X -9 src.zip)
+touch -r ChangeLog src/src.zip
+
+# fix up the modification date of generated documentation
+find doc -type f -newer ChangeLog | xargs touch -r ChangeLog
+
+%install
+rm -fr %{buildroot}
+
+make %{?_smp_mflags} DESTDIR=$RPM_BUILD_ROOT install
+
+rm -f $RPM_BUILD_ROOT%{_libdir}/*.la
+rm -f $RPM_BUILD_ROOT%{_libdir}/*.a
+
+# install the src zip and make a sym link
+zipfile=libvirt-src-%{version}.zip
+install -m 644 src/src.zip $RPM_BUILD_ROOT%{_datadir}/java/$zipfile
+(cd $RPM_BUILD_ROOT%{_datadir}/java &&
+  ln -sf $zipfile libvirt-src.zip)
+
+%post -p /sbin/ldconfig
+%postun -p /sbin/ldconfig
+
+%clean
+rm -rf %{buildroot}
+
+%files
+%defattr(-,root,root)
+%doc AUTHORS COPYING NEWS README
+%{_libdir}/libvirt_jni*.so.*
+%{_datadir}/java/*.jar
+
+%files devel
+%defattr(-,root,root)
+%doc src/*.java
+%{_libdir}/libvirt_jni*.so
+%{_libdir}/pkgconfig/*.pc
+%{_datadir}/java/*.zip
+
+%files javadoc
+/usr/share/javadoc/%{name}-%{version}
+
+%changelog
+* Tue Jun 24 2008 Daniel Veillard <veillard@redhat.com> - 0.1.0-1
+- created
+

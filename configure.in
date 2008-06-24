@@ -1,0 +1,47 @@
+dnl
+dnl configure file for libvirt java bindings
+dnl Process this file with autoconf to produce a configure script.
+dnl
+dnl Copyright (C) Red Hat, Inc.
+dnl
+dnl See COPYING.LIB for the License of this software
+dnl
+dnl Daniel Veillard <veillard@redhat.com>
+dnl
+AC_INIT([libvirt-java], [0.1.0])
+AC_CONFIG_SRCDIR([src/jni/org_libvirt_VirDomain.c])
+AC_CONFIG_AUX_DIR(.)
+AC_CONFIG_HEADER([config.h])
+AM_INIT_AUTOMAKE([-Wno-portability])
+AC_CANONICAL_HOST
+
+AC_PROG_CC
+AC_PROG_INSTALL
+AM_PROG_CC_C_O
+
+AC_DISABLE_STATIC
+dnl Support building Win32 DLLs (must appear *before* AM_PROG_LIBTOOL)
+AC_LIBTOOL_WIN32_DLL
+AM_PROG_LIBTOOL
+
+INSTALLED_JAR_DIR=\${prefix}/share/java
+INSTALLED_JNI_DIR=\${prefix}/lib/
+AC_SUBST(INSTALLED_JAR_DIR)
+AC_SUBST(INSTALLED_JNI_DIR)
+
+PKG_CHECK_MODULES(LIBVIRT, libvirt >= 0.4.0)
+AC_SUBST(LIBVIRT_CFLAGS)
+AC_SUBST(LIBVIRT_LIBS)
+
+AC_CHECK_PROGS([JAR], ["jar"], [jar])
+AC_CHECK_PROGS([JAVA], ["java"], [java])
+AC_CHECK_PROGS([JAVAC], ["javac"], [javac])
+AC_CHECK_PROGS([JAVAH], ["javah" "gjavah -jni"], [javah])
+AC_CHECK_PROGS([JAVADOC], ["javadoc"], [javadoc])
+
+# very annoying
+rm -f COPYING
+cp COPYING.LIB COPYING
+
+AC_OUTPUT(Makefile src/Makefile src/jni/Makefile doc/Makefile \
+          libvirt-java.pc libvirt-java.spec)

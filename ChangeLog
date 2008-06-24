@@ -1,0 +1,10 @@
+Tue Jun 24 18:30:39 CEST 2008 Daniel Veillard <veillard@redhat.com>
+
+	* AUTHORS COPYING.LIB ChangeLog Makefile.am NEWS README aclocal.m4
+	  autogen.sh config.guess config.h.in config.sub configure.in
+	  libvirt-java.pc.in libvirt-java.spec.in doc/Makefile.am
+	  src/Makefile.am src/jni/Makefile.am: all the configure, make
+	  and rpm stuff, first version
+	* src/test.java src/jni/*.[ch] src/org/libvirt/*.java: the sources
+	  based on 0.0.1 from Tóth István
+
