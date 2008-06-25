@@ -1,0 +1,14 @@
+The current build procedure is based on the
+classic:
+  tar xvzf libvirt-java-xxx.tar.gz
+  cd libvirt-java
+  ./configure [--prefix=/usr] ; make ; make install
+
+of course if provided, ant based XML config files or
+Eclipse one will be integrated.
+
+When building from a CVS checkout you need instead to
+run autogen.sh [--prefix=/usr] to build the configure,
+since ti's a generated file it's not commited in CVS.
+
+Daniel

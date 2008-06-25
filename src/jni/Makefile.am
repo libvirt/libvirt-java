@@ -26,6 +26,8 @@ org_libvirt_VirDomain.h: $(JAVA_CLASS_ROOT)/org/libvirt/VirDomain.class
 lib_LTLIBRARIES = libvirt_jni.la
 libvirt_jni_la_SOURCES = $(SOURCES)
 nodist_libvirt_jni_la_SOURCES = $(GENERATED)
+libvirt_jni_la_LIBADD = $(LIBVIRT_LIBS)
+libvirt_jni_la_LDFLAGS = -version-info  @JNI_VERSION_INFO@
 
 
 CLEANFILES = \

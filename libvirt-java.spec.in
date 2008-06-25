@@ -8,22 +8,22 @@ Source:		libvirt-java-%{version}.tar.gz
 URL:		http://libvirt.org/
 BuildRoot:	%{_tmppath}/%{name}-%{version}-root
 
-Requires:	libvirt >= @LIBVIRT_REQUIRED_VERSION@
+Requires:	libvirt >= @LIBVIRT_REQUIRED@
 Requires:	java >= 1.6.0
-BuildRequires:	libvirt-devel >= @LIBVIRT_REQUIRED_VERSION@
+BuildRequires:	libvirt-devel >= @LIBVIRT_REQUIRED@
 BuildRequires:	java-devel >= 1.6.0
 BuildRequires:	pkgconfig
 
 %description
 Libvirt-java is a base framework allowing to use libvirt, the virtualization
 API though the Java programming language.
-It requires libvirt >= @LIBVIRT_REQUIRED_VERSION@
+It requires libvirt >= @LIBVIRT_REQUIRED@
 
 %package	devel
 Summary:	Compressed Java source files for %{name}
 Group:		Development/Libraries
 Requires:	%{name} = %{version}-%{release}
-Requires:	libvirt-devel >= @LIBVIRT_REQUIRED_VERSION@
+Requires:	libvirt-devel >= @LIBVIRT_REQUIRED@
 Requires:	pkgconfig
 
 %description	devel
@@ -45,9 +45,8 @@ API documentation for %{name}.
 make %{?_smp_mflags}
 
 # pack up the java source
-find src/org -name \*.java -newer ChangeLog | xargs touch -r ChangeLog
 (cd src && find . -name \*.java | sort | xargs zip -X -9 src.zip)
-touch -r ChangeLog src/src.zip
+touch -r ChangeLog src/src.zip `find src/org -name \*.java`
 
 # fix up the modification date of generated documentation
 find doc -type f -newer ChangeLog | xargs touch -r ChangeLog
@@ -74,7 +73,7 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root)
-%doc AUTHORS COPYING NEWS README
+%doc AUTHORS COPYING NEWS README INSTALL
 %{_libdir}/libvirt_jni*.so.*
 %{_datadir}/java/*.jar
 

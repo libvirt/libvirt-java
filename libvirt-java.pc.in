@@ -9,4 +9,4 @@ Version: @VERSION@
 classpath=@INSTALLED_CLASSPATH@
 jnilibs=-L@libdir@ -lvirt-jni
 Libs: -L@libdir@ -lvirt-java
-Cflags: -I@includedir@/libvirt-java
+Cflags:

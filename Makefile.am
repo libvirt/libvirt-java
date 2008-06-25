@@ -4,7 +4,8 @@ EXTRA_DIST = \
   libvirt-java.pc.in \
   libvirt-java.spec.in \
   libvirt-java.spec \
-  autogen.sh
+  autogen.sh \
+  INSTALL
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = libvirt-java.pc

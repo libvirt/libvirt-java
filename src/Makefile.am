@@ -35,7 +35,7 @@ $(libvirt_jar_class_files): %.class: %.java
 all_jar_class_files = $(shell find org/libvirt -name '*.class' | sed 's%\$$%\\$$%g')
 
 libvirt-${VERSION}.jar: $(libvirt_jar_class_files)
-	$(JAR) cf $@  $(patsubst org/libvirt/%.class,-C org/libvirt %.class,$(all_jar_class_files))
+	$(JAR) cf $@  $(all_jar_class_files)
 
 # running the javadoc command is better done here since we have
 # the authoritative list of java files
