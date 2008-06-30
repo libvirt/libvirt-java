@@ -16,6 +16,19 @@ public class test {
 				Integer.decode("0xc3"), Integer.decode("0x0f"),
 				Integer.decode("0x5a"), Integer.decode("0xa5"),
 				Integer.decode("0xf0"), Integer.decode("0x3c"), Integer.decode("0x87"), Integer.decode("0xd2"), Integer.decode("0x1e"), Integer.decode("0x69")} ;
+
+		//For testing the authentication
+		VirConnectAuth defaultAuth = new VirConnectAuthDefault(); 
+		
+		//You need to configure your libvirtd for remote/authenticated connections, and adjust the URL below 
+		//for this to work. Otherwise, you'll get an error
+		try{
+			conn = new VirConnect("test+tcp://localhost/default", defaultAuth, 0);
+			System.out.println("Encrypted connection successful!");
+		} catch (LibvirtException e){
+			System.out.println("exception caught:"+e);
+			System.out.println(e.getVirError());
+		}
 		
 		try{
 			conn = new VirConnect("test:///default", false);

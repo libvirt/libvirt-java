@@ -7,7 +7,7 @@ JNIEXPORT jstring JNICALL Java_org_libvirt_VirDomain__1getXMLDesc
   (JNIEnv *env, jobject obj, jlong VDP, jint flags){
 	jstring j_xmlDesc;
 	char* xmlDesc = NULL;
-	if(xmlDesc = virDomainGetXMLDesc((virDomainPtr)VDP, flags)){
+	if((xmlDesc = virDomainGetXMLDesc((virDomainPtr)VDP, flags))){
 		j_xmlDesc = (*env)->NewStringUTF(env, xmlDesc);
 		free(xmlDesc);
 	}
@@ -56,7 +56,7 @@ JNIEXPORT jstring JNICALL Java_org_libvirt_VirDomain__1getOSType
 	jstring j_OSType;
 	char *OSType;
 	
-	if(OSType = virDomainGetOSType((virDomainPtr)VDP)){
+	if((OSType = virDomainGetOSType((virDomainPtr)VDP))){
 		j_OSType = (*env)->NewStringUTF(env, OSType);
 		free(OSType);
 	}
@@ -70,7 +70,7 @@ JNIEXPORT jobjectArray JNICALL Java_org_libvirt_VirDomain__1getSchedulerType
 	int nparams;
 	
 	//We don't return nparams
-	if(schedulerType = virDomainGetSchedulerType((virDomainPtr)VDP, &nparams)){
+	if((schedulerType = virDomainGetSchedulerType((virDomainPtr)VDP, &nparams))){
 		j_schedulerType = (*env)->NewStringUTF(env, schedulerType);
 		free(schedulerType);
 	}
@@ -264,7 +264,6 @@ JNIEXPORT jobjectArray JNICALL Java_org_libvirt_VirDomain__1getVcpusInfo
 	
 	jobject j_info;
 	jobjectArray j_infoArray=NULL;
-	jobjectArray j_statusArray;
 	
 	jfieldID number_id;
 	jfieldID state_id;
@@ -332,7 +331,7 @@ JNIEXPORT jintArray JNICALL Java_org_libvirt_VirDomain__1getVcpusCpuMaps
 	int *i_cpumaps;
 	jintArray j_cpumaps;
 	int c;
-	virNodeInfo nodeinfo;
+	virNodeInfoPtr nodeinfo;
 	virVcpuInfoPtr info;
 	
 	//Check number of vcpus;
@@ -340,9 +339,9 @@ JNIEXPORT jintArray JNICALL Java_org_libvirt_VirDomain__1getVcpusCpuMaps
 		return NULL;
 	
 	//Get maplen
-	if(VirNodeGetInfo( virDomainGetConnect( (virDomainPtr)VDP), nodeinfo )<0)
+	if(virNodeGetInfo( virDomainGetConnect( (virDomainPtr)VDP), nodeinfo )<0)
 		return NULL;
-	maplen=VIR_CPU_MAPLEN( VIR_NODEINFO_MAXCPUS( nodeinfo ) );
+	maplen=VIR_CPU_MAPLEN( VIR_NODEINFO_MAXCPUS( *nodeinfo ) );
 	
 	info=(virVcpuInfoPtr)calloc(maxinfo, sizeof(virVcpuInfo));
 	cpumaps=malloc(sizeof(int)*maxinfo*maplen);
@@ -368,6 +367,7 @@ JNIEXPORT jint JNICALL Java_org_libvirt_VirDomain__1pinVcpu
 	unsigned char *cpumap;
 	jint *i_cpumap;
 	int c;
+	int retval;
 
 	//Get maplen
 	maplen=(*env)->GetArrayLength(env, j_cpumap);
@@ -382,10 +382,11 @@ JNIEXPORT jint JNICALL Java_org_libvirt_VirDomain__1pinVcpu
 		cpumap[c]=i_cpumap[c];
 	
 	//Call libvirt
-	virDomainPinVcpu((virDomainPtr)VDP, vcpu, cpumap, maplen);
+	retval = virDomainPinVcpu((virDomainPtr)VDP, vcpu, cpumap, maplen);
 	
 	free(cpumap);
 	free(i_cpumap);	
+	return retval;
 }
 
 JNIEXPORT jint JNICALL Java_org_libvirt_VirDomain__1setVcpus

@@ -20,7 +20,7 @@ public abstract class VirSchedParameter {
 	 */
 	public abstract String getValueAsString();
 	/**
-	 * Utility function for displayinf the type
+	 * Utility function for displaying the type
 	 * 
 	 * @return the Type of the parameter as string
 	 */

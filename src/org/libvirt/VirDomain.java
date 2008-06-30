@@ -7,7 +7,21 @@ public class VirDomain {
 	}
 	
 	static final class MigrateFlags{
+		/**
+		 * live migration
+		 */
 		static final int VIR_MIGRATE_LIVE = 1;
+	}
+	
+	static final class XMLFlags{
+		/**
+		 * dump security sensitive information too
+		 */
+		static final int VIR_DOMAIN_XML_SECURE = 1;
+		/**
+		 * dump inactive domain information
+		 */
+		static final int VIR_DOMAIN_XML_INACTIVE = 2;
 	}
 	
 	/**

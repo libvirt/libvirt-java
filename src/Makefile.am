@@ -4,6 +4,9 @@ SUBDIRS=. jni
 java_libvirt_source_files = \
   org/libvirt/LibvirtException.java \
   org/libvirt/VirConnect.java \
+  org/libvirt/VirConnectAuthDefault.java \
+  org/libvirt/VirConnectAuth.java \
+  org/libvirt/VirConnectCredential.java \
   org/libvirt/VirDomainBlockStats.java \
   org/libvirt/VirDomainInfo.java \
   org/libvirt/VirDomainInterfaceStats.java \

@@ -1,3 +1,21 @@
+Mon Jun 30 15:08:32 CEST 2008 Daniel Veillard <veillard@redhat.com>
+
+	* libvirt-java.spec.in: rpmlint related cleanups
+	* src/Makefile.am src/test.java src/jni/Makefile.am
+	  src/jni/VirConnectAuthCallbackBridge.[ch]
+	  src/jni/org_libvirt_VirConnect.c src/jni/org_libvirt_VirDomain.c
+	  src/jni/org_libvirt_VirNetwork.c src/org/libvirt/VirConnect.java
+	  src/org/libvirt/VirConnectAuth.java
+	  src/org/libvirt/VirConnectAuthDefault.java
+	  src/org/libvirt/VirConnectCredential.java
+	  src/org/libvirt/VirDomain.java src/org/libvirt/VirError.java
+	  src/org/libvirt/VirSchedParameter.java:
+	  new patch from Tóth István, various cleanups, added connection
+	  auth support.
+	* src/jni/org_libvirt_VirDomain_CreateFlags.h
+	  src/jni/org_libvirt_VirDomain_MigrateFlags.h: remove generated files
+	  from CVS
+
 Wed Jun 25 15:00:41 CEST 2008 Daniel Veillard <veillard@redhat.com>
 
 	* INSTALL Makefile.am configure.in libvirt-java.pc.in

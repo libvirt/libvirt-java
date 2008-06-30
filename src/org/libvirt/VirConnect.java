@@ -49,16 +49,30 @@ public class VirConnect {
 	}
 
 	/**
+	 * Constructs a VirConnect object from the supplied URI, 
+	 * using the supplied authentication callback
+	 * 
+	 * @param uri The connection URI
+	 * @param auth a VirConnectAuth object
+	 * @param flags 
+	 * @throws LibvirtException
+	 * @see <a href="http://libvirt.org/uri.html">The URI documentation</a>
+	 */
+	public VirConnect(String uri, VirConnectAuth auth, int flags) throws LibvirtException {	
+		VCP = _openAuth(uri, auth, flags);
+	}
+	
+	/**
 	 * Constructs a read-write VirConnect object from the supplied URI. 
 	 * 
-	 * @param uri
+	 * @param uri The connection URI
 	 * @throws LibvirtException
 	 * @see <a href="http://libvirt.org/uri.html">The URI documentation</a>
 	 */
 	public VirConnect(String uri) throws LibvirtException {
 		VCP = _open(uri);
 	}
-
+	
 	public void finalize() throws LibvirtException {
 		close();
 	}
@@ -307,6 +321,9 @@ public class VirConnect {
 	// openReadOnly
 	private native long _openReadOnly(String uri) throws LibvirtException;
 
+	// openAuth
+	private native long _openAuth(String uri, VirConnectAuth auth, int flags) throws LibvirtException;
+	
 	// virNetwork stuff
 
 	/**

@@ -2,14 +2,20 @@
 #include <libvirt/libvirt.h>
 #include <stdlib.h>
 #include "VirErrorHandler.h"
+#include "VirConnectAuthCallbackBridge.h"
+
+#include <assert.h>
+
+//TODO We are leaking UTFChars all over the place. We need to strcpy, then release every string we get from JAVA, and not use them directly!
 
 JNIEXPORT jint JNICALL Java_org_libvirt_VirConnect__1virInitialize
   (JNIEnv *env, jclass cls){
 	int result;
 	result=virInitialize();
-	//The connection-less errors go to the initializing thread as an aexception. 
+	//The connection-less errors go to the initializing thread as an exception. 
 	//Not ideal, but better than just dropping the errors.
 	virSetErrorFunc(env, virErrorHandler);
+	return result;
 }
 
 JNIEXPORT void JNICALL Java_org_libvirt_VirConnect__1close
@@ -22,7 +28,7 @@ JNIEXPORT jstring JNICALL Java_org_libvirt_VirConnect__1getHostName
 	//All this gymnastics is so that we can free() the hostname string
 	jstring j_hostname=NULL; 
 	char *hostname;
-	if(hostname = virConnectGetHostname((virConnectPtr)VCP)){
+	if((hostname = virConnectGetHostname((virConnectPtr)VCP))){
 		j_hostname = (*env)->NewStringUTF(env, hostname);
 		free(hostname);
 	} 
@@ -33,7 +39,7 @@ JNIEXPORT jstring JNICALL Java_org_libvirt_VirConnect__1getCapabilities
   (JNIEnv *env, jobject obj, jlong VCP){
 	jstring j_capabilities=NULL;
 	char *capabilities;
-	if(capabilities = virConnectGetCapabilities((virConnectPtr)VCP)){
+	if((capabilities = virConnectGetCapabilities((virConnectPtr)VCP))){
 		j_capabilities = (*env)->NewStringUTF(env, capabilities);
 		free(capabilities);
 	} 
@@ -49,7 +55,7 @@ JNIEXPORT jstring JNICALL Java_org_libvirt_VirConnect__1getType
   (JNIEnv *env, jobject obj, jlong VCP){
 	const char *type;
 	//Here we get a static string, no need to free()
-	if(type=virConnectGetType((virConnectPtr)VCP)){
+	if((type=virConnectGetType((virConnectPtr)VCP))){
 		return (*env)->NewStringUTF(env, type);
 	} else {
 		return NULL;
@@ -60,7 +66,7 @@ JNIEXPORT jstring JNICALL Java_org_libvirt_VirConnect__1getURI
   (JNIEnv *env, jobject obj, jlong VCP){
 	jstring j_uri=NULL;
 	char *uri;
-	if(uri = virConnectGetURI((virConnectPtr)VCP)){
+	if((uri = virConnectGetURI((virConnectPtr)VCP))){
 		j_uri = (*env)->NewStringUTF(env, uri);
 		free(uri);
 	} 
@@ -150,7 +156,7 @@ JNIEXPORT jlong JNICALL Java_org_libvirt_VirConnect__1open
 	if(vc==NULL){
 		virCopyLastError(&error);
 		virErrorHandler(env, &error);
-		return (long)NULL;
+		return (jlong)NULL;
 	}
 	
 	//Initialized the error handler for this connection
@@ -170,7 +176,7 @@ JNIEXPORT jlong JNICALL Java_org_libvirt_VirConnect__1openReadOnly
 	if(vc==NULL){
 		virCopyLastError(&error);
 		virErrorHandler(env, &error);
-		return (long)NULL;
+		return (jlong)NULL;
 	}
 	
 	//Initialized the error handler for this connection
@@ -179,14 +185,67 @@ JNIEXPORT jlong JNICALL Java_org_libvirt_VirConnect__1openReadOnly
 	return (jlong)vc;
 };
 
+JNIEXPORT jlong JNICALL Java_org_libvirt_VirConnect__1openAuth
+  (JNIEnv *env, jobject obj, jstring uri, jobject j_auth, jint flags){
+	
+	virConnectPtr vc;
+	virError error;
+	
+	virConnectAuth *auth = malloc(sizeof(virConnectAuth));
+			
+	jobject j_credTypeElement;
+	int c;
+	
+	//Prepare by computing the class and field IDs
+	jfieldID credTypeArray_id = (*env)->GetFieldID(env, 
+			(*env)->FindClass(env, "org/libvirt/VirConnectAuth"), 
+			"credType", 
+			"[Lorg/libvirt/VirConnectCredential$VirConnectCredentialType;");
+	jmethodID credTypeMapToInt_id = (*env)->GetMethodID(env, 
+			(*env)->FindClass(env, "org/libvirt/VirConnectCredential$VirConnectCredentialType"), 
+			"mapToInt", 
+			"()I");
+	
+	//Copy the array of credtypes with the helper function
+	jarray j_credTypeArray=(*env)->GetObjectField(env, j_auth, credTypeArray_id);
+	auth->ncredtype = (*env)->GetArrayLength(env, j_credTypeArray);	
+	
+	auth->credtype = calloc(auth->ncredtype, sizeof(int));
+	for(c=0; c< auth->ncredtype; c++){
+		j_credTypeElement = (*env)->GetObjectArrayElement(env, j_credTypeArray, c);
+		auth->credtype[c]=(*env)->CallIntMethod(env, j_credTypeElement, credTypeMapToInt_id);
+	}
+
+	//The callback function is always VirConnectAuthCallbackBridge
+	auth->cb = &VirConnectAuthCallbackBridge;
+	//We pass the VirConnectAuth object and the JNI env in cdbata
+	CallBackStructType* cb_wrapper;
+	cb_wrapper = malloc(sizeof(CallBackStructType));
+	cb_wrapper->env = env;
+	cb_wrapper->auth = j_auth;
+	auth->cbdata=cb_wrapper;
+	
+	vc=virConnectOpenAuth((*env)->GetStringUTFChars(env, uri, NULL), auth, flags);
+	if(vc==NULL){
+		virCopyLastError(&error);
+		virErrorHandler(env, &error);
+		return (jlong)NULL;
+	}
+	
+	//Initialize the error handler for this connection
+	virConnSetErrorFunc(vc, env, virErrorHandler);
+
+	return (jlong)vc;
+}
+  
 JNIEXPORT jlong JNICALL Java_org_libvirt_VirConnect__1virNetworkCreateXML
   (JNIEnv *env, jobject obj, jlong VCP, jstring xmlDesc){
-	return(jlong)virNetworkCreateXML((virConnectPtr)VCP, (*env)->GetStringUTFChars(env, xmlDesc, NULL));
+	return (jlong)virNetworkCreateXML((virConnectPtr)VCP, (*env)->GetStringUTFChars(env, xmlDesc, NULL));
 }
 
 JNIEXPORT jlong JNICALL Java_org_libvirt_VirConnect__1virNetworkDefineXML
 (JNIEnv *env, jobject obj, jlong VCP, jstring xmlDesc){
-	return(jlong)virNetworkDefineXML((virConnectPtr)VCP, (*env)->GetStringUTFChars(env, xmlDesc, NULL));
+	return (jlong)virNetworkDefineXML((virConnectPtr)VCP, (*env)->GetStringUTFChars(env, xmlDesc, NULL));
 }
 
 JNIEXPORT jlong JNICALL Java_org_libvirt_VirConnect__1virNetworkLookupByName
@@ -202,7 +261,6 @@ JNIEXPORT jlong JNICALL Java_org_libvirt_VirConnect__1virNetworkLookupByUUID
 	//compact to bytes
 	for(c=0; c < VIR_UUID_BUFLEN; c++)
 		UUID[c]=UUID_int[c];
-	(*env)->ExceptionDescribe(env);
  	return (jlong)virNetworkLookupByUUID((virConnectPtr)VCP, UUID);
 }
 
@@ -266,8 +324,8 @@ JNIEXPORT jintArray JNICALL Java_org_libvirt_VirConnect__1listDomains
   (JNIEnv *env, jobject obj, jlong VCP){
 	int maxids;
 	int *ids;
-	int c;
 	jintArray j_ids=NULL;
+	
 	if((maxids = virConnectNumOfDomains((virConnectPtr)VCP))<0)
 		return NULL;
 	ids= (int*)calloc(maxids, sizeof(int));
@@ -313,7 +371,7 @@ JNIEXPORT jlong JNICALL Java_org_libvirt_VirConnect__1virGetLibVirVersion
 
 JNIEXPORT jlong JNICALL Java_org_libvirt_VirConnect__1virGetHypervisorVersion
   (JNIEnv *env, jobject obj, jstring j_type){
-	long libVer;
+	unsigned long libVer;
 	const char *type;
 	unsigned long typeVer;
 	

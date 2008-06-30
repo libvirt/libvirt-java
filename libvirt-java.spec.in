@@ -2,7 +2,7 @@ Summary:	Java bindings for the libvirt virtualization API
 Name:		libvirt-java
 Version:	@VERSION@
 Release:	1%{?dist}
-License:	LGPL
+License:	LGPLv2
 Group:		Development/Libraries
 Source:		libvirt-java-%{version}.tar.gz
 URL:		http://libvirt.org/
@@ -85,6 +85,7 @@ rm -rf %{buildroot}
 %{_datadir}/java/*.zip
 
 %files javadoc
+%defattr(-,root,root)
 /usr/share/javadoc/%{name}-%{version}
 
 %changelog

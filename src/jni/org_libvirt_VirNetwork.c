@@ -1,11 +1,12 @@
 #include "org_libvirt_VirNetwork.h"
 #include <libvirt/libvirt.h>
+#include <stdlib.h>
 
 JNIEXPORT jstring JNICALL Java_org_libvirt_VirNetwork__1getXMLDesc
   (JNIEnv *env, jobject obj, jlong VNP, jint flags){
 	jstring j_xmlDesc;
 	char* xmlDesc;
-	if(xmlDesc = virNetworkGetXMLDesc((virNetworkPtr)VNP, flags)){
+	if((xmlDesc = virNetworkGetXMLDesc((virNetworkPtr)VNP, flags))){
 		j_xmlDesc = (*env)->NewStringUTF(env, xmlDesc);
 		free(xmlDesc);
 	}
@@ -36,15 +37,15 @@ JNIEXPORT jboolean JNICALL Java_org_libvirt_VirNetwork__1getAutostart
 
 JNIEXPORT jint JNICALL Java_org_libvirt_VirNetwork__1setAutostart
   (JNIEnv *env, jobject obj, jlong VNP, jboolean autostart){
-	virNetworkSetAutostart((virNetworkPtr)VNP, autostart);
+	return virNetworkSetAutostart((virNetworkPtr)VNP, autostart);
 }
 
 JNIEXPORT jstring JNICALL Java_org_libvirt_VirNetwork__1getBridgeName
   (JNIEnv *env, jobject obj, jlong VNP){
 	jstring j_bridgeName;
-	char *bridgeName;
+	char *bridgeName=NULL;
 	
-	if(bridgeName = virNetworkGetBridgeName((virNetworkPtr)VNP)){
+	if((bridgeName = virNetworkGetBridgeName((virNetworkPtr)VNP))){
 		j_bridgeName = (*env)->NewStringUTF(env, bridgeName);
 		free(bridgeName);
 	}

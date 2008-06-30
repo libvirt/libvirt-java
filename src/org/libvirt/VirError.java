@@ -59,7 +59,23 @@ public class VirError  {
 	    /**
 	     * Error from OpenVZ driver
 	     */
-	    VIR_FROM_OPENVZ
+	    VIR_FROM_OPENVZ,
+	    /**
+	     * Error at Xen XM layer
+	     */
+	    VIR_FROM_XENXM,
+	    /**
+	     * Error in the Linux Stats code
+	     */
+	    VIR_FROM_STATS_LINUX,
+	    /**
+	     * Error from Linux Container driver
+	     */
+	    VIR_FROM_LXC,
+	    /**
+	     * Error from storage driver
+	     */
+	    VIR_FROM_STORAGE 
 	}
 	
 	public static enum VirErrorLevel {
@@ -251,7 +267,31 @@ public class VirError  {
 	    /**
 	     * invalid MAC adress
 	     */
-	    VIR_ERR_INVALID_MAC
+	    VIR_ERR_INVALID_MAC,
+	    /**
+	     * authentication failed
+	     */
+	    VIR_ERR_AUTH_FAILED,
+	    /**
+	     * invalid storage pool object
+	     */
+	    VIR_ERR_INVALID_STORAGE_POOL,
+	    /**
+	     * invalid storage vol object
+	     */
+	    VIR_ERR_INVALID_STORAGE_VOL,
+	    /**
+	     * failed to start storage
+	     */
+	    VIR_WAR_NO_STORAGE,
+	    /**
+	     * storage pool not found
+	     */
+	    VIR_ERR_NO_STORAGE_POOL,
+	    /**
+	     * storage pool not found
+	     */
+	    VIR_ERR_NO_STORAGE_VOL
 	}
 	
 	VirErrorNumber code;
@@ -328,7 +368,7 @@ public class VirError  {
 	}
 	
 	/**
-	 * Does this error has a valid Connection object atteched?
+	 * Does this error has a valid Connection object attached?
 	 * @return 
 	 */
 	public boolean hasConn(){
@@ -416,7 +456,6 @@ public class VirError  {
 		output.append("int1:" + int1 + "\n");
 		output.append("int2:" + int2 + "\n");
 		return output.toString();
-			
 				
 	}
 }
