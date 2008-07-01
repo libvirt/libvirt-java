@@ -8,10 +8,12 @@ Source:		libvirt-java-%{version}.tar.gz
 URL:		http://libvirt.org/
 BuildRoot:	%{_tmppath}/%{name}-%{version}-root
 
+%define java	java
+
 Requires:	libvirt >= @LIBVIRT_REQUIRED@
-Requires:	java >= 1.6.0
+Requires:	%{java} >= 1.5.0
 BuildRequires:	libvirt-devel >= @LIBVIRT_REQUIRED@
-BuildRequires:	java-devel >= 1.6.0
+BuildRequires:	%{java}-devel >= 1.5.0
 BuildRequires:	pkgconfig
 
 %description

@@ -8,7 +8,7 @@ dnl See COPYING.LIB for the License of this software
 dnl
 dnl Daniel Veillard <veillard@redhat.com>
 dnl
-AC_INIT([libvirt-java], [0.1.0])
+AC_INIT([libvirt-java], [0.1.1])
 AC_CONFIG_SRCDIR([src/jni/org_libvirt_VirDomain.c])
 AC_CONFIG_AUX_DIR(.)
 AC_CONFIG_HEADER([config.h])
