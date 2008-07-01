@@ -80,27 +80,46 @@ SDK=
 JNI_CFLAGS=
 if test -f `readlink -f $JAVAH | sed 's+bin/javah$+include/jni.h+'`
 then
-    echo found 1
     SDK=`readlink -f $JAVAH | sed 's+/bin/javah++'`
     JNI_CFLAGS=-I$SDK/include
     echo Using Java SDK in $SDK
 else
 if test -f `readlink -f $JAVAC | sed 's+bin/javac$+include/jni.h+'`
 then
-    echo found 2
     SDK=`readlink -f $JAVAC | sed 's+/bin/javac++'`
     JNI_CFLAGS=-I$SDK/include
     echo Using Java SDK in $SDK
 else
 if test -f `readlink -f $JAVA | sed 's+bin/java$+include/jni.h+'`
 then
-    echo found 3
     SDK=`readlink -f $JAVA | sed 's+/bin/java++'`
     JNI_CFLAGS=-I$SDK/include
     echo Using Java SDK in $SDK
 else
     echo Unable to guess the Java SDK being used
 fi
+fi
+fi
+
+dnl
+dnl one need to find jni_md.h too usually in a system specific subdir
+dnl
+case "$build_os" in
+    *linux*)
+        system="linux"
+	;;
+    *)
+        system="$build_os"
+	;;
+esac
+
+if test -f $SDK/include/$system/jni_md.h ; then
+    JNI_CFLAGS="$JNI_CFLAGS -I$SDK/include/$system"
+else
+if test "`find $SDK -name jni_md.h`" != "" ; then
+    head=`find $SDK -name jni_md.h | tail -1`
+    dir=`dirname $head`
+    JNI_CFLAGS="$JNI_CFLAGS -I$dir"
 fi
 fi
 AC_SUBST(SDK)

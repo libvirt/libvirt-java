@@ -1,3 +1,10 @@
+Tue Jul  1 15:32:23 CEST 2008 Daniel Veillard <veillard@redhat.com>
+
+	* configure.in: fix compilation problems related to jni_md.h
+	  include paths, should be quite more portable now.
+	* aclocal.m4 config.guess config.sub: generated they should not
+	  have been commited.
+
 Tue Jul  1 12:01:16 CEST 2008 Daniel Veillard <veillard@redhat.com>
 
 	* aclocal.m4 config.guess config.sub configure.in src/jni/Makefile.am:
