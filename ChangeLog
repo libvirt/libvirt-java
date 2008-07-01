@@ -1,3 +1,9 @@
+Tue Jul  1 12:01:16 CEST 2008 Daniel Veillard <veillard@redhat.com>
+
+	* aclocal.m4 config.guess config.sub configure.in src/jni/Makefile.am:
+	  add JDK detection hint and JNI include path, plus fixes for older
+	  auto* tools.
+
 Mon Jun 30 15:08:32 CEST 2008 Daniel Veillard <veillard@redhat.com>
 
 	* libvirt-java.spec.in: rpmlint related cleanups

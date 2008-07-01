@@ -1,14 +1,3 @@
-JAVA_CLASS_ROOT=$(top_srcdir)/src
-
-SOURCES = \
-  org_libvirt_VirNetwork.c \
-  org_libvirt_VirConnect.c \
-  org_libvirt_VirDomain.c \
-  VirErrorHandler.c \
-  VirErrorHandler.h \
-  VirConnectAuthCallbackBridge.c \
-  VirConnectAuthCallbackBridge.h
-
 GENERATED = \
   org_libvirt_VirConnect.h \
   org_libvirt_VirNetwork.h \
@@ -18,6 +7,8 @@ GENERATED = \
   org_libvirt_VirDomain_XMLFlags.h
 
 BUILT_SOURCES = $(GENERATED)
+
+JAVA_CLASS_ROOT=$(top_srcdir)/src
 
 org_libvirt_VirConnect.h : $(JAVA_CLASS_ROOT)/org/libvirt/VirConnect.class
 	$(JAVAH) -classpath $(JAVA_CLASS_ROOT) org.libvirt.VirConnect
@@ -29,10 +20,19 @@ org_libvirt_VirDomain.h org_libvirt_VirDomain_CreateFlags.h org_libvirt_VirDomai
 	$(JAVAH) -classpath $(JAVA_CLASS_ROOT) org.libvirt.VirDomain
 
 lib_LTLIBRARIES = libvirt_jni.la
-libvirt_jni_la_SOURCES = $(SOURCES)
+libvirt_jni_la_SOURCES = \
+  org_libvirt_VirNetwork.c \
+  org_libvirt_VirConnect.c \
+  org_libvirt_VirDomain.c \
+  VirErrorHandler.c \
+  VirErrorHandler.h \
+  VirConnectAuthCallbackBridge.c \
+  VirConnectAuthCallbackBridge.h
+   
 nodist_libvirt_jni_la_SOURCES = $(GENERATED)
 libvirt_jni_la_LIBADD = $(LIBVIRT_LIBS)
 libvirt_jni_la_LDFLAGS = -version-info  @JNI_VERSION_INFO@
+libvirt_jni_la_CFLAGS = @JNI_CFLAGS@
 
 
 CLEANFILES = \
