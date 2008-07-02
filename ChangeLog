@@ -1,3 +1,7 @@
+Wed Jul  2 13:58:36 CEST 2008 Daniel Veillard <veillard@redhat.com>
+
+	* configure.in src/Makefile.am: more portability stuff
+
 Tue Jul  1 16:58:46 CEST 2008 Daniel Veillard <veillard@redhat.com>
 
 	* Makefile.am configure.in libvirt-java.spec.in: cleanup, portability

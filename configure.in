@@ -75,34 +75,71 @@ dnl
 dnl Try to guess where the javah/javac is located, to guess the 
 dnl SDK used and then provide a possible include path for jni.h
 dnl
-
 SDK=
-JNI_CFLAGS=
-if test -f `readlink -f $JAVAH | sed 's+bin/javah$+include/jni.h+'`
-then
-    SDK=`readlink -f $JAVAH | sed 's+/bin/javah++'`
-    JNI_CFLAGS=-I$SDK/include
-    echo Using Java SDK in $SDK
-else
-if test -f `readlink -f $JAVAC | sed 's+bin/javac$+include/jni.h+'`
-then
-    SDK=`readlink -f $JAVAC | sed 's+/bin/javac++'`
-    JNI_CFLAGS=-I$SDK/include
-    echo Using Java SDK in $SDK
-else
-if test -f `readlink -f $JAVA | sed 's+bin/java$+include/jni.h+'`
-then
-    SDK=`readlink -f $JAVA | sed 's+/bin/java++'`
-    JNI_CFLAGS=-I$SDK/include
-    echo Using Java SDK in $SDK
-else
-    echo Unable to guess the Java SDK being used
+for binary in $JAVAH $JAVAC
+do
+    command=`basename $binary`
+    # try first with a full expansion
+    expand=`readlink -f $binary`
+    check=`echo $expand | grep "/bin/$command"`
+    if test x"$check" != x"" ; then
+        SDK=`echo $expand | sed s+/bin/$command++`
+	if test -d $SDK/include ; then
+	    echo using Java SDK in $SDK
+	    break
+	fi
+    fi
+    # expands progressingly we try up to 3 steps of expansion
+    expand=`readlink $binary`
+    check=`echo $expand | grep "/bin/$command"`
+    if test x"$check" != x"" ; then
+        SDK=`echo $expand | sed s+/bin/$command++`
+	if test -d $SDK/include ; then
+	    echo using Java SDK in $SDK
+	    break
+	fi
+    fi
+    expand=`readlink $expand`
+    check=`echo $expand | grep "/bin/$command"`
+    if test x"$check" != x"" ; then
+        SDK=`echo $expand | sed s+/bin/$command++`
+	if test -d $SDK/include ; then
+	    echo using Java SDK in $SDK
+	    break
+	fi
+    fi
+    expand=`readlink $expand`
+    check=`echo $expand | grep "/bin/$command"`
+    if test x"$check" != x"" ; then
+        SDK=`echo $expand | sed s+/bin/$command++`
+	if test -d $SDK/include ; then
+	    echo using Java SDK in $SDK
+	    break
+	fi
+    fi
+done
+
+if test x"$SDK" = x"" ; then
+    AC_MSG_ERROR([Unable to guess the Java SDK used by libvirt-java build])
 fi
+
+dnl
+dnl then find the jni.h include file usually in the include subdir
+dnl
+JNI_CFLAGS=
+
+if test -f $SDK/include/jni.h ; then
+    JNI_CFLAGS="-I$SDK/include"
+else
+if test "`find $SDK -name jni.h`" != "" ; then
+    head=`find $SDK -name jni.h | tail -1`
+    dir=`dirname $head`
+    JNI_CFLAGS="-I$dir"
 fi
 fi
 
 dnl
-dnl one need to find jni_md.h too usually in a system specific subdir
+dnl then one need to find jni_md.h too usually in a system specific subdir
 dnl
 case "$build_os" in
     *linux*)
@@ -124,6 +161,18 @@ fi
 fi
 AC_SUBST(SDK)
 AC_SUBST(JNI_CFLAGS)
+
+dnl
+dnl Depending on the JAVAC version used one may need additional version flag
+dnl
+JAVAC_FLAGS=
+javac_version=`$JAVAC -version 2>&1`
+case "$javac_version" in
+    *Eclipse*)
+        JAVAC_FLAGS="-version 1.5"
+	;;
+esac
+AC_SUBST(JAVAC_FLAGS)
 
 # very annoying
 rm -f COPYING

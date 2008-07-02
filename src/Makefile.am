@@ -33,7 +33,7 @@ libvirt_jar_DATA = libvirt-${VERSION}.jar
 
 libvirt_jar_class_files = $(java_libvirt_source_files:.java=.class)
 $(libvirt_jar_class_files): %.class: %.java
-	$(JAVAC) -classpath "org/libvirt" org/libvirt/*.java
+	$(JAVAC) $(JAVAC_FLAGS) -classpath "org/libvirt" org/libvirt/*.java
 
 all_jar_class_files = $(shell find org/libvirt -name '*.class' | sed 's%\$$%\\$$%g')
 
