@@ -106,7 +106,7 @@ public class VirNetwork {
 	 * 
 	 * @return the UUID as an unpacked int array
 	 * @throws LibvirtException
-	 * @see <a href="http://www.ietf.org/rfc/rfc4122.txt"rfc4122</a>
+	 * @see <a href="http://www.ietf.org/rfc/rfc4122.txt">rfc4122</a>
 	 */
 	public int[] getUUID() throws LibvirtException{
 		return _getUUID(VNP);
@@ -119,7 +119,7 @@ public class VirNetwork {
 	 * 
 	 * @return the UUID in canonical String format
 	 * @throws LibvirtException
-	 * @see <a href="http://www.ietf.org/rfc/rfc4122.txt"rfc4122</a>
+	 * @see <a href="http://www.ietf.org/rfc/rfc4122.txt">rfc4122</a>
 	 */
 	public String getUUIDString() throws LibvirtException{
 		return _getUUIDString(VNP);
