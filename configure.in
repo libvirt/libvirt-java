@@ -169,7 +169,7 @@ JAVAC_FLAGS=
 javac_version=`$JAVAC -version 2>&1`
 case "$javac_version" in
     *Eclipse*)
-        JAVAC_FLAGS="-version 1.5"
+        JAVAC_FLAGS="-source 1.5"
 	;;
 esac
 AC_SUBST(JAVAC_FLAGS)
