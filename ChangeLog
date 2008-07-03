@@ -1,3 +1,7 @@
+Thu Jul  3 17:45:34 CEST 2008 Daniel Veillard <veillard@redhat.com>
+
+	* configure.in libvirt-java.spec.in: release 0.1.2
+
 Thu Jul  3 17:12:24 CEST 2008 Daniel Veillard <veillard@redhat.com>
 
 	* configure.in: cleanup
