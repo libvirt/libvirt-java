@@ -46,6 +46,10 @@ void virErrorHandler(void *userdata, virErrorPtr error){
 			j_error, 
 			(*env)->GetFieldID(env, error_cls, "message", "Ljava/lang/String;"),
 			(*env)->NewStringUTF(env, error->message));
+#if 0
+/*
+ * use of those fields got deprecated
+ */
 	(*env)->SetLongField(
 			env, 
 			j_error, 
@@ -61,6 +65,23 @@ void virErrorHandler(void *userdata, virErrorPtr error){
 			j_error, 
 			(*env)->GetFieldID(env, error_cls, "VNP", "J"),
 			(long)error->net);
+#else
+	(*env)->SetLongField(
+			env, 
+			j_error, 
+			(*env)->GetFieldID(env, error_cls, "VCP", "J"),
+			(long)0);
+	(*env)->SetLongField(
+			env, 
+			j_error, 
+			(*env)->GetFieldID(env, error_cls, "VDP", "J"),
+			(long)0);
+	(*env)->SetLongField(
+			env, 
+			j_error, 
+			(*env)->GetFieldID(env, error_cls, "VNP", "J"),
+			(long)0);
+#endif
 	(*env)->SetObjectField(
 				env, 
 				j_error, 

@@ -50,7 +50,9 @@ API documentation for %{name}.
 
 %build
 %configure --with-java-home=%{java_home}
-make %{?_smp_mflags}
+# javac call is not parallelizable, as a result the same command is
+# run N times in parallel if %{?_smp_mflags} is set up
+make
 
 # pack up the java source
 (cd src && find . -name \*.java | sort | xargs zip -X -9 src.zip)

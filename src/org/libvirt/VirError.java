@@ -1,7 +1,7 @@
 package org.libvirt;
 
 public class VirError  {
-	
+
 	public static enum VirErrorDomain{
 		VIR_FROM_NONE,
 	    /**
@@ -75,9 +75,9 @@ public class VirError  {
 	    /**
 	     * Error from storage driver
 	     */
-	    VIR_FROM_STORAGE 
+	    VIR_FROM_STORAGE
 	}
-	
+
 	public static enum VirErrorLevel {
 	    VIR_ERR_NONE,
 	    /**
@@ -89,7 +89,7 @@ public class VirError  {
 	     */
 	    VIR_ERR_ERROR
 	}
-	
+
 	public static enum VirErrorNumber {
 	    VIR_ERR_OK,
 	    /**
@@ -293,20 +293,20 @@ public class VirError  {
 	     */
 	    VIR_ERR_NO_STORAGE_VOL
 	}
-	
+
 	VirErrorNumber code;
 	VirErrorDomain domain;
 	String message;
 	VirErrorLevel level;
-	long VCP;
-	long VDP;
+	long VCP; /* Deprecated */
+	long VDP; /* Deprecated */
 	String str1;
 	String str2;
 	String str3;
 	int int1;
 	int int2;
-	long VNP;
-	
+	long VNP; /* Deprecated */
+
 	/**
 	 * Gets he error code
 	 * @return a VirErroNumber
@@ -323,7 +323,7 @@ public class VirError  {
 	}
 	/**
 	 * Returns human-readable informative error messag
-	 * 
+	 *
 	 * @return error message
 	 */
 	public String getMessage() {
@@ -366,81 +366,68 @@ public class VirError  {
 	public int getInt2() {
 		return int2;
 	}
-	
+
 	/**
 	 * Does this error has a valid Connection object attached?
-	 * @return 
+	 * NOTE: deprecated, should return false
+	 *
+	 * @return false
 	 */
 	public boolean hasConn(){
-		if(VCP>0) 
-			return true;
-		else
-			return false;
+		return false;
 	}
-	
+
 	/**
 	 * returns the Connection associated with the error, if available
-	 * 
+	 * Deprecated, always throw an exception now
+	 *
 	 * @return the VirConnect object
 	 * @throws VirErrorException
 	 */
 	public VirConnect getConn() throws VirErrorException{
-		if(hasConn())
-			return new VirConnect(VCP);
-		else
-			throw new VirErrorException("No VirConnect object available");
+		throw new VirErrorException("No VirConnect object available");
 	}
-	
+
 	/**
 	 * Does this error has a valid VirDomain object attached?
-	 * 
-	 * @return 
+	 * NOTE: deprecated, should return false
+	 *
+	 * @return false
 	 */
 	public boolean hasDom(){
-		if(VCP>0 && VDP>0) 
-			return true;
-		else
-			return false;
+		return false;
 	}
-	
+
 	/**
 	 * returns the Domain associated with the error, if available
-	 * 
+	 *
 	 * @return VirDomain object
 	 * @throws VirErrorException
 	 */
 	public VirDomain getDom() throws VirErrorException{
-		if(hasDom())
-			return new VirDomain( new VirConnect(VCP), VDP);
-		else
-			throw new VirErrorException("No VirDomain object available");
+		throw new VirErrorException("No VirDomain object available");
 	}
-	
+
 	/**
 	 * Does this error has a valid VirNetwork object attached?
-	 * 
-	 * @return 
+	 * NOTE: deprecated, should return false
+	 *
+	 * @return false
 	 */
 	public boolean hasNet(){
-		if(VCP>0 && VNP>0) 
-			return true;
-		else
-			return false;
+		return false;
 	}
-	
+
 	/**
 	 * Returns the network associated with the error, if available
-	 * 
+	 *
 	 * @return VirNetwork object
 	 * @throws VirErrorException
 	 */
 	public VirNetwork getNet() throws VirErrorException{
-		if(hasNet())
-			return new VirNetwork( new VirConnect(VCP), VNP);
-		else
-			throw new VirErrorException("No VirNetwork object available");
+		throw new VirErrorException("No VirNetwork object available");
 	}
-	
+
 	public String toString(){
 		StringBuffer output= new StringBuffer();
 		output.append("level:" + level + "\n");
@@ -456,6 +443,6 @@ public class VirError  {
 		output.append("int1:" + int1 + "\n");
 		output.append("int2:" + int2 + "\n");
 		return output.toString();
-				
+
 	}
 }

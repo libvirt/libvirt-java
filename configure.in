@@ -55,7 +55,7 @@ dnl allow the user to specify the version of java either with
 dnl --with-java-home or with JAVA_HOME env variable.
 dnl
 AC_ARG_WITH(java_home,
-[  --with-java-home        path to the Java Development Kit directory(/usr/lib/jvm/java)])
+[  --with-java-home=DIR    path to the Java Development Kit directory(/usr/lib/jvm/java)])
 
 if test x"$with_java_home" != x"no" -a x"$with_java_home" != x"yes" ; then
     if test -d $with_java_home ; then

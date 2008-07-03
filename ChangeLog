@@ -1,3 +1,14 @@
+Thu Jul  3 17:12:24 CEST 2008 Daniel Veillard <veillard@redhat.com>
+
+	* configure.in: cleanup
+	* libvirt-java.spec.in: do not try to activate parallel make
+	* src/jni/VirErrorHandler.c src/org/libvirt/LibvirtException.java
+	  src/org/libvirt/VirDomainBlockStats.java src/org/libvirt/VirError.java
+	  src/org/libvirt/VirConnect.java src/org/libvirt/VirNetwork.java:
+	  the domain/network/conn fields of errors are deprecated now,
+	  so removing them and fixing entry points, also fix more javadoc
+	  warnings.
+
 Thu Jul  3 15:26:30 CEST 2008 Daniel Veillard <veillard@redhat.com>
 
 	* INSTALL configure.in libvirt-java.spec.in: revamped the

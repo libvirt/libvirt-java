@@ -396,7 +396,7 @@ public class VirConnect {
 	 * The properties of the network are based on an XML description similar to the one returned by virNetworkGetXMLDesc()
 	 * 
 	 * @param xmlDesc
-	 * @return
+	 * @return the resulting VirNetwork object
 	 * @throws LibvirtException
 	 * @see <a href="http://libvirt.org/format.html#Net1" >The XML format description</a>
 	 */
