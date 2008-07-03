@@ -8,13 +8,19 @@ Source:		libvirt-java-%{version}.tar.gz
 URL:		http://libvirt.org/
 BuildRoot:	%{_tmppath}/%{name}-%{version}-root
 
-%define java	java
-
 Requires:	libvirt >= @LIBVIRT_REQUIRED@
-Requires:	%{java} >= 1.5.0
+Requires:	java >= 1.5.0
+Requires:	jpackage-utils
 BuildRequires:	libvirt-devel >= @LIBVIRT_REQUIRED@
-BuildRequires:	%{java}-devel >= 1.5.0
+BuildRequires:	java-devel >= 1.5.0
 BuildRequires:	pkgconfig
+BuildRequires:	jpackage-utils
+
+#
+# the jpackage-utils should provide a %{java_home} macro
+# to select a different Java JVM from the default one use the following
+# rpmbuild --define 'java_home /usr/lib/jvm/your_jvm_of_choice'
+#
 
 %description
 Libvirt-java is a base framework allowing to use libvirt, the virtualization
@@ -43,7 +49,7 @@ API documentation for %{name}.
 %setup -q
 
 %build
-%configure
+%configure --with-java-home=%{java_home}
 make %{?_smp_mflags}
 
 # pack up the java source
@@ -91,6 +97,9 @@ rm -rf %{buildroot}
 /usr/share/javadoc/%{name}-%{version}
 
 %changelog
+* Tue Jul  1 2008 Daniel Veillard <veillard@redhat.com> - 0.1.1-1
+- new release
+
 * Tue Jun 24 2008 Daniel Veillard <veillard@redhat.com> - 0.1.0-1
 - created
 

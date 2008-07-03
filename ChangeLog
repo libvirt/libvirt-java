@@ -1,3 +1,8 @@
+Thu Jul  3 15:26:30 CEST 2008 Daniel Veillard <veillard@redhat.com>
+
+	* INSTALL configure.in libvirt-java.spec.in: revamped the
+	  JVM detection based on JPackage and David Walluck feedback.
+
 Wed Jul  2 14:47:44 CEST 2008 Daniel Veillard <veillard@redhat.com>
 
 	* src/org/libvirt/VirDomain.java src/org/libvirt/VirNetwork.java:

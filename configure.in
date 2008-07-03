@@ -50,89 +50,75 @@ PKG_CHECK_MODULES(LIBVIRT, libvirt >= $LIBVIRT_REQUIRED)
 AC_SUBST(LIBVIRT_CFLAGS)
 AC_SUBST(LIBVIRT_LIBS)
 
-AC_PATH_PROG([JAVA], [java], [no])
-if test x"$JAVA" = x"no" ; then
-    AC_MSG_ERROR([Cannot find java which is needed by libvirt-java build])
+dnl
+dnl allow the user to specify the version of java either with
+dnl --with-java-home or with JAVA_HOME env variable.
+dnl
+AC_ARG_WITH(java_home,
+[  --with-java-home        path to the Java Development Kit directory(/usr/lib/jvm/java)])
+
+if test x"$with_java_home" != x"no" -a x"$with_java_home" != x"yes" ; then
+    if test -d $with_java_home ; then
+	JAVA_HOME=$with_java_home
+    else
+	AC_MSG_ERROR([provided JAVA_HOME $with_java_home is not a directory])
+    fi
 fi
-AC_PATH_PROG([JAVAC], [javac], [no])
-if test x"$JAVAC" = x"no" ; then
-    AC_MSG_ERROR([Cannot find javac which is needed by libvirt-java build])
-fi
-AC_PATH_PROG([JAVAH], [javah], [no])
-if test x"$JAVAH" = x"no" ; then
-    AC_MSG_ERROR([Cannot find javah which is needed by libvirt-java build])
-fi
-AC_PATH_PROG([JAVADOC], [javadoc], [no])
-if test x"$JAVADOC" = x"no" ; then
-    AC_MSG_ERROR([Cannot find javadoc which is needed by libvirt-java build])
-fi
-AC_PATH_PROG([JAR], [jar], [no])
-if test x"$JAR" = x"no" ; then
-    AC_MSG_ERROR([Cannot find jar which is needed by libvirt-java build])
+if test x"$JAVA_HOME" == x"" ; then
+    JAVA_HOME=/usr/lib/jvm/java
 fi
 
-dnl
-dnl Try to guess where the javah/javac is located, to guess the 
-dnl SDK used and then provide a possible include path for jni.h
-dnl
-SDK=
-for binary in $JAVAH $JAVAC
-do
-    command=`basename $binary`
-    # try first with a full expansion
-    expand=`readlink -f $binary`
-    check=`echo $expand | grep "/bin/$command"`
-    if test x"$check" != x"" ; then
-        SDK=`echo $expand | sed s+/bin/$command++`
-	if test -d $SDK/include ; then
-	    echo using Java SDK in $SDK
-	    break
-	fi
-    fi
-    # expands progressingly we try up to 3 steps of expansion
-    expand=`readlink $binary`
-    check=`echo $expand | grep "/bin/$command"`
-    if test x"$check" != x"" ; then
-        SDK=`echo $expand | sed s+/bin/$command++`
-	if test -d $SDK/include ; then
-	    echo using Java SDK in $SDK
-	    break
-	fi
-    fi
-    expand=`readlink $expand`
-    check=`echo $expand | grep "/bin/$command"`
-    if test x"$check" != x"" ; then
-        SDK=`echo $expand | sed s+/bin/$command++`
-	if test -d $SDK/include ; then
-	    echo using Java SDK in $SDK
-	    break
-	fi
-    fi
-    expand=`readlink $expand`
-    check=`echo $expand | grep "/bin/$command"`
-    if test x"$check" != x"" ; then
-        SDK=`echo $expand | sed s+/bin/$command++`
-	if test -d $SDK/include ; then
-	    echo using Java SDK in $SDK
-	    break
-	fi
-    fi
-done
-
-if test x"$SDK" = x"" ; then
-    AC_MSG_ERROR([Unable to guess the Java SDK used by libvirt-java build])
+AC_MSG_CHECKING(for JDK in $JAVA_HOME)
+if test ! -d $JAVA_HOME ; then
+    AC_MSG_ERROR([JAVA_HOME $JAVA_HOME is not a directory])
 fi
+
+if test ! -x $JAVA_HOME/bin/java ; then
+    AC_MSG_ERROR([missing $JAVA_HOME/bin/java binary])
+else
+    JAVA=$JAVA_HOME/bin/java
+fi
+if test ! -x $JAVA_HOME/bin/javac ; then
+    AC_MSG_ERROR([missing $JAVA_HOME/bin/javac binary])
+else
+    JAVAC=$JAVA_HOME/bin/javac
+fi
+if test ! -x $JAVA_HOME/bin/javah ; then
+    AC_MSG_ERROR([missing $JAVA_HOME/bin/javah binary])
+else
+    JAVAH=$JAVA_HOME/bin/javah
+fi
+if test ! -x $JAVA_HOME/bin/javadoc ; then
+    AC_MSG_ERROR([missing $JAVA_HOME/bin/javadoc binary])
+else
+    JAVADOC=$JAVA_HOME/bin/javadoc
+fi
+if test ! -x $JAVA_HOME/bin/jar ; then
+    AC_MSG_ERROR([missing $JAVA_HOME/bin/jar binary])
+else
+    JAR=$JAVA_HOME/bin/jar
+fi
+
+java_version=`java -version 2>&1 | grep version`
+AC_MSG_RESULT(found $java_version)
+
+AC_SUBST(JAVA_HOME)
+AC_SUBST(JAVA)
+AC_SUBST(JAVAH)
+AC_SUBST(JAVAC)
+AC_SUBST(JAVADOC)
+AC_SUBST(JAR)
 
 dnl
 dnl then find the jni.h include file usually in the include subdir
 dnl
 JNI_CFLAGS=
 
-if test -f $SDK/include/jni.h ; then
-    JNI_CFLAGS="-I$SDK/include"
+if test -f $JAVA_HOME/include/jni.h ; then
+    JNI_CFLAGS="-I$JAVA_HOME/include"
 else
-if test "`find $SDK -name jni.h`" != "" ; then
-    head=`find $SDK -name jni.h | tail -1`
+if test "`find $JAVA_HOME -name jni.h`" != "" ; then
+    head=`find $JAVA_HOME -name jni.h | tail -1`
     dir=`dirname $head`
     JNI_CFLAGS="-I$dir"
 fi
@@ -145,21 +131,23 @@ case "$build_os" in
     *linux*)
         system="linux"
 	;;
+    *cygwin*)
+        system="win32"
+	;;
     *)
         system="$build_os"
 	;;
 esac
 
-if test -f $SDK/include/$system/jni_md.h ; then
-    JNI_CFLAGS="$JNI_CFLAGS -I$SDK/include/$system"
+if test -f $JAVA_HOME/include/$system/jni_md.h ; then
+    JNI_CFLAGS="$JNI_CFLAGS -I$JAVA_HOME/include/$system"
 else
-if test "`find $SDK -name jni_md.h`" != "" ; then
-    head=`find $SDK -name jni_md.h | tail -1`
+if test "`find $JAVA_HOME -name jni_md.h`" != "" ; then
+    head=`find $JAVA_HOME -name jni_md.h | tail -1`
     dir=`dirname $head`
     JNI_CFLAGS="$JNI_CFLAGS -I$dir"
 fi
 fi
-AC_SUBST(SDK)
 AC_SUBST(JNI_CFLAGS)
 
 dnl
