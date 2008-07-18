@@ -1,3 +1,13 @@
+Fri Jul 18 16:32:14 CEST 2008 Daniel Veillard <veillard@redhat.com>
+
+	* libvirt-java.spec.in configure.in: release of 0.2.0
+	* autogen.sh configure.in: trying to help on Solaris build
+	* README.in README: make README configured for version and prefix
+	* src/Makefile.am src/test.java src/jni/* src/org/libvirt/*:
+	  renamed all entry points removing the vir or Vir prefixes in
+	  public classes and methods, except for LibvirtException,
+	  various cleanups and debug
+
 Fri Jul 18 13:29:51 CEST 2008 Daniel Veillard <veillard@redhat.com>
 
 	* libvirt-java.spec.in: remove the build and installation of a source

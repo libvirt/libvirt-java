@@ -3,26 +3,25 @@ SUBDIRS=. jni
 
 java_libvirt_source_files = \
   org/libvirt/LibvirtException.java \
-  org/libvirt/VirConnect.java \
-  org/libvirt/VirConnectAuthDefault.java \
-  org/libvirt/VirConnectAuth.java \
-  org/libvirt/VirConnectCredential.java \
-  org/libvirt/VirDomainBlockStats.java \
-  org/libvirt/VirDomainInfo.java \
-  org/libvirt/VirDomainInterfaceStats.java \
-  org/libvirt/VirDomain.java \
-  org/libvirt/VirErrorException.java \
-  org/libvirt/VirError.java \
-  org/libvirt/VirNetwork.java \
-  org/libvirt/VirNodeInfo.java \
-  org/libvirt/VirSchedBooleanParameter.java \
-  org/libvirt/VirSchedDoubleParameter.java \
-  org/libvirt/VirSchedIntParameter.java \
-  org/libvirt/VirSchedLongParameter.java \
-  org/libvirt/VirSchedParameter.java \
-  org/libvirt/VirSchedUintParameter.java \
-  org/libvirt/VirSchedUlongParameter.java \
-  org/libvirt/VirVcpuInfo.java
+  org/libvirt/Connect.java \
+  org/libvirt/ConnectAuthDefault.java \
+  org/libvirt/ConnectAuth.java \
+  org/libvirt/DomainBlockStats.java \
+  org/libvirt/DomainInfo.java \
+  org/libvirt/DomainInterfaceStats.java \
+  org/libvirt/Domain.java \
+  org/libvirt/ErrorException.java \
+  org/libvirt/Error.java \
+  org/libvirt/Network.java \
+  org/libvirt/NodeInfo.java \
+  org/libvirt/SchedBooleanParameter.java \
+  org/libvirt/SchedDoubleParameter.java \
+  org/libvirt/SchedIntParameter.java \
+  org/libvirt/SchedLongParameter.java \
+  org/libvirt/SchedParameter.java \
+  org/libvirt/SchedUintParameter.java \
+  org/libvirt/SchedUlongParameter.java \
+  org/libvirt/VcpuInfo.java
 
 EXTRA_DIST= \
   test.java \

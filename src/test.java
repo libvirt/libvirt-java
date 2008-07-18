@@ -7,8 +7,8 @@ public class test {
 	 */
 	public static void main(String[] args) {
 		//Create the connection
-		VirConnect conn=null;
-		VirNetwork testNetwork=null;
+		Connect conn=null;
+		Network testNetwork=null;
 		
 		//Need this for the lookup method testing, it's absolutely horrible in java, but let's be complete
 		int UUID[] = {Integer.decode("0x00"), Integer.decode("0x4b"), Integer.decode("0x96"), Integer.decode("0xe1"), 
@@ -18,27 +18,27 @@ public class test {
 				Integer.decode("0xf0"), Integer.decode("0x3c"), Integer.decode("0x87"), Integer.decode("0xd2"), Integer.decode("0x1e"), Integer.decode("0x69")} ;
 
 		//For testing the authentication
-		VirConnectAuth defaultAuth = new VirConnectAuthDefault(); 
+		ConnectAuth defaultAuth = new ConnectAuthDefault(); 
 		
 		//You need to configure your libvirtd for remote/authenticated connections, and adjust the URL below 
 		//for this to work. Otherwise, you'll get an error
 		try{
-			conn = new VirConnect("test+tcp://localhost/default", defaultAuth, 0);
+			conn = new Connect("test+tcp://localhost/default", defaultAuth, 0);
 			System.out.println("Encrypted connection successful!");
 		} catch (LibvirtException e){
 			System.out.println("exception caught:"+e);
-			System.out.println(e.getVirError());
+			System.out.println(e.getError());
 		}
 		
 		try{
-			conn = new VirConnect("test:///default", false);
+			conn = new Connect("test:///default", false);
 		} catch (LibvirtException e){
 			System.out.println("exception caught:"+e);
-			System.out.println(e.getVirError());
+			System.out.println(e.getError());
 		}
 		try{	
 			//Check nodeinfo
-			VirNodeInfo nodeInfo=conn.virNodeInfo();
+			NodeInfo nodeInfo=conn.nodeInfo();
 			System.out.println("virNodeInfo.model:" + nodeInfo.model);
 			System.out.println("virNodeInfo.memory:" + nodeInfo.memory);
 			System.out.println("virNodeInfo.cpus:" + nodeInfo.cpus);
@@ -58,7 +58,7 @@ public class test {
 			//By default, there are 1 created and 0 defined networks
 			
 			//Create a new network to test the create method
-			System.out.println("conn.virNetworkCreateXML:"+conn.virNetworkCreateXML("<network>" +
+			System.out.println("conn.networkCreateXML:"+conn.networkCreateXML("<network>" +
 					"  <name>createst</name>"+
 					"  <uuid>004b96e1-2d78-c30f-5aa5-f03c87d21e68</uuid>"+
 					"  <bridge name='createst'/>"+
@@ -71,7 +71,7 @@ public class test {
 					"</network>"));
 					
 			//Same for the define method
-			System.out.println("conn.virNetworkDefineXML:"+conn.virNetworkDefineXML("<network>" +
+			System.out.println("conn.networkDefineXML:"+conn.networkDefineXML("<network>" +
 					"  <name>deftest</name>"+
 					"  <uuid>004b96e1-2d78-c30f-5aa5-f03c87d21e67</uuid>"+
 					"  <bridge name='deftest'/>"+
@@ -94,7 +94,7 @@ public class test {
 				System.out.println("	"+c);
 	
 			//Define a new Domain
-			System.out.println("conn.virDomainDefineXML:"+conn.virDomainDefineXML("<domain type='test' id='2'>"+
+			System.out.println("conn.domainDefineXML:"+conn.domainDefineXML("<domain type='test' id='2'>"+
 					"  <name>deftest</name>"+
 					"  <uuid>004b96e1-2d78-c30f-5aa5-f03c87d21e70</uuid>"+
 					"  <memory>8388608</memory>"+
@@ -104,7 +104,7 @@ public class test {
 					"  <on_crash>restart</on_crash>"+
 					"</domain>"));
 			
-			System.out.println("conn.virDomainCreateLinux:"+conn.virDomainCreateLinux("<domain type='test' id='3'>"+
+			System.out.println("conn.domainCreateLinux:"+conn.domainCreateLinux("<domain type='test' id='3'>"+
 					"  <name>createst</name>"+
 					"  <uuid>004b96e1-2d78-c30f-5aa5-f03c87d21e71</uuid>"+
 					"  <memory>8388608</memory>"+
@@ -127,17 +127,17 @@ public class test {
 			
 		} catch (LibvirtException e){
 			System.out.println("exception caught:"+e);
-			System.out.println(e.getVirError());
+			System.out.println(e.getError());
 		}
 		
 		//Network Object
 		
 		try{	
 			//Choose one, they should have the exact same effect
-			//VirNetwork testNetwork=conn.virNetworkLookupByName("default");
-			//VirNetwork testNetwork=conn.virNetworkLookupByUUIDString("004b96e1-2d78-c30f-5aa5-f03c87d21e69");
-			System.out.println("about to call virNetworkLookupByUUID");
-			testNetwork=conn.virNetworkLookupByUUID(UUID);
+			//Network testNetwork=conn.networkLookupByName("default");
+			//Network testNetwork=conn.networkLookupByUUIDString("004b96e1-2d78-c30f-5aa5-f03c87d21e69");
+			System.out.println("about to call networkLookupByUUID");
+			testNetwork=conn.networkLookupByUUID(UUID);
 			
 			//Exercise the getter methods on the default network
 			System.out.println("virNetworkGetXMLDesc:" + testNetwork.getXMLDesc(0));
@@ -156,14 +156,14 @@ public class test {
 			System.out.println("virNetworkCreate:"); testNetwork.create();
 		} catch (LibvirtException e){
 			System.out.println("exception caught:"+e);
-			System.out.println(e.getVirError());
+			System.out.println(e.getError());
 		}
 		//This should raise an excpetion
 		try{
 			System.out.println("virNetworkCreate:");  testNetwork.create();
 		} catch (LibvirtException e){
 			System.out.println("exception caught:"+e);
-			System.out.println(e.getVirError());
+			System.out.println(e.getError());
 		}
 		
 		//Domain stuff
@@ -172,10 +172,10 @@ public class test {
 
 			
 			//Domain lookup
-			//VirDomain testDomain=conn.virDomainLookupByID(1);
-			//VirDomain testDomain=conn.virDomainLookupByName("test");
-			//VirDomain testDomain=conn.virDomainLookupByUUIDString("004b96e1-2d78-c30f-5aa5-f03c87d21e69");
-			VirDomain testDomain=conn.virDomainLookupByUUID(UUID);
+			//Domain testDomain=conn.domainLookupByID(1);
+			//Domain testDomain=conn.domainLookupByName("test");
+			//Domain testDomain=conn.domainLookupByUUIDString("004b96e1-2d78-c30f-5aa5-f03c87d21e69");
+			Domain testDomain=conn.domainLookupByUUID(UUID);
 			
 			//Exercise the getter methods on the default domain
 			System.out.println("virDomainGetXMLDesc:" + testDomain.getXMLDesc(0));
@@ -191,22 +191,22 @@ public class test {
 			System.out.println("virDomainGetSchedulerType:" + testDomain.getSchedulerType());
 			System.out.println("virDomainGetSchedulerParameters:" + testDomain.getSchedulerParameters());
 			//Iterate over the parameters the painful way
-			for(VirSchedParameter c: testDomain.getSchedulerParameters()){
-				if (c instanceof VirSchedIntParameter)
-					System.out.println("Int:" + ((VirSchedIntParameter)c).field +":"+ ((VirSchedIntParameter)c).value);
-				if (c instanceof VirSchedUintParameter)
-					System.out.println("Uint:" + ((VirSchedUintParameter)c).field  +":"+  ((VirSchedUintParameter)c).value);
-				if (c instanceof VirSchedLongParameter)
-					System.out.println("Long:" + ((VirSchedLongParameter)c).field  +":"+  ((VirSchedLongParameter)c).value);
-				if (c instanceof VirSchedUlongParameter)
-					System.out.println("Ulong:" + ((VirSchedUlongParameter)c).field  +":"+  ((VirSchedUlongParameter)c).value);
-				if (c instanceof VirSchedDoubleParameter)
-					System.out.println("Double:" + ((VirSchedDoubleParameter)c).field  +":"+  ((VirSchedDoubleParameter)c).value);
-				if (c instanceof VirSchedBooleanParameter)
-					System.out.println("Boolean:" + ((VirSchedBooleanParameter)c).field  +":"+  ((VirSchedBooleanParameter)c).value);
+			for(SchedParameter c: testDomain.getSchedulerParameters()){
+				if (c instanceof SchedIntParameter)
+					System.out.println("Int:" + ((SchedIntParameter)c).field +":"+ ((SchedIntParameter)c).value);
+				if (c instanceof SchedUintParameter)
+					System.out.println("Uint:" + ((SchedUintParameter)c).field  +":"+  ((SchedUintParameter)c).value);
+				if (c instanceof SchedLongParameter)
+					System.out.println("Long:" + ((SchedLongParameter)c).field  +":"+  ((SchedLongParameter)c).value);
+				if (c instanceof SchedUlongParameter)
+					System.out.println("Ulong:" + ((SchedUlongParameter)c).field  +":"+  ((SchedUlongParameter)c).value);
+				if (c instanceof SchedDoubleParameter)
+					System.out.println("Double:" + ((SchedDoubleParameter)c).field  +":"+  ((SchedDoubleParameter)c).value);
+				if (c instanceof SchedBooleanParameter)
+					System.out.println("Boolean:" + ((SchedBooleanParameter)c).field  +":"+  ((SchedBooleanParameter)c).value);
 			}
 			//Iterate over the parameters the easy way
-			for(VirSchedParameter c: testDomain.getSchedulerParameters()){
+			for(SchedParameter c: testDomain.getSchedulerParameters()){
 				System.out.println(c.getTypeAsString() +":"+ c.field +":"+  c.getValueAsString());
 			}
 			System.out.println("virDomainGetUUID:" + testDomain.getUUID());
@@ -230,7 +230,7 @@ public class test {
 			conn.close();
 		} catch (LibvirtException e){
 			System.out.println("exception caught:"+e);
-			System.out.println(e.getVirError());
+			System.out.println(e.getError());
 		}
 		
 		
@@ -240,7 +240,7 @@ public class test {
 			System.out.println(conn.getHostName());
 		}catch (LibvirtException e){
 			System.out.println("exception caught:"+e);
-			System.out.println(e.getVirError());
+			System.out.println(e.getError());
 		}
 		System.out.println();
 	}

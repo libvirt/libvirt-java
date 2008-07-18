@@ -6,4 +6,4 @@ typedef struct {
 	jobject auth;
 } CallBackStructType;
 
-int	VirConnectAuthCallbackBridge(virConnectCredentialPtr cred, unsigned int ncred, void * cbdata);
+int	ConnectAuthCallbackBridge(virConnectCredentialPtr cred, unsigned int ncred, void * cbdata);

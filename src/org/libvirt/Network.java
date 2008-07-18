@@ -1,24 +1,24 @@
 package org.libvirt;
 
-public class VirNetwork {
+public class Network {
 
 	/**
 	 * The native virNetworkPtr
 	 */
 	private long VNP;
 	/**
-	 * The VirConnect Object that represents the Hypervisor of this Network
+	 * The Connect Object that represents the Hypervisor of this Network
 	 */
-	private VirConnect virConnect;
+	private Connect virConnect;
 
 	/**
-	 * Constructs a VirNetwork object from a known native virNetworkPtr, and a VirConnect object.
+	 * Constructs a Network object from a known native virNetworkPtr, and a Connect object.
 	 * For use when native libvirt returns a virConnectPtr, i.e. error handling.
 	 *
 	 * @param virConnect
 	 * @param VNP
 	 */
-	VirNetwork(VirConnect virConnect, long VNP){
+	Network(Connect virConnect, long VNP){
 		this.virConnect = virConnect;
 		this.VNP = VNP;
 	}
@@ -82,9 +82,9 @@ public class VirNetwork {
 	/**
 	 * Provides the connection pointer associated with this network.
 	 *
-	 * @return the VirConnect object
+	 * @return the Connect object
 	 */
-	public VirConnect getConnect(){
+	public Connect getConnect(){
 		return virConnect;
 	}
 

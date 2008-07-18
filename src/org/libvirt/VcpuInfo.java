@@ -1,13 +1,13 @@
 package org.libvirt;
 
-public class VirVcpuInfo {
+public class VcpuInfo {
 	public int number;
-	public VirVcpuState state;
+	public VcpuState state;
 	public long cpuTime;
 	public int cpu;
-	
-	public static enum VirVcpuState {
+
+	public static enum VcpuState {
 		VIR_VCPU_OFFLINE,
-		VIR_VCPU_RUNNING, 
+		VIR_VCPU_RUNNING,
 		VIR_VCPU_BLOCKED};
 }

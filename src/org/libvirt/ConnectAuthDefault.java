@@ -6,36 +6,36 @@ import java.io.InputStreamReader;
 /**
  * @author stoty
  * Implements virConnectAuthPtrDefault functionality from libvirt.c without the external method support
- * It's not officially a part of the libvirt API, but provided here for completeness, testing, and as an example  
+ * It's not officially a part of the libvirt API, but provided here for completeness, testing, and as an example
  */
-public final class VirConnectAuthDefault extends VirConnectAuth {
+public final class ConnectAuthDefault extends ConnectAuth {
 
 	{
-		credType= new  VirConnectCredential.VirConnectCredentialType[] {
-			VirConnectCredential.VirConnectCredentialType.VIR_CRED_AUTHNAME,
-			VirConnectCredential.VirConnectCredentialType.VIR_CRED_ECHOPROMPT,
-			VirConnectCredential.VirConnectCredentialType.VIR_CRED_REALM,
-			VirConnectCredential.VirConnectCredentialType.VIR_CRED_PASSPHRASE,
-			VirConnectCredential.VirConnectCredentialType.VIR_CRED_NOECHOPROMPT 
+		credType= new  CredentialType[] {
+			CredentialType.VIR_CRED_AUTHNAME,
+			CredentialType.VIR_CRED_ECHOPROMPT,
+			CredentialType.VIR_CRED_REALM,
+			CredentialType.VIR_CRED_PASSPHRASE,
+			CredentialType.VIR_CRED_NOECHOPROMPT
 			};
 	}
-	
+
 	@Override
-	public int callback(VirConnectCredential[] cred) {
+	public int callback(Credential[] cred) {
 		BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
 		try{
-			for(VirConnectCredential c: cred){
+			for(Credential c: cred){
 				String response="";
 				switch(c.type){
 					case VIR_CRED_USERNAME:
 					case VIR_CRED_AUTHNAME:
 					case VIR_CRED_ECHOPROMPT:
-					case VIR_CRED_REALM: 
+					case VIR_CRED_REALM:
 						System.out.println(c.prompt);
 						response= in.readLine();
 						break;
 					case VIR_CRED_PASSPHRASE:
-					case VIR_CRED_NOECHOPROMPT: 
+					case VIR_CRED_NOECHOPROMPT:
 						System.out.println(c.prompt);
 						System.out.println("WARNING: THE ENTERED PASSWORD WILL NOT BE MASKED!");
 						response= in.readLine();

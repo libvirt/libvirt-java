@@ -1,6 +1,6 @@
 package org.libvirt;
 
-public class VirNodeInfo {
+public class NodeInfo {
 	/**
 	 * string indicating the CPU model
 	 */
@@ -33,7 +33,7 @@ public class VirNodeInfo {
 	 * number of threads per core
 	 */
 	public int threads;
-	
+
 	/**
 	 * @return the total number of CPUs supported but not neccessarily active in the host.
 	 */

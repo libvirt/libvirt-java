@@ -8,8 +8,8 @@ dnl See COPYING.LIB for the License of this software
 dnl
 dnl Daniel Veillard <veillard@redhat.com>
 dnl
-AC_INIT([libvirt-java], [0.1.2])
-AC_CONFIG_SRCDIR([src/jni/org_libvirt_VirDomain.c])
+AC_INIT([libvirt-java], [0.2.0])
+AC_CONFIG_SRCDIR([src/jni/org_libvirt_Domain.c])
 AC_CONFIG_AUX_DIR(.)
 AC_CONFIG_HEADER([config.h])
 AM_INIT_AUTOMAKE([-Wno-portability])
@@ -131,6 +131,9 @@ case "$build_os" in
     *linux*)
         system="linux"
 	;;
+    *SunOS*)
+        system="solaris"
+	;;
     *cygwin*)
         system="win32"
 	;;
@@ -166,4 +169,4 @@ AC_SUBST(JAVAC_FLAGS)
 rm -f COPYING
 cp COPYING.LIB COPYING
 
-AC_OUTPUT(Makefile src/Makefile src/jni/Makefile doc/Makefile libvirt-java.pc libvirt-java.spec)
+AC_OUTPUT(Makefile README src/Makefile src/jni/Makefile doc/Makefile libvirt-java.pc libvirt-java.spec)

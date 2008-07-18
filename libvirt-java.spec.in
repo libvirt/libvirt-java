@@ -90,6 +90,10 @@ rm -rf %{buildroot}
 /usr/share/javadoc/%{name}-%{version}
 
 %changelog
+* Fri Jul 18 2008 Daniel Veillard <veillard@redhat.com> - 0.2.0-1
+- new release 0.2.0
+- finished cleanup of APIs
+
 * Thu Jul  3 2008 Daniel Veillard <veillard@redhat.com> - 0.1.2-1
 - new release 0.1.2
 

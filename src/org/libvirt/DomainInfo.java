@@ -1,16 +1,16 @@
 package org.libvirt;
 
 /**
- * This object is returned by VirDomain.getInfo()
- * 
+ * This object is returned by Domain.getInfo()
+ *
  * @author stoty
  *
  */
-public class VirDomainInfo {
+public class DomainInfo {
 	/**
 	 * the running state, one of virDomainFlag
 	 */
-	public VirDomainState state;
+	public DomainState state;
 	/**
 	 * the maximum memory in KBytes allowed
 	 */
@@ -27,12 +27,12 @@ public class VirDomainInfo {
 	 * the CPU time used in nanoseconds
 	 */
 	public long cpuTime;
-	
+
 	/**
 	 * @author stoty
 	 *
 	 */
-	public static enum VirDomainState {
+	public static enum DomainState {
 	    /**
 	     * no state
 	     */
@@ -60,9 +60,9 @@ public class VirDomainInfo {
 	    /**
 	     * the domain is crashed
 	     */
-	    VIR_DOMAIN_CRASHED		
+	    VIR_DOMAIN_CRASHED
 	}
-	
+
 	public String toString(){
 		StringBuffer result = new StringBuffer("");
 		result.append("state:" + state + "\n");

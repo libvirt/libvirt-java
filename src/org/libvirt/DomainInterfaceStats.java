@@ -2,12 +2,12 @@ package org.libvirt;
 
 
 /**
- * The VirDomain.interfaceStats method returns th network counters in this object
- * 
+ * The Domain.interfaceStats method returns th network counters in this object
+ *
  * @author stoty
  *
  */
-public class VirDomainInterfaceStats {
+public class DomainInterfaceStats {
 	public long rx_bytes;
 	public long rx_packets;
 	public long rx_errs;

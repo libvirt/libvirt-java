@@ -8,6 +8,11 @@ THEDIR=`pwd`
 cd $srcdir
 DIE=0
 
+AUTOMAKE=automake
+if [ "`uname`" = "SunOs" ] ; then
+    AUTOMAKE=automake-1.10
+fi
+
 (autoconf --version) < /dev/null > /dev/null 2>&1 || {
 	echo
 	echo "You must have autoconf installed to compile libvirt-java."
@@ -24,7 +29,7 @@ DIE=0
 	DIE=1
 }
 
-(automake --version) < /dev/null > /dev/null 2>&1 || {
+($AUTOMAKE --version) < /dev/null > /dev/null 2>&1 || {
 	echo
 	DIE=1
 	echo "You must have automake installed to compile libvirt."
@@ -36,7 +41,7 @@ if test "$DIE" -eq 1; then
 	exit 1
 fi
 
-test -f src/jni/org_libvirt_VirDomain.c || {
+test -f src/jni/org_libvirt_Domain.c || {
 	echo "You must run this script in the top-level libvirt directory"
 	exit 1
 }

@@ -1,8 +1,8 @@
 package org.libvirt;
 
-public class VirError  {
+public class Error  {
 
-	public static enum VirErrorDomain{
+	public static enum ErrorDomain{
 		VIR_FROM_NONE,
 	    /**
 	     * Error at Xen hypervisor layer
@@ -78,7 +78,7 @@ public class VirError  {
 	    VIR_FROM_STORAGE
 	}
 
-	public static enum VirErrorLevel {
+	public static enum ErrorLevel {
 	    VIR_ERR_NONE,
 	    /**
 	     * A simple warning
@@ -90,7 +90,7 @@ public class VirError  {
 	    VIR_ERR_ERROR
 	}
 
-	public static enum VirErrorNumber {
+	public static enum ErrorNumber {
 	    VIR_ERR_OK,
 	    /**
 	     * internal error
@@ -294,10 +294,10 @@ public class VirError  {
 	    VIR_ERR_NO_STORAGE_VOL
 	}
 
-	VirErrorNumber code;
-	VirErrorDomain domain;
+	ErrorNumber code;
+	ErrorDomain domain;
 	String message;
-	VirErrorLevel level;
+	ErrorLevel level;
 	long VCP; /* Deprecated */
 	long VDP; /* Deprecated */
 	String str1;
@@ -311,14 +311,14 @@ public class VirError  {
 	 * Gets he error code
 	 * @return a VirErroNumber
 	 */
-	public VirErrorNumber getCode() {
+	public ErrorNumber getCode() {
 		return code;
 	}
 	/**
 	 * Tells What part of the library raised this error
-	 * @return a VirErrorDomain
+	 * @return a ErrorDomain
 	 */
-	public VirErrorDomain getDomain() {
+	public ErrorDomain getDomain() {
 		return domain;
 	}
 	/**
@@ -331,9 +331,9 @@ public class VirError  {
 	}
 	/**
 	 * Tells how consequent is the error
-	 * @return a VirErrorLevel
+	 * @return a ErrorLevel
 	 */
-	public VirErrorLevel getLevel() {
+	public ErrorLevel getLevel() {
 		return level;
 	}
 	/**
@@ -381,15 +381,15 @@ public class VirError  {
 	 * returns the Connection associated with the error, if available
 	 * Deprecated, always throw an exception now
 	 *
-	 * @return the VirConnect object
-	 * @throws VirErrorException
+	 * @return the Connect object
+	 * @throws ErrorException
 	 */
-	public VirConnect getConn() throws VirErrorException{
-		throw new VirErrorException("No VirConnect object available");
+	public Connect getConn() throws ErrorException{
+		throw new ErrorException("No Connect object available");
 	}
 
 	/**
-	 * Does this error has a valid VirDomain object attached?
+	 * Does this error has a valid Domain object attached?
 	 * NOTE: deprecated, should return false
 	 *
 	 * @return false
@@ -401,15 +401,15 @@ public class VirError  {
 	/**
 	 * returns the Domain associated with the error, if available
 	 *
-	 * @return VirDomain object
-	 * @throws VirErrorException
+	 * @return Domain object
+	 * @throws ErrorException
 	 */
-	public VirDomain getDom() throws VirErrorException{
-		throw new VirErrorException("No VirDomain object available");
+	public Domain getDom() throws ErrorException{
+		throw new ErrorException("No Domain object available");
 	}
 
 	/**
-	 * Does this error has a valid VirNetwork object attached?
+	 * Does this error has a valid Network object attached?
 	 * NOTE: deprecated, should return false
 	 *
 	 * @return false
@@ -421,11 +421,11 @@ public class VirError  {
 	/**
 	 * Returns the network associated with the error, if available
 	 *
-	 * @return VirNetwork object
-	 * @throws VirErrorException
+	 * @return Network object
+	 * @throws ErrorException
 	 */
-	public VirNetwork getNet() throws VirErrorException{
-		throw new VirErrorException("No VirNetwork object available");
+	public Network getNet() throws ErrorException{
+		throw new ErrorException("No Network object available");
 	}
 
 	public String toString(){
