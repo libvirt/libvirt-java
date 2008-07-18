@@ -12,10 +12,10 @@ int	VirConnectAuthCallbackBridge(virConnectCredentialPtr cred, unsigned int ncre
 
 	jobject j_auth = ((CallBackStructType*)cbdata)->auth;
 	jclass j_auth_cls = (*env)->GetObjectClass(env, j_auth);
-	jmethodID j_auth_cb_id=(*env)->GetMethodID(env, (*env)->GetObjectClass(env, j_auth), "callback", "([Lorg/libvirt/VirConnectCredential;)I");
+	jmethodID j_auth_cb_id=(*env)->GetMethodID(env, (*env)->GetObjectClass(env, j_auth), "callback", "([Lorg/libvirt/VirConnectAuth$Credential;)I");
 
 
-	jclass j_cred_cls = (*env)->FindClass(env, "org/libvirt/VirConnectCredential");
+	jclass j_cred_cls = (*env)->FindClass(env, "org/libvirt/VirConnectAuth$Credential");
 	jmethodID j_cred_constructor = (*env)->GetMethodID(env, j_cred_cls, "<init>", "(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;)V");
 	jfieldID j_cred_result_id = (*env)->GetFieldID(env, j_cred_cls, "result", "Ljava/lang/String;");
 	

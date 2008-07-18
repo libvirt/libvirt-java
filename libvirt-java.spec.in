@@ -2,11 +2,11 @@ Summary:	Java bindings for the libvirt virtualization API
 Name:		libvirt-java
 Version:	@VERSION@
 Release:	1%{?dist}
-License:	LGPLv2
+License:	LGPLv2+
 Group:		Development/Libraries
-Source:		libvirt-java-%{version}.tar.gz
+Source:		http://libvirt.org/sources/java/libvirt-java-%{version}.tar.gz
 URL:		http://libvirt.org/
-BuildRoot:	%{_tmppath}/%{name}-%{version}-root
+BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root
 
 Requires:	libvirt >= @LIBVIRT_REQUIRED@
 Requires:	java >= 1.5.0
@@ -42,6 +42,8 @@ to build applications with Libvirt-java.
 %package	javadoc
 Summary:	Java documentation for %{name}
 Group:		Development/Documentation
+Requires:	%{name} = %{version}-%{release}
+Requires:	jpackage-utils
 
 %description	javadoc
 API documentation for %{name}.
@@ -54,10 +56,6 @@ API documentation for %{name}.
 # run N times in parallel if %{?_smp_mflags} is set up
 make
 
-# pack up the java source
-(cd src && find . -name \*.java | sort | xargs zip -X -9 src.zip)
-touch -r ChangeLog src/src.zip `find src/org -name \*.java`
-
 # fix up the modification date of generated documentation
 find doc -type f -newer ChangeLog | xargs touch -r ChangeLog
 
@@ -68,12 +66,6 @@ make %{?_smp_mflags} DESTDIR=$RPM_BUILD_ROOT install
 
 rm -f $RPM_BUILD_ROOT%{_libdir}/*.la
 rm -f $RPM_BUILD_ROOT%{_libdir}/*.a
-
-# install the src zip and make a sym link
-zipfile=libvirt-src-%{version}.zip
-install -m 644 src/src.zip $RPM_BUILD_ROOT%{_datadir}/java/$zipfile
-(cd $RPM_BUILD_ROOT%{_datadir}/java &&
-  ln -sf $zipfile libvirt-src.zip)
 
 %post -p /sbin/ldconfig
 %postun -p /sbin/ldconfig
@@ -92,7 +84,6 @@ rm -rf %{buildroot}
 %doc src/*.java
 %{_libdir}/libvirt_jni*.so
 %{_libdir}/pkgconfig/*.pc
-%{_datadir}/java/*.zip
 
 %files javadoc
 %defattr(-,root,root)

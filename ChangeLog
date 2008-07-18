@@ -1,3 +1,13 @@
+Fri Jul 18 13:29:51 CEST 2008 Daniel Veillard <veillard@redhat.com>
+
+	* libvirt-java.spec.in: remove the build and installation of a source
+	  zip file.
+	* src/jni/VirConnectAuthCallbackBridge.c
+	  src/jni/org_libvirt_VirConnect.c
+	 src/org/libvirt/VirConnectAuth.java
+	 src/org/libvirt/VirConnectCredential.java: remove
+	 VirConnectCredential and make is a subclass of VirConnectAuth
+
 Thu Jul  3 17:45:34 CEST 2008 Daniel Veillard <veillard@redhat.com>
 
 	* configure.in libvirt-java.spec.in: release 0.1.2

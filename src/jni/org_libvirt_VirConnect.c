@@ -200,9 +200,9 @@ JNIEXPORT jlong JNICALL Java_org_libvirt_VirConnect__1openAuth
 	jfieldID credTypeArray_id = (*env)->GetFieldID(env, 
 			(*env)->FindClass(env, "org/libvirt/VirConnectAuth"), 
 			"credType", 
-			"[Lorg/libvirt/VirConnectCredential$VirConnectCredentialType;");
+			"[Lorg/libvirt/VirConnectAuth$Credential$CredentialType;");
 	jmethodID credTypeMapToInt_id = (*env)->GetMethodID(env, 
-			(*env)->FindClass(env, "org/libvirt/VirConnectCredential$VirConnectCredentialType"), 
+			(*env)->FindClass(env, "org/libvirt/VirConnectAuth$Credential$CredentialType"), 
 			"mapToInt", 
 			"()I");
 	
