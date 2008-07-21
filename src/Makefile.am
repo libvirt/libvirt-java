@@ -56,6 +56,7 @@ install-data-hook:
 
 CLEANFILES = \
   org/libvirt/*.class \
-  libvirt-${VERSION}.jar \
+  test.class \
+  libvirt-*.jar \
   doc-stamps
 

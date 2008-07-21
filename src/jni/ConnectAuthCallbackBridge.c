@@ -15,7 +15,7 @@ int	ConnectAuthCallbackBridge(virConnectCredentialPtr cred, unsigned int ncred, 
 	jmethodID j_auth_cb_id=(*env)->GetMethodID(env, (*env)->GetObjectClass(env, j_auth), "callback", "([Lorg/libvirt/ConnectAuth$Credential;)I");
 
 	jclass j_cred_cls = (*env)->FindClass(env, "org/libvirt/ConnectAuth$Credential");
-	jmethodID j_cred_constructor = (*env)->GetMethodID(env, j_cred_cls, "<init>", "(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;)V");
+	jmethodID j_cred_constructor = (*env)->GetMethodID(env, j_cred_cls, "<init>", "(Lorg/libvirt/ConnectAuth;ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;)V");
 	jfieldID j_cred_result_id = (*env)->GetFieldID(env, j_cred_cls, "result", "Ljava/lang/String;");
 
 	jobjectArray j_credArray = (*env)->NewObjectArray(env, ncred, j_cred_cls, NULL);
@@ -27,6 +27,7 @@ int	ConnectAuthCallbackBridge(virConnectCredentialPtr cred, unsigned int ncred, 
 		j_cred=(*env)->NewObject(env,
 				j_cred_cls,
 				j_cred_constructor,
+				j_auth,
 				cred[c].type,
 				(*env)->NewStringUTF(env, cred[c].prompt),
 				(*env)->NewStringUTF(env, cred[c].challenge),

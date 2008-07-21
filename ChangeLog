@@ -1,3 +1,9 @@
+Mon Jul 21 09:51:30 CEST 2008 Daniel Veillard <veillard@redhat.com>
+
+	* src/jni/ConnectAuthCallbackBridge.c: patch from Tóth István
+	  for the ConnectAuth jni code
+	* src/Makefile.am: augment make clean to remove jar and .class
+
 Fri Jul 18 16:32:14 CEST 2008 Daniel Veillard <veillard@redhat.com>
 
 	* libvirt-java.spec.in configure.in: release of 0.2.0
