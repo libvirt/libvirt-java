@@ -1,0 +1,28 @@
+      This is the java binding to the libvirt library.
+
+To use it, your program needs to access both the java library (.jar file),
+and the JNI library (.so file)
+
+1. You must have the libvirt.jar file in your classpath.
+By default the installs it to @prefix@/share/java/libvirt-@VERSION@.jar
+
+2. You must have the libvirt_jni.so accessible by the dynamic linker.
+By default the RPM installs it to /usr/lib or /usr/lib64, so the linker will
+find it automatically. If it's in a different location, you have to set
+the LD_LIBRARY_PATH variable to the directory containing the libvirt_jni.so
+file.
+
+There is a rudimentary functional test program that the libvirt-java-devel
+installs put it into @prefix@/share/doc/libvirt-java-devel-@VERSION@/test.java
+
+To run it, first copy the test.java file to writeable directory
+cp @prefix@/share/doc/libvirt-java-devel-@VERSION@/test.java ~
+
+Compile the java file to a class:
+javac -classpath @prefix@/share/java/libvirt-@VERSION@.jar test.java
+
+Then run the program:
+java -classpath .:@prefix@/share/java/libvirt-@VERSION@.jar test
+
+There is full javadoc for the API in @prefix@/share/javadoc/libvirt-java-@VERSION@/
+
