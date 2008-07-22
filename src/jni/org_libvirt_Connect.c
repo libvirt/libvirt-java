@@ -149,13 +149,12 @@ JNIEXPORT jlong JNICALL Java_org_libvirt_Connect__1open
   (JNIEnv *env, jobject obj, jstring uri){
 
 	virConnectPtr vc;
-	virError error;
 
 	//Initialize the libvirt VirtConn Object
 	vc=virConnectOpen((*env)->GetStringUTFChars(env, uri, NULL));
 	if(vc==NULL){
-		virCopyLastError(&error);
-		virErrorHandler(env, &error);
+		//We have a pending java exception, let's return
+		assert((*env)->ExceptionOccurred(env));
 		return (jlong)NULL;
 	}
 
@@ -169,13 +168,12 @@ JNIEXPORT jlong JNICALL Java_org_libvirt_Connect__1openReadOnly
   (JNIEnv *env, jobject obj, jstring uri){
 
 	virConnectPtr vc;
-	virError error;
 
 	//Initialize the libvirt VirtConn Object
 	vc=virConnectOpenReadOnly((*env)->GetStringUTFChars(env, uri, NULL));
 	if(vc==NULL){
-		virCopyLastError(&error);
-		virErrorHandler(env, &error);
+		//We have a pending java exception, let's return
+		assert((*env)->ExceptionOccurred(env));
 		return (jlong)NULL;
 	}
 
@@ -196,8 +194,6 @@ JNIEXPORT jlong JNICALL Java_org_libvirt_Connect__1openAuth
 	jobject j_credTypeElement;
 	int c;
 
-fprintf(stderr, "In 1openAuth\n");
-
 	//Prepare by computing the class and field IDs
 	jfieldID credTypeArray_id = (*env)->GetFieldID(env,
 			(*env)->FindClass(env, "org/libvirt/ConnectAuth"),
@@ -207,8 +203,6 @@ fprintf(stderr, "In 1openAuth\n");
 			(*env)->FindClass(env, "org/libvirt/ConnectAuth$CredentialType"),
 			"mapToInt",
 			"()I");
-
-fprintf(stderr, "FindClass done\n");
 
 	//Copy the array of credtypes with the helper function
 	jarray j_credTypeArray=(*env)->GetObjectField(env, j_auth, credTypeArray_id);
@@ -220,8 +214,6 @@ fprintf(stderr, "FindClass done\n");
 		auth->credtype[c]=(*env)->CallIntMethod(env, j_credTypeElement, credTypeMapToInt_id);
 	}
 
-fprintf(stderr, "Array copied\n");
-
 	//The callback function is always ConnectAuthCallbackBridge
 	auth->cb = &ConnectAuthCallbackBridge;
 	//We pass the ConnectAuth object and the JNI env in cdbata
@@ -231,22 +223,16 @@ fprintf(stderr, "Array copied\n");
 	cb_wrapper->auth = j_auth;
 	auth->cbdata=cb_wrapper;
 
-fprintf(stderr, "calling virConnectOpenAuth\n");
-
 	vc=virConnectOpenAuth((*env)->GetStringUTFChars(env, uri, NULL), auth, flags);
-	if(vc==NULL){
-
-fprintf(stderr, "Got NULL\n");
-
-		virCopyLastError(&error);
-		virErrorHandler(env, &error);
+	if (vc==NULL){
+		//We have a pending java exception, let's return
+		assert((*env)->ExceptionOccurred(env));
 		return (jlong)NULL;
 	}
 
 	//Initialize the error handler for this connection
 	virConnSetErrorFunc(vc, env, virErrorHandler);
 
-fprintf(stderr, "finish 1openAuth\n");
 	return (jlong)vc;
 }
 

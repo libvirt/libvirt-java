@@ -1,3 +1,8 @@
+Tue Jul 22 10:26:29 CEST 2008 Daniel Veillard <veillard@redhat.com>
+
+	* src/jni/org_libvirt_Connect.c: Tóth István found the bug when
+	  an exception was raised at connection time.
+
 Mon Jul 21 09:51:30 CEST 2008 Daniel Veillard <veillard@redhat.com>
 
 	* src/jni/ConnectAuthCallbackBridge.c: patch from Tóth István
