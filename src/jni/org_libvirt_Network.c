@@ -1,89 +1,59 @@
 #include "org_libvirt_Network.h"
 #include <libvirt/libvirt.h>
+#include "generic.h"
 #include <stdlib.h>
 
 JNIEXPORT jstring JNICALL Java_org_libvirt_Network__1getXMLDesc
-  (JNIEnv *env, jobject obj, jlong VNP, jint flags){
-	jstring j_xmlDesc;
-	char* xmlDesc;
-	if((xmlDesc = virNetworkGetXMLDesc((virNetworkPtr)VNP, flags))){
-		j_xmlDesc = (*env)->NewStringUTF(env, xmlDesc);
-		free(xmlDesc);
-	}
-	return j_xmlDesc;
+  (JNIEnv *env, jobject obj, jlong VNP, jint j_flags){
+	GENERIC_VIROBJ_INT__STRING(env, obj, (virNetworkPtr)VNP, j_flags, virNetworkGetXMLDesc)
 };
 
 JNIEXPORT jint JNICALL Java_org_libvirt_Network__1create
   (JNIEnv *env, jobject obj, jlong VNP){
-	return virNetworkCreate((virNetworkPtr)VNP);
+	GENERIC__VIROBJ__INT(env, obj, (virNetworkPtr)VNP, virNetworkCreate)
 }
 
 JNIEXPORT jint JNICALL Java_org_libvirt_Network__1destroy
 (JNIEnv *env, jobject obj, jlong VNP){
-	return virNetworkDestroy((virNetworkPtr)VNP);
+	GENERIC__VIROBJ__INT(env, obj, (virNetworkPtr)VNP, virNetworkDestroy)
 }
 
 JNIEXPORT jint JNICALL Java_org_libvirt_Network__1free
 (JNIEnv *env, jobject obj, jlong VNP){
-	return virNetworkFree((virNetworkPtr)VNP);
+	GENERIC__VIROBJ__INT(env, obj, (virNetworkPtr)VNP, virNetworkFree)
 }
 
 JNIEXPORT jboolean JNICALL Java_org_libvirt_Network__1getAutostart
   (JNIEnv *env, jobject obj, jlong VNP){
-	int autostart;
-	virNetworkGetAutostart((virNetworkPtr)VNP, &autostart);
-	return (jboolean)autostart;
+	GENERIC_GETAUTOSTART(env, obj, (virNetworkPtr)VNP, virNetworkGetAutostart)
 }
 
 JNIEXPORT jint JNICALL Java_org_libvirt_Network__1setAutostart
-  (JNIEnv *env, jobject obj, jlong VNP, jboolean autostart){
-	return virNetworkSetAutostart((virNetworkPtr)VNP, autostart);
+  (JNIEnv *env, jobject obj, jlong VNP, jboolean j_autostart){
+	GENERIC__VIROBJ_INT__INT(env, obj, (virNetworkPtr)VNP, j_autostart, virNetworkSetAutostart)
 }
 
 JNIEXPORT jstring JNICALL Java_org_libvirt_Network__1getBridgeName
   (JNIEnv *env, jobject obj, jlong VNP){
-	jstring j_bridgeName;
-	char *bridgeName=NULL;
-
-	if((bridgeName = virNetworkGetBridgeName((virNetworkPtr)VNP))){
-		j_bridgeName = (*env)->NewStringUTF(env, bridgeName);
-		free(bridgeName);
-	}
-	return j_bridgeName;
+	GENERIC__VIROBJ__STRING(env, obj, (virNetworkPtr)VNP, virNetworkGetBridgeName)
 }
 
 JNIEXPORT jstring JNICALL Java_org_libvirt_Network__1getName
   (JNIEnv *env, jobject obj, jlong VNP){
-	return (*env)->NewStringUTF(env, virNetworkGetName((virNetworkPtr)VNP));
+	GENERIC__VIROBJ__CONSTSTRING(env, obj, (virNetworkPtr)VNP, virNetworkGetName)
 }
 
 JNIEXPORT jintArray JNICALL Java_org_libvirt_Network__1getUUID
   (JNIEnv *env, jobject obj, jlong VNP){
-	unsigned char uuid[VIR_UUID_BUFLEN];
-	jintArray j_uuid;
-	int c;
-	int uuidbyte[VIR_UUID_BUFLEN];
-
-	if(virNetworkGetUUID((virNetworkPtr)VNP, uuid)<0)
-		return NULL;
-	//unpack UUID
-	j_uuid=(*env)->NewIntArray(env, VIR_UUID_BUFLEN);
-	for(c=0; c<VIR_UUID_BUFLEN; c++){
-			uuidbyte[c]=uuid[c];
-	}
-	(*env)->SetIntArrayRegion(env, j_uuid, 0, VIR_UUID_BUFLEN, uuidbyte);
-
-	return j_uuid;
+	GENERIC_GETUUID(env, obj, (virNetworkPtr)VNP, virNetworkGetUUID)
 }
 
 JNIEXPORT jstring JNICALL Java_org_libvirt_Network__1getUUIDString
 (JNIEnv *env, jobject obj, jlong VNP){
-	char uuidString[VIR_UUID_STRING_BUFLEN];
-	virNetworkGetUUIDString((virNetworkPtr)VNP, uuidString);
-	return (*env)->NewStringUTF(env, uuidString);
+	GENERIC_GETUUIDSTRING(env, obj, (virNetworkPtr)VNP, virNetworkGetUUIDString)
 }
 
 JNIEXPORT jint JNICALL Java_org_libvirt_Network__1undefine
   (JNIEnv *env, jobject obj, jlong VNP){
-	return virNetworkUndefine((virNetworkPtr)VNP);
+	GENERIC__VIROBJ__INT(env, obj, (virNetworkPtr)VNP, virNetworkUndefine)
 }

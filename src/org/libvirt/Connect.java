@@ -1,5 +1,9 @@
 package org.libvirt;
 
+import org.libvirt.LibvirtException;
+import org.libvirt.StoragePool;
+import org.libvirt.StorageVol;
+
 /**
  * The Connect object represents a connection to a local or remote hypervisor/driver.
  *
@@ -91,7 +95,7 @@ public class Connect {
 		VCP = 0;
 	}
 
-	private native void _close(long VCP) throws LibvirtException;
+	private native int _close(long VCP) throws LibvirtException;
 
 
 	/**
@@ -540,5 +544,158 @@ public class Connect {
 	}
 
 	private native int _setDom0Memory(long memory) throws LibvirtException;
+
+	/**
+	 * Provides the number of inactive storage pools
+	 *
+	 * @return the number of pools found
+	 * @throws LibvirtException
+	 */
+	public int numOfDefinedStoragePools() throws LibvirtException {
+		return _numOfDefinedStoragePools(VCP);
+	}
+
+	private native int _numOfDefinedStoragePools(long VCP) throws LibvirtException;
+
+	/**
+	 * Provides the number of active storage pools
+	 *
+	 * @return the number of pools found
+	 * @throws LibvirtException
+	 */
+	public int numOfStoragePools() throws LibvirtException {
+		return _numOfStoragePools(VCP);
+	}
+
+	private native int _numOfStoragePools(long VCP) throws LibvirtException;
+
+	/**
+	 * Provides the list of names of inactive storage pools.
+	 *
+	 * @return an Array of Strings that contains the names of the defined storage pools
+	 * @throws LibvirtException
+	 */
+	public String[] listDefinedStoragePools() throws LibvirtException {
+		return _listDefinedStoragePools(VCP);
+	}
+
+	private native String[] _listDefinedStoragePools(long VCP)
+	throws LibvirtException;
+
+	/**
+	 * Provides the list of names of active storage pools.
+	 *
+	 * @return an Array of Strings that contains the names of the defined storage pools
+	 * @throws LibvirtException
+	 */
+	public String[] listStoragePools() throws LibvirtException {
+		return _listStoragePools(VCP);
+	}
+
+	private native String[] _listStoragePools(long VCP)
+	throws LibvirtException;
+
+	/**
+	 * Create a new storage based on its XML description.
+	 * The pool is not persistent, so its definition will disappear when it is destroyed, or if the host is restarted
+	 *
+	 * @param xmlDesc XML description for new pool
+	 * @param flags future flags, use 0 for now
+	 * @return StoragePool object
+	 * @throws LibvirtException
+	 */
+	public StoragePool storagePoolCreateXML(String xmlDesc, int flags)
+	throws LibvirtException {
+		return new StoragePool(this, _virStoragePoolCreateXML(VCP, xmlDesc, flags));
+	}
+
+	private native long _virStoragePoolCreateXML(long VCP, String xmlDesc, int flags)
+	throws LibvirtException;
+
+	/**
+	 * Define a new inactive storage pool based on its XML description.
+	 * The pool is persistent, until explicitly undefined.
+	 *
+	 * @param xml XML description for new pool
+	 * @param flags flags future flags, use 0 for now
+	 * @return StoragePool object
+	 * @throws LibvirtException
+	 */
+	public StoragePool storagePoolDefineXML(String xml, int flags)
+	throws LibvirtException {
+		return new StoragePool(this, _virStoragePoolDefineXML(VCP, xml, flags));
+	}
+
+	private native long _virStoragePoolDefineXML(long VCP, String xml, int flags)
+	throws LibvirtException;
+
+	/**
+	 * Fetch a storage pool based on its unique name
+	 *
+	 * @param name name of pool to fetch
+	 * @return StoragePool object
+	 * @throws LibvirtException
+	 */
+	public StoragePool storagePoolLookupByName(String name)
+	throws LibvirtException {
+		return new StoragePool(this, _virStoragePoolLookupByName(VCP, name));
+	}
+
+	private native long _virStoragePoolLookupByName(long VCP, String name)
+	throws LibvirtException;
+
+	/**
+	 * Fetch a storage pool based on its globally unique id
+	 *
+	 * @param UUID globally unique id of pool to fetch
+	 * @return a new network object
+	 * @throws LibvirtException
+	 */
+	public StoragePool storagePoolLookupByUUID(int[] UUID)
+	throws LibvirtException {
+		return new StoragePool(this, _virStoragePoolLookupByUUID(VCP, UUID));
+	}
+
+	private native long _virStoragePoolLookupByUUID(long VCP, int[] UUID);
+
+	/**
+	 * Fetch a storage pool based on its globally unique id
+	 *
+	 * @param UUID globally unique id of pool to fetch
+	 * @return VirStoragePool object
+	 * @throws LibvirtException
+	 */
+	public StoragePool storagePoolLookupByUUIDString(String UUID)
+	throws LibvirtException {
+		return new StoragePool(this, _virStoragePoolLookupByUUIDString(VCP, UUID));
+	}
+
+	private native long _virStoragePoolLookupByUUIDString(long VCP, String UUID)
+	throws LibvirtException;
+
+	/**
+	 * Fetch a a storage volume based on its globally unique key
+	 *
+	 * @param key globally unique key
+	 * @return a storage volume
+	 */
+	public StorageVol storageVolLookupByKey(String key){
+		return new StorageVol(this, _virStorageVolLookupByKey(VCP, key));
+	}
+
+	private native long _virStorageVolLookupByKey(long VCP, String key);
+
+	/**
+	 * Fetch a storage volume based on its locally (host) unique path
+	 *
+	 * @param path locally unique path
+	 * @return	a storage volume
+	 */
+	public StorageVol storageVolLookupByPath(String path){
+		return new StorageVol(this, _virStorageVolLookupByPath(VCP, path));
+	}
+
+	private native long _virStorageVolLookupByPath(long VCP, String path);
+
 
 }

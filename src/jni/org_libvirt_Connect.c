@@ -3,10 +3,11 @@
 #include <stdlib.h>
 #include "ErrorHandler.h"
 #include "ConnectAuthCallbackBridge.h"
-
+#include "generic.h"
 #include <assert.h>
 
-//TODO We are leaking UTFChars all over the place. We need to strcpy, then release every string we get from JAVA, and not use them directly!
+//TODO We are leaking UTFChars all over the place. We need to release every string we get from JAVA with ReleaseStringUTFChars! (Done)
+//TODO The same for *ArrayElements
 
 JNIEXPORT jint JNICALL Java_org_libvirt_Connect__1virInitialize
   (JNIEnv *env, jclass cls){
@@ -18,48 +19,32 @@ JNIEXPORT jint JNICALL Java_org_libvirt_Connect__1virInitialize
 	return result;
 }
 
-JNIEXPORT void JNICALL Java_org_libvirt_Connect__1close
+JNIEXPORT jint JNICALL Java_org_libvirt_Connect__1close
   (JNIEnv *env, jobject obj, jlong VCP){
-	virConnectClose( (virConnectPtr)VCP );
+	GENERIC__VIROBJ__INT(env, obj, (virConnectPtr)VCP, virConnectClose)
 }
 
 JNIEXPORT jstring JNICALL Java_org_libvirt_Connect__1getHostName
   (JNIEnv *env, jobject obj, jlong VCP){
-	//All this gymnastics is so that we can free() the hostname string
-	jstring j_hostname=NULL;
-	char *hostname;
-	if((hostname = virConnectGetHostname((virConnectPtr)VCP))){
-		j_hostname = (*env)->NewStringUTF(env, hostname);
-		free(hostname);
-	}
-	return j_hostname;
+	GENERIC__VIROBJ__STRING(env, obj, (virConnectPtr)VCP, virConnectGetHostname)
 };
 
 JNIEXPORT jstring JNICALL Java_org_libvirt_Connect__1getCapabilities
   (JNIEnv *env, jobject obj, jlong VCP){
-	jstring j_capabilities=NULL;
-	char *capabilities;
-	if((capabilities = virConnectGetCapabilities((virConnectPtr)VCP))){
-		j_capabilities = (*env)->NewStringUTF(env, capabilities);
-		free(capabilities);
-	}
-	return j_capabilities;
+	GENERIC__VIROBJ__STRING(env, obj, (virConnectPtr)VCP, virConnectGetCapabilities)
 }
 
 JNIEXPORT jint JNICALL Java_org_libvirt_Connect__1getMaxVcpus
-  (JNIEnv *env, jobject obj, jlong VCP, jstring type){
-	return virConnectGetMaxVcpus((virConnectPtr)VCP , (*env)->GetStringUTFChars(env, type, NULL));
+  (JNIEnv *env, jobject obj, jlong VCP, jstring j_type){
+	const char *type = (*env)->GetStringUTFChars(env, j_type, NULL);
+	int retval = (jint)virConnectGetMaxVcpus((virConnectPtr)VCP, type);
+	(*env)->ReleaseStringUTFChars(env, j_type, type);
+	return retval;
 };
 
 JNIEXPORT jstring JNICALL Java_org_libvirt_Connect__1getType
   (JNIEnv *env, jobject obj, jlong VCP){
-	const char *type;
-	//Here we get a static string, no need to free()
-	if((type=virConnectGetType((virConnectPtr)VCP))){
-		return (*env)->NewStringUTF(env, type);
-	} else {
-		return NULL;
-	}
+	GENERIC__VIROBJ__CONSTSTRING(env, obj, (virConnectPtr)VCP, virConnectGetType)
 };
 
 JNIEXPORT jstring JNICALL Java_org_libvirt_Connect__1getURI
@@ -76,101 +61,70 @@ JNIEXPORT jstring JNICALL Java_org_libvirt_Connect__1getURI
 JNIEXPORT jlong JNICALL Java_org_libvirt_Connect__1getVersion
   (JNIEnv *env, jobject obj, jlong VCP){
 	unsigned long hvVer=0;
-	int retval = virConnectGetVersion((virConnectPtr)VCP, &hvVer);
+	virConnectGetVersion((virConnectPtr)VCP, &hvVer);
 	return (jlong)(hvVer);
 };
 
 JNIEXPORT jobjectArray JNICALL Java_org_libvirt_Connect__1listDefinedNetworks
   (JNIEnv *env, jobject obj, jlong VCP){
-	int maxnames;
-	char **names;
-	int c;
-	jobjectArray j_names=NULL;
-	if((maxnames = virConnectNumOfDefinedNetworks((virConnectPtr)VCP))<0)
-		return NULL;
-	names= (char**)calloc(maxnames, sizeof(char*));
-	if(virConnectListDefinedNetworks((virConnectPtr)VCP, names, maxnames)>=0){
-		j_names= (jobjectArray)(*env)->NewObjectArray(env, maxnames,
-			(*env)->FindClass(env,"java/lang/String"),
-			(*env)->NewStringUTF(env,""));
-		for(c=0; c<maxnames; c++){
-			(*env)->SetObjectArrayElement(env, j_names, c, (*env)->NewStringUTF(env, names[c]));
-		}
-	}
-	free(names);
-
-	return j_names;
+	GENERIC_LIST_STRINGARRAY(env, obj, (virConnectPtr)VCP, virConnectListDefinedNetworks, virConnectNumOfDefinedNetworks)
 }
 
 JNIEXPORT jobjectArray JNICALL Java_org_libvirt_Connect__1listNetworks
   (JNIEnv *env, jobject obj, jlong VCP){
-	int maxnames;
-	char **names;
-	int c;
-	jobjectArray j_names=NULL;
-	if((maxnames = virConnectNumOfNetworks((virConnectPtr)VCP))<0)
-		return NULL;
-	names= (char**)calloc(maxnames, sizeof(char*));
-	if(virConnectListNetworks((virConnectPtr)VCP, names, maxnames)>=0){
-		j_names= (jobjectArray)(*env)->NewObjectArray(env, maxnames,
-			(*env)->FindClass(env,"java/lang/String"),
-			(*env)->NewStringUTF(env,""));
-		for(c=0; c<maxnames; c++){
-			(*env)->SetObjectArrayElement(env, j_names, c, (*env)->NewStringUTF(env, names[c]));
-		}
-	}
-	free(names);
-
-	return j_names;
+	GENERIC_LIST_STRINGARRAY(env, obj, (virConnectPtr)VCP, virConnectListNetworks, virConnectNumOfNetworks)
 }
 
 JNIEXPORT jint JNICALL Java_org_libvirt_Connect__1numOfDefinedDomains
   (JNIEnv *env, jobject obj, jlong VCP){
-	return virConnectNumOfDefinedDomains((virConnectPtr)VCP);
+	GENERIC__VIROBJ__INT(env, obj, (virConnectPtr)VCP, virConnectNumOfDefinedDomains)
 };
 
 JNIEXPORT jint JNICALL Java_org_libvirt_Connect__1numOfDefinedNetworks
   (JNIEnv *env, jobject obj, jlong VCP){
-	return virConnectNumOfDefinedNetworks((virConnectPtr)VCP);
+	GENERIC__VIROBJ__INT(env, obj, (virConnectPtr)VCP, virConnectNumOfDefinedNetworks)
 };
 
 JNIEXPORT jint JNICALL Java_org_libvirt_Connect__1numOfDomains
   (JNIEnv *env, jobject obj, jlong VCP){
-	return virConnectNumOfDomains((virConnectPtr)VCP);
+	GENERIC__VIROBJ__INT(env, obj, (virConnectPtr)VCP, virConnectNumOfDomains)
 };
 
 JNIEXPORT jint JNICALL Java_org_libvirt_Connect__1numOfNetworks
   (JNIEnv *env, jobject obj, jlong VCP){
-	return virConnectNumOfNetworks((virConnectPtr)VCP);
+	GENERIC__VIROBJ__INT(env, obj, (virConnectPtr)VCP, virConnectNumOfNetworks)
 };
 
-
 JNIEXPORT jlong JNICALL Java_org_libvirt_Connect__1open
-  (JNIEnv *env, jobject obj, jstring uri){
+  (JNIEnv *env, jobject obj, jstring j_uri){
 
 	virConnectPtr vc;
+	const char *uri=(*env)->GetStringUTFChars(env, j_uri, NULL);
 
 	//Initialize the libvirt VirtConn Object
-	vc=virConnectOpen((*env)->GetStringUTFChars(env, uri, NULL));
+	vc=virConnectOpen(uri);
+	(*env)->ReleaseStringUTFChars(env, j_uri, uri);
 	if(vc==NULL){
 		//We have a pending java exception, let's return
 		assert((*env)->ExceptionOccurred(env));
 		return (jlong)NULL;
 	}
 
-	//Initialized the error handler for this connection
+	//Initialize the error handler for this connection
 	virConnSetErrorFunc(vc, env, virErrorHandler);
 
 	return (jlong)vc;
 };
 
 JNIEXPORT jlong JNICALL Java_org_libvirt_Connect__1openReadOnly
-  (JNIEnv *env, jobject obj, jstring uri){
+  (JNIEnv *env, jobject obj, jstring j_uri){
 
 	virConnectPtr vc;
+	const char *uri=(*env)->GetStringUTFChars(env, j_uri, NULL);
 
 	//Initialize the libvirt VirtConn Object
-	vc=virConnectOpenReadOnly((*env)->GetStringUTFChars(env, uri, NULL));
+	vc=virConnectOpenReadOnly(uri);
+	(*env)->ReleaseStringUTFChars(env, j_uri, uri);
 	if(vc==NULL){
 		//We have a pending java exception, let's return
 		assert((*env)->ExceptionOccurred(env));
@@ -184,10 +138,10 @@ JNIEXPORT jlong JNICALL Java_org_libvirt_Connect__1openReadOnly
 };
 
 JNIEXPORT jlong JNICALL Java_org_libvirt_Connect__1openAuth
-  (JNIEnv *env, jobject obj, jstring uri, jobject j_auth, jint flags){
+  (JNIEnv *env, jobject obj, jstring j_uri, jobject j_auth, jint flags){
 
 	virConnectPtr vc;
-	virError error;
+	const char *uri=(*env)->GetStringUTFChars(env, j_uri, NULL);
 
 	virConnectAuth *auth = malloc(sizeof(virConnectAuth));
 
@@ -223,7 +177,8 @@ JNIEXPORT jlong JNICALL Java_org_libvirt_Connect__1openAuth
 	cb_wrapper->auth = j_auth;
 	auth->cbdata=cb_wrapper;
 
-	vc=virConnectOpenAuth((*env)->GetStringUTFChars(env, uri, NULL), auth, flags);
+	vc=virConnectOpenAuth(uri, auth, flags);
+	(*env)->ReleaseStringUTFChars(env, j_uri, uri);
 	if (vc==NULL){
 		//We have a pending java exception, let's return
 		assert((*env)->ExceptionOccurred(env));
@@ -237,35 +192,29 @@ JNIEXPORT jlong JNICALL Java_org_libvirt_Connect__1openAuth
 }
 
 JNIEXPORT jlong JNICALL Java_org_libvirt_Connect__1virNetworkCreateXML
-  (JNIEnv *env, jobject obj, jlong VCP, jstring xmlDesc){
-	return (jlong)virNetworkCreateXML((virConnectPtr)VCP, (*env)->GetStringUTFChars(env, xmlDesc, NULL));
+  (JNIEnv *env, jobject obj, jlong VCP, jstring j_xmlDesc){
+	GENERIC_VIROBJ_STRING__VIROBJ(env, obj, (virConnectPtr)VCP, j_xmlDesc, virNetworkCreateXML)
 }
 
 JNIEXPORT jlong JNICALL Java_org_libvirt_Connect__1virNetworkDefineXML
-(JNIEnv *env, jobject obj, jlong VCP, jstring xmlDesc){
-	return (jlong)virNetworkDefineXML((virConnectPtr)VCP, (*env)->GetStringUTFChars(env, xmlDesc, NULL));
+(JNIEnv *env, jobject obj, jlong VCP, jstring j_xmlDesc){
+	GENERIC_VIROBJ_STRING__VIROBJ(env, obj, (virConnectPtr)VCP, j_xmlDesc, virNetworkDefineXML)
 }
 
 JNIEXPORT jlong JNICALL Java_org_libvirt_Connect__1virNetworkLookupByName
-  (JNIEnv *env, jobject obj, jlong VCP, jstring name){
-	return (jlong)virNetworkLookupByName((virConnectPtr)VCP, (*env)->GetStringUTFChars(env, name, NULL));
+  (JNIEnv *env, jobject obj, jlong VCP, jstring j_name){
+	GENERIC_LOOKUPBY_STRING(env, obj, (virConnectPtr)VCP, j_name, virNetworkLookupByName)
 }
 
 JNIEXPORT jlong JNICALL Java_org_libvirt_Connect__1virNetworkLookupByUUID
   (JNIEnv *env, jobject obj, jlong VCP, jintArray j_UUID){
-	unsigned char UUID[VIR_UUID_BUFLEN];
-	int c;
-	int *UUID_int  = (*env)->GetIntArrayElements(env, j_UUID, NULL);
-	//compact to bytes
-	for(c=0; c < VIR_UUID_BUFLEN; c++)
-		UUID[c]=UUID_int[c];
-	return (jlong)virNetworkLookupByUUID((virConnectPtr)VCP, UUID);
+	GENERIC_LOOKUPBY_UUID(env, obj, (virConnectPtr)VCP, j_UUID, virNetworkLookupByUUID)
 }
 
 
 JNIEXPORT jlong JNICALL Java_org_libvirt_Connect__1virNetworkLookupByUUIDString
-  (JNIEnv *env, jobject obj, jlong VCP, jstring UUID){
-	return (jlong)virNetworkLookupByUUIDString((virConnectPtr)VCP, (*env)->GetStringUTFChars(env, UUID, NULL));
+  (JNIEnv *env, jobject obj, jlong VCP, jstring j_UUID){
+	GENERIC_LOOKUPBY_STRING(env, obj, (virConnectPtr)VCP, j_UUID, virNetworkLookupByUUIDString)
 }
 
 JNIEXPORT jobject JNICALL Java_org_libvirt_Connect__1virNodeInfo
@@ -298,24 +247,7 @@ JNIEXPORT jobject JNICALL Java_org_libvirt_Connect__1virNodeInfo
 
 JNIEXPORT jobjectArray JNICALL Java_org_libvirt_Connect__1listDefinedDomains
   (JNIEnv *env, jobject obj, jlong VCP){
-	int maxnames;
-	char **names;
-	int c;
-	jobjectArray j_names=NULL;
-	if((maxnames = virConnectNumOfDefinedDomains((virConnectPtr)VCP))<0)
-		return NULL;
-	names= (char**)calloc(maxnames, sizeof(char*));
-	if(virConnectListDefinedDomains((virConnectPtr)VCP, names, maxnames)>=0){
-		j_names= (jobjectArray)(*env)->NewObjectArray(env, maxnames,
-			(*env)->FindClass(env,"java/lang/String"),
-			(*env)->NewStringUTF(env,""));
-		for(c=0; c<maxnames; c++){
-			(*env)->SetObjectArrayElement(env, j_names, c, (*env)->NewStringUTF(env, names[c]));
-		}
-	}
-	free(names);
-
-	return j_names;
+	GENERIC_LIST_STRINGARRAY(env, obj, (virConnectPtr)VCP, virConnectListDefinedDomains, virConnectNumOfDefinedDomains)
 }
 
 JNIEXPORT jintArray JNICALL Java_org_libvirt_Connect__1listDomains
@@ -342,24 +274,18 @@ JNIEXPORT jlong JNICALL Java_org_libvirt_Connect__1virDomainLookupByID
 }
 
 JNIEXPORT jlong JNICALL Java_org_libvirt_Connect__1virDomainLookupByName
-  (JNIEnv *env, jobject obj, jlong VCP, jstring name){
-		return (jlong)virDomainLookupByName((virConnectPtr)VCP, (*env)->GetStringUTFChars(env, name, NULL));
+  (JNIEnv *env, jobject obj, jlong VCP, jstring j_name){
+	GENERIC_LOOKUPBY_STRING(env, obj, (virConnectPtr)VCP, j_name, virDomainLookupByName)
 }
 
 JNIEXPORT jlong JNICALL Java_org_libvirt_Connect__1virDomainLookupByUUID
   (JNIEnv *env, jobject obj, jlong VCP, jintArray j_UUID){
-	unsigned char UUID[VIR_UUID_BUFLEN];
-	int c;
-	int *UUID_int  = (*env)->GetIntArrayElements(env, j_UUID, NULL);
-	//compact to bytes
-	for(c=0; c < VIR_UUID_BUFLEN; c++)
-		UUID[c]=UUID_int[c];
-	return (jlong)virDomainLookupByUUID((virConnectPtr)VCP, UUID);
+	GENERIC_LOOKUPBY_UUID(env, obj, (virConnectPtr)VCP, j_UUID, virDomainLookupByUUID)
 }
 
 JNIEXPORT jlong JNICALL Java_org_libvirt_Connect__1virDomainLookupByUUIDString
-  (JNIEnv *env, jobject obj, jlong VCP, jstring UUID){
-	return (jlong)virDomainLookupByUUIDString((virConnectPtr)VCP, (*env)->GetStringUTFChars(env, UUID, NULL));
+  (JNIEnv *env, jobject obj, jlong VCP, jstring j_UUID){
+	GENERIC_LOOKUPBY_STRING(env, obj, (virConnectPtr)VCP, j_UUID, virDomainLookupByUUIDString)
 }
 
 JNIEXPORT jlong JNICALL Java_org_libvirt_Connect__1virGetLibVirVersion
@@ -376,26 +302,63 @@ JNIEXPORT jlong JNICALL Java_org_libvirt_Connect__1virGetHypervisorVersion
 	type = (*env)->GetStringUTFChars(env, j_type, NULL);
 
 	virGetVersion(&libVer, type, &typeVer);
+	(*env)->ReleaseStringUTFChars(env, j_type, type);
 
 	return libVer;
 }
 
 JNIEXPORT jlong JNICALL Java_org_libvirt_Connect__1virDomainCreateLinux
-  (JNIEnv *env, jobject obj, jlong VCP, jstring xmlDesc, jint flags){
-	return(jlong)virDomainCreateLinux((virConnectPtr)VCP, (*env)->GetStringUTFChars(env, xmlDesc, NULL), flags);
+  (JNIEnv *env, jobject obj, jlong VCP, jstring j_xmlDesc, jint flags){
+	GENERIC_VIROBJ_STRING_INT__VIROBJ(env, obj, (virConnectPtr)VCP, j_xmlDesc, flags, virDomainCreateLinux)
 }
 
 JNIEXPORT jlong JNICALL Java_org_libvirt_Connect__1virDomainDefineXML
-  (JNIEnv *env, jobject obj, jlong VCP, jstring xmlDesc){
-	return(jlong)virDomainDefineXML((virConnectPtr)VCP, (*env)->GetStringUTFChars(env, xmlDesc, NULL));
+  (JNIEnv *env, jobject obj, jlong VCP, jstring j_xmlDesc){
+	GENERIC_VIROBJ_STRING__VIROBJ(env, obj, (virConnectPtr)VCP, j_xmlDesc, virDomainDefineXML)
 }
 
 JNIEXPORT jint JNICALL Java_org_libvirt_Connect__1virDomainRestore
-  (JNIEnv *env, jobject obj, jlong VCP, jstring from){
-	return virDomainRestore((virConnectPtr)VCP, (char*)(*env)->GetStringUTFChars(env, from, NULL));
+  (JNIEnv *env, jobject obj, jlong VCP, jstring j_from){
+	GENERIC_VIROBJ_STRING__VIROBJ(env, obj, (virConnectPtr)VCP, j_from, virDomainRestore)
 }
 
 JNIEXPORT jint JNICALL Java_org_libvirt_Connect__1setDom0Memory
   (JNIEnv *env, jobject obj, jlong memory){
 	return virDomainSetMemory(NULL, memory);
 }
+
+JNIEXPORT jint JNICALL Java_org_libvirt_Connect__1numOfDefinedStoragePools
+  (JNIEnv *env, jobject obj, jlong VCP){
+	GENERIC__VIROBJ__INT(env, obj, (virConnectPtr)VCP, virConnectNumOfDefinedStoragePools)
+}
+
+JNIEXPORT jint JNICALL Java_org_libvirt_Connect__1numOfStoragePools
+  (JNIEnv *env, jobject obj, jlong VCP){
+	GENERIC__VIROBJ__INT(env, obj, (virConnectPtr)VCP, virConnectNumOfStoragePools)
+}
+
+JNIEXPORT jobjectArray JNICALL Java_org_libvirt_Connect__1listDefinedStoragePools
+(JNIEnv *env, jobject obj, jlong VCP){
+	GENERIC_LIST_STRINGARRAY(env, obj, (virConnectPtr)VCP, virConnectListDefinedStoragePools, virConnectNumOfDefinedStoragePools)
+}
+
+JNIEXPORT jobjectArray JNICALL Java_org_libvirt_Connect__1listStoragePools
+(JNIEnv *env, jobject obj, jlong VCP){
+	GENERIC_LIST_STRINGARRAY(env, obj, (virConnectPtr)VCP, virConnectListStoragePools, virConnectNumOfStoragePools)
+}
+
+JNIEXPORT jlong JNICALL Java_org_libvirt_Connect__1virStoragePoolCreateXML
+(JNIEnv *env, jobject obj, jlong VCP, jstring j_xmlDesc, jint flags){
+	GENERIC_VIROBJ_STRING_INT__VIROBJ(env, obj, (virConnectPtr)VCP, j_xmlDesc, flags, virStoragePoolCreateXML)
+}
+
+JNIEXPORT jlong JNICALL Java_org_libvirt_Connect__1virStoragePoolDefineXML
+(JNIEnv *env, jobject obj, jlong VCP, jstring j_xmlDesc, jint flags){
+	GENERIC_VIROBJ_STRING_INT__VIROBJ(env, obj, (virConnectPtr)VCP, j_xmlDesc, flags, virStoragePoolDefineXML)
+}
+
+JNIEXPORT jlong JNICALL Java_org_libvirt_Connect__1virStoragePoolLookupByName
+(JNIEnv *env, jobject obj, jlong VCP, jstring j_name){
+	GENERIC_LOOKUPBY_STRING(env, obj, (virConnectPtr)VCP, j_name, virStoragePoolLookupByName)
+}
+

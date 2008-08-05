@@ -1,35 +1,30 @@
 #include "org_libvirt_Domain.h"
 #include <libvirt/libvirt.h>
-#include <stdlib.h>
+#include "generic.h"
 #include <string.h>
+
+//TODO We still leak UTFstrings in the more complex functions, I just don't have the will to touch them now
+//TODO /* hum jlong and virDomainPtr may not have the same size ... */
+//Actually, that's not a problem as casting will take care of that for us in both directions.
 
 JNIEXPORT jstring JNICALL Java_org_libvirt_Domain__1getXMLDesc
   (JNIEnv *env, jobject obj, jlong VDP, jint flags){
-	jstring j_xmlDesc;
-	char* xmlDesc = NULL;
-	/* hum jlong and virDomainPtr may not have the same size ... */
-	if((xmlDesc = virDomainGetXMLDesc((virDomainPtr)VDP, flags))){
-		j_xmlDesc = (*env)->NewStringUTF(env, xmlDesc);
-		free(xmlDesc);
-	}
-	return j_xmlDesc;
+	GENERIC_VIROBJ_INT__STRING(env, obj, (virDomainPtr)VDP, flags, virDomainGetXMLDesc)
 }
 
 JNIEXPORT jboolean JNICALL Java_org_libvirt_Domain__1getAutostart
   (JNIEnv *env, jobject obj, jlong VDP){
-	int autostart=0;
-	virDomainGetAutostart((virDomainPtr)VDP, &autostart);
-	return (jboolean)autostart;
+	GENERIC_GETAUTOSTART(env, obj, (virDomainPtr)VDP, virDomainGetAutostart)
 }
 
 JNIEXPORT jint JNICALL Java_org_libvirt_Domain__1setAutostart
   (JNIEnv *env, jobject obj, jlong VDP, jboolean autostart){
-	return virDomainSetAutostart((virDomainPtr)VDP, (int)autostart);
+	GENERIC__VIROBJ_INT__INT(env, obj, (virDomainPtr)VDP, autostart, virDomainSetAutostart)
 }
 
 JNIEXPORT jint JNICALL Java_org_libvirt_Domain__1getID
   (JNIEnv *env, jobject obj, jlong VDP){
-	return virDomainGetID((virDomainPtr)VDP);
+	GENERIC__VIROBJ__INT(env, obj, (virDomainPtr)VDP, virDomainGetID)
 }
 
 JNIEXPORT jlong JNICALL Java_org_libvirt_Domain__1getMaxMemory
@@ -44,24 +39,17 @@ JNIEXPORT jlong JNICALL Java_org_libvirt_Domain__1setMaxMemory
 
 JNIEXPORT jint JNICALL Java_org_libvirt_Domain__1getMaxVcpus
   (JNIEnv *env, jobject obj, jlong VDP){
-	return virDomainGetMaxVcpus((virDomainPtr)VDP);
+	GENERIC__VIROBJ__INT(env, obj, (virDomainPtr)VDP, virDomainGetMaxVcpus)
 }
 
 JNIEXPORT jstring JNICALL Java_org_libvirt_Domain__1getName
   (JNIEnv *env, jobject obj, jlong VDP){
-	return (*env)->NewStringUTF(env, virDomainGetName((virDomainPtr)VDP));
+	GENERIC__VIROBJ__CONSTSTRING(env, obj, (virDomainPtr)VDP, virDomainGetName)
 }
 
 JNIEXPORT jstring JNICALL Java_org_libvirt_Domain__1getOSType
   (JNIEnv *env, jobject obj, jlong VDP){
-	jstring j_OSType;
-	char *OSType;
-
-	if((OSType = virDomainGetOSType((virDomainPtr)VDP))){
-		j_OSType = (*env)->NewStringUTF(env, OSType);
-		free(OSType);
-	}
-	return j_OSType;
+	GENERIC__VIROBJ__STRING(env, obj, (virDomainPtr)VDP, virDomainGetOSType)
 }
 
 JNIEXPORT jobjectArray JNICALL Java_org_libvirt_Domain__1getSchedulerType
@@ -116,6 +104,7 @@ JNIEXPORT jobjectArray JNICALL Java_org_libvirt_Domain__1getSchedulerParameters
 	//Fill it
 	for(c=0; c<nparams; c++){
 		j_field = (*env)->NewStringUTF(env, params[c].field);
+
 		switch(params[c].type){
 		case    VIR_DOMAIN_SCHED_FIELD_INT:
 			cls = (*env)->FindClass(env,"org/libvirt/SchedIntParameter");
@@ -179,47 +168,60 @@ JNIEXPORT jint JNICALL Java_org_libvirt_Domain__1setSchedulerParameters
 
 	for(c=0; c<nparams; c++){
 		j_param= (*env)->GetObjectArrayElement(env, j_params, c);
+		const char *field;
 
 		if((*env)->IsInstanceOf(env, j_param, (*env)->FindClass(env, "org/libvirt/SchedIntParameter")))
 		{
 			field_id= (*env)->GetFieldID(env, (*env)->GetObjectClass(env, j_param), "field", "Ljava/lang/String;");
 			value_id= (*env)->GetFieldID(env, (*env)->GetObjectClass(env, j_param), "value", "I");
-			strcpy(params[c].field,(char*)(*env)->GetStringUTFChars(env, (*env)->GetObjectField(env, j_param, field_id), NULL));
+			field = (*env)->GetStringUTFChars(env, (*env)->GetObjectField(env, j_param, field_id), NULL);
+			strcpy(params[c].field, field);
+			(*env)->ReleaseStringUTFChars(env, (*env)->GetObjectField(env, j_param, field_id), field);
 			params[c].value.i= (*env)->GetIntField(env, j_param, value_id);
 			params[c].type= VIR_DOMAIN_SCHED_FIELD_INT;
 		} else if((*env)->IsInstanceOf(env, j_param, (*env)->FindClass(env, "org/libvirt/SchedUintParameter")))
 		{
 			field_id= (*env)->GetFieldID(env, (*env)->GetObjectClass(env, j_param), "field", "Ljava/lang/String;");
 			value_id= (*env)->GetFieldID(env, (*env)->GetObjectClass(env, j_param), "value", "I");
-			strcpy(params[c].field,(char*)(*env)->GetStringUTFChars(env, (*env)->GetObjectField(env, j_param, field_id), NULL));
+			field = (*env)->GetStringUTFChars(env, (*env)->GetObjectField(env, j_param, field_id), NULL);
+			strcpy(params[c].field, field);
+			(*env)->ReleaseStringUTFChars(env, (*env)->GetObjectField(env, j_param, field_id), field);
 			params[c].value.ui= (*env)->GetIntField(env, j_param, value_id);
 			params[c].type= VIR_DOMAIN_SCHED_FIELD_UINT;
 		} else if((*env)->IsInstanceOf(env, j_param, (*env)->FindClass(env, "org/libvirt/SchedLongParameter")))
 		{
 			field_id= (*env)->GetFieldID(env, (*env)->GetObjectClass(env, j_param), "field", "Ljava/lang/String;");
 			value_id= (*env)->GetFieldID(env, (*env)->GetObjectClass(env, j_param), "value", "J");
-			strcpy(params[c].field,(char*)(*env)->GetStringUTFChars(env, (*env)->GetObjectField(env, j_param, field_id), NULL));
+			field = (*env)->GetStringUTFChars(env, (*env)->GetObjectField(env, j_param, field_id), NULL);
+			strcpy(params[c].field, field);
+			(*env)->ReleaseStringUTFChars(env, (*env)->GetObjectField(env, j_param, field_id), field);
 			params[c].value.l= (*env)->GetLongField(env, j_param, value_id);
 			params[c].type= VIR_DOMAIN_SCHED_FIELD_LLONG;
 		} else if((*env)->IsInstanceOf(env, j_param, (*env)->FindClass(env, "org/libvirt/SchedUlongParameter")))
 		{
 			field_id= (*env)->GetFieldID(env, (*env)->GetObjectClass(env, j_param), "field", "Ljava/lang/String;");
 			value_id= (*env)->GetFieldID(env, (*env)->GetObjectClass(env, j_param), "value", "J");
-			strcpy(params[c].field,(char*)(*env)->GetStringUTFChars(env, (*env)->GetObjectField(env, j_param, field_id), NULL));
+			field = (*env)->GetStringUTFChars(env, (*env)->GetObjectField(env, j_param, field_id), NULL);
+			strcpy(params[c].field, field);
+			(*env)->ReleaseStringUTFChars(env, (*env)->GetObjectField(env, j_param, field_id), field);
 			params[c].value.ul= (*env)->GetLongField(env, j_param, value_id);
 			params[c].type= VIR_DOMAIN_SCHED_FIELD_ULLONG;
 		} else if((*env)->IsInstanceOf(env, j_param, (*env)->FindClass(env, "org/libvirt/SchedDoubleParameter")))
 		{
 			field_id= (*env)->GetFieldID(env, (*env)->GetObjectClass(env, j_param), "field", "Ljava/lang/String;");
 			value_id= (*env)->GetFieldID(env, (*env)->GetObjectClass(env, j_param), "value", "D");
-			strcpy(params[c].field,(char*)(*env)->GetStringUTFChars(env, (*env)->GetObjectField(env, j_param, field_id), NULL));
+			field = (*env)->GetStringUTFChars(env, (*env)->GetObjectField(env, j_param, field_id), NULL);
+			strcpy(params[c].field, field);
+			(*env)->ReleaseStringUTFChars(env, (*env)->GetObjectField(env, j_param, field_id), field);
 			params[c].value.d= (*env)->GetDoubleField(env, j_param, value_id);
 			params[c].type= VIR_DOMAIN_SCHED_FIELD_ULLONG;
 		} else if((*env)->IsInstanceOf(env, j_param, (*env)->FindClass(env, "org/libvirt/SchedBooleanParameter")))
 		{
 			field_id= (*env)->GetFieldID(env, (*env)->GetObjectClass(env, j_param), "field", "Ljava/lang/String;");
 			value_id= (*env)->GetFieldID(env, (*env)->GetObjectClass(env, j_param), "value", "Z");
-			strcpy(params[c].field,(char*)(*env)->GetStringUTFChars(env, (*env)->GetObjectField(env, j_param, field_id), NULL));
+			field = (*env)->GetStringUTFChars(env, (*env)->GetObjectField(env, j_param, field_id), NULL);
+			strcpy(params[c].field, field);
+			(*env)->ReleaseStringUTFChars(env, (*env)->GetObjectField(env, j_param, field_id), field);
 			params[c].value.b= (*env)->GetBooleanField(env, j_param, value_id);
 			params[c].type= VIR_DOMAIN_SCHED_FIELD_BOOLEAN;
 		}
@@ -233,27 +235,12 @@ JNIEXPORT jint JNICALL Java_org_libvirt_Domain__1setSchedulerParameters
 
 JNIEXPORT jintArray JNICALL Java_org_libvirt_Domain__1getUUID
   (JNIEnv *env, jobject obj, jlong VDP){
-	unsigned char uuid[VIR_UUID_BUFLEN];
-	jintArray j_uuid;
-	int c;
-	int uuidbyte;
-
-	if(virDomainGetUUID((virDomainPtr)VDP, uuid)<0)
-		return NULL;
-	//unpack UUID
-	j_uuid=(*env)->NewIntArray(env, VIR_UUID_BUFLEN);
-	for(c=0; c<VIR_UUID_BUFLEN; c++){
-			uuidbyte=uuid[c];
-			(*env)->SetIntArrayRegion(env, j_uuid, c, 1, &uuidbyte);
-	}
-	return j_uuid;
+	GENERIC_GETUUID(env, obj, (virDomainPtr)VDP, virDomainGetUUID)
 }
 
 JNIEXPORT jstring JNICALL Java_org_libvirt_Domain__1getUUIDString
   (JNIEnv *env, jobject obj, jlong VDP){
-	char uuidString[VIR_UUID_STRING_BUFLEN];
-	virDomainGetUUIDString((virDomainPtr)VDP, uuidString);
-	return (*env)->NewStringUTF(env, uuidString);
+	GENERIC_GETUUIDSTRING(env, obj, (virDomainPtr)VDP, virDomainGetUUIDString)
 }
 
 JNIEXPORT jobjectArray JNICALL Java_org_libvirt_Domain__1getVcpusInfo
@@ -392,77 +379,32 @@ JNIEXPORT jint JNICALL Java_org_libvirt_Domain__1pinVcpu
 
 JNIEXPORT jint JNICALL Java_org_libvirt_Domain__1setVcpus
   (JNIEnv *env, jobject obj, jlong VDP, jint nvcpus){
-	return virDomainSetVcpus((virDomainPtr)VDP, nvcpus);
+	GENERIC__VIROBJ_INT__INT(env, obj, (virDomainPtr)VDP, nvcpus, virDomainSetVcpus)
 }
 
 JNIEXPORT jint JNICALL Java_org_libvirt_Domain__1attachDevice
-  (JNIEnv *env, jobject obj, jlong VDP, jstring xmlDesc){
-	return (jlong)virDomainAttachDevice((virDomainPtr)VDP, (char*)(*env)->GetStringUTFChars(env, xmlDesc, NULL));
+  (JNIEnv *env, jobject obj, jlong VDP, jstring j_xmlDesc){
+	GENERIC_VIROBJ_STRING__INT(env, obj, (virDomainPtr)VDP, j_xmlDesc, virDomainAttachDevice);
 }
 
 JNIEXPORT jint JNICALL Java_org_libvirt_Domain__1detachDevice
-  (JNIEnv *env, jobject obj, jlong VDP, jstring xmlDesc){
-	return (jlong)virDomainDetachDevice((virDomainPtr)VDP, (char*)(*env)->GetStringUTFChars(env, xmlDesc, NULL));
+  (JNIEnv *env, jobject obj, jlong VDP, jstring j_xmlDesc){
+	GENERIC_VIROBJ_STRING__INT(env, obj, (virDomainPtr)VDP, j_xmlDesc, virDomainDetachDevice);
 }
 
-//JNIEXPORT jobject JNICALL Java_org_libvirt_Domain__1blockStats
-//  (JNIEnv *env, jobject obj, jlong VDP, jstring j_path){
-//	struct  _virDomainBlockStats stats;
-//	long value;
-//	jobject j_stats;
-//	jclass stats_cls=(*env)->FindClass(env, "org/libvirt/DomainInterfaceStats");
-//	jclass bigint_cls=(*env)->FindClass(env, "java/math/BigInteger");
-//	jmethodID bigint_constructor=(*env)->GetMethodID(env, bigint_cls, "java.math.BigInteger", "([B)V");
-//	jbyteArray bytes;
-//	jobject bigint;
-//
-//	if(virDomainBlockStats((virDomainPtr)VDP, (*env)->GetStringUTFChars(env, j_path, NULL), &stats, sizeof(struct  _virDomainBlockStats))<0)
-//		return NULL;
-//
-//	//Endianness fun. Should work on Linux.
-//	#if __BYTE_ORDER == __LITTLE_ENDIAN
-//	stats.rd_req= bswap_64(stats.rd_req);
-//	stats.rd_bytes= bswap_64(stats.rd_bytes);
-//	stats.wr_req= bswap_64(stats.wr_req);
-//	stats.wr_bytes= bswap_64(stats.wr_bytes);
-//	stats.errs= bswap_64(stats.errs);
-//	#endif
-//
-//	j_stats = (*env)->AllocObject(env, stats_cls);
-//	bytes=(*env)->NewByteArray(env,8);
-//
-//
-//	(*env)->SetByteArrayRegion(env, bytes, 0, 8, (unsigned char*)&(stats.rd_req));
-//	bigint=(*env)->NewObject(env, bigint_cls, bigint_constructor, bytes);
-//	(*env)->SetObjectField(env, j_stats, (*env)->GetFieldID(env, stats_cls, "rd_req", "Ljava/math/BigInteger;"), bigint);
-//
-//	(*env)->SetByteArrayRegion(env, bytes, 0, 8, (unsigned char*)&(stats.rd_bytes));
-//	bigint=(*env)->NewObject(env, bigint_cls, bigint_constructor, bytes);
-//	(*env)->SetObjectField(env, j_stats, (*env)->GetFieldID(env, stats_cls, "rd_bytes", "Ljava/math/BigInteger;"), bigint);
-//
-//	(*env)->SetByteArrayRegion(env, bytes, 0, 8, (unsigned char*)&(stats.wr_req));
-//	bigint=(*env)->NewObject(env, bigint_cls, bigint_constructor, bytes);
-//	(*env)->SetObjectField(env, j_stats, (*env)->GetFieldID(env, stats_cls, "wr_req", "Ljava/math/BigInteger;"), bigint);
-//
-//	(*env)->SetByteArrayRegion(env, bytes, 0, 8, (unsigned char*)&(stats.wr_bytes));
-//	bigint=(*env)->NewObject(env, bigint_cls, bigint_constructor, bytes);
-//	(*env)->SetObjectField(env, j_stats, (*env)->GetFieldID(env, stats_cls, "wr_bytes", "Ljava/math/BigInteger;"), bigint);
-//
-//	(*env)->SetByteArrayRegion(env, bytes, 0, 8, (unsigned char*)&(stats.errs));
-//	bigint=(*env)->NewObject(env, bigint_cls, bigint_constructor, bytes);
-//	(*env)->SetObjectField(env, j_stats, (*env)->GetFieldID(env, stats_cls, "errs", "Ljava/math/BigInteger;"), bigint);
-//
-//	return j_stats;
-//}
 
 JNIEXPORT jobject JNICALL Java_org_libvirt_Domain__1blockStats
   (JNIEnv *env, jobject obj, jlong VDP, jstring j_path){
 	struct  _virDomainBlockStats stats;
 	jobject j_stats;
 	jclass stats_cls=(*env)->FindClass(env, "org/libvirt/DomainInterfaceStats");
+	const char *path = (*env)->GetStringUTFChars(env, j_path, NULL);
 
-	if(virDomainBlockStats((virDomainPtr)VDP, (*env)->GetStringUTFChars(env, j_path, NULL), &stats, sizeof(struct  _virDomainBlockStats))<0)
+	if(virDomainBlockStats((virDomainPtr)VDP, path, &stats, sizeof(struct  _virDomainBlockStats))<0){
+		(*env)->ReleaseStringUTFChars(env, j_path, path);
 		return NULL;
+	}
+	(*env)->ReleaseStringUTFChars(env, j_path, path);
 
 	j_stats = (*env)->AllocObject(env, stats_cls);
 
@@ -476,79 +418,18 @@ JNIEXPORT jobject JNICALL Java_org_libvirt_Domain__1blockStats
 }
 
 
-//JNIEXPORT jobject JNICALL Java_org_libvirt_Domain__1interfaceStats
-//  (JNIEnv *env, jobject obj, jlong VDP, jstring j_path){
-//	struct  _virDomainInterfaceStats stats;
-//	long value;
-//	jobject j_stats;
-//	jclass stats_cls=(*env)->FindClass(env, "org/libvirt/DomainInterfaceStats");
-//	jclass bigint_cls=(*env)->FindClass(env, "java/math/BigInteger");
-//	jmethodID bigint_constructor=(*env)->GetMethodID(env, bigint_cls, "java.math.BigInteger", "([B)V");
-//	jbyteArray bytes;
-//	jobject bigint;
-//
-//	if(virDomainInterfaceStats((virDomainPtr)VDP, (*env)->GetStringUTFChars(env, j_path, NULL), &stats, sizeof(struct  _virDomainInterfaceStats))<0)
-//		return NULL;
-//
-//	//Endianness fun. Should work on Linux.
-//	#if __BYTE_ORDER == __LITTLE_ENDIAN
-//	stats.rx_bytes= bswap_64(stats.rx_bytes);
-//	stats.rx_packets= bswap_64(stats.rx_packets);
-//	stats.rx_errs= bswap_64(stats.rx_errs);
-//	stats.rx_drop= bswap_64(stats.rx_drop);
-//	stats.tx_bytes= bswap_64(stats.tx_bytes);
-//	stats.tx_packets= bswap_64(stats.tx_packets);
-//	stats.tx_errs= bswap_64(stats.tx_errs);
-//	stats.tx_drop= bswap_64(stats.tx_drop);
-//	#endif
-//
-//	j_stats = (*env)->AllocObject(env, stats_cls);
-//	bytes=(*env)->NewByteArray(env,8);
-//
-//
-//	(*env)->SetByteArrayRegion(env, bytes, 0, 8, (unsigned char*)&(stats.rx_bytes));
-//	bigint=(*env)->NewObject(env, bigint_cls, bigint_constructor, bytes);
-//	(*env)->SetObjectField(env, j_stats, (*env)->GetFieldID(env, stats_cls, "rx_bytes", "Ljava/math/BigInteger;"), bigint);
-//
-//	(*env)->SetByteArrayRegion(env, bytes, 0, 8, (unsigned char*)&(stats.rx_packets));
-//	bigint=(*env)->NewObject(env, bigint_cls, bigint_constructor, bytes);
-//	(*env)->SetObjectField(env, j_stats, (*env)->GetFieldID(env, stats_cls, "rx_packets", "Ljava/math/BigInteger;"), bigint);
-//
-//	(*env)->SetByteArrayRegion(env, bytes, 0, 8, (unsigned char*)&(stats.rx_errs));
-//	bigint=(*env)->NewObject(env, bigint_cls, bigint_constructor, bytes);
-//	(*env)->SetObjectField(env, j_stats, (*env)->GetFieldID(env, stats_cls, "rx_errs", "Ljava/math/BigInteger;"), bigint);
-//
-//	(*env)->SetByteArrayRegion(env, bytes, 0, 8, (unsigned char*)&(stats.rx_drop));
-//	bigint=(*env)->NewObject(env, bigint_cls, bigint_constructor, bytes);
-//	(*env)->SetObjectField(env, j_stats, (*env)->GetFieldID(env, stats_cls, "rx_drop", "Ljava/math/BigInteger;"), bigint);
-//
-//	(*env)->SetByteArrayRegion(env, bytes, 0, 8, (unsigned char*)&(stats.tx_bytes));
-//	bigint=(*env)->NewObject(env, bigint_cls, bigint_constructor, bytes);
-//	(*env)->SetObjectField(env, j_stats, (*env)->GetFieldID(env, stats_cls, "tx_bytes", "Ljava/math/BigInteger;"), bigint);
-//
-//	(*env)->SetByteArrayRegion(env, bytes, 0, 8, (unsigned char*)&(stats.tx_packets));
-//	bigint=(*env)->NewObject(env, bigint_cls, bigint_constructor, bytes);
-//	(*env)->SetObjectField(env, j_stats, (*env)->GetFieldID(env, stats_cls, "tx_packets", "Ljava/math/BigInteger;"), bigint);
-//
-//	(*env)->SetByteArrayRegion(env, bytes, 0, 8, (unsigned char*)&(stats.tx_errs));
-//	bigint=(*env)->NewObject(env, bigint_cls, bigint_constructor, bytes);
-//	(*env)->SetObjectField(env, j_stats, (*env)->GetFieldID(env, stats_cls, "tx_errs", "Ljava/math/BigInteger;"), bigint);
-//
-//	(*env)->SetByteArrayRegion(env, bytes, 0, 8, (unsigned char*)&(stats.tx_drop));
-//	bigint=(*env)->NewObject(env, bigint_cls, bigint_constructor, bytes);
-//	(*env)->SetObjectField(env, j_stats, (*env)->GetFieldID(env, stats_cls, "tx_drop", "Ljava/math/BigInteger;"), bigint);
-//
-//	return j_stats;
-//}
-
 JNIEXPORT jobject JNICALL Java_org_libvirt_Domain__1interfaceStats
   (JNIEnv *env, jobject obj, jlong VDP, jstring j_path){
 	struct  _virDomainInterfaceStats stats;
 	jobject j_stats;
 	jclass stats_cls=(*env)->FindClass(env, "org/libvirt/DomainInterfaceStats");
+	const char *path = (*env)->GetStringUTFChars(env, j_path, NULL);
 
-	if(virDomainInterfaceStats((virDomainPtr)VDP, (*env)->GetStringUTFChars(env, j_path, NULL), &stats, sizeof(struct  _virDomainInterfaceStats))<0)
+	if(virDomainInterfaceStats((virDomainPtr)VDP, (*env)->GetStringUTFChars(env, j_path, NULL), &stats, sizeof(struct  _virDomainInterfaceStats))<0){
+		(*env)->ReleaseStringUTFChars(env, j_path, path);
 		return NULL;
+	}
+	(*env)->ReleaseStringUTFChars(env, j_path, path);
 
 	j_stats = (*env)->AllocObject(env, stats_cls);
 
@@ -568,23 +449,25 @@ JNIEXPORT jobject JNICALL Java_org_libvirt_Domain__1interfaceStats
 
 JNIEXPORT jint JNICALL Java_org_libvirt_Domain__1coreDump
   (JNIEnv *env, jobject obj, jlong VDP, jstring j_to, jint flags){
-	char *to = (char*)(*env)->GetStringUTFChars(env, j_to, NULL);
-	return virDomainCoreDump((virDomainPtr)VDP, to, flags);
+	const char *to = (*env)->GetStringUTFChars(env, j_to, NULL);
+	jint retval = virDomainCoreDump((virDomainPtr)VDP, to, flags);
+	(*env)->ReleaseStringUTFChars(env, j_to, to);
+	return retval;
 }
 
 JNIEXPORT jint JNICALL Java_org_libvirt_Domain__1create
   (JNIEnv *env, jobject obj, jlong VDP){
-	return virDomainCreate((virDomainPtr)VDP);
+	GENERIC__VIROBJ__INT(env, obj, (virDomainPtr)VDP, virDomainCreate)
 }
 
 JNIEXPORT jint JNICALL Java_org_libvirt_Domain__1destroy
   (JNIEnv *env, jobject obj, jlong VDP){
-	return virDomainDestroy((virDomainPtr)VDP);
+	GENERIC__VIROBJ__INT(env, obj, (virDomainPtr)VDP, virDomainDestroy)
 }
 
 JNIEXPORT jint JNICALL Java_org_libvirt_Domain__1free
   (JNIEnv *env, jobject obj, jlong VDP){
-	return virDomainFree((virDomainPtr)VDP);
+	GENERIC__VIROBJ__INT(env, obj, (virDomainPtr)VDP, virDomainFree)
 }
 
 JNIEXPORT jobject JNICALL Java_org_libvirt_Domain__1getInfo
@@ -642,52 +525,55 @@ JNIEXPORT jlong JNICALL Java_org_libvirt_Domain__1migrate
 
 	virConnectPtr destVCP;
 
-	char *dname=NULL;
-	char *uri=NULL;
+	const char *dname=NULL;
+	const char *uri=NULL;
 
 	//if String="", we pass NULL to the library
 	if((*env)->GetStringLength(env, j_dname)>0)
-		dname=(char*)(*env)->GetStringUTFChars(env, j_dname, NULL);
+		dname=(*env)->GetStringUTFChars(env, j_dname, NULL);
 
 	//if String="", we pass NULL to the library
 	if((*env)->GetStringLength(env, j_uri)>0)
-		uri=(char*)(*env)->GetStringUTFChars(env, j_uri, NULL);
+		uri=(*env)->GetStringUTFChars(env, j_uri, NULL);
 
 	//Extract the destination Conn Ptr
 	destVCP=(virConnectPtr)(*env)->GetLongField(env, dconn,
 			(*env)->GetFieldID(env, (*env)->GetObjectClass(env, dconn), "VCP", "J"));
 
-	return (long)virDomainMigrate((virDomainPtr)VDP, destVCP, flags, dname, uri, bandwidth);
+	jlong retval = (jlong)virDomainMigrate((virDomainPtr)VDP, destVCP, flags, dname, uri, bandwidth);
+	(*env)->ReleaseStringUTFChars(env, j_dname, dname);
+	(*env)->ReleaseStringUTFChars(env, j_uri, uri);
+	return retval;
 }
 
 JNIEXPORT jint JNICALL Java_org_libvirt_Domain__1reboot
   (JNIEnv *env, jobject obj, jlong VDP, jint flags){
-	return virDomainReboot((virDomainPtr)VDP, flags);
+	GENERIC__VIROBJ_INT__INT(env, obj, (virDomainPtr)VDP, flags, virDomainReboot)
 }
 
 JNIEXPORT jint JNICALL Java_org_libvirt_Domain__1suspend
 (JNIEnv *env, jobject obj, jlong VDP){
-	return virDomainSuspend((virDomainPtr)VDP);
+	GENERIC__VIROBJ__INT(env, obj, (virDomainPtr)VDP, virDomainSuspend)
 }
 
 JNIEXPORT jint JNICALL Java_org_libvirt_Domain__1resume
   (JNIEnv *env, jobject obj, jlong VDP){
-	return virDomainResume((virDomainPtr)VDP);
+	GENERIC__VIROBJ__INT(env, obj, (virDomainPtr)VDP, virDomainResume)
 }
 
 JNIEXPORT jint JNICALL Java_org_libvirt_Domain__1save
-  (JNIEnv *env, jobject obj, jlong VDP, jstring to){
-	return virDomainSave((virDomainPtr)VDP, (char*)(*env)->GetStringUTFChars(env, to, NULL));
+  (JNIEnv *env, jobject obj, jlong VDP, jstring j_to){
+	GENERIC_VIROBJ_STRING__INT(env, obj, (virDomainPtr)VDP, j_to, virDomainSave)
 }
 
 JNIEXPORT jint JNICALL Java_org_libvirt_Domain__1shutdown
   (JNIEnv *env, jobject obj, jlong VDP){
-	return virDomainShutdown((virDomainPtr)VDP);
+	GENERIC__VIROBJ__INT(env, obj, (virDomainPtr)VDP, virDomainShutdown)
 }
 
 JNIEXPORT jint JNICALL Java_org_libvirt_Domain__1undefine
 (JNIEnv *env, jobject obj, jlong VDP){
-	return virDomainUndefine((virDomainPtr)VDP);
+	GENERIC__VIROBJ__INT(env, obj, (virDomainPtr)VDP, virDomainUndefine)
 }
 
 JNIEXPORT jint JNICALL Java_org_libvirt_Domain__1setMemory

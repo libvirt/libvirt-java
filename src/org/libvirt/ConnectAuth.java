@@ -56,6 +56,7 @@ public abstract class ConnectAuth {
 		 *
 		 * @return The integer equivalent
 		 */
+		@SuppressWarnings("all")
 		private int mapToInt(){
 			switch(this){
 				case VIR_CRED_USERNAME: return 1;

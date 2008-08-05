@@ -21,7 +21,11 @@ java_libvirt_source_files = \
   org/libvirt/SchedParameter.java \
   org/libvirt/SchedUintParameter.java \
   org/libvirt/SchedUlongParameter.java \
-  org/libvirt/VcpuInfo.java
+  org/libvirt/VcpuInfo.java \
+  org/libvirt/StoragePool.java \
+  org/libvirt/StoragePoolInfo.java \
+  org/libvirt/StorageVol.java \
+  org/libvirt/StorageVolInfo.java
 
 EXTRA_DIST= \
   test.java \

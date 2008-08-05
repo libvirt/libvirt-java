@@ -1,3 +1,17 @@
+Tue Aug  5 11:08:31 CEST 2008 Daniel Veillard <veillard@redhat.com>
+
+	* src/org/libvirt/ErrorException.java src/org/libvirt/Connect.java
+	src/org/libvirt/LibvirtException.java src/org/libvirt/ConnectAuth.java
+	src/jni/org_libvirt_Connect.c src/jni/org_libvirt_Network.c
+	src/jni/Makefile.am src/jni/org_libvirt_Domain.c src/Makefile.am
+	src/org/libvirt/StorageVolInfo.java src/jni/org_libvirt_StoragePool.c
+	src/org/libvirt/StorageVol.java src/org/libvirt/StoragePoolInfo.java
+	src/org/libvirt/StoragePool.java src/jni/org_libvirt_StorageVol.c
+	src/jni/generic.h: big patch from Tóth István refactoring the
+	JNI binding code, removing leaks, and adding storage support
+	* configure.in: bumped version to 0.2.1 and required version to 0.4.1
+	  for an upcoming new release.
+
 Tue Jul 22 10:26:29 CEST 2008 Daniel Veillard <veillard@redhat.com>
 
 	* src/jni/org_libvirt_Connect.c: Tóth István found the bug when

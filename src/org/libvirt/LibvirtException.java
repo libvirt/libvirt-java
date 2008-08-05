@@ -9,6 +9,8 @@ package org.libvirt;
  */
 public class LibvirtException extends Exception {
 
+	private static final long serialVersionUID = 5566904363426773529L;
+
 	Error virError;
 
 	LibvirtException(Error virError) {
