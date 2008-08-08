@@ -1,3 +1,11 @@
+Fri Aug  8 14:27:29 CEST 2008 Daniel Veillard <veillard@redhat.com>
+
+	* src/jni/generic.h src/jni/org_libvirt_StoragePool.c
+	  src/jni/org_libvirt_StorageVol.c src/org/libvirt/StoragePool.java
+	 src/org/libvirt/StoragePoolInfo.java src/org/libvirt/StorageVol.java
+	 src/org/libvirt/StorageVolInfo.java: oops forgotten a number of files
+	 from the previous patch
+
 Tue Aug  5 11:08:31 CEST 2008 Daniel Veillard <veillard@redhat.com>
 
 	* src/org/libvirt/ErrorException.java src/org/libvirt/Connect.java
