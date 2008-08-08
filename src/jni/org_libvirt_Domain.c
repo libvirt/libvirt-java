@@ -3,9 +3,7 @@
 #include "generic.h"
 #include <string.h>
 
-//TODO We still leak UTFstrings in the more complex functions, I just don't have the will to touch them now
-//TODO /* hum jlong and virDomainPtr may not have the same size ... */
-//Actually, that's not a problem as casting will take care of that for us in both directions.
+//TODO We still leak UTFstrings in the more complex functions
 
 JNIEXPORT jstring JNICALL Java_org_libvirt_Domain__1getXMLDesc
   (JNIEnv *env, jobject obj, jlong VDP, jint flags){

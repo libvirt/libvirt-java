@@ -1,3 +1,9 @@
+Fri Aug  8 15:01:18 CEST 2008 Daniel Veillard <veillard@redhat.com>
+
+	* NEWS: release of 0.2.1
+	* src/jni/org_libvirt_Connect.c src/jni/org_libvirt_Domain.c: fix a
+	  couple of comments
+
 Fri Aug  8 14:27:29 CEST 2008 Daniel Veillard <veillard@redhat.com>
 
 	* src/jni/generic.h src/jni/org_libvirt_StoragePool.c

@@ -1,0 +1,19 @@
+          News file for libvirt-java
+	  --------------------------
+
+Aug  8 2008:
+Release of 0.2.1:
+  - clean up leaks, refactoring of JNI bindings
+  - extend to support all storage APIs from 0.4.1
+
+18 Jul 2008:
+Release of 0.2.0:
+  - first stable API release
+  - large refactoring of JNI and classes
+
+1 Jul 2008:
+Release of 0.1.1:
+  - fix some of the portability problems
+  - add authentication support
+
+

@@ -6,8 +6,7 @@
 #include "generic.h"
 #include <assert.h>
 
-//TODO We are leaking UTFChars all over the place. We need to release every string we get from JAVA with ReleaseStringUTFChars! (Done)
-//TODO The same for *ArrayElements
+//TODO leak check for *ArrayElements
 
 JNIEXPORT jint JNICALL Java_org_libvirt_Connect__1virInitialize
   (JNIEnv *env, jclass cls){
