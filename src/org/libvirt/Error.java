@@ -1,8 +1,10 @@
 package org.libvirt;
 
-public class Error  {
+import java.io.Serializable;
 
-	public static enum ErrorDomain{
+public class Error implements Serializable {
+
+	public static enum ErrorDomain {
 		VIR_FROM_NONE,
 	    /**
 	     * Error at Xen hypervisor layer

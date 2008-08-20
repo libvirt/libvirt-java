@@ -1,3 +1,8 @@
+Wed Aug 20 18:03:43 CEST 2008 Daniel Veillard <veillard@redhat.com>
+
+	* src/org/libvirt/Error.java: patch from Daniel Schwager to make
+	  org.libvirt.Error serializable
+
 Wed Aug 20 17:16:16 CEST 2008 Daniel Veillard <veillard@redhat.com>
 
 	* src/org/libvirt/StoragePoolInfo.java
