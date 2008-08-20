@@ -38,8 +38,8 @@ public class StoragePoolInfo {
 		/**
 		 * Running degraded
 		 */
-		VIR_STORAGE_POOL_DEGRADED,
-	}
+		VIR_STORAGE_POOL_DEGRADED
+	};
 
 	/**
 	 * This is meant to be called from the JNI side, as a convenience constructor

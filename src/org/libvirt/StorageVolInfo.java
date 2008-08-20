@@ -23,8 +23,8 @@ public class StorageVolInfo {
 		/**
 		 * Block based volumes
 		 */
-		VIR_STORAGE_VOL_BLOCK,
-	}
+		VIR_STORAGE_VOL_BLOCK
+	};
 
 	/**
 	 * This is meant to be called from the JNI side, as a convenience constructor
