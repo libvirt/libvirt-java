@@ -217,9 +217,9 @@ public class Connect {
 
 
 	/**
-	 * Lists the names of the defined domains
+	 * Lists the names of the defined but inactive domains
 	 *
-	 * @return an Array of Strings that contains the names of the defined domains
+	 * @return an Array of Strings that contains the names of the defined domains currently inactive
 	 * @throws LibvirtException
 	 */
 	public String[] listDefinedDomains() throws LibvirtException {

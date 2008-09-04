@@ -1,3 +1,7 @@
+Thu Sep  4 10:53:07 CEST 2008 Daniel Veillard <veillard@redhat.com>
+
+	* src/org/libvirt/Connect.java: small doc patch from Thomas Fricke
+
 Wed Aug 20 18:03:43 CEST 2008 Daniel Veillard <veillard@redhat.com>
 
 	* src/org/libvirt/Error.java: patch from Daniel Schwager to make
