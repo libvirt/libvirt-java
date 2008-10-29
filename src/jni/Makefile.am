@@ -47,7 +47,7 @@ libvirt_jni_la_SOURCES = \
 nodist_libvirt_jni_la_SOURCES = $(GENERATED)
 libvirt_jni_la_LIBADD = $(LIBVIRT_LIBS)
 libvirt_jni_la_LDFLAGS = -version-info  @JNI_VERSION_INFO@
-libvirt_jni_la_CFLAGS = @JNI_CFLAGS@
+libvirt_jni_la_CFLAGS = $(LIBVIRT_CFLAGS) @JNI_CFLAGS@
 
 
 CLEANFILES = \

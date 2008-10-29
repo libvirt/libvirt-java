@@ -1,3 +1,9 @@
+Wed Oct 29 14:28:50 CET 2008 Daniel Veillard <veillard@redhat.com>
+
+	* src/jni/Makefile.am: Include LIBVIRT_CFLAGS in the CFLAGS used for
+	  the libvirt JNI sources, patch by David Lively
+	* AUTHORS: added sources for patches
+
 Thu Sep  4 10:53:07 CEST 2008 Daniel Veillard <veillard@redhat.com>
 
 	* src/org/libvirt/Connect.java: small doc patch from Thomas Fricke
