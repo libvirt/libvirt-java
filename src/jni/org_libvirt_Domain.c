@@ -395,7 +395,7 @@ JNIEXPORT jobject JNICALL Java_org_libvirt_Domain__1blockStats
   (JNIEnv *env, jobject obj, jlong VDP, jstring j_path){
 	struct  _virDomainBlockStats stats;
 	jobject j_stats;
-	jclass stats_cls=(*env)->FindClass(env, "org/libvirt/DomainInterfaceStats");
+	jclass stats_cls=(*env)->FindClass(env, "org/libvirt/DomainBlockStats");
 	const char *path = (*env)->GetStringUTFChars(env, j_path, NULL);
 
 	if(virDomainBlockStats((virDomainPtr)VDP, path, &stats, sizeof(struct  _virDomainBlockStats))<0){
