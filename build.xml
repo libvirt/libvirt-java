@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Libvirt Java Bindings" default="build">
+	<property file="build.properties"/>
+	<property name="jar" value="libvirt-${version}"/>
+	<property name="jar.file" value="target/${jar}.jar"/>	
+	<property name="src" value="libvirt-java-${version}"/>
+	<property name="src.file" value="target/${src}.tar.gz"/>
+	<property name="spec" value="libvirt-java.spec"/>	
+	<property name="spec.file" value="target/${spec}"/>	
+	
+	<path id="compile.classpath">	
+		<fileset dir="/usr/share/java">
+			<include name="jna.jar"/>
+		</fileset>		
+	</path> 
+	
+	<path id="test.classpath">	
+		<fileset dir="/usr/share/java">
+			<include name="jna.jar"/>
+		</fileset>		
+		<pathelement location="target/classes"/>			
+	</path> 	
+	
+	<target name="init">
+		<mkdir dir="target/classes"/>
+		<mkdir dir="target/testclasses"/>	
+        <copy file="README.in"
+              tofile="README"
+              overwrite="true"
+              filtering="true">
+            <filterset filtersfile="build.properties"/>
+        </copy>		
+	</target>
+	
+	<target name="clean" description="cleans up all created artifacts">
+		<delete dir="target"/>
+	</target>	
+	
+	<target name="build" depends="init" description="builds the code and jar files">
+		<javac srcdir="src/main/java"
+		       includes="**/*.java"
+		       classpathref="compile.classpath"
+		       destdir="target/classes"/>
+		<javac srcdir="src/test/java"
+		       includes="**/*.java"
+		       classpathref="test.classpath"
+		       destdir="target/testclasses"/>		
+		<jar destfile="${jar.file}"
+		     basedir="target/classes"/>		
+	</target>
+	
+	<target name="docs" depends="build" description="builds the javadoc">
+		<mkdir dir="target/javadoc"/>
+		<javadoc sourcepath="src/main/java"
+			classpathref="compile.classpath"
+			destdir="target/javadoc"/>
+	</target>
+	
+	<target name="src" depends="init" description="creates a src tarball">
+		<mkdir dir="target/libvirt-java-${version}"/>
+		<copy todir="target/libvirt-java-${version}">
+			<fileset dir="." excludes="target/**,.gitignore,.git/**,.*,.*/**"/>
+		</copy>
+		<tar basedir="target"
+			includes="libvirt-java-${version}/**"
+			compression="gzip"
+			destfile="${src.file}"/>
+	</target>
+	
+	<target name="spec" depends="init" description="generates the spec file">
+		<copy file="libvirt-java.spec.in"
+			  tofile="${spec.file}"
+			  overwrite="true"
+		      filtering="true">
+			<filterset filtersfile="build.properties"/>
+		</copy>
+	</target>
+	
+	<target name="package" depends="src,build,docs,spec" description="builds the rpms">
+		<copy file="${src.file}" todir="${rpm.topdir}/SOURCES"/>
+		<copy file="${spec.file}" todir="${rpm.topdir}/SPECS"/>		
+		<rpm specfile="${spec}"
+			command="-ba"
+			topdir="${rpm.topdir}"/>
+	</target>
+
+		
+</project>

@@ -1,30 +1,23 @@
-The current build procedure is based on the
-classic:
-  tar xvzf libvirt-java-xxx.tar.gz
-  cd libvirt-java
-  ./configure [--prefix=/usr] ; make ; make install
+The current build procedure is based on ant. You can build
+the code by
+	cd libvirt-java
+	ant build
+	
+Type in ant -projecthelp to see all the tasks you can execute
+with the build script.
 
-You will need a Java Development Kit accepting the version 1.5
-of the language since the bindings use enums which were added
-in that version.
+You will need a Java Development Kit accepting the version 1.6
+of the language since the bindings use enums as well as the new 
+for loop syntax
 
-You can select the Java Development Kit to use by providing
-a --with-java-home=path_to_jdk_directory configure argument
-or by using the JAVA_HOME environment variable. This can
-be useful if you have multiple JDK installed or if it is
-installed in a non standard path.
+You can select the Java Development Kit by using the JAVA_HOME 
+environment variable. This can be useful if you have multiple 
+JDK installed or if it is installed in a non standard path.
 
 Please report any compatibility problem to the libvirt
 mailing list at:
  https://www.redhat.com/mailman/listinfo/libvir-list
 
-Of course if provided, ant based XML config files or
-Eclipse one will be integrated to the source distribution
-but they are not yet available.
-
-When building from a CVS checkout you need instead to
-run autogen.sh [--prefix=/usr] to build the configure,
-since it's a generated file it's not commited in CVS.
 
 Daniel Veillard
 veillard@redhat.com

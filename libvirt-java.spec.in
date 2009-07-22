@@ -1,19 +1,22 @@
 Summary:	Java bindings for the libvirt virtualization API
 Name:		libvirt-java
-Version:	@VERSION@
+Version:	@version@
+Prefix:     libvirt
 Release:	1%{?dist}
 License:	LGPLv2+
+BuildArch:  noarch
 Group:		Development/Libraries
-Source:		http://libvirt.org/sources/java/libvirt-java-%{version}.tar.gz
+Source:		http://libvirt.org/sources/java/%{name}-%{version}.tar.gz
 URL:		http://libvirt.org/
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root
 
-Requires:	libvirt >= @LIBVIRT_REQUIRED@
-Requires:	java >= 1.5.0
+Requires:   jna
+Requires:	libvirt >= @libvirt.required@
+Requires:	java >= @java.required@
 Requires:	jpackage-utils
-BuildRequires:	libvirt-devel >= @LIBVIRT_REQUIRED@
-BuildRequires:	java-devel >= 1.5.0
-BuildRequires:	pkgconfig
+BuildRequires:	ant
+BuildRequires:	jna
+BuildRequires:	java-devel >= @java.required@
 BuildRequires:	jpackage-utils
 
 #
@@ -25,19 +28,18 @@ BuildRequires:	jpackage-utils
 %description
 Libvirt-java is a base framework allowing to use libvirt, the virtualization
 API though the Java programming language.
-It requires libvirt >= @LIBVIRT_REQUIRED@
+It requires libvirt >= @libvirt.required@
 
-%package	devel
-Summary:	Compressed Java source files for %{name}
-Group:		Development/Libraries
-Requires:	%{name} = %{version}-%{release}
-Requires:	libvirt-devel >= @LIBVIRT_REQUIRED@
-Requires:	pkgconfig
+%package    devel
+Summary:    Compressed Java source files for %{name}
+Group:      Development/Libraries
+Requires:   %{name} = %{version}-%{release}
 
-%description	devel
+%description    devel
 Libvirt-java is a base framework allowing to use libvirt, the virtualization
 API though the Java programming language. This is the development part needed
 to build applications with Libvirt-java.
+
 
 %package	javadoc
 Summary:	Java documentation for %{name}
@@ -51,24 +53,17 @@ API documentation for %{name}.
 %setup -q
 
 %build
-%configure --with-java-home=%{java_home}
-# javac call is not parallelizable, as a result the same command is
-# run N times in parallel if %{?_smp_mflags} is set up
-make
-
-# fix up the modification date of generated documentation
-find doc -type f -newer ChangeLog | xargs touch -r ChangeLog
+ant build docs
 
 %install
 rm -fr %{buildroot}
+install -d -m0755 %{buildroot}%{_javadir}
+install -d -m0755 %{buildroot}%{_javadocdir}/%{name}-%{version}
+cp target/%{prefix}-%{version}.jar %{buildroot}%{_javadir}
+%{__ln_s} %{_javadir}/%{prefix}-%{version}.jar %{buildroot}%{_javadir}/%{prefix}.jar 
+cp -r target/javadoc %{buildroot}%{_javadocdir}/%{name}-%{version}
 
-make %{?_smp_mflags} DESTDIR=$RPM_BUILD_ROOT install
 
-rm -f $RPM_BUILD_ROOT%{_libdir}/*.la
-rm -f $RPM_BUILD_ROOT%{_libdir}/*.a
-
-%post -p /sbin/ldconfig
-%postun -p /sbin/ldconfig
 
 %clean
 rm -rf %{buildroot}
@@ -76,20 +71,21 @@ rm -rf %{buildroot}
 %files
 %defattr(-,root,root)
 %doc AUTHORS COPYING NEWS README INSTALL
-%{_libdir}/libvirt_jni*.so.*
-%{_datadir}/java/*.jar
+%{_javadir}/*.jar
 
 %files devel
 %defattr(-,root,root)
-%doc src/*.java
-%{_libdir}/libvirt_jni*.so
-%{_libdir}/pkgconfig/*.pc
+%doc src/test/java/test.java
+
 
 %files javadoc
 %defattr(-,root,root)
-/usr/share/javadoc/%{name}-%{version}
+%{_javadocdir}/%{name}-%{version}
 
 %changelog
+* Wed Jul 29 2009 Bryan Kearney <bkearney@redhat.com> - 0.3.0-1
+- refactored the code to use jna (https://jna.dev.java.net/)
+    
 * Fri Jul 18 2008 Daniel Veillard <veillard@redhat.com> - 0.2.0-1
 - new release 0.2.0
 - finished cleanup of APIs

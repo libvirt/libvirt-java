@@ -1,6 +1,9 @@
           News file for libvirt-java
 	  --------------------------
-
+Jul 29 2009:
+Release of 0.3.0:
+  - refactored the code to use jna (https://jna.dev.java.net/)
+  
 Aug  8 2008:
 Release of 0.2.1:
   - clean up leaks, refactoring of JNI bindings

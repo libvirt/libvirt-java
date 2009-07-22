@@ -1,8 +1,0 @@
-org_libvirt_VirConnect.h
-org_libvirt_VirDomain.h
-org_libvirt_VirNetwork.h
-org_libvirt_VirDomain_CreateFlags.h
-org_libvirt_VirDomain_MigrateFlags.h
-org_libvirt_VirDomain_XMLFlags.h
-
-
