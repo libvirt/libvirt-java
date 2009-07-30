@@ -4,6 +4,7 @@ import java.util.Arrays;
 
 import org.libvirt.jna.Libvirt;
 import org.libvirt.jna.virSchedParameter;
+import org.libvirt.jna.virSchedParameterValue;
 
 import com.sun.jna.Native;
 
@@ -43,6 +44,7 @@ public abstract class SchedParameter {
 
     public static virSchedParameter toNative(SchedParameter param) {
         virSchedParameter returnValue = new virSchedParameter();
+        returnValue.value = new virSchedParameterValue() ;
         returnValue.field = Arrays.copyOf(param.field.getBytes(), Libvirt.VIR_DOMAIN_SCHED_FIELD_LENGTH);
         returnValue.type = param.getType();
         switch (param.getType()) {

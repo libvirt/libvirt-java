@@ -245,6 +245,14 @@ public class test {
 			for(SchedParameter c: testDomain.getSchedulerParameters()){
 				System.out.println(c.getTypeAsString() +":"+ c.field +":"+  c.getValueAsString());
 			}
+
+			// test setting a scheduled parameter
+			SchedUintParameter[] pars = new SchedUintParameter[1];
+            pars[0] = new SchedUintParameter();
+            pars[0].field = "weight";
+            pars[0].value = 100;
+            testDomain.setSchedulerParameters(pars);
+
 			System.out.println("virDomainGetUUID:" + testDomain.getUUID());                   
 			for(int c: testDomain.getUUID())
 				System.out.print(String.format("%02x", c));

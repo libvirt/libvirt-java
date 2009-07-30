@@ -613,13 +613,11 @@ public class Domain {
      * @throws LibvirtException
      */
     public void setSchedulerParameters(SchedParameter[] params) throws LibvirtException {
-        IntByReference nParams = new IntByReference();
-        nParams.setValue(params.length);
         virSchedParameter[] input = new virSchedParameter[params.length];
         for (int x = 0; x < params.length; x++) {
             input[x] = SchedParameter.toNative(params[x]);
         }
-        libvirt.virDomainSetSchedulerParameters(VDP, input, nParams);
+        libvirt.virDomainSetSchedulerParameters(VDP, input, params.length);
         processError();
     }
 
