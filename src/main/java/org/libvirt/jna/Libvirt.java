@@ -107,7 +107,7 @@ public interface Libvirt extends Library {
     public int virDomainSetAutostart(DomainPointer virDomainPtr, int autoStart);
     public int virDomainSetMaxMemory(DomainPointer virDomainPtr, NativeLong maxMemory);
     public int virDomainSetMemory(DomainPointer virDomainPtr, NativeLong maxMemory);
-    public int virDomainSetSchedulerParameters(DomainPointer virDomainPtr, virSchedParameter[] params, IntByReference nparams);
+    public int virDomainSetSchedulerParameters(DomainPointer virDomainPtr, virSchedParameter[] params, int nparams);
     public int virDomainSetVcpus(DomainPointer virDomainPtr, int nvcpus);
     public int virDomainShutdown(DomainPointer virDomainPtr);
     public int virDomainSuspend(DomainPointer virDomainPtr);
