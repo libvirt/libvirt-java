@@ -18,6 +18,9 @@
             <url>http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt</url>
         </license>
     </licenses>
+    <scm>
+    	<url>http://www.libvirt.org/git/?p=libvirt-java.git;a=summary</url>
+    </scm>
 
     <dependencies>
         <dependency>
