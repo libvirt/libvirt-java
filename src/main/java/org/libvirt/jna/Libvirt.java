@@ -20,7 +20,7 @@ public interface Libvirt extends Library {
         public int authCallback(virConnectCredential cred, int ncred, Pointer cbdata);
     }
 
-    Libvirt INSTANCE = (Libvirt) Native.loadLibrary("libvirt", Libvirt.class);
+    Libvirt INSTANCE = (Libvirt) Native.loadLibrary("virt", Libvirt.class);
     
     // Constants we need
     public static int VIR_UUID_BUFLEN = 16;
