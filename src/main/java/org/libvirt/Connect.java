@@ -19,9 +19,9 @@ import com.sun.jna.ptr.LongByReference;
 /**
  * The Connect object represents a connection to a local or remote
  * hypervisor/driver.
- * 
+ *
  * @author stoty
- * 
+ *
  */
 public class Connect {
 
@@ -72,7 +72,7 @@ public class Connect {
     /**
      * Construct a Connect object from a known native virConnectPtr For use when
      * native libvirt returns a virConnectPtr, i.e. error handling.
-     * 
+     *
      * @param VCP
      *            the virConnectPtr pointing to an existing native virConnect
      *            structure
@@ -84,7 +84,7 @@ public class Connect {
 
     /**
      * Constructs a read-write Connect object from the supplied URI.
-     * 
+     *
      * @param uri
      *            The connection URI
      * @throws LibvirtException
@@ -99,7 +99,7 @@ public class Connect {
 
     /**
      * Constructs a Connect object from the supplied URI.
-     * 
+     *
      * @param uri
      *            The connection URI
      * @param readOnly
@@ -121,7 +121,7 @@ public class Connect {
     /**
      * Constructs a Connect object from the supplied URI, using the supplied
      * authentication callback
-     * 
+     *
      * @param uri
      *            The connection URI
      * @param auth
@@ -154,24 +154,31 @@ public class Connect {
     /**
      * Closes the connection to the hypervisor/driver. Calling any methods on
      * the object after close() will result in an exception.
-     * 
+     *
      * @throws LibvirtException
+     * @returns 0 for success, -1 for failure
      */
-    public void close() throws LibvirtException {
-        libvirt.virConnectClose(VCP);
-        processError();
-        // If leave an invalid pointer dangling around JVM crashes and burns if
-        // someone tries to call a method on us
-        // We rely on the underlying libvirt error handling to detect that it's
-        // called with a null virConnectPointer
-        VCP = null;
+    public int close() throws LibvirtException {
+        int success =  0 ;
+        if (VCP != null) {
+            success = libvirt.virConnectClose(VCP);
+            processError();
+            // If leave an invalid pointer dangling around JVM crashes and burns if
+            // someone tries to call a method on us
+            // We rely on the underlying libvirt error handling to detect that it's
+            // called with a null virConnectPointer
+            if (success  == 0) {
+                VCP = null;
+            }
+        }
+        return success ;
     }
 
     /**
      * Launches a new Linux guest domain. The domain is based on an XML
      * description similar to the one returned by virDomainGetXMLDesc(). This
      * function may require priviledged access to the hypervisor.
-     * 
+     *
      * @param xmlDesc
      *            the Domain description in XML
      * @param flags
@@ -193,7 +200,7 @@ public class Connect {
 
     /**
      * Launch a new guest domain, based on an XML description
-     * 
+     *
      * @param xmlDesc
      * @return the Domain object
      * @throws LibvirtException
@@ -212,7 +219,7 @@ public class Connect {
 
     /**
      * Defines a domain, but does not start it
-     * 
+     *
      * @param xmlDesc
      * @return the Domain object
      * @throws LibvirtException
@@ -231,7 +238,7 @@ public class Connect {
 
     /**
      * Finds a domain based on the hypervisor ID number.
-     * 
+     *
      * @param id
      *            the hypervisor id
      * @return the Domain object
@@ -249,7 +256,7 @@ public class Connect {
 
     /**
      * Looks up a domain based on its name.
-     * 
+     *
      * @param name
      *            the name of the domain
      * @return the Domain object
@@ -269,7 +276,7 @@ public class Connect {
      * Looks up a domain based on its UUID in array form. The UUID Array
      * contains an unpacked representation of the UUID, each int contains only
      * one byte.
-     * 
+     *
      * @param UUID
      *            the UUID as an unpacked int array
      * @return the Domain object
@@ -288,7 +295,7 @@ public class Connect {
 
     /**
      * Fetch a domain based on its globally unique id
-     * 
+     *
      * @param UUID
      *            a java UUID
      * @return a new domain object
@@ -300,7 +307,7 @@ public class Connect {
 
     /**
      * Looks up a domain based on its UUID in String form.
-     * 
+     *
      * @param UUID
      *            the UUID in canonical String representation
      * @return the Domain object
@@ -328,7 +335,7 @@ public class Connect {
      * instance of the storage pool&apos;s source element specifying where to
      * look for the pools. srcSpec is not required for some types (e.g., those
      * querying local storage resources only)
-     * 
+     *
      * @param type
      *            type of storage pool to discover
      * @param srcSpecs
@@ -348,12 +355,12 @@ public class Connect {
 
     /**
      * Provides capabilities of the hypervisor / driver.
-     * 
+     *
      * @return an XML String describing the capabilities.
      * @throws LibvirtException
      * @see <a href="http://libvirt.org/format.html#Capa1" >The XML format
      *      description</a>
-     * 
+     *
      */
     public String getCapabilities() throws LibvirtException {
         String returnValue = libvirt.virConnectGetCapabilities(VCP);
@@ -365,7 +372,7 @@ public class Connect {
      * Returns the system hostname on which the hypervisor is running. (the
      * result of the gethostname(2) system call) If we are connected to a remote
      * system, then this returns the hostname of the remote system.
-     * 
+     *
      * @return the hostname
      * @throws LibvirtException
      */
@@ -380,7 +387,7 @@ public class Connect {
      * Returns the version of the hypervisor against which the library was
      * compiled. The type parameter specified which hypervisor's version is
      * returned
-     * 
+     *
      * @param type
      * @return major * 1,000,000 + minor * 1,000 + release
      * @throws LibvirtException
@@ -396,7 +403,7 @@ public class Connect {
     /**
      * Gets the version of the native libvirt library that the JNI part is
      * linked to.
-     * 
+     *
      * @return major * 1,000,000 + minor * 1,000 + release
      * @throws LibvirtException
      */
@@ -412,7 +419,7 @@ public class Connect {
      * Provides the maximum number of virtual CPUs supported for a guest VM of a
      * specific type. The 'type' parameter here corresponds to the 'type'
      * attribute in the <domain> element of the XML.
-     * 
+     *
      * @param type
      * @return the number of CPUs
      * @throws LibvirtException
@@ -425,7 +432,7 @@ public class Connect {
 
     /**
      * Gets the name of the Hypervisor software used.
-     * 
+     *
      * @return the name
      * @throws LibvirtException
      */
@@ -440,7 +447,7 @@ public class Connect {
      * same as or similar to the string passed to the
      * virConnectOpen/virConnectOpenReadOnly call, but the driver may make the
      * URI canonical.
-     * 
+     *
      * @return the URI
      * @throws LibvirtException
      */
@@ -455,7 +462,7 @@ public class Connect {
      * hypervisor call, i.e. with priviledged access to the hypervisor, not with
      * a Read-Only connection. If the version can't be extracted by lack of
      * capacities returns 0.
-     * 
+     *
      * @return major * 1,000,000 + minor * 1,000 + release
      * @throws LibvirtException
      */
@@ -468,7 +475,7 @@ public class Connect {
 
     /**
      * Lists the names of the defined but inactive domains
-     * 
+     *
      * @return an Array of Strings that contains the names of the defined
      *         domains currently inactive
      * @throws LibvirtException
@@ -485,7 +492,7 @@ public class Connect {
 
     /**
      * Lists the inactive networks
-     * 
+     *
      * @return an Array of Strings that contains the names of the inactive
      *         networks
      * @throws LibvirtException
@@ -503,7 +510,7 @@ public class Connect {
 
     /**
      * Provides the list of names of inactive storage pools.
-     * 
+     *
      * @return an Array of Strings that contains the names of the defined
      *         storage pools
      * @throws LibvirtException
@@ -518,7 +525,7 @@ public class Connect {
 
     /**
      * Lists the active domains.
-     * 
+     *
      * @return and array of the IDs of the active domains
      * @throws LibvirtException
      */
@@ -551,7 +558,7 @@ public class Connect {
 
     /**
      * Lists the active networks.
-     * 
+     *
      * @return an Array of Strings that contains the names of the active
      *         networks
      * @throws LibvirtException
@@ -569,7 +576,7 @@ public class Connect {
 
     /**
      * Provides the list of names of active storage pools.
-     * 
+     *
      * @return an Array of Strings that contains the names of the defined
      *         storage pools
      * @throws LibvirtException
@@ -586,7 +593,7 @@ public class Connect {
      * Creates and starts a new virtual network. The properties of the network
      * are based on an XML description similar to the one returned by
      * virNetworkGetXMLDesc()
-     * 
+     *
      * @param xmlDesc
      *            the Network Description
      * @return the Network object representing the created network
@@ -608,7 +615,7 @@ public class Connect {
      * Defines a network, but does not create it. The properties of the network
      * are based on an XML description similar to the one returned by
      * virNetworkGetXMLDesc()
-     * 
+     *
      * @param xmlDesc
      * @return the resulting Network object
      * @throws LibvirtException
@@ -627,7 +634,7 @@ public class Connect {
 
     /**
      * Looks up a network on the based on its name.
-     * 
+     *
      * @param name
      *            name of the network
      * @return The Network object found
@@ -647,7 +654,7 @@ public class Connect {
      * Looks up a network based on its UUID represented as an int array. The
      * UUID Array contains an unpacked representation of the UUID, each int
      * contains only one byte.
-     * 
+     *
      * @param UUID
      *            the UUID as an unpacked int array
      * @return The Network object found
@@ -667,7 +674,7 @@ public class Connect {
 
     /**
      * Fetch a network based on its globally unique id
-     * 
+     *
      * @param UUID
      *            a java UUID
      * @return a new network object
@@ -679,7 +686,7 @@ public class Connect {
 
     /**
      * Looks up a network based on its UUID represented as a String.
-     * 
+     *
      * @param UUID
      *            the UUID in canonical String representation
      * @return The Network object found
@@ -698,7 +705,7 @@ public class Connect {
     /**
      * Returns a NodeInfo object describing the hardware configuration of the
      * node.
-     * 
+     *
      * @return a NodeInfo object
      * @throws LibvirtException
      */
@@ -711,7 +718,7 @@ public class Connect {
 
     /**
      * Provides the number of inactive domains.
-     * 
+     *
      * @return the number of inactive domains
      * @throws LibvirtException
      */
@@ -736,7 +743,7 @@ public class Connect {
 
     /**
      * Provides the number of inactive networks.
-     * 
+     *
      * @return the number of inactive networks
      * @throws LibvirtException
      */
@@ -748,7 +755,7 @@ public class Connect {
 
     /**
      * Provides the number of inactive storage pools
-     * 
+     *
      * @return the number of pools found
      * @throws LibvirtException
      */
@@ -760,7 +767,7 @@ public class Connect {
 
     /**
      * Provides the number of active domains.
-     * 
+     *
      * @return the number of active domains
      * @throws LibvirtException
      */
@@ -772,7 +779,7 @@ public class Connect {
 
     /**
      * Provides the number of active networks.
-     * 
+     *
      * @return the number of active networks
      * @throws LibvirtException
      */
@@ -784,7 +791,7 @@ public class Connect {
 
     /**
      * Provides the number of active storage pools
-     * 
+     *
      * @return the number of pools found
      * @throws LibvirtException
      */
@@ -796,7 +803,7 @@ public class Connect {
 
     /**
      * call the error handling logic. Should be called after every libvirt call
-     * 
+     *
      * @throws LibvirtException
      */
     protected void processError() throws LibvirtException {
@@ -805,7 +812,7 @@ public class Connect {
 
     /**
      * Restores a domain saved to disk by Domain.save().
-     * 
+     *
      * @param from
      *            the path of the saved file on the remote host
      * @throws LibvirtException
@@ -819,7 +826,7 @@ public class Connect {
      * change the amount of memory reserved to Domain0. Domain0 is the domain
      * where the application runs. This function may requires priviledged access
      * to the hypervisor.
-     * 
+     *
      * @param memory
      *            in kilobytes
      * @throws LibvirtException
@@ -833,7 +840,7 @@ public class Connect {
      * Create a new storage based on its XML description. The pool is not
      * persistent, so its definition will disappear when it is destroyed, or if
      * the host is restarted
-     * 
+     *
      * @param xmlDesc
      *            XML description for new pool
      * @param flags
@@ -850,7 +857,7 @@ public class Connect {
     /**
      * Define a new inactive storage pool based on its XML description. The pool
      * is persistent, until explicitly undefined.
-     * 
+     *
      * @param xml
      *            XML description for new pool
      * @param flags
@@ -866,7 +873,7 @@ public class Connect {
 
     /**
      * Fetch a storage pool based on its unique name
-     * 
+     *
      * @param name
      *            name of pool to fetch
      * @return StoragePool object
@@ -880,7 +887,7 @@ public class Connect {
 
     /**
      * Fetch a storage pool based on its globally unique id
-     * 
+     *
      * @param UUID
      *            globally unique id of pool to fetch
      * @return a new network object
@@ -900,7 +907,7 @@ public class Connect {
 
     /**
      * Fetch a storage pool based on its globally unique id
-     * 
+     *
      * @param UUID
      *            a java UUID
      * @return a new network object
@@ -912,7 +919,7 @@ public class Connect {
 
     /**
      * Fetch a storage pool based on its globally unique id
-     * 
+     *
      * @param UUID
      *            globally unique id of pool to fetch
      * @return VirStoragePool object
@@ -930,7 +937,7 @@ public class Connect {
 
     /**
      * Fetch a a storage volume based on its globally unique key
-     * 
+     *
      * @param key
      *            globally unique key
      * @return a storage volume
@@ -981,7 +988,7 @@ public class Connect {
 
     /**
      * Fetch a storage volume based on its locally (host) unique path
-     * 
+     *
      * @param path
      *            locally unique path
      * @return a storage volume
