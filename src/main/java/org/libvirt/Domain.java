@@ -169,11 +169,17 @@ public class Domain {
      * structure is freed and should not be used thereafter.
      * 
      * @throws LibvirtException
+     * @returns 0 for success, -1 for failure.
      */
-    public void free() throws LibvirtException {
-        libvirt.virDomainFree(VDP);
-        processError();
-        VDP = null;
+    public int free() throws LibvirtException {
+        int success = 0 ;
+        if (VDP != null) {
+            success = libvirt.virDomainFree(VDP);
+            processError();
+            VDP = null;
+        }
+
+        return success ;
     }
 
     /**
