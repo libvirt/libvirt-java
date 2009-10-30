@@ -3,10 +3,7 @@ package org.libvirt;
 import org.libvirt.jna.Libvirt;
 import org.libvirt.jna.virConnectCredential;
 
-import com.sun.jna.Memory;
 import com.sun.jna.Pointer;
-import com.sun.jna.StringArray;
-import com.sun.jna.Structure;
 
 /**
  * We diverge from the C implementation There is no explicit cbdata field, you

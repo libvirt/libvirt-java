@@ -1,7 +1,5 @@
 package org.libvirt.jna;
 
-import com.sun.jna.Pointer;
-import com.sun.jna.StringArray;
 import com.sun.jna.Structure;
 
 /**

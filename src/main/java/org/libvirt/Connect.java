@@ -13,7 +13,6 @@ import org.libvirt.jna.virNodeInfo;
 
 import com.sun.jna.Memory;
 import com.sun.jna.NativeLong;
-import com.sun.jna.Pointer;
 import com.sun.jna.ptr.LongByReference;
 
 /**
