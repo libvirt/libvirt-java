@@ -14,7 +14,7 @@ public class Network {
     /**
      * The native virNetworkPtr
      */
-    protected NetworkPointer VNP;
+    NetworkPointer VNP;
 
     /**
      * The Connect Object that represents the Hypervisor of this Network
@@ -75,10 +75,15 @@ public class Network {
      * 
      * @throws LibvirtException
      */
-    public void free() throws LibvirtException {
-        libvirt.virNetworkFree(VNP);
-        processError();
-        VNP = null;
+    public int free() throws LibvirtException {
+        int success = 0;
+        if (VNP != null) {
+            success = libvirt.virNetworkFree(VNP);
+            processError();
+            VNP = null;
+        }
+
+        return success;
     }
 
     /**

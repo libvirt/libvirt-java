@@ -10,6 +10,14 @@ import com.sun.jna.ptr.LongByReference;
 
 /**
  * The libvirt interface which is exposed via JNA.
+ * Known api calls to be missing
+ * LIBVIRT_0.1.0
+ *   virConnSetErrorFunc
+ *   virSetErrorFunc
+ *   virDefaultErrorFunc
+ *   virConnCopyLastError
+ *   virFreeError
+ *   
  */
 public interface Libvirt extends Library {
     // Callbacks
@@ -63,13 +71,14 @@ public interface Libvirt extends Library {
     public int virConnResetLastError(ConnectionPointer virConnectPtr);
 
     // Global functions
-    public int virCopyLastError(virError error);
-    public virError virGetLastError();
     public int virGetVersion(LongByReference libVer, String type, LongByReference typeVer);
-    public int virInitialize();    
+    public int virInitialize();
+    public int virCopyLastError(virError error);
+    public virError virGetLastError();    
     public void virResetLastError();
 
     // Domain functions
+    public ConnectionPointer virDomainGetConnect(DomainPointer virDomainPtr) ;
     public int virDomainAttachDevice(DomainPointer virDomainPtr, String deviceXML);
     public int virDomainBlockStats(DomainPointer virDomainPtr, String path, virDomainBlockStats stats, int size);
     public int virDomainCoreDump(DomainPointer virDomainPtr, String to, int flags);
@@ -114,7 +123,8 @@ public interface Libvirt extends Library {
     public int virDomainUndefine(DomainPointer virDomainPtr);
 
     // Network functions
-    public int virNetworkCreate(NetworkPointer virConnectPtr);
+    public ConnectionPointer virNetworkGetConnect(NetworkPointer virnetworkPtr) ;    
+    public int virNetworkCreate(NetworkPointer virConnectPtr);    
     public NetworkPointer virNetworkCreateXML(ConnectionPointer virConnectPtr, String xmlDesc);
     public NetworkPointer virNetworkDefineXML(ConnectionPointer virConnectPtr, String xmlDesc);
     public int virNetworkDestroy(NetworkPointer virConnectPtr);

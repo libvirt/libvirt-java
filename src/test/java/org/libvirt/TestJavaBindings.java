@@ -61,6 +61,10 @@ public class TestJavaBindings extends TestCase {
         assertNotNull("network.getConnect()", network.getConnect());
         assertNotNull("network.getUUID()", network.getUUID());
         assertNotNull("network.getXMLDesc()", network.getXMLDesc(0));
+        // TODO Figure out why this crashes in Eclipse.
+        // assertNotNull(Connect.connectionForNetwork(network));
+        // assertTrue(Connect.connectionForNetwork(network) !=
+        // network.getConnect());
     }
 
     public void testDomainCreate() throws Exception {
@@ -104,6 +108,9 @@ public class TestJavaBindings extends TestCase {
         pars[0].field = "weight";
         pars[0].value = 100;
         dom.setSchedulerParameters(pars);
+
+        assertNotNull(Connect.connectionForDomain(dom));
+        assertTrue(Connect.connectionForDomain(dom) != dom.getConnect());
     }
 
     // TODO GO BACK AND GET THIS

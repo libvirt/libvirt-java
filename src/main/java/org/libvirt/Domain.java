@@ -42,7 +42,7 @@ public class Domain {
     /**
      * the native virDomainPtr.
      */
-    private DomainPointer VDP;
+    DomainPointer VDP;
 
     /**
      * The Connect Object that represents the Hypervisor of this Domain
@@ -172,14 +172,14 @@ public class Domain {
      * @returns 0 for success, -1 for failure.
      */
     public int free() throws LibvirtException {
-        int success = 0 ;
+        int success = 0;
         if (VDP != null) {
             success = libvirt.virDomainFree(VDP);
             processError();
             VDP = null;
         }
 
-        return success ;
+        return success;
     }
 
     /**
