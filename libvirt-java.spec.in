@@ -1,23 +1,24 @@
-Summary:	Java bindings for the libvirt virtualization API
-Name:		libvirt-java
-Version:	@version@
+Summary:    Java bindings for the libvirt virtualization API
+Name:       libvirt-java
+Version:    @version@
 Prefix:     libvirt
-Release:	1%{?dist}
-License:	LGPLv2+
+Release:    1%{?dist}
+License:    LGPLv2+
 BuildArch:  noarch
-Group:		Development/Libraries
-Source:		http://libvirt.org/sources/java/%{name}-%{version}.tar.gz
-URL:		http://libvirt.org/
-BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root
+Group:      Development/Libraries
+Source:     http://libvirt.org/sources/java/%{name}-%{version}.tar.gz
+URL:        http://libvirt.org/
+BuildRoot:  %{_tmppath}/%{name}-%{version}-%{release}-root
 
 Requires:   jna
-Requires:	libvirt >= @libvirt.required@
-Requires:	java >= @java.required@
-Requires:	jpackage-utils
-BuildRequires:	ant
-BuildRequires:	jna
-BuildRequires:	java-devel >= @java.required@
-BuildRequires:	jpackage-utils
+Requires:   libvirt >= @libvirt.required@
+Requires:   java >= @java.required@
+Requires:   jpackage-utils
+BuildRequires:  ant
+BuildRequires:  jna
+BuildRequires:  ant-junit
+BuildRequires:  java-devel >= @java.required@
+BuildRequires:  jpackage-utils
 
 #
 # the jpackage-utils should provide a %{java_home} macro
@@ -41,13 +42,13 @@ API though the Java programming language. This is the development part needed
 to build applications with Libvirt-java.
 
 
-%package	javadoc
-Summary:	Java documentation for %{name}
-Group:		Development/Documentation
-Requires:	%{name} = %{version}-%{release}
-Requires:	jpackage-utils
+%package    javadoc
+Summary:    Java documentation for %{name}
+Group:      Development/Documentation
+Requires:   %{name} = %{version}-%{release}
+Requires:   jpackage-utils
 
-%description	javadoc
+%description    javadoc
 API documentation for %{name}.
 %prep
 %setup -q
@@ -63,7 +64,8 @@ cp target/%{prefix}-%{version}.jar %{buildroot}%{_javadir}
 %{__ln_s} %{_javadir}/%{prefix}-%{version}.jar %{buildroot}%{_javadir}/%{prefix}.jar 
 cp -r target/javadoc %{buildroot}%{_javadocdir}/%{name}-%{version}
 
-
+%check
+ant test
 
 %clean
 rm -rf %{buildroot}
