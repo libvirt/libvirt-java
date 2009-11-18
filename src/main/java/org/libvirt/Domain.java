@@ -122,7 +122,6 @@ public class Domain {
     /**
      * It returns the length (in bytes) required to store the complete CPU map
      * between a single virtual & all physical CPUs of a domain.
-     * 
      */
     public int cpuMapLength(int maxCpus) {
         return (((maxCpus) + 7) / 8);
@@ -457,16 +456,20 @@ public class Domain {
      * NULL or else you will get an error. Since typically the two hypervisors
      * connect directly to each other in order to perform the migration, you may
      * need to specify a path from the source to the destination. This is the
-     * purpose of the uri parameter. If uri is NULL, then libvirt will try to
+     * purpose of the uri parameter.If uri is NULL, then libvirt will try to
      * find the best method. Uri may specify the hostname or IP address of the
-     * destination host as seen from the source. Or uri may be a URI giving
-     * transport, hostname, user, port, etc. in the usual form. Refer to driver
-     * documentation for the particular URIs supported. The maximum bandwidth
-     * (in Mbps) that will be used to do migration can be specified with the
-     * bandwidth parameter. If set to 0, libvirt will choose a suitable default.
-     * Some hypervisors do not support this feature and will return an error if
-     * bandwidth is not 0. To see which features are supported by the current
-     * hypervisor, see Connect.getCapabilities,
+     * destination host as seen from the source, or uri may be a URI giving
+     * transport, hostname, user, port, etc. in the usual form. Uri should only
+     * be specified if you want to migrate over a specific interface on the
+     * remote host. For Qemu/KVM, the uri should be of the form
+     * "tcp://hostname[:port]". This does not require TCP auth to be setup
+     * between the connections, since migrate uses a straight TCP connection
+     * (unless using the PEER2PEER flag, in which case URI should be a full
+     * fledged libvirt URI). Refer also to driver documentation for the
+     * particular URIs supported. If set to 0, libvirt will choose a suitable
+     * default. Some hypervisors do not support this feature and will return an
+     * error if bandwidth is not 0. To see which features are supported by the
+     * current hypervisor, see Connect.getCapabilities,
      * /capabilities/host/migration_features. There are many limitations on
      * migration imposed by the underlying technology - for example it may not
      * be possible to migrate between different processors even with the same
