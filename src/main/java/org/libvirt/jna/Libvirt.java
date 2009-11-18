@@ -17,7 +17,20 @@ import com.sun.jna.ptr.LongByReference;
  *   virDefaultErrorFunc
  *   virConnCopyLastError
  *   virFreeError
- *   
+ * LIBVIRT_0.4.2
+ *   virDomainBlockPeek
+ *   virDomainMemoryPeek
+ * LIBVIRT_0_5.0
+ *   virEventRegisterImpl
+ *   virConnectDomainEventRegister
+ *   virConnectDomainEventDeregister
+ * LIBVIRT_0.6.0
+ *   virConnectRef
+ *   virDomainRef
+ *   virNetworkRef
+ *   virStoragePoolRef
+ *   virStorageVolRef
+ *   virNodeDeviceRef
  */
 public interface Libvirt extends Library {
     // Callbacks
