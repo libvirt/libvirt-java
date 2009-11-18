@@ -29,6 +29,10 @@ public class TestJavaBindings extends TestCase {
         assertEquals("nodeInfo.sockets", 2, nodeInfo.sockets);
         assertEquals("nodeInfo.cores", 2, nodeInfo.cores);
         assertEquals("nodeInfo.threads", 2, nodeInfo.threads);
+        // These are basically no-exception tests
+        assertTrue("conn.getCellsFreeMemory", conn.getCellsFreeMemory(0, 10) > 0);
+        // Test Hypervisor does not support this.
+        // assertTrue("conn.getFreeMemory", conn.getFreeMemory() > 0);
     }
 
     public void testNetworkCreate() throws Exception {

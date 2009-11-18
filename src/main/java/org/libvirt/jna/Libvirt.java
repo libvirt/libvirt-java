@@ -17,6 +17,8 @@ import com.sun.jna.ptr.LongByReference;
  *   virDefaultErrorFunc
  *   virConnCopyLastError
  *   virFreeError
+ * LIBVIRT_0.3.3
+ *   virNodeGetCellsFreeMemory
  *   
  */
 public interface Libvirt extends Library {
@@ -143,6 +145,8 @@ public interface Libvirt extends Library {
 
     // Node functions
     public int virNodeGetInfo(ConnectionPointer virConnectPtr, virNodeInfo virNodeInfo);
+    public int virNodeGetCellsFreeMemory(ConnectionPointer virConnectPtr, LongByReference freeMems, int startCell, int maxCells);
+    public long virNodeGetFreeMemory(ConnectionPointer virConnectPtr) ;
 
     // Storage Pool
     public int virStoragePoolBuild(StoragePoolPointer storagePoolPtr, int flags);

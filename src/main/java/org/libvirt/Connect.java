@@ -749,6 +749,26 @@ public class Connect {
     }
 
     /**
+     * NUMA Support
+     */
+    public long getCellsFreeMemory(int startCells, int maxCells) throws LibvirtException {
+        LongByReference returnValue = new LongByReference();
+        libvirt.virNodeGetCellsFreeMemory(VCP, returnValue, startCells, maxCells);
+        processError();
+        return returnValue.getValue();
+    }
+
+    /**
+     * Returns the free memory for the connection
+     */
+    public long getFreeMemory() throws LibvirtException {
+        long returnValue = 0;
+        returnValue = libvirt.virNodeGetFreeMemory(VCP);
+        processError();
+        return returnValue;
+    }
+
+    /**
      * Provides the number of inactive domains.
      * 
      * @return the number of inactive domains
