@@ -17,8 +17,6 @@ import com.sun.jna.ptr.LongByReference;
  *   virDefaultErrorFunc
  *   virConnCopyLastError
  *   virFreeError
- * LIBVIRT_0.3.3
- *   virNodeGetCellsFreeMemory
  *   
  */
 public interface Libvirt extends Library {
