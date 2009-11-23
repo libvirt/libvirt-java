@@ -12,90 +12,37 @@ import com.sun.jna.Pointer;
 public class Error implements Serializable {
 
 	public static enum ErrorDomain {
-		VIR_FROM_NONE,
-		/**
-		 * Error at Xen hypervisor layer
-		 */
-		VIR_FROM_XEN,
-		/**
-		 * Error at connection with xend daemon
-		 */
-		VIR_FROM_XEND,
-		/**
-		 * Error at connection with xen store
-		 */
-		VIR_FROM_XENSTORE,
-		/**
-		 * Error in the S-Epression code
-		 */
-		VIR_FROM_SEXPR,
-		/**
-		 * Error in the XML code
-		 */
-		VIR_FROM_XML,
-		/**
-		 * Error when operating on a domain
-		 */
-		VIR_FROM_DOM,
-		/**
-		 * Error in the XML-RPC code
-		 */
-		VIR_FROM_RPC,
-		/**
-		 * Error in the proxy code
-		 */
-		VIR_FROM_PROXY,
-		/**
-		 * Error in the configuration file handling
-		 */
-		VIR_FROM_CONF,
-		/**
-		 * Error at the QEMU daemon
-		 */
-		VIR_FROM_QEMU,
-		/**
-		 * Error when operating on a network
-		 */
-		VIR_FROM_NET,
-		/**
-		 * Error from test driver
-		 */
-		VIR_FROM_TEST,
-		/**
-		 * Error from remote driver
-		 */
-		VIR_FROM_REMOTE,
-		/**
-		 * Error from OpenVZ driver
-		 */
-		VIR_FROM_OPENVZ,
-		/**
-		 * Error at Xen XM layer
-		 */
-		VIR_FROM_XENXM,
-		/**
-		 * Error in the Linux Stats code
-		 */
-		VIR_FROM_STATS_LINUX,
-		/**
-		 * Error from Linux Container driver
-		 */
-		VIR_FROM_LXC,
-		/**
-		 * Error from storage driver
-		 */
-		VIR_FROM_STORAGE, VIR_FROM_NETWORK, /* Error from network config */
-		VIR_FROM_DOMAIN, /* Error from domain config */
-		VIR_FROM_UML, /* Error at the UML driver */
-		VIR_FROM_NODEDEV, /* Error from node device monitor */
-		VIR_FROM_XEN_INOTIFY, /* Error from xen inotify layer */
-		VIR_FROM_SECURITY, /* Error from security framework */
-		VIR_FROM_VBOX, /* Error from VirtualBox driver */
-		VIR_FROM_INTERFACE, /* Error when operating on an interface */
-		VIR_FROM_ONE, /* Error from OpenNebula driver */
-		VIR_FROM_ESX, /* Error from ESX driver */
-		VIR_FROM_PHYP, /* Error from IBM power hypervisor */
-		VIR_FROM_SECRET, /* Error from secret storage */
+	    VIR_FROM_NONE ,
+	    VIR_FROM_XEN,	/* Error at Xen hypervisor layer */
+	    VIR_FROM_XEND,	/* Error at connection with xend daemon */
+	    VIR_FROM_XENSTORE,	/* Error at connection with xen store */
+	    VIR_FROM_SEXPR,	/* Error in the S-Expression code */
+	    VIR_FROM_XML,	/* Error in the XML code */
+	    VIR_FROM_DOM,	/* Error when operating on a domain */
+	    VIR_FROM_RPC,	/* Error in the XML-RPC code */
+	    VIR_FROM_PROXY,	/* Error in the proxy code */
+	    VIR_FROM_CONF,	/* Error in the configuration file handling */
+	    VIR_FROM_QEMU,      /* Error at the QEMU daemon */
+	    VIR_FROM_NET,       /* Error when operating on a network */
+	    VIR_FROM_TEST,	/* Error from test driver */
+	    VIR_FROM_REMOTE,	/* Error from remote driver */
+	    VIR_FROM_OPENVZ,    /* Error from OpenVZ driver */
+	    VIR_FROM_XENXM,	/* Error at Xen XM layer */
+	    VIR_FROM_STATS_LINUX,/* Error in the Linux Stats code */
+	    VIR_FROM_LXC,       /* Error from Linux Container driver */
+	    VIR_FROM_STORAGE,   /* Error from storage driver */
+	    VIR_FROM_NETWORK,   /* Error from network config */
+	    VIR_FROM_DOMAIN,    /* Error from domain config */
+	    VIR_FROM_UML,       /* Error at the UML driver */
+	    VIR_FROM_NODEDEV,   /* Error from node device monitor */
+	    VIR_FROM_XEN_INOTIFY,/* Error from xen inotify layer */
+	    VIR_FROM_SECURITY,  /* Error from security framework */
+	    VIR_FROM_VBOX,      /* Error from VirtualBox driver */
+	    VIR_FROM_INTERFACE, /* Error when operating on an interface */
+	    VIR_FROM_ONE,       /* Error from OpenNebula driver */
+	    VIR_FROM_ESX,       /* Error from ESX driver */
+	    VIR_FROM_PHYP,      /* Error from IBM power hypervisor */
+	    VIR_FROM_SECRET,    /* Error from secret storage */
 	}
 
 	public static enum ErrorLevel {
@@ -111,218 +58,69 @@ public class Error implements Serializable {
 	}
 
 	public static enum ErrorNumber {
-		VIR_ERR_OK,
-		/**
-		 * internal error
-		 */
-		VIR_ERR_INTERNAL_ERROR,
-		/**
-		 * memory allocation failure
-		 */
-		VIR_ERR_NO_MEMORY,
-		/**
-		 * no support for this function
-		 */
-		VIR_ERR_NO_SUPPORT,
-		/**
-		 * could not resolve hostname
-		 */
-		VIR_ERR_UNKNOWN_HOST,
-		/**
-		 * can't connect to hypervisor
-		 */
-		VIR_ERR_NO_CONNECT,
-		/**
-		 * invalid connection object
-		 */
-		VIR_ERR_INVALID_CONN,
-		/**
-		 * invalid domain object
-		 */
-		VIR_ERR_INVALID_DOMAIN,
-		/**
-		 * invalid function argument
-		 */
-		VIR_ERR_INVALID_ARG,
-		/**
-		 * a command to hypervisor failed
-		 */
-		VIR_ERR_OPERATION_FAILED,
-		/**
-		 * a HTTP GET command to failed
-		 */
-		VIR_ERR_GET_FAILED,
-		/**
-		 * a HTTP POST command to failed
-		 */
-		VIR_ERR_POST_FAILED,
-		/**
-		 * unexpected HTTP error code
-		 */
-		VIR_ERR_HTTP_ERROR,
-		/**
-		 * failure to serialize an S-Expr
-		 */
-		VIR_ERR_SEXPR_SERIAL,
-		/**
-		 * could not open Xen hypervisor control
-		 */
-		VIR_ERR_NO_XEN,
-		/**
-		 * failure doing an hypervisor call
-		 */
-		VIR_ERR_XEN_CALL,
-		/**
-		 * unknown OS type
-		 */
-		VIR_ERR_OS_TYPE,
-		/**
-		 * missing kernel information
-		 */
-		VIR_ERR_NO_KERNEL,
-		/**
-		 * missing root device information
-		 */
-		VIR_ERR_NO_ROOT,
-		/**
-		 * missing source device information
-		 */
-		VIR_ERR_NO_SOURCE,
-		/**
-		 * missing target device information
-		 */
-		VIR_ERR_NO_TARGET,
-		/**
-		 * missing domain name information
-		 */
-		VIR_ERR_NO_NAME,
-		/**
-		 * missing domain OS information
-		 */
-		VIR_ERR_NO_OS,
-		/**
-		 * missing domain devices information
-		 */
-		VIR_ERR_NO_DEVICE,
-		/**
-		 * could not open Xen Store control
-		 */
-		VIR_ERR_NO_XENSTORE,
-		/**
-		 * too many drivers registered
-		 */
-		VIR_ERR_DRIVER_FULL,
-		/**
-		 * not supported by the drivers (DEPRECATED)
-		 */
-		VIR_ERR_CALL_FAILED,
-		/**
-		 * an XML description is not well formed or broken
-		 */
-		VIR_ERR_XML_ERROR,
-		/**
-		 * the domain already exist
-		 */
-		VIR_ERR_DOM_EXIST,
-		/**
-		 * operation forbidden on read-only connections
-		 */
-		VIR_ERR_OPERATION_DENIED,
-		/**
-		 * failed to open a conf file
-		 */
-		VIR_ERR_OPEN_FAILED,
-		/**
-		 * failed to read a conf file
-		 */
-		VIR_ERR_READ_FAILED,
-		/**
-		 * failed to parse a conf file
-		 */
-		VIR_ERR_PARSE_FAILED,
-		/**
-		 * failed to parse the syntax of a conf file
-		 */
-		VIR_ERR_CONF_SYNTAX,
-		/**
-		 * failed to write a conf file
-		 */
-		VIR_ERR_WRITE_FAILED,
-		/**
-		 * detail of an XML error
-		 */
-		VIR_ERR_XML_DETAIL,
-		/**
-		 * invalid network object
-		 */
-		VIR_ERR_INVALID_NETWORK,
-		/**
-		 * the network already exist
-		 */
-		VIR_ERR_NETWORK_EXIST,
-		/**
-		 * general system call failure
-		 */
-		VIR_ERR_SYSTEM_ERROR,
-		/**
-		 * some sort of RPC error
-		 */
-		VIR_ERR_RPC,
-		/**
-		 * error from a GNUTLS call
-		 */
-		VIR_ERR_GNUTLS_ERROR,
-		/**
-		 * failed to start network
-		 */
-		VIR_WAR_NO_NETWORK,
-		/**
-		 * omain not found or unexpectedly disappeared
-		 */
-		VIR_ERR_NO_DOMAIN,
-		/**
-		 * network not found
-		 */
-		VIR_ERR_NO_NETWORK,
-		/**
-		 * invalid MAC adress
-		 */
-		VIR_ERR_INVALID_MAC,
-		/**
-		 * authentication failed
-		 */
-		VIR_ERR_AUTH_FAILED,
-		/**
-		 * invalid storage pool object
-		 */
-		VIR_ERR_INVALID_STORAGE_POOL,
-		/**
-		 * invalid storage vol object
-		 */
-		VIR_ERR_INVALID_STORAGE_VOL,
-		/**
-		 * failed to start storage
-		 */
-		VIR_WAR_NO_STORAGE,
-		/**
-		 * storage pool not found
-		 */
-		VIR_ERR_NO_STORAGE_POOL,
-		/**
-		 * storage pool not found
-		 */
-		VIR_ERR_NO_STORAGE_VOL, VIR_WAR_NO_NODE, /* failed to start node driver */
-		VIR_ERR_INVALID_NODE_DEVICE, /* invalid node device object */
-		VIR_ERR_NO_NODE_DEVICE, /* node device not found */
-		VIR_ERR_NO_SECURITY_MODEL, /* security model not found */
-		VIR_ERR_OPERATION_INVALID, /* operation is not applicable at this time */
-		VIR_WAR_NO_INTERFACE, /* failed to start interface driver */
-		VIR_ERR_NO_INTERFACE, /* interface driver not running */
-		VIR_ERR_INVALID_INTERFACE, /* invalid interface object */
-		VIR_ERR_MULTIPLE_INTERFACES, /* more than one matching interface found */
-		VIR_WAR_NO_SECRET, /* failed to start secret storage */
-		VIR_ERR_INVALID_SECRET, /* invalid secret */
-		VIR_ERR_NO_SECRET, /* secret not found */
+		   VIR_ERR_OK,
+		    VIR_ERR_INTERNAL_ERROR, /* internal error */
+		    VIR_ERR_NO_MEMORY,  /* memory allocation failure */
+		    VIR_ERR_NO_SUPPORT, /* no support for this function */
+		    VIR_ERR_UNKNOWN_HOST,/* could not resolve hostname */
+		    VIR_ERR_NO_CONNECT, /* can't connect to hypervisor */
+		    VIR_ERR_INVALID_CONN,/* invalid connection object */
+		    VIR_ERR_INVALID_DOMAIN,/* invalid domain object */
+		    VIR_ERR_INVALID_ARG,/* invalid function argument */
+		    VIR_ERR_OPERATION_FAILED,/* a command to hypervisor failed */
+		    VIR_ERR_GET_FAILED,/* a HTTP GET command to failed */
+		    VIR_ERR_POST_FAILED,/* a HTTP POST command to failed */
+		    VIR_ERR_HTTP_ERROR,/* unexpected HTTP error code */
+		    VIR_ERR_SEXPR_SERIAL,/* failure to serialize an S-Expr */
+		    VIR_ERR_NO_XEN,/* could not open Xen hypervisor control */
+		    VIR_ERR_XEN_CALL,/* failure doing an hypervisor call */
+		    VIR_ERR_OS_TYPE, /* unknown OS type */
+		    VIR_ERR_NO_KERNEL, /* missing kernel information */
+		    VIR_ERR_NO_ROOT, /* missing root device information */
+		    VIR_ERR_NO_SOURCE, /* missing source device information */
+		    VIR_ERR_NO_TARGET, /* missing target device information */
+		    VIR_ERR_NO_NAME, /* missing domain name information */
+		    VIR_ERR_NO_OS, /* missing domain OS information */
+		    VIR_ERR_NO_DEVICE, /* missing domain devices information */
+		    VIR_ERR_NO_XENSTORE,/* could not open Xen Store control */
+		    VIR_ERR_DRIVER_FULL, /* too many drivers registered */
+		    VIR_ERR_CALL_FAILED, /* not supported by the drivers (DEPRECATED) */
+		    VIR_ERR_XML_ERROR, /* an XML description is not well formed or broken */
+		    VIR_ERR_DOM_EXIST,/* the domain already exist */
+		    VIR_ERR_OPERATION_DENIED, /* operation forbidden on read-only connections */
+		    VIR_ERR_OPEN_FAILED, /* failed to open a conf file */
+		    VIR_ERR_READ_FAILED, /* failed to read a conf file */
+		    VIR_ERR_PARSE_FAILED, /* failed to parse a conf file */
+		    VIR_ERR_CONF_SYNTAX, /* failed to parse the syntax of a conf file */
+		    VIR_ERR_WRITE_FAILED, /* failed to write a conf file */
+		    VIR_ERR_XML_DETAIL, /* detail of an XML error */
+		    VIR_ERR_INVALID_NETWORK, /* invalid network object */
+		    VIR_ERR_NETWORK_EXIST, /* the network already exist */
+		    VIR_ERR_SYSTEM_ERROR, /* general system call failure */
+		    VIR_ERR_RPC, /* some sort of RPC error */
+		    VIR_ERR_GNUTLS_ERROR, /* error from a GNUTLS call */
+		    VIR_WAR_NO_NETWORK, /* failed to start network */
+		    VIR_ERR_NO_DOMAIN, /* domain not found or unexpectedly disappeared */
+		    VIR_ERR_NO_NETWORK, /* network not found */
+		    VIR_ERR_INVALID_MAC, /* invalid MAC address */
+		    VIR_ERR_AUTH_FAILED, /* authentication failed */
+		    VIR_ERR_INVALID_STORAGE_POOL, /* invalid storage pool object */
+		    VIR_ERR_INVALID_STORAGE_VOL, /* invalid storage vol object */
+		    VIR_WAR_NO_STORAGE, /* failed to start storage */
+		    VIR_ERR_NO_STORAGE_POOL, /* storage pool not found */
+		    VIR_ERR_NO_STORAGE_VOL, /* storage pool not found */
+		    VIR_WAR_NO_NODE, /* failed to start node driver */
+		    VIR_ERR_INVALID_NODE_DEVICE,/* invalid node device object */
+		    VIR_ERR_NO_NODE_DEVICE,/* node device not found */
+		    VIR_ERR_NO_SECURITY_MODEL, /* security model not found */
+		    VIR_ERR_OPERATION_INVALID, /* operation is not applicable at this time */
+		    VIR_WAR_NO_INTERFACE, /* failed to start interface driver */
+		    VIR_ERR_NO_INTERFACE, /* interface driver not running */
+		    VIR_ERR_INVALID_INTERFACE, /* invalid interface object */
+		    VIR_ERR_MULTIPLE_INTERFACES, /* more than one matching interface found */
+		    VIR_WAR_NO_SECRET, /* failed to start secret storage */
+		    VIR_ERR_INVALID_SECRET, /* invalid secret */
+		    VIR_ERR_NO_SECRET, /* secret not found */
 
 	}
 
