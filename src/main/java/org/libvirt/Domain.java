@@ -55,9 +55,8 @@ public class Domain {
     protected Libvirt libvirt;
 
     /**
-     * Constructs a Domain object from a known native virDomainPtr, and a
-     * Connect object. For use when native libvirt returns a virConnectPtr, i.e.
-     * error handling.
+     * Constructs a Domain object from a known native DomainPointer, and a
+     * Connect object. 
      * 
      * @param virConnect
      *            the Domain's hypervisor

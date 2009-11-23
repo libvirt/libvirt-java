@@ -3,6 +3,7 @@ package org.libvirt;
 import java.util.UUID;
 
 import org.libvirt.jna.ConnectionPointer;
+import org.libvirt.jna.DevicePointer;
 import org.libvirt.jna.DomainPointer;
 import org.libvirt.jna.Libvirt;
 import org.libvirt.jna.NetworkPointer;
@@ -181,6 +182,21 @@ public class Connect {
         processError();
         ErrorHandler.processError(Libvirt.INSTANCE);
     }
+    
+    
+    /**
+     * Fetch a device based on its unique name
+     * 
+     * @param name
+     *            name of device to fetch
+     * @return Device object
+     * @throws LibvirtException
+     */
+    public Device deviceLookupByName(String name) throws LibvirtException {
+        DevicePointer ptr = libvirt.virNodeDeviceLookupByName(VCP, name);
+        processError();
+        return new Device(this, ptr);
+    }    
 
     /**
      * Closes the connection to the hypervisor/driver. Calling any methods on
@@ -356,7 +372,8 @@ public class Connect {
         return returnValue;
     }
 
-    public void finalize() throws LibvirtException {
+    @Override
+	public void finalize() throws LibvirtException {
         close();
     }
 
@@ -505,6 +522,7 @@ public class Connect {
         return hvVer.getValue();
     }
 
+    
     /**
      * Lists the names of the defined but inactive domains
      * 
@@ -555,6 +573,22 @@ public class Connect {
         return returnValue;
     }
 
+    /**
+     * List the names of the devices on this node
+     * 
+     * @param capabilityName optional capability name
+     */
+    public String[] listDevices(String capabilityName) throws LibvirtException {
+        int maxDevices = this.numOfDevices(capabilityName);
+        String[] names = new String[maxDevices];
+
+        if (maxDevices > 0) {
+            libvirt.virNodeListDevices(VCP,capabilityName, names, maxDevices,0);
+            processError();
+        }
+        return names;    	
+    }
+    
     /**
      * Lists the active domains.
      * 
@@ -693,7 +727,8 @@ public class Connect {
      * @throws LibvirtException
      * @deprecated use the UUIDString or UUID API.
      */
-    public Network networkLookupByUUID(int[] UUID) throws LibvirtException {
+    @Deprecated
+	public Network networkLookupByUUID(int[] UUID) throws LibvirtException {
         byte[] uuidBytes = Connect.createUUIDBytes(UUID);
         Network returnValue = null;
         NetworkPointer ptr = libvirt.virNetworkLookupByUUID(VCP, uuidBytes);
@@ -769,6 +804,18 @@ public class Connect {
     }
 
     /**
+     * Provides the number of node devices.
+     * 
+     * @return the number of inactive domains
+     * @throws LibvirtException
+     */    
+    public int numOfDevices(String capabilityName) throws LibvirtException {
+    	int returnValue = libvirt.virNodeNumOfDevices(VCP, capabilityName, 0) ;
+    	processError() ;
+    	return returnValue ;
+    }
+    
+    /**
      * Provides the number of inactive domains.
      * 
      * @return the number of inactive domains
@@ -779,6 +826,7 @@ public class Connect {
         processError();
         return returnValue;
     }
+
 
     // TODO Post 0.5.1
     // /**
@@ -946,7 +994,8 @@ public class Connect {
      * @throws LibvirtException
      * @deprecated Use the UUIDString or UUID APIs.
      */
-    public StoragePool storagePoolLookupByUUID(int[] UUID) throws LibvirtException {
+    @Deprecated
+	public StoragePool storagePoolLookupByUUID(int[] UUID) throws LibvirtException {
         byte[] uuidBytes = Connect.createUUIDBytes(UUID);
         StoragePool returnValue = null;
         StoragePoolPointer ptr = libvirt.virStoragePoolLookupByUUID(VCP, uuidBytes);

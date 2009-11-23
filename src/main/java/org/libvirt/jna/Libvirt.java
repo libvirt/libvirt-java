@@ -158,6 +158,17 @@ public interface Libvirt extends Library {
     public int virNodeGetInfo(ConnectionPointer virConnectPtr, virNodeInfo virNodeInfo);
     public int virNodeGetCellsFreeMemory(ConnectionPointer virConnectPtr, LongByReference freeMems, int startCell, int maxCells);
     public long virNodeGetFreeMemory(ConnectionPointer virConnectPtr) ;
+    
+    // Node/Device functions
+    public int virNodeNumOfDevices(ConnectionPointer virConnectPtr, String capabilityName, int flags) ;
+    public int virNodeListDevices(ConnectionPointer virConnectPtr, String capabilityName, String[] names, int maxnames, int flags) ;
+    public DevicePointer virNodeDeviceLookupByName(ConnectionPointer virConnectPtr, String name) ;
+    public String virNodeDeviceGetName(DevicePointer virDevicePointer) ;
+    public String virNodeDeviceGetParent(DevicePointer virDevicePointer) ;
+    public int virNodeDeviceNumOfCaps(DevicePointer virDevicePointer) ;
+    public int virNodeDeviceListCaps(DevicePointer virDevicePointer, String[] names, int maxNames) ;
+    public String virNodeDeviceGetXMLDesc(DevicePointer virDevicePointer) ;
+    public int virNodeDeviceFree(DevicePointer virDevicePointer) ; 
 
     // Storage Pool
     public int virStoragePoolBuild(StoragePoolPointer storagePoolPtr, int flags);
