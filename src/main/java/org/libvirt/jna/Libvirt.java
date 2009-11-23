@@ -36,7 +36,8 @@ import com.sun.jna.ptr.LongByReference;
  *   virSaveLastError
  *   virDomainGetSecurityLabel;
  *   virNodeGetSecurityModel;
- *   
+ * LIBVIRT_0.6.4
+ *   virInterfaceRef
  */
 public interface Libvirt extends Library {
     // Callbacks
@@ -71,16 +72,14 @@ public interface Libvirt extends Library {
     public int virConnectListDefinedNetworks(ConnectionPointer virConnectPtr, String[] name, int maxnames);
     public int virConnectListDefinedStoragePools(ConnectionPointer virConnectPtr, String[] names, int maxnames);
     public int virConnectListDomains(ConnectionPointer virConnectPtr, int[] ids, int maxnames);
-    //TODO Post 0.5.1
-    //public int virConnectListInterfaces(ConnectionPointer virConnectPtr, String[] name, int maxnames);    
+    public int virConnectListInterfaces(ConnectionPointer virConnectPtr, String[] name, int maxNames);    
     public int virConnectListNetworks(ConnectionPointer virConnectPtr, String[] name, int maxnames);
     public int virConnectListStoragePools(ConnectionPointer virConnectPtr, String[] names, int maxnames);
     public int virConnectNumOfDefinedDomains(ConnectionPointer virConnectPtr);
     public int virConnectNumOfDefinedNetworks(ConnectionPointer virConnectPtr);
     public int virConnectNumOfDefinedStoragePools(ConnectionPointer virConnectPtr);
     public int virConnectNumOfDomains(ConnectionPointer virConnectPtr);
-    //TODO Post 0.5.1
-    //public int virConnectNumOfInterfaces(ConnectionPointer virConnectPtr);    
+    public int virConnectNumOfInterfaces(ConnectionPointer virConnectPtr);    
     public int virConnectNumOfNetworks(ConnectionPointer virConnectPtr);
     public int virConnectNumOfStoragePools(ConnectionPointer virConnectPtr);
     public ConnectionPointer virConnectOpen(String name);
@@ -217,4 +216,16 @@ public interface Libvirt extends Library {
     public StorageVolPointer virStorageVolLookupByKey(ConnectionPointer virConnectPtr, String name);
     public StorageVolPointer virStorageVolLookupByName(StoragePoolPointer storagePoolPtr, String name);
     public StorageVolPointer virStorageVolLookupByPath(ConnectionPointer virConnectPtr, String path);
+    
+    // Interface Methods
+    public InterfacePointer virInterfaceLookupByMACString(ConnectionPointer virConnectPtr, String mac) ;
+    public InterfacePointer virInterfaceLookupByName(ConnectionPointer virConnectPtr, String name) ;
+    public InterfacePointer virInterfaceDefineXML(ConnectionPointer virConnectPtr, String xml, int flags) ;
+    public String virInterfaceGetName(InterfacePointer virInterfacePtr) ;
+    public String virInterfaceGetMACString(InterfacePointer virInterfacePtr) ;    
+    public String virInterfaceGetXMLDesc(InterfacePointer virInterfacePtr, int flags) ;
+    public int virInterfaceFree(InterfacePointer virDevicePointer) ;      
+    public int virInterfaceUndefine(InterfacePointer virDevicePointer) ;     
+    public int virInterfaceCreate(InterfacePointer virDevicePointer) ;     
+    public int virInterfaceDestroy(InterfacePointer virDevicePointer) ;         
 }

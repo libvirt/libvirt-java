@@ -74,7 +74,7 @@ public class TestJavaBindings extends TestCase {
     public void testDomainCreate() throws Exception {
         Connect conn = new Connect("test:///default", false);
 
-        Domain dom1 = conn.domainDefineXML("<domain type='test' id='2'>" + "  <name>deftest</name>" + "  <uuid>004b96e1-2d78-c30f-5aa5-f03c87d21e70</uuid>" + "  <memory>8388608</memory>" + "  <vcpu>2</vcpu>" + "  <os><type arch='i686'>hvm</type></os>" + "  <on_reboot>restart</on_reboot>" + "  <on_poweroff>destroy</on_poweroff>" + "  <on_crash>restart</on_crash>" + "</domain>");
+        conn.domainDefineXML("<domain type='test' id='2'>" + "  <name>deftest</name>" + "  <uuid>004b96e1-2d78-c30f-5aa5-f03c87d21e70</uuid>" + "  <memory>8388608</memory>" + "  <vcpu>2</vcpu>" + "  <os><type arch='i686'>hvm</type></os>" + "  <on_reboot>restart</on_reboot>" + "  <on_poweroff>destroy</on_poweroff>" + "  <on_crash>restart</on_crash>" + "</domain>");
 
         Domain dom2 = conn.domainCreateLinux("<domain type='test' id='3'>" + "  <name>createst</name>" + "  <uuid>004b96e1-2d78-c30f-5aa5-f03c87d21e67</uuid>" + "  <memory>8388608</memory>" + "  <vcpu>2</vcpu>" + "  <os><type arch='i686'>hvm</type></os>" + "  <on_reboot>restart</on_reboot>" + "  <on_poweroff>destroy</on_poweroff>" + "  <on_crash>restart</on_crash>" + "</domain>", 0);
 
@@ -117,11 +117,34 @@ public class TestJavaBindings extends TestCase {
         assertTrue(Connect.connectionForDomain(dom) != dom.getConnect());
     }
 
-    // TODO GO BACK AND GET THIS
     public void testInterfaces() throws Exception {
-        // Connect conn = new Connect("test:///default", false);
-        // System.out.println("numOfInterfaces:" + conn.numOfInterfaces());
-        // System.out.println("listDefinedInterfaces:" + conn.listInterfaces());
+        Connect conn = new Connect("test:///default", false);
+        assertEquals("numOfInterfaces:", 1, conn.numOfInterfaces());
+        assertEquals("listDefinedInterfaces:", "eth1", conn.listInterfaces()[0]);
+        Interface virtInt = conn.interfaceLookupByName("eth1") ;
+        assertNotNull(virtInt) ;
+        assertEquals("virtInterfaceGetName", "eth1", virtInt.getName()) ;
+        assertEquals("virtInterfaceGetMACString", "aa:bb:cc:dd:ee:ff", virtInt.getMACString()) ;      
+        assertNotNull("virtInterfaceGetXMLDesc", virtInt.getXMLDescription(0)) ;        
+        System.out.println(virtInt.getXMLDescription(0)) ;
+        
+        String newXML = 
+				"<interface type='ethernet' name='eth2'>" + 
+				"<start mode='onboot'/>" +
+				"<mac address='aa:bb:cc:dd:ee:fa'/>"+
+				"<mtu size='1492'/>"+
+				"<protocol family='ipv4'>"+
+				"<ip address='192.167.0.5' prefix='24'/>"+
+				"<route gateway='192.167.0.1'/>"+
+				"</protocol>"+
+				"</interface>" ;
+        Interface virtInt2 = conn.interfaceDefineXML(newXML) ;     
+        assertNotNull(virtInt2) ;
+        assertEquals("virtInterfaceGetName", "eth2", virtInt2.getName()) ;
+        assertEquals("virtInterfaceGetMACString", "aa:bb:cc:dd:ee:fa", virtInt2.getMACString()) ;      
+        assertNotNull("virtInterfaceGetXMLDesc", virtInt2.getXMLDescription(0)) ;        
+        virtInt2.undefine() ;
+        virtInt2.free();
     }
 
     public void testAccessAfterClose() throws Exception {

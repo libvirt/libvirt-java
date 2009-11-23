@@ -1,7 +1,6 @@
 package org.libvirt;
 
 import org.libvirt.jna.DevicePointer;
-import org.libvirt.jna.DomainPointer;
 import org.libvirt.jna.Libvirt;
 
 /**
@@ -150,10 +149,10 @@ public class Device {
 
 		return success;
 	}
-	
+
 	/**
-	 * Destroy the device object. The virtual device is removed from the 
-	 * host operating system. This function may require privileged access.
+	 * Destroy the device object. The virtual device is removed from the host
+	 * operating system. This function may require privileged access.
 	 * 
 	 * @throws LibvirtException
 	 * @returns 0 for success, -1 for failure.
@@ -167,7 +166,7 @@ public class Device {
 		}
 
 		return success;
-	}	
+	}
 
 	/**
 	 * Error handling logic to throw errors. Must be called after every libvirt
