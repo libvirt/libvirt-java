@@ -35,7 +35,7 @@ public class StorageVol {
     /**
      * the native virStorageVolPtr.
      */
-    protected StorageVolPointer VSVP;
+    StorageVolPointer VSVP;
 
     /**
      * The VirConnect Object that represents the Hypervisor of this Domain

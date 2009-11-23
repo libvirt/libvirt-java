@@ -9,7 +9,9 @@ import com.sun.jna.ptr.IntByReference;
 import com.sun.jna.ptr.LongByReference;
 
 /**
- * The libvirt interface which is exposed via JNA.
+ * The libvirt interface which is exposed via JNA. The complete API is documented
+ * at http://www.libvirt.org/html/libvirt-libvirt.html.
+ * 
  * Known api calls to be missing
  * LIBVIRT_0.1.0
  *   virConnSetErrorFunc
@@ -87,6 +89,8 @@ public interface Libvirt extends Library {
     public ConnectionPointer virConnectOpenReadOnly(String name);
     public virError virConnGetLastError(ConnectionPointer virConnectPtr);
     public int virConnResetLastError(ConnectionPointer virConnectPtr);
+    public String virConnectDomainXMLFromNative(ConnectionPointer virConnectPtr, String nativeFormat, String nativeConfig, int flags) ;
+    public String virConnectDomainXMLToNative(ConnectionPointer virConnectPtr, String nativeFormat, String domainXML, int flags) ;    
 
     // Global functions
     public int virGetVersion(LongByReference libVer, String type, LongByReference typeVer);
@@ -202,10 +206,11 @@ public interface Libvirt extends Library {
     public int virStoragePoolNumOfVolumes(StoragePoolPointer storagePoolPtr);
     public int virStoragePoolRefresh(StoragePoolPointer storagePoolPtr);
     public int virStoragePoolSetAutostart(StoragePoolPointer storagePoolPtr, int autostart);
-    public int virStoragePoolUndefine(StoragePoolPointer storagePoolPtr);
+    public int virStoragePoolUndefine(StoragePoolPointer storagePoolPtr);   
 
     // Storage Vol
     public StorageVolPointer virStorageVolCreateXML(StoragePoolPointer storagePoolPtr, String xml, int flags);
+    public StorageVolPointer virStorageVolCreateXMLFrom(StoragePoolPointer storagePoolPtr, String xml, StorageVolPointer cloneVolume, int flags);    
     public int virStorageVolDelete(StorageVolPointer storageVolPtr, int flags);
     public int virStorageVolFree(StorageVolPointer storageVolPtr);
     public int virStorageVolGetInfo(StorageVolPointer storageVolPtr, virStorageVolInfo info);

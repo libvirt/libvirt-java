@@ -395,6 +395,32 @@ public class Connect {
 		}
 		return returnValue;
 	}
+	
+	/**
+	 * Reads a native XML configuration document, and generates generates a 
+	 * domain configuration file describing the domain. 
+	 * The format of the native data is hypervisor dependant.
+	 * @return
+	 * @throws LibvirtException
+	 */
+	public String domainXMLFromNative(String nativeFormat, String nativeConfig, int flags) throws LibvirtException {
+		String returnValue = libvirt.virConnectDomainXMLFromNative(VCP, nativeFormat, nativeConfig, 0) ;
+		processError() ;
+		return returnValue ;
+	}
+	
+	/**
+	 * Reads a domain XML configuration document, and generates generates a 
+	 * native configuration file describing the domain. 
+	 * The format of the native data is hypervisor dependant.
+	 * @return
+	 * @throws LibvirtException
+	 */
+	public String domainXMLToNative(String nativeFormat, String domainXML, int flags) throws LibvirtException {
+		String returnValue = libvirt.virConnectDomainXMLToNative(VCP, nativeFormat, domainXML, 0) ;
+		processError() ;
+		return returnValue ;
+	}	
 
 	@Override
 	public void finalize() throws LibvirtException {
