@@ -31,6 +31,12 @@ import com.sun.jna.ptr.LongByReference;
  *   virStoragePoolRef
  *   virStorageVolRef
  *   virNodeDeviceRef
+ * LIBVIRT_0.6.1
+ *   virFreeError
+ *   virSaveLastError
+ *   virDomainGetSecurityLabel;
+ *   virNodeGetSecurityModel;
+ *   
  */
 public interface Libvirt extends Library {
     // Callbacks
@@ -169,6 +175,9 @@ public interface Libvirt extends Library {
     public int virNodeDeviceListCaps(DevicePointer virDevicePointer, String[] names, int maxNames) ;
     public String virNodeDeviceGetXMLDesc(DevicePointer virDevicePointer) ;
     public int virNodeDeviceFree(DevicePointer virDevicePointer) ; 
+    public int virNodeDeviceDettach(DevicePointer virDevicePointer) ; 
+    public int virNodeDeviceReAttach(DevicePointer virDevicePointer) ;     
+    public int virNodeDeviceReset(DevicePointer virDevicePointer) ;     
 
     // Storage Pool
     public int virStoragePoolBuild(StoragePoolPointer storagePoolPtr, int flags);
