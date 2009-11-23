@@ -73,12 +73,14 @@ public interface Libvirt extends Library {
     public int virConnectListDefinedDomains(ConnectionPointer virConnectPtr, String[] name, int maxnames);
     public int virConnectListDefinedNetworks(ConnectionPointer virConnectPtr, String[] name, int maxnames);
     public int virConnectListDefinedStoragePools(ConnectionPointer virConnectPtr, String[] names, int maxnames);
+    public int virConnectListDefinedInterfaces(ConnectionPointer virConnectPtr, String[] name, int maxNames);       
     public int virConnectListDomains(ConnectionPointer virConnectPtr, int[] ids, int maxnames);
     public int virConnectListInterfaces(ConnectionPointer virConnectPtr, String[] name, int maxNames);    
     public int virConnectListNetworks(ConnectionPointer virConnectPtr, String[] name, int maxnames);
     public int virConnectListStoragePools(ConnectionPointer virConnectPtr, String[] names, int maxnames);
     public int virConnectNumOfDefinedDomains(ConnectionPointer virConnectPtr);
     public int virConnectNumOfDefinedNetworks(ConnectionPointer virConnectPtr);
+    public int virConnectNumOfDefinedInterfaces(ConnectionPointer virConnectPtr);    
     public int virConnectNumOfDefinedStoragePools(ConnectionPointer virConnectPtr);
     public int virConnectNumOfDomains(ConnectionPointer virConnectPtr);
     public int virConnectNumOfInterfaces(ConnectionPointer virConnectPtr);    

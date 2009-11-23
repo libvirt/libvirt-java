@@ -395,32 +395,38 @@ public class Connect {
 		}
 		return returnValue;
 	}
-	
+
 	/**
-	 * Reads a native XML configuration document, and generates generates a 
-	 * domain configuration file describing the domain. 
-	 * The format of the native data is hypervisor dependant.
+	 * Reads a native XML configuration document, and generates generates a
+	 * domain configuration file describing the domain. The format of the native
+	 * data is hypervisor dependant.
+	 * 
 	 * @return
 	 * @throws LibvirtException
 	 */
-	public String domainXMLFromNative(String nativeFormat, String nativeConfig, int flags) throws LibvirtException {
-		String returnValue = libvirt.virConnectDomainXMLFromNative(VCP, nativeFormat, nativeConfig, 0) ;
-		processError() ;
-		return returnValue ;
+	public String domainXMLFromNative(String nativeFormat, String nativeConfig,
+			int flags) throws LibvirtException {
+		String returnValue = libvirt.virConnectDomainXMLFromNative(VCP,
+				nativeFormat, nativeConfig, 0);
+		processError();
+		return returnValue;
 	}
-	
+
 	/**
-	 * Reads a domain XML configuration document, and generates generates a 
-	 * native configuration file describing the domain. 
-	 * The format of the native data is hypervisor dependant.
+	 * Reads a domain XML configuration document, and generates generates a
+	 * native configuration file describing the domain. The format of the native
+	 * data is hypervisor dependant.
+	 * 
 	 * @return
 	 * @throws LibvirtException
 	 */
-	public String domainXMLToNative(String nativeFormat, String domainXML, int flags) throws LibvirtException {
-		String returnValue = libvirt.virConnectDomainXMLToNative(VCP, nativeFormat, domainXML, 0) ;
-		processError() ;
-		return returnValue ;
-	}	
+	public String domainXMLToNative(String nativeFormat, String domainXML,
+			int flags) throws LibvirtException {
+		String returnValue = libvirt.virConnectDomainXMLToNative(VCP,
+				nativeFormat, domainXML, 0);
+		processError();
+		return returnValue;
+	}
 
 	@Override
 	public void finalize() throws LibvirtException {
@@ -670,6 +676,23 @@ public class Connect {
 		String[] returnValue = new String[num];
 		libvirt.virConnectListDefinedStoragePools(VCP, returnValue, num);
 		processError();
+		return returnValue;
+	}
+
+	/**
+	 * Provides the list of names of defined interfaces on this host
+	 * 
+	 * @return an Array of Strings that contains the names of the interfaces on
+	 *         this host
+	 * @throws LibvirtException
+	 */
+	public String[] listDefinedInterfaces() throws LibvirtException {
+		int num = this.numOfDefinedInterfaces();
+		String[] returnValue = new String[num];
+		if (num > 0) {
+			libvirt.virConnectListDefinedInterfaces(VCP, returnValue, num);
+			processError();
+		}
 		return returnValue;
 	}
 
@@ -977,6 +1000,18 @@ public class Connect {
 	 */
 	public int numOfInterfaces() throws LibvirtException {
 		int returnValue = libvirt.virConnectNumOfInterfaces(VCP);
+		processError();
+		return returnValue;
+	}
+
+	/**
+	 * Provides the number of defined interfaces.
+	 * 
+	 * @return the number of interfaces
+	 * @throws LibvirtException
+	 */
+	public int numOfDefinedInterfaces() throws LibvirtException {
+		int returnValue = libvirt.virConnectNumOfDefinedInterfaces(VCP);
 		processError();
 		return returnValue;
 	}
