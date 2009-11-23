@@ -222,6 +222,23 @@ public class Connect {
         }
         return success;
     }
+    
+    /**
+     * Create a new device on the VM host machine, for example, virtual HBAs created using vport_create.
+     * 
+     * @param xmlDesc the device to create
+     * @return the Device object
+     * @throws LibvirtException
+     */
+    public Device deviceCreateXML(String xmlDesc) throws LibvirtException {
+        Device returnValue = null;
+        DevicePointer ptr = libvirt.virNodeDeviceCreateXML(VCP, xmlDesc, 0);
+        processError();
+        if (ptr != null) {
+            returnValue = new Device(this, ptr);
+        }
+        return returnValue;
+    }    
 
     /**
      * Launches a new Linux guest domain. The domain is based on an XML

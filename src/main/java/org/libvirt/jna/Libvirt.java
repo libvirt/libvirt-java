@@ -177,7 +177,9 @@ public interface Libvirt extends Library {
     public int virNodeDeviceFree(DevicePointer virDevicePointer) ; 
     public int virNodeDeviceDettach(DevicePointer virDevicePointer) ; 
     public int virNodeDeviceReAttach(DevicePointer virDevicePointer) ;     
-    public int virNodeDeviceReset(DevicePointer virDevicePointer) ;     
+    public int virNodeDeviceReset(DevicePointer virDevicePointer) ;    
+    public DevicePointer virNodeDeviceCreateXML(ConnectionPointer virConnectPtr, String xml, int flags) ;
+    public int virNodeDeviceDestroy(DevicePointer virDevicePointer) ;    
 
     // Storage Pool
     public int virStoragePoolBuild(StoragePoolPointer storagePoolPtr, int flags);

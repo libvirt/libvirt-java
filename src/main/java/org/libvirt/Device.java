@@ -150,6 +150,24 @@ public class Device {
 
 		return success;
 	}
+	
+	/**
+	 * Destroy the device object. The virtual device is removed from the 
+	 * host operating system. This function may require privileged access.
+	 * 
+	 * @throws LibvirtException
+	 * @returns 0 for success, -1 for failure.
+	 */
+	public int destroy() throws LibvirtException {
+		int success = 0;
+		if (VDP != null) {
+			success = libvirt.virNodeDeviceDestroy(VDP);
+			processError();
+			VDP = null;
+		}
+
+		return success;
+	}	
 
 	/**
 	 * Error handling logic to throw errors. Must be called after every libvirt
