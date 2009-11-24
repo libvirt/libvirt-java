@@ -9,9 +9,9 @@ a minimum libvirt version of @libvirt.required@
 2. You must have the libvirt.jar file in your classpath.
 By default the installs it to /usr/share/java/@version@.jar
 
-2. You can run the unit tests with ant test.
+3. You can run the unit tests with ant test.
 
-3. There is a rudimentary functional test program that the libvirt-java-devel
+4. There is a rudimentary functional test program that the libvirt-java-devel
 installs put it into /usr/share/doc/libvirt-java-devel-@version@/test.java
 
 To run it, first copy the test.java file to writeable directory
@@ -23,7 +23,7 @@ javac -classpath /usr/share/java/libvirt-@version@.jar test.java
 Then run the program:
 java -classpath .:/usr/share/java/jna.jar:/usr/share/java/libvirt-@version@.jar test
 
-4. There is full javadoc for the API in /usr/share/javadoc/libvirt-java-@version@/
+5. There is full javadoc for the API in /usr/share/javadoc/libvirt-java-@version@/
 
-5. The full API can be found at http://www.libvirt.org/html/libvirt-libvirt.html
+6. The full API can be found at http://www.libvirt.org/html/libvirt-libvirt.html
 

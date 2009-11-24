@@ -85,6 +85,9 @@ rm -rf %{buildroot}
 %{_javadocdir}/%{name}-%{version}
 
 %changelog
+* Tue Nov 24 2009 Bryan Kearney <bkearney@redhat.com> - 0.4.0-1
+- Added libvirt APIs up through 0.7.0
+
 * Tue Nov 24 2009 Bryan Kearney <bkearney@redhat.com> - 0.3.2-1
 - Added libvirt APIs up through 0.6.1
 
