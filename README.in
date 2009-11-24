@@ -3,7 +3,10 @@
 To use it, your program needs to access both the java library (.jar file),
 and the JNA library (.jar file)
 
-1. You must have the libvirt.jar file in your classpath.
+1. This version of the java mappings is designed to work with a 
+a minimum libvirt version of @libvirt.required@
+
+2. You must have the libvirt.jar file in your classpath.
 By default the installs it to /usr/share/java/@version@.jar
 
 2. You can run the unit tests with ant test.
