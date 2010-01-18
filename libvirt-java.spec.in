@@ -2,7 +2,7 @@ Summary:    Java bindings for the libvirt virtualization API
 Name:       libvirt-java
 Version:    @version@
 Prefix:     libvirt
-Release:    2%{?dist}
+Release:    @release@%{?dist}
 License:    LGPLv2+
 BuildArch:  noarch
 Group:      Development/Libraries
@@ -85,6 +85,10 @@ rm -rf %{buildroot}
 %{_javadocdir}/%{name}-%{version}
 
 %changelog
+* Mon Jan 18 2010 Bryan Kearney <bkearney@redhat.com> - 0.4.1-1
+- Better null checking around Scheduled Parameters
+- Added error function callback
+
 * Tue Dec 1 2009 Bryan Kearney <bkearney@redhat.com> - 0.4.0-2
 - Modified the dependency to be libvirt-client instead of libvirt.
 
