@@ -77,11 +77,11 @@
 
 	<target name="maven" depends="build">
 		<mkdir dir="target/repo" />
-		<get src="http://apache.multihomed.net/maven/binaries/maven-ant-tasks-2.0.10.jar" dest="target/maven-ant-tasks-2.0.10.jar" />
+		<get src="http://mirror.its.uidaho.edu/pub/apache/maven/binaries/maven-ant-tasks-2.1.0.jar" dest="target/maven-ant-tasks-2.1.0.jar" />
 		<copy file="pom.xml.in" tofile="target/pom.xml" overwrite="true" filtering="true">
 			<filterset filtersfile="build.properties" />
 		</copy>
-		<path id="maven-ant-tasks.classpath" path="target/maven-ant-tasks-2.0.10.jar" />
+		<path id="maven-ant-tasks.classpath" path="target/maven-ant-tasks-2.1.0.jar" />
 		<typedef resource="org/apache/maven/artifact/ant/antlib.xml" uri="antlib:org.apache.maven.artifact.ant" classpathref="maven-ant-tasks.classpath" />
 		<artifact:pom id="mypom" file="target/pom.xml" />
 		<artifact:install file="${jar.file}">
