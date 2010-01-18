@@ -29,7 +29,7 @@ BuildRequires:  jpackage-utils
 %description
 Libvirt-java is a base framework allowing to use libvirt, the virtualization
 API though the Java programming language.
-It requires libvirt >= @libvirt.required@
+It requires libvirt-client >= @libvirt.required@
 
 %package    devel
 Summary:    Compressed Java source files for %{name}
