@@ -293,14 +293,17 @@ public class StoragePool {
         processError();
         return new StorageVol(virConnect, sPtr);
     }
-    
+
     /**
-     * Create a storage volume in the parent pool, using the 'clonevol' volume as input. 
-     * Information for the new volume (name, perms) are passed via a typical volume XML description.
+     * Create a storage volume in the parent pool, using the 'clonevol' volume
+     * as input. Information for the new volume (name, perms) are passed via a
+     * typical volume XML description.
+     * 
      * @return
      * @throws LibvirtException
      */
-    public StorageVol storageVolCreateXMLFrom(String xmlDesc, StorageVol cloneVolume, int flags) throws LibvirtException {
+    public StorageVol storageVolCreateXMLFrom(String xmlDesc, StorageVol cloneVolume, int flags)
+            throws LibvirtException {
         StorageVolPointer sPtr = libvirt.virStorageVolCreateXMLFrom(VSPP, xmlDesc, cloneVolume.VSVP, flags);
         processError();
         return new StorageVol(virConnect, sPtr);

@@ -9,37 +9,40 @@ import com.sun.jna.ptr.IntByReference;
 import com.sun.jna.ptr.LongByReference;
 
 /**
- * The libvirt interface which is exposed via JNA. The complete API is documented
- * at http://www.libvirt.org/html/libvirt-libvirt.html.
+ * The libvirt interface which is exposed via JNA. The complete API is
+ * documented at http://www.libvirt.org/html/libvirt-libvirt.html.
  * 
- * Known api calls to be missing
- * LIBVIRT_0.1.0
- *   virConnSetErrorFunc
- *   virSetErrorFunc
- *   virDefaultErrorFunc
- *   virConnCopyLastError
- *   virFreeError
- * LIBVIRT_0.4.2
- *   virDomainBlockPeek
- *   virDomainMemoryPeek
+ * Known api calls to be missing 
+ * LIBVIRT_0.1.0 
+ * virDefaultErrorFunc 
+ * virConnCopyLastError 
+ * virFreeError
+ * 
+ * LIBVIRT_0.4.2 
+ * virDomainBlockPeek 
+ * virDomainMemoryPeek 
+ * 
  * LIBVIRT_0_5.0
- *   virEventRegisterImpl
- *   virConnectDomainEventRegister
- *   virConnectDomainEventDeregister
- * LIBVIRT_0.6.0
- *   virConnectRef
- *   virDomainRef
- *   virNetworkRef
- *   virStoragePoolRef
- *   virStorageVolRef
- *   virNodeDeviceRef
- * LIBVIRT_0.6.1
- *   virFreeError
- *   virSaveLastError
- *   virDomainGetSecurityLabel;
- *   virNodeGetSecurityModel;
- * LIBVIRT_0.6.4
- *   virInterfaceRef
+ * virEventRegisterImpl 
+ * virConnectDomainEventRegister
+ * virConnectDomainEventDeregister 
+ * 
+ * LIBVIRT_0.6.0 
+ * virConnectRef 
+ * virDomainRef
+ * virNetworkRef 
+ * virStoragePoolRef 
+ * virStorageVolRef 
+ * virNodeDeviceRef
+ * 
+ * LIBVIRT_0.6.1 
+ * virFreeError 
+ * virSaveLastError 
+ * virDomainGetSecurityLabel;
+ * virNodeGetSecurityModel; 
+ * 
+ * LIBVIRT_0.6.4 
+ * virInterfaceRef
  */
 public interface Libvirt extends Library {
     // Callbacks
@@ -50,8 +53,12 @@ public interface Libvirt extends Library {
         public int authCallback(virConnectCredential cred, int ncred, Pointer cbdata);
     }
 
+    interface VirErrorCallback extends Callback {
+        public void errorCallback(Pointer userData, virError error);
+    }
+
     Libvirt INSTANCE = (Libvirt) Native.loadLibrary("virt", Libvirt.class);
-    
+
     // Constants we need
     public static int VIR_UUID_BUFLEN = 16;
     public static int VIR_UUID_STRING_BUFLEN = (36 + 1);
@@ -60,10 +67,8 @@ public interface Libvirt extends Library {
     // Connection Functions
     public int virConnCopyLastError(ConnectionPointer virConnectPtr, virError to);
     public int virConnectClose(ConnectionPointer virConnectPtr);
-    //TODO Post 0.5.1
-    //public String virConnectDomainXMLFromNative(ConnectionPointer virConnectPtr, String nativeFormat, String nativeConfig, int flags) ;
-    //public String virConnectDomainXMLToNative(ConnectionPointer virConnectPtr, String nativeFormat, String domainXML, int flags) ;
-    public String virConnectFindStoragePoolSources(ConnectionPointer virConnectPtr, String type, String srcSpec, int flags) ;
+    public void virConnSetErrorFunc(ConnectionPointer virConnectPtr, Pointer userData, VirErrorCallback callback);    
+    public String virConnectFindStoragePoolSources(ConnectionPointer virConnectPtr, String type, String srcSpec, int flags);
     public String virConnectGetCapabilities(ConnectionPointer virConnectPtr);
     public String virConnectGetHostname(ConnectionPointer virConnectPtr);
     public int virConnectGetMaxVcpus(ConnectionPointer virConnectPtr, String type);
@@ -73,17 +78,17 @@ public interface Libvirt extends Library {
     public int virConnectListDefinedDomains(ConnectionPointer virConnectPtr, String[] name, int maxnames);
     public int virConnectListDefinedNetworks(ConnectionPointer virConnectPtr, String[] name, int maxnames);
     public int virConnectListDefinedStoragePools(ConnectionPointer virConnectPtr, String[] names, int maxnames);
-    public int virConnectListDefinedInterfaces(ConnectionPointer virConnectPtr, String[] name, int maxNames);       
+    public int virConnectListDefinedInterfaces(ConnectionPointer virConnectPtr, String[] name, int maxNames);
     public int virConnectListDomains(ConnectionPointer virConnectPtr, int[] ids, int maxnames);
-    public int virConnectListInterfaces(ConnectionPointer virConnectPtr, String[] name, int maxNames);    
+    public int virConnectListInterfaces(ConnectionPointer virConnectPtr, String[] name, int maxNames);
     public int virConnectListNetworks(ConnectionPointer virConnectPtr, String[] name, int maxnames);
     public int virConnectListStoragePools(ConnectionPointer virConnectPtr, String[] names, int maxnames);
     public int virConnectNumOfDefinedDomains(ConnectionPointer virConnectPtr);
     public int virConnectNumOfDefinedNetworks(ConnectionPointer virConnectPtr);
-    public int virConnectNumOfDefinedInterfaces(ConnectionPointer virConnectPtr);    
+    public int virConnectNumOfDefinedInterfaces(ConnectionPointer virConnectPtr);
     public int virConnectNumOfDefinedStoragePools(ConnectionPointer virConnectPtr);
     public int virConnectNumOfDomains(ConnectionPointer virConnectPtr);
-    public int virConnectNumOfInterfaces(ConnectionPointer virConnectPtr);    
+    public int virConnectNumOfInterfaces(ConnectionPointer virConnectPtr);
     public int virConnectNumOfNetworks(ConnectionPointer virConnectPtr);
     public int virConnectNumOfStoragePools(ConnectionPointer virConnectPtr);
     public ConnectionPointer virConnectOpen(String name);
@@ -91,18 +96,21 @@ public interface Libvirt extends Library {
     public ConnectionPointer virConnectOpenReadOnly(String name);
     public virError virConnGetLastError(ConnectionPointer virConnectPtr);
     public int virConnResetLastError(ConnectionPointer virConnectPtr);
-    public String virConnectDomainXMLFromNative(ConnectionPointer virConnectPtr, String nativeFormat, String nativeConfig, int flags) ;
-    public String virConnectDomainXMLToNative(ConnectionPointer virConnectPtr, String nativeFormat, String domainXML, int flags) ;    
-
+    public String virConnectDomainXMLFromNative(ConnectionPointer virConnectPtr, String nativeFormat,
+            String nativeConfig, int flags);
+    public String virConnectDomainXMLToNative(ConnectionPointer virConnectPtr, String nativeFormat, String domainXML,
+            int flags);
+    
     // Global functions
     public int virGetVersion(LongByReference libVer, String type, LongByReference typeVer);
     public int virInitialize();
     public int virCopyLastError(virError error);
-    public virError virGetLastError();    
+    public virError virGetLastError();
     public void virResetLastError();
+    public void virSetErrorFunc(Pointer userData, VirErrorCallback callback);    
 
     // Domain functions
-    public ConnectionPointer virDomainGetConnect(DomainPointer virDomainPtr) ;
+    public ConnectionPointer virDomainGetConnect(DomainPointer virDomainPtr);
     public int virDomainAttachDevice(DomainPointer virDomainPtr, String deviceXML);
     public int virDomainBlockStats(DomainPointer virDomainPtr, String path, virDomainBlockStats stats, int size);
     public int virDomainCoreDump(DomainPointer virDomainPtr, String to, int flags);
@@ -120,7 +128,8 @@ public interface Libvirt extends Library {
     public int virDomainGetMaxVcpus(DomainPointer virDomainPtr);
     public String virDomainGetName(DomainPointer virDomainPtr);
     public String virDomainGetOSType(DomainPointer virDomainPtr);
-    public int virDomainGetSchedulerParameters(DomainPointer virDomainPtr, virSchedParameter[] params, IntByReference nparams);
+    public int virDomainGetSchedulerParameters(DomainPointer virDomainPtr, virSchedParameter[] params,
+            IntByReference nparams);
     public String virDomainGetSchedulerType(DomainPointer virDomainPtr, IntByReference nparams);
     public int virDomainGetUUID(DomainPointer virDomainPtr, byte[] uuidString);
     public int virDomainGetUUIDString(DomainPointer virDomainPtr, byte[] uuidString);
@@ -131,7 +140,8 @@ public interface Libvirt extends Library {
     public DomainPointer virDomainLookupByName(ConnectionPointer virConnectPtr, String name);
     public DomainPointer virDomainLookupByUUID(ConnectionPointer virConnectPtr, byte[] uuidBytes);
     public DomainPointer virDomainLookupByUUIDString(ConnectionPointer virConnectPtr, String uuidstr);
-    public DomainPointer virDomainMigrate(DomainPointer virDomainPtr, ConnectionPointer virConnectPtr, NativeLong flags, String dname, String uri, NativeLong bandwidth);
+    public DomainPointer virDomainMigrate(DomainPointer virDomainPtr, ConnectionPointer virConnectPtr,
+            NativeLong flags, String dname, String uri, NativeLong bandwidth);
     public int virDomainPinVcpu(DomainPointer virDomainPtr, int vcpu, byte[] cpumap, int maplen);
     public int virDomainReboot(DomainPointer virDomainPtr, int flags);
     public int virDomainRestore(ConnectionPointer virConnectPtr, String from);
@@ -147,8 +157,8 @@ public interface Libvirt extends Library {
     public int virDomainUndefine(DomainPointer virDomainPtr);
 
     // Network functions
-    public ConnectionPointer virNetworkGetConnect(NetworkPointer virnetworkPtr) ;    
-    public int virNetworkCreate(NetworkPointer virConnectPtr);    
+    public ConnectionPointer virNetworkGetConnect(NetworkPointer virnetworkPtr);
+    public int virNetworkCreate(NetworkPointer virConnectPtr);
     public NetworkPointer virNetworkCreateXML(ConnectionPointer virConnectPtr, String xmlDesc);
     public NetworkPointer virNetworkDefineXML(ConnectionPointer virConnectPtr, String xmlDesc);
     public int virNetworkDestroy(NetworkPointer virConnectPtr);
@@ -167,24 +177,26 @@ public interface Libvirt extends Library {
 
     // Node functions
     public int virNodeGetInfo(ConnectionPointer virConnectPtr, virNodeInfo virNodeInfo);
-    public int virNodeGetCellsFreeMemory(ConnectionPointer virConnectPtr, LongByReference freeMems, int startCell, int maxCells);
-    public long virNodeGetFreeMemory(ConnectionPointer virConnectPtr) ;
-    
+    public int virNodeGetCellsFreeMemory(ConnectionPointer virConnectPtr, LongByReference freeMems, int startCell,
+            int maxCells);
+    public long virNodeGetFreeMemory(ConnectionPointer virConnectPtr);
+
     // Node/Device functions
-    public int virNodeNumOfDevices(ConnectionPointer virConnectPtr, String capabilityName, int flags) ;
-    public int virNodeListDevices(ConnectionPointer virConnectPtr, String capabilityName, String[] names, int maxnames, int flags) ;
-    public DevicePointer virNodeDeviceLookupByName(ConnectionPointer virConnectPtr, String name) ;
-    public String virNodeDeviceGetName(DevicePointer virDevicePointer) ;
-    public String virNodeDeviceGetParent(DevicePointer virDevicePointer) ;
-    public int virNodeDeviceNumOfCaps(DevicePointer virDevicePointer) ;
-    public int virNodeDeviceListCaps(DevicePointer virDevicePointer, String[] names, int maxNames) ;
-    public String virNodeDeviceGetXMLDesc(DevicePointer virDevicePointer) ;
-    public int virNodeDeviceFree(DevicePointer virDevicePointer) ; 
-    public int virNodeDeviceDettach(DevicePointer virDevicePointer) ; 
-    public int virNodeDeviceReAttach(DevicePointer virDevicePointer) ;     
-    public int virNodeDeviceReset(DevicePointer virDevicePointer) ;    
-    public DevicePointer virNodeDeviceCreateXML(ConnectionPointer virConnectPtr, String xml, int flags) ;
-    public int virNodeDeviceDestroy(DevicePointer virDevicePointer) ;    
+    public int virNodeNumOfDevices(ConnectionPointer virConnectPtr, String capabilityName, int flags);
+    public int virNodeListDevices(ConnectionPointer virConnectPtr, String capabilityName, String[] names, int maxnames,
+            int flags);
+    public DevicePointer virNodeDeviceLookupByName(ConnectionPointer virConnectPtr, String name);
+    public String virNodeDeviceGetName(DevicePointer virDevicePointer);
+    public String virNodeDeviceGetParent(DevicePointer virDevicePointer);
+    public int virNodeDeviceNumOfCaps(DevicePointer virDevicePointer);
+    public int virNodeDeviceListCaps(DevicePointer virDevicePointer, String[] names, int maxNames);
+    public String virNodeDeviceGetXMLDesc(DevicePointer virDevicePointer);
+    public int virNodeDeviceFree(DevicePointer virDevicePointer);
+    public int virNodeDeviceDettach(DevicePointer virDevicePointer);
+    public int virNodeDeviceReAttach(DevicePointer virDevicePointer);
+    public int virNodeDeviceReset(DevicePointer virDevicePointer);
+    public DevicePointer virNodeDeviceCreateXML(ConnectionPointer virConnectPtr, String xml, int flags);
+    public int virNodeDeviceDestroy(DevicePointer virDevicePointer);
 
     // Storage Pool
     public int virStoragePoolBuild(StoragePoolPointer storagePoolPtr, int flags);
@@ -208,11 +220,12 @@ public interface Libvirt extends Library {
     public int virStoragePoolNumOfVolumes(StoragePoolPointer storagePoolPtr);
     public int virStoragePoolRefresh(StoragePoolPointer storagePoolPtr);
     public int virStoragePoolSetAutostart(StoragePoolPointer storagePoolPtr, int autostart);
-    public int virStoragePoolUndefine(StoragePoolPointer storagePoolPtr);   
+    public int virStoragePoolUndefine(StoragePoolPointer storagePoolPtr);
 
     // Storage Vol
     public StorageVolPointer virStorageVolCreateXML(StoragePoolPointer storagePoolPtr, String xml, int flags);
-    public StorageVolPointer virStorageVolCreateXMLFrom(StoragePoolPointer storagePoolPtr, String xml, StorageVolPointer cloneVolume, int flags);    
+    public StorageVolPointer virStorageVolCreateXMLFrom(StoragePoolPointer storagePoolPtr, String xml,
+            StorageVolPointer cloneVolume, int flags);
     public int virStorageVolDelete(StorageVolPointer storageVolPtr, int flags);
     public int virStorageVolFree(StorageVolPointer storageVolPtr);
     public int virStorageVolGetInfo(StorageVolPointer storageVolPtr, virStorageVolInfo info);
@@ -223,16 +236,16 @@ public interface Libvirt extends Library {
     public StorageVolPointer virStorageVolLookupByKey(ConnectionPointer virConnectPtr, String name);
     public StorageVolPointer virStorageVolLookupByName(StoragePoolPointer storagePoolPtr, String name);
     public StorageVolPointer virStorageVolLookupByPath(ConnectionPointer virConnectPtr, String path);
-    
+
     // Interface Methods
-    public InterfacePointer virInterfaceLookupByMACString(ConnectionPointer virConnectPtr, String mac) ;
-    public InterfacePointer virInterfaceLookupByName(ConnectionPointer virConnectPtr, String name) ;
-    public InterfacePointer virInterfaceDefineXML(ConnectionPointer virConnectPtr, String xml, int flags) ;
-    public String virInterfaceGetName(InterfacePointer virInterfacePtr) ;
-    public String virInterfaceGetMACString(InterfacePointer virInterfacePtr) ;    
-    public String virInterfaceGetXMLDesc(InterfacePointer virInterfacePtr, int flags) ;
-    public int virInterfaceFree(InterfacePointer virDevicePointer) ;      
-    public int virInterfaceUndefine(InterfacePointer virDevicePointer) ;     
-    public int virInterfaceCreate(InterfacePointer virDevicePointer) ;     
-    public int virInterfaceDestroy(InterfacePointer virDevicePointer) ;         
+    public InterfacePointer virInterfaceLookupByMACString(ConnectionPointer virConnectPtr, String mac);
+    public InterfacePointer virInterfaceLookupByName(ConnectionPointer virConnectPtr, String name);
+    public InterfacePointer virInterfaceDefineXML(ConnectionPointer virConnectPtr, String xml, int flags);
+    public String virInterfaceGetName(InterfacePointer virInterfacePtr);
+    public String virInterfaceGetMACString(InterfacePointer virInterfacePtr);
+    public String virInterfaceGetXMLDesc(InterfacePointer virInterfacePtr, int flags);
+    public int virInterfaceFree(InterfacePointer virDevicePointer);
+    public int virInterfaceUndefine(InterfacePointer virDevicePointer);
+    public int virInterfaceCreate(InterfacePointer virDevicePointer);
+    public int virInterfaceDestroy(InterfacePointer virDevicePointer);
 }

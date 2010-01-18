@@ -58,20 +58,20 @@ public class StoragePoolInfo {
      */
     StoragePoolInfo(int state, long capacity, long allocation, long available) {
         switch (state) {
-        case 0:
-            this.state = StoragePoolState.VIR_STORAGE_POOL_INACTIVE;
-            break;
-        case 1:
-            this.state = StoragePoolState.VIR_STORAGE_POOL_BUILDING;
-            break;
-        case 2:
-            this.state = StoragePoolState.VIR_STORAGE_POOL_RUNNING;
-            break;
-        case 3:
-            this.state = StoragePoolState.VIR_STORAGE_POOL_DEGRADED;
-            break;
-        default:
-            assert (false);
+            case 0:
+                this.state = StoragePoolState.VIR_STORAGE_POOL_INACTIVE;
+                break;
+            case 1:
+                this.state = StoragePoolState.VIR_STORAGE_POOL_BUILDING;
+                break;
+            case 2:
+                this.state = StoragePoolState.VIR_STORAGE_POOL_RUNNING;
+                break;
+            case 3:
+                this.state = StoragePoolState.VIR_STORAGE_POOL_DEGRADED;
+                break;
+            default:
+                assert (false);
         }
         this.capacity = capacity;
         this.allocation = allocation;

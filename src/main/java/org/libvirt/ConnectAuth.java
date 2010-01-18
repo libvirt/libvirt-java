@@ -46,35 +46,35 @@ public abstract class ConnectAuth implements Libvirt.VirConnectAuthCallback {
          */
         Credential(int type, String prompt, String challenge, String defresult) {
             switch (type) {
-            case 1:
-                this.type = CredentialType.VIR_CRED_USERNAME;
-                break;
-            case 2:
-                this.type = CredentialType.VIR_CRED_AUTHNAME;
-                break;
-            case 3:
-                this.type = CredentialType.VIR_CRED_LANGUAGE;
-                break;
-            case 4:
-                this.type = CredentialType.VIR_CRED_CNONCE;
-                break;
-            case 5:
-                this.type = CredentialType.VIR_CRED_PASSPHRASE;
-                break;
-            case 6:
-                this.type = CredentialType.VIR_CRED_ECHOPROMPT;
-                break;
-            case 7:
-                this.type = CredentialType.VIR_CRED_NOECHOPROMPT;
-                break;
-            case 8:
-                this.type = CredentialType.VIR_CRED_REALM;
-                break;
-            case 9:
-                this.type = CredentialType.VIR_CRED_EXTERNAL;
-                break;
-            default:
-                assert (false);
+                case 1:
+                    this.type = CredentialType.VIR_CRED_USERNAME;
+                    break;
+                case 2:
+                    this.type = CredentialType.VIR_CRED_AUTHNAME;
+                    break;
+                case 3:
+                    this.type = CredentialType.VIR_CRED_LANGUAGE;
+                    break;
+                case 4:
+                    this.type = CredentialType.VIR_CRED_CNONCE;
+                    break;
+                case 5:
+                    this.type = CredentialType.VIR_CRED_PASSPHRASE;
+                    break;
+                case 6:
+                    this.type = CredentialType.VIR_CRED_ECHOPROMPT;
+                    break;
+                case 7:
+                    this.type = CredentialType.VIR_CRED_NOECHOPROMPT;
+                    break;
+                case 8:
+                    this.type = CredentialType.VIR_CRED_REALM;
+                    break;
+                case 9:
+                    this.type = CredentialType.VIR_CRED_EXTERNAL;
+                    break;
+                default:
+                    assert (false);
             }
             this.prompt = prompt;
             this.challenge = challenge;
@@ -139,24 +139,24 @@ public abstract class ConnectAuth implements Libvirt.VirConnectAuthCallback {
         @SuppressWarnings("all")
         public int mapToInt() {
             switch (this) {
-            case VIR_CRED_USERNAME:
-                return 1;
-            case VIR_CRED_AUTHNAME:
-                return 2;
-            case VIR_CRED_LANGUAGE:
-                return 3;
-            case VIR_CRED_CNONCE:
-                return 4;
-            case VIR_CRED_PASSPHRASE:
-                return 5;
-            case VIR_CRED_ECHOPROMPT:
-                return 6;
-            case VIR_CRED_NOECHOPROMPT:
-                return 7;
-            case VIR_CRED_REALM:
-                return 8;
-            case VIR_CRED_EXTERNAL:
-                return 9;
+                case VIR_CRED_USERNAME:
+                    return 1;
+                case VIR_CRED_AUTHNAME:
+                    return 2;
+                case VIR_CRED_LANGUAGE:
+                    return 3;
+                case VIR_CRED_CNONCE:
+                    return 4;
+                case VIR_CRED_PASSPHRASE:
+                    return 5;
+                case VIR_CRED_ECHOPROMPT:
+                    return 6;
+                case VIR_CRED_NOECHOPROMPT:
+                    return 7;
+                case VIR_CRED_REALM:
+                    return 8;
+                case VIR_CRED_EXTERNAL:
+                    return 9;
             }
             // We may never reach this point
             assert (false);

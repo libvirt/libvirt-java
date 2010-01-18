@@ -9,7 +9,7 @@ public class virVcpuInfo extends Structure {
     public int number;
     public int state;
     public long cpuTime; // this is a long long in the code, so a long mapping
-                         // is correct
+    // is correct
     public int cpu;
 
 }

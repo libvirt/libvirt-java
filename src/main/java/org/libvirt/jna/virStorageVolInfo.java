@@ -8,8 +8,8 @@ import com.sun.jna.Structure;
 public class virStorageVolInfo extends Structure {
     public int type;
     public long capacity; // this is a long long in the code, so a long mapping
-                          // is correct
+    // is correct
     public long allocation; // this is a long long in the code, so a long
-                            // mapping is correct
+    // mapping is correct
 
 }

@@ -8,9 +8,9 @@ import com.sun.jna.Structure;
 public class virStoragePoolInfo extends Structure {
     public int state;
     public long capacity; // this is a long long in the code, so a long mapping
-                          // is correct
+    // is correct
     public long allocation; // this is a long long in the code, so a long
-                            // mapping is correct
+    // mapping is correct
     public long available; // this is a long long in the code, so a long mapping
-                           // is correct
+    // is correct
 }

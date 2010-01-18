@@ -56,7 +56,7 @@ public class Domain {
 
     /**
      * Constructs a Domain object from a known native DomainPointer, and a
-     * Connect object. 
+     * Connect object.
      * 
      * @param virConnect
      *            the Domain's hypervisor

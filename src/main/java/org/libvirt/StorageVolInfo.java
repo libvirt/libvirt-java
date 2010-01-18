@@ -43,14 +43,14 @@ public class StorageVolInfo {
      */
     StorageVolInfo(int type, long capacity, long allocation) {
         switch (type) {
-        case 0:
-            this.type = VirStorageVolType.VIR_STORAGE_VOL_FILE;
-            break;
-        case 1:
-            this.type = VirStorageVolType.VIR_STORAGE_VOL_BLOCK;
-            break;
-        default:
-            assert (false);
+            case 0:
+                this.type = VirStorageVolType.VIR_STORAGE_VOL_FILE;
+                break;
+            case 1:
+                this.type = VirStorageVolType.VIR_STORAGE_VOL_BLOCK;
+                break;
+            default:
+                assert (false);
         }
         this.capacity = capacity;
         this.allocation = allocation;
