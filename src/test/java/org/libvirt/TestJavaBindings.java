@@ -112,14 +112,14 @@ public class TestJavaBindings extends TestCase {
         assertEquals("Number of listed domains", 2, conn.listDomains().length);
         assertEquals("Number of defined domains", 1, conn.numOfDefinedDomains());
         assertEquals("Number of listed defined domains", 1, conn.listDefinedDomains().length);
-        this.validateDomainkData(dom2);
-        this.validateDomainkData(conn.domainLookupByName("createst"));
-        this.validateDomainkData(conn.domainLookupByUUID(UUIDArray));
-        this.validateDomainkData(conn.domainLookupByUUIDString("004b96e1-2d78-c30f-5aa5-f03c87d21e67"));
-        this.validateDomainkData(conn.domainLookupByUUID(UUID.fromString("004b96e1-2d78-c30f-5aa5-f03c87d21e67")));
+        this.validateDomainData(dom2);
+        this.validateDomainData(conn.domainLookupByName("createst"));
+        this.validateDomainData(conn.domainLookupByUUID(UUIDArray));
+        this.validateDomainData(conn.domainLookupByUUIDString("004b96e1-2d78-c30f-5aa5-f03c87d21e67"));
+        this.validateDomainData(conn.domainLookupByUUID(UUID.fromString("004b96e1-2d78-c30f-5aa5-f03c87d21e67")));
     }
 
-    public void validateDomainkData(Domain dom) throws Exception {
+    public void validateDomainData(Domain dom) throws Exception {
         assertEquals("dom.getName()", "createst", dom.getName());
         assertEquals("dom.getMaxMemory()", 8388608, dom.getMaxMemory());
         // Not supported by the test driver
@@ -137,11 +137,15 @@ public class TestJavaBindings extends TestCase {
             System.out.println(c.getTypeAsString() + ":" + c.field + ":" + c.getValueAsString());
         }
 
+        dom.getSchedulerParameters() ;
+        
         SchedUintParameter[] pars = new SchedUintParameter[1];
         pars[0] = new SchedUintParameter();
         pars[0].field = "weight";
         pars[0].value = 100;
         dom.setSchedulerParameters(pars);
+        
+        dom.getSchedulerParameters() ;        
 
         assertNotNull(Connect.connectionForDomain(dom));
         assertTrue(Connect.connectionForDomain(dom) != dom.getConnect());
