@@ -6,10 +6,10 @@ import org.libvirt.jna.virError;
 import com.sun.jna.Pointer;
 
 /**
- * We diverge from the C implementation There is no explicit cbdata field, you
- * should just add any extra data to the child class's instance.
+ * Callback class to allow users of the API to handle the Error messages in a more
+ * robust fashion.
  * 
- * @author stoty
+ * @author bkearney
  * 
  */
 public class ErrorCallback implements Libvirt.VirErrorCallback {
