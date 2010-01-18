@@ -18,27 +18,29 @@ public abstract class SchedParameter {
 
     public static SchedParameter create(virSchedParameter vParam) {
         SchedParameter returnValue = null;
-        switch (vParam.type) {
-        case (1):
-            returnValue = new SchedIntParameter(vParam.value.i);
-            break;
-        case (2):
-            returnValue = new SchedUintParameter(vParam.value.ui);
-            break;
-        case (3):
-            returnValue = new SchedLongParameter(vParam.value.l);
-            break;
-        case (4):
-            returnValue = new SchedUlongParameter(vParam.value.ul);
-            break;
-        case (5):
-            returnValue = new SchedDoubleParameter(vParam.value.d);
-            break;
-        case (6):
-            returnValue = new SchedBooleanParameter(vParam.value.b);
-            break;
+        if (vParam != null) {
+	        switch (vParam.type) {
+	        case (1):
+	            returnValue = new SchedIntParameter(vParam.value.i);
+	            break;
+	        case (2):
+	            returnValue = new SchedUintParameter(vParam.value.ui);
+	            break;
+	        case (3):
+	            returnValue = new SchedLongParameter(vParam.value.l);
+	            break;
+	        case (4):
+	            returnValue = new SchedUlongParameter(vParam.value.ul);
+	            break;
+	        case (5):
+	            returnValue = new SchedDoubleParameter(vParam.value.d);
+	            break;
+	        case (6):
+	            returnValue = new SchedBooleanParameter(vParam.value.b);
+	            break;
+	        }
+	        returnValue.field = Native.toString(vParam.field);
         }
-        returnValue.field = Native.toString(vParam.field);
         return returnValue;
     }
 
