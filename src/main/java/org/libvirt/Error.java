@@ -2,6 +2,9 @@ package org.libvirt;
 
 import java.io.Serializable;
 
+import org.libvirt.jna.ConnectionPointer;
+import org.libvirt.jna.DomainPointer;
+import org.libvirt.jna.NetworkPointer;
 import org.libvirt.jna.virError;
 
 import com.sun.jna.Pointer;
@@ -134,14 +137,14 @@ public class Error implements Serializable {
     ErrorDomain domain;
     String message;
     ErrorLevel level;
-    Pointer VCP; /* Deprecated */
-    Pointer VDP; /* Deprecated */
+    ConnectionPointer VCP; /* Deprecated */
+    DomainPointer VDP; /* Deprecated */
     String str1;
     String str2;
     String str3;
     int int1;
     int int2;
-    Pointer VNP; /* Deprecated */
+    NetworkPointer VNP; /* Deprecated */
 
     public Error() {
 

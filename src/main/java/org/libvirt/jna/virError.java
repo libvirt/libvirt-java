@@ -11,12 +11,12 @@ public class virError extends Structure {
     public int domain;
     public String message;
     public int level;
-    public Pointer conn;
-    public Pointer dom;
+    public ConnectionPointer conn;
+    public DomainPointer dom;
     public String str1;
     public String str2;
     public String str3;
     public int int1;
     public int int2;
-    public Pointer net;
+    public NetworkPointer net;
 }
