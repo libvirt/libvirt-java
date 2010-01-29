@@ -1,11 +1,11 @@
 package org.libvirt.jna;
 
-import com.sun.jna.Structure;
+import com.sun.jna.Union;
 
 /**
  * JNA mapping for the virSchedParameterValue structure
  */
-public class virSchedParameterValue extends Structure {
+public class virSchedParameterValue extends Union {
     public int i; /* data for integer case */
     public int ui; /* data for unsigned integer case */
     public long l; /* data for long long integer case */
