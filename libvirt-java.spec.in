@@ -85,6 +85,10 @@ rm -rf %{buildroot}
 %{_javadocdir}/%{name}-%{version}
 
 %changelog
+* Fri Jan 29 2010 Bryan Kearney <bkearney@redhat.com> - 0.4.2-1
+- Changed Scheduled Parameters to be a Union instead of a Struct.
+- Better Pointer mappings in the error callback
+
 * Mon Jan 18 2010 Bryan Kearney <bkearney@redhat.com> - 0.4.1-1
 - Better null checking around Scheduled Parameters
 - Added error function callback
