@@ -9,13 +9,13 @@
 	<property name="spec.file" value="target/${spec}" />
 
 	<path id="compile.classpath">
-		<fileset dir="/usr/share/java">
+		<fileset dir="${jar.dir}">
 			<include name="jna.jar" />
 		</fileset>
 	</path>
 
 	<path id="test.classpath">
-		<fileset dir="/usr/share/java">
+		<fileset dir="${jar.dir}">
 			<include name="jna.jar" />
 			<include name="junit.jar" />
 		</fileset>
