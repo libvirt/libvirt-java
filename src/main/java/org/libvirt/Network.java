@@ -74,6 +74,7 @@ public class Network {
      * return an error.
      * 
      * @throws LibvirtException
+     * @return number of references left (>= 0) for success, -1 for failure.
      */
     public int free() throws LibvirtException {
         int success = 0;

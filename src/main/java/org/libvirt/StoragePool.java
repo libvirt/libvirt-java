@@ -118,10 +118,18 @@ public class StoragePool {
     /**
      * Free a storage pool object, releasing all memory associated with it. Does
      * not change the state of the pool on the host.
+     *
+     * @throws LibvirtException
+     * @return number of references left (>= 0) for success, -1 for failure.
      */
-    public void free() throws LibvirtException {
-        libvirt.virStoragePoolFree(VSPP);
-        processError();
+    public int free() throws LibvirtException {
+        int success = 0;
+        if (VSPP != null) {
+            success = libvirt.virStoragePoolFree(VSPP);
+            processError();
+            VSPP = null;
+        }
+        return success;
     }
 
     /**

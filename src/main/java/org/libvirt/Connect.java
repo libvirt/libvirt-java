@@ -219,7 +219,7 @@ public class Connect {
      * the object after close() will result in an exception.
      * 
      * @throws LibvirtException
-     * @returns 0 for success, -1 for failure
+     * @return number of references left (>= 0) for success, -1 for failure.
      */
     public int close() throws LibvirtException {
         int success = 0;
@@ -227,14 +227,10 @@ public class Connect {
             success = libvirt.virConnectClose(VCP);
             processError();
             // If leave an invalid pointer dangling around JVM crashes and burns
-            // if
-            // someone tries to call a method on us
+            // if someone tries to call a method on us
             // We rely on the underlying libvirt error handling to detect that
-            // it's
-            // called with a null virConnectPointer
-            if (success == 0) {
-                VCP = null;
-            }
+            // it's called with a null virConnectPointer      
+            VCP = null;
         }
         return success;
     }

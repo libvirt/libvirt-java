@@ -80,10 +80,16 @@ public class StorageVol {
      * to exist
      * 
      * @throws LibvirtException
+     * @return number of references left (>= 0) for success, -1 for failure.
      */
-    public void free() throws LibvirtException {
-        libvirt.virStorageVolFree(VSVP);
-        processError();
+    public int free() throws LibvirtException {
+        int success = 0;
+        if (VSVP != null) {
+            libvirt.virStorageVolFree(VSVP);
+            processError();
+            VSVP = null;
+        }
+        return success;
     }
 
     /**
