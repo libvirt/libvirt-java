@@ -75,6 +75,11 @@ public class StorageVol {
         processError();
     }
 
+    @Override
+    public void finalize() throws LibvirtException {
+        free();
+    }
+
     /**
      * Release the storage volume handle. The underlying storage volume contains
      * to exist

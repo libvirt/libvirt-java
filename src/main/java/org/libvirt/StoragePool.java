@@ -115,6 +115,11 @@ public class StoragePool {
         processError();
     }
 
+    @Override
+    public void finalize() throws LibvirtException {
+        free();
+    }
+
     /**
      * Free a storage pool object, releasing all memory associated with it. Does
      * not change the state of the pool on the host.

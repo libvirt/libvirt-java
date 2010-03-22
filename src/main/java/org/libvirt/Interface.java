@@ -112,6 +112,11 @@ public class Interface {
         return returnValue;
     }
 
+    @Override
+    public void finalize() throws LibvirtException {
+        free();
+    }
+
     /**
      * Frees this interface object. The running instance is kept alive. The data
      * structure is freed and should not be used thereafter.

@@ -132,6 +132,11 @@ public class Device {
         return desc;
     }
 
+    @Override
+    public void finalize() throws LibvirtException {
+        free();
+    }
+
     /**
      * Frees this device object. The running instance is kept alive. The data
      * structure is freed and should not be used thereafter.

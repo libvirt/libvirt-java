@@ -64,6 +64,7 @@ public class Network {
         processError();
     }
 
+    @Override
     public void finalize() throws LibvirtException {
         free();
     }
