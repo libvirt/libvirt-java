@@ -62,7 +62,8 @@ install -d -m0755 %{buildroot}%{_javadir}
 install -d -m0755 %{buildroot}%{_javadocdir}/%{name}-%{version}
 cp target/%{prefix}-%{version}.jar %{buildroot}%{_javadir}
 %{__ln_s} %{_javadir}/%{prefix}-%{version}.jar %{buildroot}%{_javadir}/%{prefix}.jar 
-cp -r target/javadoc %{buildroot}%{_javadocdir}/%{name}-%{version}
+cp -r target/javadoc/* %{buildroot}%{_javadocdir}/%{name}-%{version}
+%{__ln_s} %{_javadocdir}/%{name}-%{version} %{buildroot}%{_javadocdir}/%{name}
 
 %check
 ant test
@@ -83,6 +84,7 @@ rm -rf %{buildroot}
 %files javadoc
 %defattr(-,root,root)
 %{_javadocdir}/%{name}-%{version}
+%{_javadocdir}/%{name}
 
 %changelog
 * Fri Jan 29 2010 Bryan Kearney <bkearney@redhat.com> - 0.4.2-1
