@@ -45,7 +45,6 @@ to build applications with Libvirt-java.
 %package    javadoc
 Summary:    Java documentation for %{name}
 Group:      Development/Documentation
-Requires:   %{name} = %{version}-%{release}
 Requires:   jpackage-utils
 
 %description    javadoc
