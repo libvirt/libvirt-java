@@ -43,6 +43,9 @@ import com.sun.jna.ptr.LongByReference;
  * 
  * LIBVIRT_0.6.4 
  * virInterfaceRef
+ * 
+ * LIBVIRT_0.7.1 
+ * virSecretRef 
  */
 public interface Libvirt extends Library {
     // Callbacks
@@ -82,6 +85,7 @@ public interface Libvirt extends Library {
     public int virConnectListDomains(ConnectionPointer virConnectPtr, int[] ids, int maxnames);
     public int virConnectListInterfaces(ConnectionPointer virConnectPtr, String[] name, int maxNames);
     public int virConnectListNetworks(ConnectionPointer virConnectPtr, String[] name, int maxnames);
+    public int virConnectListSecrets(ConnectionPointer virConnectPtr, String[] uids, int maxUids);
     public int virConnectListStoragePools(ConnectionPointer virConnectPtr, String[] names, int maxnames);
     public int virConnectNumOfDefinedDomains(ConnectionPointer virConnectPtr);
     public int virConnectNumOfDefinedNetworks(ConnectionPointer virConnectPtr);
@@ -90,7 +94,8 @@ public interface Libvirt extends Library {
     public int virConnectNumOfDomains(ConnectionPointer virConnectPtr);
     public int virConnectNumOfInterfaces(ConnectionPointer virConnectPtr);
     public int virConnectNumOfNetworks(ConnectionPointer virConnectPtr);
-    public int virConnectNumOfStoragePools(ConnectionPointer virConnectPtr);
+    public int virConnectNumOfSecrets(ConnectionPointer virConnectPtr);      
+    public int virConnectNumOfStoragePools(ConnectionPointer virConnectPtr);  
     public ConnectionPointer virConnectOpen(String name);
     public ConnectionPointer virConnectOpenAuth(String name, virConnectAuth auth, int flags);
     public ConnectionPointer virConnectOpenReadOnly(String name);
@@ -248,4 +253,19 @@ public interface Libvirt extends Library {
     public int virInterfaceUndefine(InterfacePointer virDevicePointer);
     public int virInterfaceCreate(InterfacePointer virDevicePointer);
     public int virInterfaceDestroy(InterfacePointer virDevicePointer);
+    
+    // Secret Methods
+    public ConnectionPointer virSecretGetConnect(SecretPointer virSecretPtr);
+    public int virSecretFree(SecretPointer virSecretPtr);    
+    public SecretPointer virSecretDefineXML(ConnectionPointer virConnectPtr, String xml, int flags);
+    public int virSecretGetUUID(SecretPointer virSecretPtr, byte[] uuidString);
+    public int virSecretGetUUIDString(SecretPointer virSecretPtr, byte[] uuidString);
+    public String virSecretGetUsageID(SecretPointer virSecretPtr);   
+    public String virSecretGetValue(SecretPointer virSecretPtr, NativeLong value_size, int flags);      
+    public String virSecretGetXMLDesc(SecretPointer virSecretPtr, int flags);      
+    public SecretPointer virSecretLookupByUsage(ConnectionPointer virConnectPtr, int usageType, String usageID);
+    public SecretPointer virSecretLookupByUUID(ConnectionPointer virConnectPtr, byte[] uuidBytes);
+    public SecretPointer virSecretLookupByUUIDString(ConnectionPointer virConnectPtr, String uuidstr);
+    public int virSecretSetValue(SecretPointer virSecretPtr, String value, NativeLong value_size, int flags);        
+    public int virSecretUndefine(SecretPointer virSecretPtr);
 }

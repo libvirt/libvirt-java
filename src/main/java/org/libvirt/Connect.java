@@ -8,6 +8,7 @@ import org.libvirt.jna.DomainPointer;
 import org.libvirt.jna.InterfacePointer;
 import org.libvirt.jna.Libvirt;
 import org.libvirt.jna.NetworkPointer;
+import org.libvirt.jna.SecretPointer;
 import org.libvirt.jna.StoragePoolPointer;
 import org.libvirt.jna.StorageVolPointer;
 import org.libvirt.jna.virConnectAuth;
@@ -58,6 +59,19 @@ public class Connect {
      */
     public static Connect connectionForNetwork(Network network) {
         ConnectionPointer conn = Libvirt.INSTANCE.virNetworkGetConnect(network.VNP);
+        return new Connect(conn);
+    }
+
+    /**
+     * Creates a new connection object from the network. If all you want is the
+     * existing network's connection, use the getConnection method directly.
+     * Thie method returns a new connection.
+     * 
+     * @param network
+     * @return a new connection
+     */
+    public static Connect connectionForSecret(Secret secret) {
+        ConnectionPointer conn = Libvirt.INSTANCE.virSecretGetConnect(secret.VSP);
         return new Connect(conn);
     }
 
@@ -194,25 +208,6 @@ public class Connect {
         processError();
         ErrorHandler.processError(Libvirt.INSTANCE);
     }
-    
-    public void setConnectionErrorCallback(Libvirt.VirErrorCallback callback) throws LibvirtException {
-        libvirt.virConnSetErrorFunc(VCP, null, callback);
-        processError();
-    }    
-
-    /**
-     * Fetch a device based on its unique name
-     * 
-     * @param name
-     *            name of device to fetch
-     * @return Device object
-     * @throws LibvirtException
-     */
-    public Device deviceLookupByName(String name) throws LibvirtException {
-        DevicePointer ptr = libvirt.virNodeDeviceLookupByName(VCP, name);
-        processError();
-        return new Device(this, ptr);
-    }
 
     /**
      * Closes the connection to the hypervisor/driver. Calling any methods on
@@ -229,7 +224,7 @@ public class Connect {
             // If leave an invalid pointer dangling around JVM crashes and burns
             // if someone tries to call a method on us
             // We rely on the underlying libvirt error handling to detect that
-            // it's called with a null virConnectPointer      
+            // it's called with a null virConnectPointer
             VCP = null;
         }
         return success;
@@ -252,6 +247,20 @@ public class Connect {
             returnValue = new Device(this, ptr);
         }
         return returnValue;
+    }
+
+    /**
+     * Fetch a device based on its unique name
+     * 
+     * @param name
+     *            name of device to fetch
+     * @return Device object
+     * @throws LibvirtException
+     */
+    public Device deviceLookupByName(String name) throws LibvirtException {
+        DevicePointer ptr = libvirt.virNodeDeviceLookupByName(VCP, name);
+        processError();
+        return new Device(this, ptr);
     }
 
     /**
@@ -477,6 +486,26 @@ public class Connect {
     }
 
     /**
+     * NUMA Support
+     */
+    public long getCellsFreeMemory(int startCells, int maxCells) throws LibvirtException {
+        LongByReference returnValue = new LongByReference();
+        libvirt.virNodeGetCellsFreeMemory(VCP, returnValue, startCells, maxCells);
+        processError();
+        return returnValue.getValue();
+    }
+
+    /**
+     * Returns the free memory for the connection
+     */
+    public long getFreeMemory() throws LibvirtException {
+        long returnValue = 0;
+        returnValue = libvirt.virNodeGetFreeMemory(VCP);
+        processError();
+        return returnValue;
+    }
+
+    /**
      * Returns the system hostname on which the hypervisor is running. (the
      * result of the gethostname(2) system call) If we are connected to a remote
      * system, then this returns the hostname of the remote system.
@@ -582,6 +611,24 @@ public class Connect {
     }
 
     /**
+     * Define an interface (or modify existing interface configuration)
+     * 
+     * @param xmlDesc
+     *            the interface to create
+     * @return the Interface object
+     * @throws LibvirtException
+     */
+    public Interface interfaceDefineXML(String xmlDesc) throws LibvirtException {
+        Interface returnValue = null;
+        InterfacePointer ptr = libvirt.virInterfaceDefineXML(VCP, xmlDesc, 0);
+        processError();
+        if (ptr != null) {
+            returnValue = new Interface(this, ptr);
+        }
+        return returnValue;
+    }
+
+    /**
      * Try to lookup an interface on the given hypervisor based on its MAC.
      * 
      * @throws LibvirtException
@@ -612,24 +659,6 @@ public class Connect {
     }
 
     /**
-     * Define an interface (or modify existing interface configuration)
-     * 
-     * @param xmlDesc
-     *            the interface to create
-     * @return the Interface object
-     * @throws LibvirtException
-     */
-    public Interface interfaceDefineXML(String xmlDesc) throws LibvirtException {
-        Interface returnValue = null;
-        InterfacePointer ptr = libvirt.virInterfaceDefineXML(VCP, xmlDesc, 0);
-        processError();
-        if (ptr != null) {
-            returnValue = new Interface(this, ptr);
-        }
-        return returnValue;
-    }
-
-    /**
      * Lists the names of the defined but inactive domains
      * 
      * @return an Array of Strings that contains the names of the defined
@@ -637,13 +666,30 @@ public class Connect {
      * @throws LibvirtException
      */
     public String[] listDefinedDomains() throws LibvirtException {
-        int maxnames = this.numOfDefinedDomains();
+        int maxnames = numOfDefinedDomains();
         String[] names = new String[maxnames];
         if (maxnames > 0) {
             libvirt.virConnectListDefinedDomains(VCP, names, maxnames);
             processError();
         }
         return names;
+    }
+
+    /**
+     * Provides the list of names of defined interfaces on this host
+     * 
+     * @return an Array of Strings that contains the names of the interfaces on
+     *         this host
+     * @throws LibvirtException
+     */
+    public String[] listDefinedInterfaces() throws LibvirtException {
+        int num = numOfDefinedInterfaces();
+        String[] returnValue = new String[num];
+        if (num > 0) {
+            libvirt.virConnectListDefinedInterfaces(VCP, returnValue, num);
+            processError();
+        }
+        return returnValue;
     }
 
     /**
@@ -654,7 +700,7 @@ public class Connect {
      * @throws LibvirtException
      */
     public String[] listDefinedNetworks() throws LibvirtException {
-        int maxnames = this.numOfDefinedNetworks();
+        int maxnames = numOfDefinedNetworks();
         String[] names = new String[maxnames];
 
         if (maxnames > 0) {
@@ -672,27 +718,10 @@ public class Connect {
      * @throws LibvirtException
      */
     public String[] listDefinedStoragePools() throws LibvirtException {
-        int num = this.numOfDefinedStoragePools();
+        int num = numOfDefinedStoragePools();
         String[] returnValue = new String[num];
         libvirt.virConnectListDefinedStoragePools(VCP, returnValue, num);
         processError();
-        return returnValue;
-    }
-
-    /**
-     * Provides the list of names of defined interfaces on this host
-     * 
-     * @return an Array of Strings that contains the names of the interfaces on
-     *         this host
-     * @throws LibvirtException
-     */
-    public String[] listDefinedInterfaces() throws LibvirtException {
-        int num = this.numOfDefinedInterfaces();
-        String[] returnValue = new String[num];
-        if (num > 0) {
-            libvirt.virConnectListDefinedInterfaces(VCP, returnValue, num);
-            processError();
-        }
         return returnValue;
     }
 
@@ -703,7 +732,7 @@ public class Connect {
      *            optional capability name
      */
     public String[] listDevices(String capabilityName) throws LibvirtException {
-        int maxDevices = this.numOfDevices(capabilityName);
+        int maxDevices = numOfDevices(capabilityName);
         String[] names = new String[maxDevices];
 
         if (maxDevices > 0) {
@@ -720,7 +749,7 @@ public class Connect {
      * @throws LibvirtException
      */
     public int[] listDomains() throws LibvirtException {
-        int maxids = this.numOfDomains();
+        int maxids = numOfDomains();
         int[] ids = new int[maxids];
 
         if (maxids > 0) {
@@ -738,7 +767,7 @@ public class Connect {
      * @throws LibvirtException
      */
     public String[] listInterfaces() throws LibvirtException {
-        int num = this.numOfInterfaces();
+        int num = numOfInterfaces();
         String[] returnValue = new String[num];
         if (num > 0) {
             libvirt.virConnectListInterfaces(VCP, returnValue, num);
@@ -755,7 +784,7 @@ public class Connect {
      * @throws LibvirtException
      */
     public String[] listNetworks() throws LibvirtException {
-        int maxnames = this.numOfNetworks();
+        int maxnames = numOfNetworks();
         String[] names = new String[maxnames];
 
         if (maxnames > 0) {
@@ -766,6 +795,20 @@ public class Connect {
     }
 
     /**
+     * Retrieve the List UUIDs of defined secrets
+     * 
+     * @return an Array of Strings that contains the uuids of the defined
+     *         secrets
+     */
+    public String[] listSecrets() throws LibvirtException {
+        int num = numOfSecrets();
+        String[] returnValue = new String[num];
+        libvirt.virConnectListSecrets(VCP, returnValue, num);
+        processError();
+        return returnValue;
+    }
+
+    /**
      * Provides the list of names of active storage pools.
      * 
      * @return an Array of Strings that contains the names of the defined
@@ -773,7 +816,7 @@ public class Connect {
      * @throws LibvirtException
      */
     public String[] listStoragePools() throws LibvirtException {
-        int num = this.numOfStoragePools();
+        int num = numOfStoragePools();
         String[] returnValue = new String[num];
         libvirt.virConnectListStoragePools(VCP, returnValue, num);
         processError();
@@ -909,38 +952,6 @@ public class Connect {
     }
 
     /**
-     * NUMA Support
-     */
-    public long getCellsFreeMemory(int startCells, int maxCells) throws LibvirtException {
-        LongByReference returnValue = new LongByReference();
-        libvirt.virNodeGetCellsFreeMemory(VCP, returnValue, startCells, maxCells);
-        processError();
-        return returnValue.getValue();
-    }
-
-    /**
-     * Returns the free memory for the connection
-     */
-    public long getFreeMemory() throws LibvirtException {
-        long returnValue = 0;
-        returnValue = libvirt.virNodeGetFreeMemory(VCP);
-        processError();
-        return returnValue;
-    }
-
-    /**
-     * Provides the number of node devices.
-     * 
-     * @return the number of inactive domains
-     * @throws LibvirtException
-     */
-    public int numOfDevices(String capabilityName) throws LibvirtException {
-        int returnValue = libvirt.virNodeNumOfDevices(VCP, capabilityName, 0);
-        processError();
-        return returnValue;
-    }
-
-    /**
      * Provides the number of inactive domains.
      * 
      * @return the number of inactive domains
@@ -948,6 +959,18 @@ public class Connect {
      */
     public int numOfDefinedDomains() throws LibvirtException {
         int returnValue = libvirt.virConnectNumOfDefinedDomains(VCP);
+        processError();
+        return returnValue;
+    }
+
+    /**
+     * Provides the number of defined interfaces.
+     * 
+     * @return the number of interfaces
+     * @throws LibvirtException
+     */
+    public int numOfDefinedInterfaces() throws LibvirtException {
+        int returnValue = libvirt.virConnectNumOfDefinedInterfaces(VCP);
         processError();
         return returnValue;
     }
@@ -977,6 +1000,18 @@ public class Connect {
     }
 
     /**
+     * Provides the number of node devices.
+     * 
+     * @return the number of inactive domains
+     * @throws LibvirtException
+     */
+    public int numOfDevices(String capabilityName) throws LibvirtException {
+        int returnValue = libvirt.virNodeNumOfDevices(VCP, capabilityName, 0);
+        processError();
+        return returnValue;
+    }
+
+    /**
      * Provides the number of active domains.
      * 
      * @return the number of active domains
@@ -1001,18 +1036,6 @@ public class Connect {
     }
 
     /**
-     * Provides the number of defined interfaces.
-     * 
-     * @return the number of interfaces
-     * @throws LibvirtException
-     */
-    public int numOfDefinedInterfaces() throws LibvirtException {
-        int returnValue = libvirt.virConnectNumOfDefinedInterfaces(VCP);
-        processError();
-        return returnValue;
-    }
-
-    /**
      * Provides the number of active networks.
      * 
      * @return the number of active networks
@@ -1020,6 +1043,17 @@ public class Connect {
      */
     public int numOfNetworks() throws LibvirtException {
         int returnValue = libvirt.virConnectNumOfNetworks(VCP);
+        processError();
+        return returnValue;
+    }
+
+    /**
+     * Fetch number of currently defined secrets.
+     * 
+     * @return the number of secrets
+     */
+    public int numOfSecrets() throws LibvirtException {
+        int returnValue = libvirt.virConnectNumOfSecrets(VCP);
         processError();
         return returnValue;
     }
@@ -1054,6 +1088,84 @@ public class Connect {
      */
     public void restore(String from) throws LibvirtException {
         libvirt.virDomainRestore(VCP, from);
+        processError();
+    }
+
+    /**
+     * If XML specifies a UUID, locates the specified secret and replaces all
+     * attributes of the secret specified by UUID by attributes specified in xml
+     * (any attributes not specified in xml are discarded). Otherwise, creates a
+     * new secret with an automatically chosen UUID, and initializes its
+     * attributes from xml.
+     * 
+     * @param xmlDesc
+     *            the secret to create
+     * @return the Secret object
+     * @throws LibvirtException
+     */
+    public Secret secretDefineXML(String xmlDesc) throws LibvirtException {
+        Secret returnValue = null;
+        SecretPointer ptr = libvirt.virSecretDefineXML(VCP, xmlDesc, 0);
+        processError();
+        if (ptr != null) {
+            returnValue = new Secret(this, ptr);
+        }
+        return returnValue;
+    }
+
+    /**
+     * Looks up a secret based on its UUID in array form. The UUID Array
+     * contains an unpacked representation of the UUID, each int contains only
+     * one byte.
+     * 
+     * @param UUID
+     *            the UUID as an unpacked int array
+     * @return the Secret object
+     * @throws LibvirtException
+     */
+    public Secret secretLookupByUUID(int[] UUID) throws LibvirtException {
+        byte[] uuidBytes = Connect.createUUIDBytes(UUID);
+        Secret returnValue = null;
+        SecretPointer ptr = libvirt.virSecretLookupByUUID(VCP, uuidBytes);
+        processError();
+        if (ptr != null) {
+            returnValue = new Secret(this, ptr);
+        }
+        return returnValue;
+    }
+
+    /**
+     * Fetch a secret based on its globally unique id
+     * 
+     * @param UUID
+     *            a java UUID
+     * @return a new domain object
+     * @throws LibvirtException
+     */
+    public Secret secretLookupByUUID(UUID uuid) throws LibvirtException {
+        return secretLookupByUUIDString(uuid.toString());
+    }
+
+    /**
+     * Looks up a secret based on its UUID in String form.
+     * 
+     * @param UUID
+     *            the UUID in canonical String representation
+     * @return the Domain object
+     * @throws LibvirtException
+     */
+    public Secret secretLookupByUUIDString(String UUID) throws LibvirtException {
+        Secret returnValue = null;
+        SecretPointer ptr = libvirt.virSecretLookupByUUIDString(VCP, UUID);
+        processError();
+        if (ptr != null) {
+            returnValue = new Secret(this, ptr);
+        }
+        return returnValue;
+    }
+
+    public void setConnectionErrorCallback(Libvirt.VirErrorCallback callback) throws LibvirtException {
+        libvirt.virConnSetErrorFunc(VCP, null, callback);
         processError();
     }
 
