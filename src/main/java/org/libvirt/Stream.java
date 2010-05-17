@@ -97,6 +97,19 @@ public class Stream {
         processError();
         return returnValue;
     }
+    
+    /**
+     * Batch receive method
+     * @see http://www.libvirt.org/html/libvirt-libvirt.html#virStreamRecvAll
+     * @param handler the callback handler
+     * @return 0 if successfule, -1 otherwise
+     * @throws LibvirtException
+     */
+    public int receiveAll(Libvirt.VirStreamSinkFunc handler) throws LibvirtException {
+        int returnValue = libvirt.virStreamRecvAll(VSP, handler, null);
+        processError();
+        return returnValue;        
+    }
 
     /**
      * Write a series of bytes to the stream.
@@ -112,4 +125,18 @@ public class Stream {
         processError();
         return returnValue;
     }
+    
+    
+    /**
+     * Batch send method
+     * @see <a href="http://www.libvirt.org/html/libvirt-libvirt.html#virStreamSendAll">Libvirt Documentation</a>
+     * @param handler the callback handler
+     * @return 0 if successfule, -1 otherwise
+     * @throws LibvirtException
+     */
+    public int sendAll(Libvirt.VirStreamSourceFunc handler) throws LibvirtException {
+        int returnValue = libvirt.virStreamSendAll(VSP, handler, null);
+        processError();
+        return returnValue;        
+    }    
 }

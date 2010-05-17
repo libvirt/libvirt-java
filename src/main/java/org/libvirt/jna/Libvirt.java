@@ -59,10 +59,24 @@ public interface Libvirt extends Library {
         public int authCallback(virConnectCredential cred, int ncred, Pointer cbdata);
     }
 
+    /**
+     * Error callback
+     */
     interface VirErrorCallback extends Callback {
         public void errorCallback(Pointer userData, virError error);
     }
-
+    
+    /**
+     * Stream callbacks
+     */
+    interface VirStreamSinkFunc extends Callback {
+        public int sinkCallback(StreamPointer virStreamPtr, String data, NativeLong nbytes, Pointer opaque) ;
+    }
+    
+    interface VirStreamSourceFunc extends Callback {
+        public int sourceCallback(StreamPointer virStreamPtr, String data, NativeLong nbytes, Pointer opaque) ;
+    }    
+    
     Libvirt INSTANCE = (Libvirt) Native.loadLibrary("virt", Libvirt.class);
 
     // Constants we need
@@ -280,5 +294,7 @@ public interface Libvirt extends Library {
     public int virStreamFree(StreamPointer virStreamPtr) ;
     public StreamPointer virStreamNew(ConnectionPointer virConnectPtr, int flags) ;
     public int virStreamSend(StreamPointer virStreamPtr, String data, NativeLong size);
+    public int virStreamSendAll(StreamPointer virStreamPtr, Libvirt.VirStreamSourceFunc handler, Pointer opaque);    
     public int virStreamRecv(StreamPointer virStreamPtr, byte[] data, NativeLong length);
+    public int virStreamRecvAll(StreamPointer virStreamPtr, Libvirt.VirStreamSinkFunc handler, Pointer opaque);    
 }
