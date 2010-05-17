@@ -499,7 +499,26 @@ public class Domain {
         processError();
         return new Domain(dconn, newPtr);
     }
+    
+    
+    /**
+     * Migrate the domain object from its current host to the destination host given by duri. 
+     * @see http://www.libvirt.org/html/libvirt-libvirt.html#virDomainMigrateToURI
+     * 
+     * @param uri The destination URI
+     * @param flags Controls the migrate
+     * @param dname The name at the destnation
+     * @param bandwidth Specify the migration bandwidth
+     * @return 0 if successful, -1 if not
+     * @throws LibvirtException
+     */
+    public int migrateToURI( String uri, long flags, String dname, long bandwidth) throws LibvirtException {
+        int returnValue = libvirt.virDomainMigrateToURI(VDP, uri, new NativeLong(flags), dname, new NativeLong(bandwidth));
+        processError();
+        return returnValue;
+    }    
 
+    
     /**
      * Dynamically changes the real CPUs which can be allocated to a virtual
      * CPU. This function requires priviledged access to the hypervisor.

@@ -150,6 +150,8 @@ public interface Libvirt extends Library {
     public DomainPointer virDomainLookupByUUIDString(ConnectionPointer virConnectPtr, String uuidstr);
     public DomainPointer virDomainMigrate(DomainPointer virDomainPtr, ConnectionPointer virConnectPtr,
             NativeLong flags, String dname, String uri, NativeLong bandwidth);
+    public int virDomainMigrateToURI(DomainPointer virDomainPtr, String duri, 
+            NativeLong flags, String dname, NativeLong bandwidth);
     public int virDomainPinVcpu(DomainPointer virDomainPtr, int vcpu, byte[] cpumap, int maplen);
     public int virDomainReboot(DomainPointer virDomainPtr, int flags);
     public int virDomainRestore(ConnectionPointer virConnectPtr, String from);
