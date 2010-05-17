@@ -66,7 +66,7 @@ public class Domain {
     Domain(Connect virConnect, DomainPointer VDP) {
         this.virConnect = virConnect;
         this.VDP = VDP;
-        this.libvirt = virConnect.libvirt;
+        libvirt = virConnect.libvirt;
     }
 
     /**
@@ -378,7 +378,7 @@ public class Domain {
      */
     public int[] getVcpusCpuMaps() throws LibvirtException {
         int[] returnValue = new int[0];
-        int cpuCount = this.getMaxVcpus();
+        int cpuCount = getMaxVcpus();
 
         if (cpuCount > 0) {
             NodeInfo nodeInfo = virConnect.nodeInfo();
@@ -402,7 +402,7 @@ public class Domain {
      * @throws LibvirtException
      */
     public VcpuInfo[] getVcpusInfo() throws LibvirtException {
-        int cpuCount = this.getMaxVcpus();
+        int cpuCount = getMaxVcpus();
         VcpuInfo[] returnValue = new VcpuInfo[cpuCount];
         virVcpuInfo[] infos = new virVcpuInfo[cpuCount];
         libvirt.virDomainGetVcpus(VDP, infos, cpuCount, null, 0);
@@ -499,26 +499,31 @@ public class Domain {
         processError();
         return new Domain(dconn, newPtr);
     }
-    
-    
+
     /**
-     * Migrate the domain object from its current host to the destination host given by duri. 
-     * @see http://www.libvirt.org/html/libvirt-libvirt.html#virDomainMigrateToURI
+     * Migrate the domain object from its current host to the destination host
+     * given by duri.
      * 
-     * @param uri The destination URI
-     * @param flags Controls the migrate
-     * @param dname The name at the destnation
-     * @param bandwidth Specify the migration bandwidth
+     * @see http
+     *      ://www.libvirt.org/html/libvirt-libvirt.html#virDomainMigrateToURI
+     * 
+     * @param uri
+     *            The destination URI
+     * @param flags
+     *            Controls the migrate
+     * @param dname
+     *            The name at the destnation
+     * @param bandwidth
+     *            Specify the migration bandwidth
      * @return 0 if successful, -1 if not
      * @throws LibvirtException
      */
-    public int migrateToURI( String uri, long flags, String dname, long bandwidth) throws LibvirtException {
+    public int migrateToURI(String uri, long flags, String dname, long bandwidth) throws LibvirtException {
         int returnValue = libvirt.virDomainMigrateToURI(VDP, uri, new NativeLong(flags), dname, new NativeLong(bandwidth));
         processError();
         return returnValue;
-    }    
+    }
 
-    
     /**
      * Dynamically changes the real CPUs which can be allocated to a virtual
      * CPU. This function requires priviledged access to the hypervisor.
