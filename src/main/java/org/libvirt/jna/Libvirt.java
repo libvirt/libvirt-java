@@ -46,6 +46,9 @@ import com.sun.jna.ptr.LongByReference;
  * 
  * LIBVIRT_0.7.1 
  * virSecretRef 
+ *  
+ * LIBVIRT_0.7.2 
+ * virStreamRef 
  */
 public interface Libvirt extends Library {
     // Callbacks
@@ -268,4 +271,12 @@ public interface Libvirt extends Library {
     public SecretPointer virSecretLookupByUUIDString(ConnectionPointer virConnectPtr, String uuidstr);
     public int virSecretSetValue(SecretPointer virSecretPtr, String value, NativeLong value_size, int flags);        
     public int virSecretUndefine(SecretPointer virSecretPtr);
+    
+    //Stream Methods
+    public int virStreamAbort(StreamPointer virStreamPtr) ;    
+    public int virStreamFinish(StreamPointer virStreamPtr) ;
+    public int virStreamFree(StreamPointer virStreamPtr) ;
+    public StreamPointer virStreamNew(ConnectionPointer virConnectPtr, int flags) ;
+    public int virStreamSend(StreamPointer virStreamPtr, String data, NativeLong size);
+    public int virStreamRecv(StreamPointer virStreamPtr, byte[] data, NativeLong length);
 }

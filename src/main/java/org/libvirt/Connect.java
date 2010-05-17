@@ -11,6 +11,7 @@ import org.libvirt.jna.NetworkPointer;
 import org.libvirt.jna.SecretPointer;
 import org.libvirt.jna.StoragePoolPointer;
 import org.libvirt.jna.StorageVolPointer;
+import org.libvirt.jna.StreamPointer;
 import org.libvirt.jna.virConnectAuth;
 import org.libvirt.jna.virNodeInfo;
 
@@ -1307,5 +1308,16 @@ public class Connect {
         StorageVolPointer sPtr = libvirt.virStorageVolLookupByPath(VCP, path);
         processError();
         return new StorageVol(this, sPtr);
+    }
+    
+    /**
+     * Creates a new stream object which can be used to perform streamed I/O with other public API function.
+     * @param flags use Stream.VIR_STREAM_NONBLOCK if non-blocking is required
+     * @return the new object
+     */
+    public Stream virStreamNew(int flags) throws LibvirtException {
+        StreamPointer sPtr = libvirt.virStreamNew(VCP, flags);
+        processError() ;
+        return new Stream(this, sPtr);
     }
 }
