@@ -242,6 +242,20 @@ public class Connect {
         }
         return success;
     }
+    
+    
+    /**
+     * Compares the given CPU description with the host CPU
+     * @see <a href="http://www.libvirt.org/html/libvirt-libvirt.html#virConnectCompareCPU">Libvirt Documentation</a>
+     * @param xmlDesc
+     * @return comparison result according to enum CPUCompareResult
+     * @throws LibvirtException
+     */
+    public CPUCompareResult compareCPU(String xmlDesc) throws LibvirtException {
+        int rawResult = libvirt.virConnectCompareCPU(VCP, xmlDesc, 0);
+        processError();        
+        return CPUCompareResult.get(rawResult);
+    }
 
     /**
      * Create a new device on the VM host machine, for example, virtual HBAs

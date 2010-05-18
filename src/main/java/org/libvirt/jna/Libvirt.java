@@ -95,6 +95,7 @@ public interface Libvirt extends Library {
     // Connection Functions
     public int virConnCopyLastError(ConnectionPointer virConnectPtr, virError to);
     public int virConnectClose(ConnectionPointer virConnectPtr);
+    public int virConnectCompareCPU(ConnectionPointer virConnectPtr, String xmlDesc, int flags);
     public void virConnSetErrorFunc(ConnectionPointer virConnectPtr, Pointer userData, VirErrorCallback callback);
     public int virConnectIsEncrypted(ConnectionPointer virConnectPtr) ;
     public int virConnectIsSecure(ConnectionPointer virConnectPtr) ;    
