@@ -169,6 +169,8 @@ public interface Libvirt extends Library {
     public int virDomainGetVcpus(DomainPointer virDomainPtr, virVcpuInfo[] info, int maxInfo, byte[] cpumaps, int maplen);
     public String virDomainGetXMLDesc(DomainPointer virDomainPtr, int flags);
     public int virDomainInterfaceStats(DomainPointer virDomainPtr, String path, virDomainInterfaceStats stats, int size);
+    public int virDomainIsActive(DomainPointer virDomainPtr);
+    public int virDomainIsPersistent(DomainPointer virDomainPtr);    
     public DomainPointer virDomainLookupByID(ConnectionPointer virConnectPtr, int id);
     public DomainPointer virDomainLookupByName(ConnectionPointer virConnectPtr, String name);
     public DomainPointer virDomainLookupByUUID(ConnectionPointer virConnectPtr, byte[] uuidBytes);

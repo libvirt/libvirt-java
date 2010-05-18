@@ -101,7 +101,7 @@ public class TestJavaBindings extends TestCase {
     public void testDomainCreate() throws Exception {
         Connect conn = new Connect("test:///default", false);
 
-        conn.domainDefineXML("<domain type='test' id='2'>" + "  <name>deftest</name>"
+        Domain dom1 = conn.domainDefineXML("<domain type='test' id='2'>" + "  <name>deftest</name>"
                 + "  <uuid>004b96e1-2d78-c30f-5aa5-f03c87d21e70</uuid>" + "  <memory>8388608</memory>"
                 + "  <vcpu>2</vcpu>" + "  <os><type arch='i686'>hvm</type></os>" + "  <on_reboot>restart</on_reboot>"
                 + "  <on_poweroff>destroy</on_poweroff>" + "  <on_crash>restart</on_crash>" + "</domain>");
@@ -115,6 +115,9 @@ public class TestJavaBindings extends TestCase {
         assertEquals("Number of listed domains", 2, conn.listDomains().length);
         assertEquals("Number of defined domains", 1, conn.numOfDefinedDomains());
         assertEquals("Number of listed defined domains", 1, conn.listDefinedDomains().length);
+        assertTrue("Domain1 should be persistent", dom1.isPersistent() == 1);
+        assertTrue("Domain1 should not be active", dom1.isActive() == 0);        
+        assertTrue("Domain2 should be active", dom2.isActive() == 1);              
         this.validateDomainData(dom2);
         this.validateDomainData(conn.domainLookupByName("createst"));
         this.validateDomainData(conn.domainLookupByUUID(UUIDArray));
