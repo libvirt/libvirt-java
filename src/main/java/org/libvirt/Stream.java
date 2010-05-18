@@ -138,5 +138,45 @@ public class Stream {
         int returnValue = libvirt.virStreamSendAll(VSP, handler, null);
         processError();
         return returnValue;        
+    }  
+    
+    /**
+     * Register a callback to be notified when a stream becomes writable, or readable. 
+     * @see <a href="http://www.libvirt.org/html/libvirt-libvirt.html#virStreamEventAddCallback">Libvirt Docs</a>
+     * @param events the events to monitor
+     * @param cb the callback method
+     * @return 0 for success, -1 for failure
+     * @throws LibvirtException
+     */
+    public int addCallback(int events, Libvirt.VirStreamEventCallback cb) throws LibvirtException {
+        int returnValue = libvirt.virStreamEventAddCallback(VSP, events, cb, null, null);
+        processError();
+        return returnValue;                
+    }
+    
+    /**
+     * Changes the set of events to monitor for a stream. 
+     * @see <a href="http://www.libvirt.org/html/libvirt-libvirt.html#virStreamEventUpdateCallback">Libvirt Docs</a>
+     * @param events the events to monitor
+     * @return 0 for success, -1 for failure
+     * @throws LibvirtException
+     */    
+    public int updateCallback(int events) throws LibvirtException {
+        int returnValue = libvirt.virStreamEventUpdateCallback(VSP, events);
+        processError();
+        return returnValue;                
     }    
+    
+    /**
+     * Remove an event callback from the stream 
+     * @see <a href="http://www.libvirt.org/html/libvirt-libvirt.html#virStreamEventRemoveCallback">Libvirt Docs</a>
+     * @param events the events to monitor
+     * @return 0 for success, -1 for failure
+     * @throws LibvirtException
+     */      
+    public int removeCallback() throws LibvirtException {
+        int returnValue = libvirt.virStreamEventRemoveCallback(VSP);
+        processError();
+        return returnValue;                
+    }      
 }

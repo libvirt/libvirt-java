@@ -77,6 +77,14 @@ public interface Libvirt extends Library {
         public int sourceCallback(StreamPointer virStreamPtr, String data, NativeLong nbytes, Pointer opaque) ;
     }    
     
+    interface VirStreamEventCallback extends Callback {
+        public void eventCallback(StreamPointer virStreamPointer, int events, Pointer opaque) ;
+    }
+    
+    interface VirFreeCallback extends Callback {
+        public void freeCallback(Pointer opaque) ;
+    }    
+    
     Libvirt INSTANCE = (Libvirt) Native.loadLibrary("virt", Libvirt.class);
 
     // Constants we need
@@ -290,11 +298,15 @@ public interface Libvirt extends Library {
     
     //Stream Methods
     public int virStreamAbort(StreamPointer virStreamPtr) ;    
+    public int virStreamEventAddCallback(StreamPointer virStreamPtr, int events, Libvirt.VirStreamEventCallback cb, 
+            Pointer opaque, Libvirt.VirFreeCallback ff);
+    public int virStreamEventUpdateCallback(StreamPointer virStreamPtr, int events);
+    public int virStreamEventRemoveCallback(StreamPointer virStreamPtr);        
     public int virStreamFinish(StreamPointer virStreamPtr) ;
     public int virStreamFree(StreamPointer virStreamPtr) ;
     public StreamPointer virStreamNew(ConnectionPointer virConnectPtr, int flags) ;
     public int virStreamSend(StreamPointer virStreamPtr, String data, NativeLong size);
     public int virStreamSendAll(StreamPointer virStreamPtr, Libvirt.VirStreamSourceFunc handler, Pointer opaque);    
     public int virStreamRecv(StreamPointer virStreamPtr, byte[] data, NativeLong length);
-    public int virStreamRecvAll(StreamPointer virStreamPtr, Libvirt.VirStreamSinkFunc handler, Pointer opaque);    
+    public int virStreamRecvAll(StreamPointer virStreamPtr, Libvirt.VirStreamSinkFunc handler, Pointer opaque);
 }
