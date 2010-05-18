@@ -252,6 +252,8 @@ public interface Libvirt extends Library {
     public int virStoragePoolGetUUIDString(StoragePoolPointer storagePoolPtr, byte[] uuidString);
     public String virStoragePoolGetXMLDesc(StoragePoolPointer storagePoolPtr, int flags);
     public int virStoragePoolListVolumes(StoragePoolPointer storagePoolPtr, String[] names, int maxnames);
+    public int virStoragePoolIsActive(StoragePoolPointer storagePoolPtr);
+    public int virStoragePoolIsPersistent(StoragePoolPointer storagePoolPtr);      
     public StoragePoolPointer virStoragePoolLookupByName(ConnectionPointer virConnectPtr, String name);
     public StoragePoolPointer virStoragePoolLookupByUUID(ConnectionPointer virConnectPtr, byte[] uuidBytes);
     public StoragePoolPointer virStoragePoolLookupByUUIDString(ConnectionPointer virConnectPtr, String uuidstr);

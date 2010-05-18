@@ -194,4 +194,25 @@ public class TestJavaBindings extends TestCase {
             // eat it
         }
     }
+    
+    public void testStoragePool() throws Exception {
+        Connect conn = new Connect("test:///default", false);           
+        StoragePool pool1 = conn.storagePoolDefineXML("<pool type='dir'>"
+                + "  <name>pool1</name>"
+                + "  <target>"
+                + "    <path>/pool1</path>"
+                + "  </target>"
+                + "  <uuid>004c96e1-2d78-c30f-5aa5-f03c87d21e67</uuid>"
+                + "</pool>", 0) ;
+        StoragePool defaultPool = conn.storagePoolLookupByName("default-pool");
+        assertEquals("numOfStoragePools:", 1, conn.numOfStoragePools());
+        assertEquals("numOfDefinedStoragePools:", 1, conn.numOfDefinedStoragePools());        
+        assertNotNull("The pool should not be null", pool1);
+        assertNotNull("The default pool should not be null", defaultPool);   
+        assertEquals("The names should match", defaultPool.getName(), "default-pool");
+        assertEquals("The uids should match", pool1.getUUIDString(), "004c96e1-2d78-c30f-5aa5-f03c87d21e67"); 
+        assertTrue("pool1 should be persistent", pool1.isPersistent() == 1);
+        assertTrue("pool1 should not be active", pool1.isActive() == 0);        
+        assertTrue("Domain2 should be active", defaultPool.isActive() == 1);         
+    }
 }
