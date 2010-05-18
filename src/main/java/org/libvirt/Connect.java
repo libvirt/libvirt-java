@@ -75,6 +75,18 @@ public class Connect {
         ConnectionPointer conn = Libvirt.INSTANCE.virSecretGetConnect(secret.VSP);
         return new Connect(conn);
     }
+    
+    /**
+     * Get the version of a connection.
+     * @see <a href="http://www.libvirt.org/html/libvirt-libvirt.html#virConnectGetLibVersion">Libvirt Documentation</a>
+     * @param conn the connection to use.
+     * @return  -1 in case of failure,  versions have the format major * 1,000,000 + minor * 1,000 + release.
+     */
+    public static long connectionVersion(Connect conn) {
+        LongByReference libVer = new LongByReference();        
+        int result = Libvirt.INSTANCE.virConnectGetLibVersion(conn.VCP, libVer) ;
+        return result != -1 ? libVer.getValue() : -1 ;
+    }    
 
     /**
      * Helper function to convert bytes into ints for the UUID calls

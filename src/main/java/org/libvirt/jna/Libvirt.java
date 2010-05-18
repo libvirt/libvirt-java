@@ -99,6 +99,7 @@ public interface Libvirt extends Library {
     public String virConnectFindStoragePoolSources(ConnectionPointer virConnectPtr, String type, String srcSpec, int flags);
     public String virConnectGetCapabilities(ConnectionPointer virConnectPtr);
     public String virConnectGetHostname(ConnectionPointer virConnectPtr);
+    public int virConnectGetLibVersion(ConnectionPointer virConnectPtr, LongByReference libVer);
     public int virConnectGetMaxVcpus(ConnectionPointer virConnectPtr, String type);
     public String virConnectGetType(ConnectionPointer virConnectPtr);
     public String virConnectGetURI(ConnectionPointer virConnectPtr);

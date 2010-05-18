@@ -32,6 +32,7 @@ public class TestJavaBindings extends TestCase {
         assertNotNull("conn.getHostName()", conn.getHostName());
         assertNotNull("conn.getCapabilities()", conn.getCapabilities());
         assertTrue("conn.getLibVirVersion()", conn.getLibVirVersion() > 6000);
+        assertTrue("conn.connectionVersion()", Connect.connectionVersion(conn) > 6000);        
         assertEquals("conn.getLibVirVersion()", 2, conn.getVersion());
     }
 
