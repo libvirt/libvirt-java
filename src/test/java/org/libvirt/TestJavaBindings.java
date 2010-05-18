@@ -170,6 +170,7 @@ public class TestJavaBindings extends TestCase {
         assertEquals("virtInterfaceGetName", "eth1", virtInt.getName());
         assertEquals("virtInterfaceGetMACString", "aa:bb:cc:dd:ee:ff", virtInt.getMACString());
         assertNotNull("virtInterfaceGetXMLDesc", virtInt.getXMLDescription(0));
+        assertTrue("virInterfaceIsActive", virtInt.isActive() == 1);         
         System.out.println(virtInt.getXMLDescription(0));
 
         String newXML = "<interface type='ethernet' name='eth2'>" + "<start mode='onboot'/>"

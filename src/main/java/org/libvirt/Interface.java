@@ -116,6 +116,18 @@ public class Interface {
     public void finalize() throws LibvirtException {
         free();
     }
+    
+    /**
+     * Determine if the interface is currently running
+     * @see <a href="http://www.libvirt.org/html/libvirt-libvirt.html#virInterfaceIsActive">Libvirt Documentation</a>
+     * @return  1 if running, 0 if inactive, -1 on error
+     * @throws LibvirtException
+     */
+    public int isActive() throws LibvirtException {
+        int returnValue = libvirt.virInterfaceIsActive(VIP) ;
+        processError() ;
+        return returnValue ;
+    }    
 
     /**
      * Frees this interface object. The running instance is kept alive. The data

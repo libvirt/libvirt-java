@@ -279,16 +279,17 @@ public interface Libvirt extends Library {
     public StorageVolPointer virStorageVolLookupByPath(ConnectionPointer virConnectPtr, String path);
 
     // Interface Methods
-    public InterfacePointer virInterfaceLookupByMACString(ConnectionPointer virConnectPtr, String mac);
-    public InterfacePointer virInterfaceLookupByName(ConnectionPointer virConnectPtr, String name);
-    public InterfacePointer virInterfaceDefineXML(ConnectionPointer virConnectPtr, String xml, int flags);
+    public int virInterfaceCreate(InterfacePointer virDevicePointer);
+    public InterfacePointer virInterfaceDefineXML(ConnectionPointer virConnectPtr, String xml, int flags);    
+    public int virInterfaceDestroy(InterfacePointer virDevicePointer);    
+    public int virInterfaceFree(InterfacePointer virDevicePointer);    
     public String virInterfaceGetName(InterfacePointer virInterfacePtr);
     public String virInterfaceGetMACString(InterfacePointer virInterfacePtr);
     public String virInterfaceGetXMLDesc(InterfacePointer virInterfacePtr, int flags);
-    public int virInterfaceFree(InterfacePointer virDevicePointer);
+    public int virInterfaceIsActive(InterfacePointer virDevicePointer);
+    public InterfacePointer virInterfaceLookupByMACString(ConnectionPointer virConnectPtr, String mac);
+    public InterfacePointer virInterfaceLookupByName(ConnectionPointer virConnectPtr, String name);    
     public int virInterfaceUndefine(InterfacePointer virDevicePointer);
-    public int virInterfaceCreate(InterfacePointer virDevicePointer);
-    public int virInterfaceDestroy(InterfacePointer virDevicePointer);
     
     // Secret Methods
     public ConnectionPointer virSecretGetConnect(SecretPointer virSecretPtr);
