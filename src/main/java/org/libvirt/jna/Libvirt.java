@@ -180,6 +180,7 @@ public interface Libvirt extends Library {
             NativeLong flags, String dname, String uri, NativeLong bandwidth);
     public int virDomainMigrateToURI(DomainPointer virDomainPtr, String duri, 
             NativeLong flags, String dname, NativeLong bandwidth);
+    public int virDomainMemoryStats(DomainPointer virDomainPtr, virDomainMemoryStats[] stats, int nr_stats, int flags);
     public int virDomainPinVcpu(DomainPointer virDomainPtr, int vcpu, byte[] cpumap, int maplen);
     public int virDomainReboot(DomainPointer virDomainPtr, int flags);
     public int virDomainRestore(ConnectionPointer virConnectPtr, String from);

@@ -5,6 +5,7 @@ import org.libvirt.jna.Libvirt;
 import org.libvirt.jna.virDomainBlockStats;
 import org.libvirt.jna.virDomainInfo;
 import org.libvirt.jna.virDomainInterfaceStats;
+import org.libvirt.jna.virDomainMemoryStats;
 import org.libvirt.jna.virSchedParameter;
 import org.libvirt.jna.virVcpuInfo;
 
@@ -278,7 +279,27 @@ public class Domain {
         return returnValue;
     }
 
-    /**
+    /** 
+     * This function provides memory statistics for the domain.
+     * @param number the number of stats to retrieve
+     * @return the collection of stats, or null if an error occurs.
+     * @throws LibvirtException
+     */
+    public MemoryStatistic[] memoryStats(int number) throws LibvirtException {
+        virDomainMemoryStats[] stats = new virDomainMemoryStats[number] ;
+        MemoryStatistic[] returnStats = null;        
+        int result = libvirt.virDomainMemoryStats(VDP, stats, number, 0);
+        processError() ;
+        if (result >= 0) {
+            returnStats = new MemoryStatistic[result] ;
+            for (int x = 0 ; x < result ; x++) {
+                returnStats[x] = new MemoryStatistic(stats[x]);
+            }
+        }
+        return returnStats ;
+    }
+    
+    /** 
      * Gets the type of domain operation system.
      * 
      * @return the type
