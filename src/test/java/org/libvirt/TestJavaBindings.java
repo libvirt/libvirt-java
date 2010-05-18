@@ -71,6 +71,9 @@ public class TestJavaBindings extends TestCase {
         assertEquals("Number of listed networks", 2, conn.listNetworks().length);
         assertEquals("Number of defined networks", 1, conn.numOfDefinedNetworks());
         assertEquals("Number of listed defined networks", 1, conn.listDefinedNetworks().length);
+        assertTrue("Network1 should not be persistent", network1.isPersistent() == 0);
+        assertTrue("Network1 should not be active", network1.isActive() == 1);        
+        assertTrue("Network2 should be active", network2.isActive() == 0);            
         this.validateNetworkData(network2);
         this.validateNetworkData(conn.networkLookupByName("deftest"));
         this.validateNetworkData(conn.networkLookupByUUID(UUIDArray));

@@ -206,6 +206,8 @@ public interface Libvirt extends Library {
     public int virNetworkGetUUID(NetworkPointer virNetworkPtr, byte[] uuidString);
     public int virNetworkGetUUIDString(NetworkPointer virNetworkPtr, byte[] uuidString);
     public String virNetworkGetXMLDesc(NetworkPointer virNetworkPtr, int flags);
+    public int virNetworkIsActive(NetworkPointer virNetworkPtr);
+    public int virNetworkIsPersistent(NetworkPointer virNetworkPtr);       
     public NetworkPointer virNetworkLookupByName(ConnectionPointer virConnectPtr, String name);
     public NetworkPointer virNetworkLookupByUUID(ConnectionPointer virConnectPtr, byte[] uuidBytes);
     public NetworkPointer virNetworkLookupByUUIDString(ConnectionPointer virConnectPtr, String uuidstr);
