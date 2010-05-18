@@ -170,7 +170,6 @@ public class Stream {
     /**
      * Remove an event callback from the stream 
      * @see <a href="http://www.libvirt.org/html/libvirt-libvirt.html#virStreamEventRemoveCallback">Libvirt Docs</a>
-     * @param events the events to monitor
      * @return 0 for success, -1 for failure
      * @throws LibvirtException
      */      
