@@ -622,6 +622,18 @@ public class Connect {
         processError();
         return hvVer.getValue();
     }
+    
+    /**
+     * Determine if the connection is encrypted
+     * @see <a href="http://www.libvirt.org/html/libvirt-libvirt.html#virConnectIsEncrypted">Libvirt Documentation</a>
+     * @return 1 if encrypted, 0 if not encrypted, -1 on error
+     * @throws LibvirtException
+     */
+    public int isEncrypted() throws LibvirtException {
+        int returnValue = libvirt.virConnectIsEncrypted(VCP);
+        processError() ;
+        return returnValue;
+    }
 
     /**
      * Define an interface (or modify existing interface configuration)
