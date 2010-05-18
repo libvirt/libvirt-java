@@ -634,6 +634,18 @@ public class Connect {
         processError() ;
         return returnValue;
     }
+    
+    /**
+     * Determine if the connection is secure
+     * @see <a href="http://www.libvirt.org/html/libvirt-libvirt.html#virConnectIsSecure">Libvirt Documentation</a>
+     * @return 1 if secure, 0 if not secure, -1 on error
+     * @throws LibvirtException
+     */
+    public int isSecure() throws LibvirtException {
+        int returnValue = libvirt.virConnectIsSecure(VCP);
+        processError() ;
+        return returnValue;
+    }    
 
     /**
      * Define an interface (or modify existing interface configuration)

@@ -35,6 +35,7 @@ public class TestJavaBindings extends TestCase {
         assertTrue("conn.connectionVersion()", Connect.connectionVersion(conn) > 6000);        
         assertEquals("conn.getLibVirVersion()", 2, conn.getVersion());
         assertTrue("conn.isEncrypted", conn.isEncrypted() == 0);
+        assertTrue("conn.isSecure", conn.isSecure() == 1);        
     }
 
     public void testNodeInfo() throws Exception {
