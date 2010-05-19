@@ -223,6 +223,18 @@ public class Connect {
     }
 
     /**
+     * Computes the most feature-rich CPU which is compatible with all given host CPUs.
+     * @param xmlCPUs array of XML descriptions of host CPUs
+     * @return XML description of the computed CPU or NULL on error.
+     * @throws LibvirtException
+     */
+    public String baselineCPU(String[] xmlCPUs) throws LibvirtException {
+        String returnValue = libvirt.virConnectBaselineCPU(VCP, xmlCPUs, xmlCPUs.length, 0);
+        processError();
+        return returnValue;
+    }
+    
+    /**
      * Closes the connection to the hypervisor/driver. Calling any methods on
      * the object after close() will result in an exception.
      * 

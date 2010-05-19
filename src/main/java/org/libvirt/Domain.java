@@ -5,6 +5,7 @@ import org.libvirt.jna.Libvirt;
 import org.libvirt.jna.virDomainBlockStats;
 import org.libvirt.jna.virDomainInfo;
 import org.libvirt.jna.virDomainInterfaceStats;
+import org.libvirt.jna.virDomainJobInfo;
 import org.libvirt.jna.virDomainMemoryStats;
 import org.libvirt.jna.virSchedParameter;
 import org.libvirt.jna.virVcpuInfo;
@@ -71,8 +72,22 @@ public class Domain {
     }
 
     /**
+     * Requests that the current background job be aborted at 
+     * the soonest opportunity. This will block until the job has either 
+     * completed, or aborted.
+     * @see <a href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainAbortJob">Libvirt Documentation</a>
+     * @return 0 in case of success and -1 in case of failure.
+     * @throws LibvirtException
+     */
+    public int abortJob() throws LibvirtException {
+        int returnValue = libvirt.virDomainAbortJob(VDP);
+        processError();
+        return returnValue;
+    }
+    
+    /**
      * Creates a virtual device attachment to backend.
-     * 
+     * @see <a href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainAttachDevice">Libvirt Documentation</a> 
      * @param xmlDesc
      *            XML description of one device
      * @throws LibvirtException
@@ -81,6 +96,19 @@ public class Domain {
         libvirt.virDomainAttachDevice(VDP, xmlDesc);
         processError();
     }
+    
+    /**
+     * Creates a virtual device attachment to backend.
+     * @see <a href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainAttachDeviceFlags">Libvirt Documentation</a>
+     * @param xmlDesc
+     *            XML description of one device
+     * @param flags the an OR'ed set of virDomainDeviceModifyFlags
+     * @throws LibvirtException
+     */
+    public void attachDeviceFlags(String xmlDesc, int flags) throws LibvirtException {
+        libvirt.virDomainAttachDeviceFlags(VDP, xmlDesc, flags);
+        processError();
+    }    
 
     /**
      * Returns block device (disk) stats for block devices attached to this
@@ -153,7 +181,7 @@ public class Domain {
 
     /**
      * Destroys a virtual device attachment to backend.
-     * 
+     * @see <a href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainDetachDevice">Libvirt Documentation</a>
      * @param xmlDesc
      *            XML description of one device
      * @throws LibvirtException
@@ -162,6 +190,19 @@ public class Domain {
         libvirt.virDomainDetachDevice(VDP, xmlDesc);
         processError();
     }
+    
+    /**
+     * Destroys a virtual device attachment to backend.
+     * @see <a href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainDetachDeviceFlags">Libvirt Documentation</a>
+     * @param xmlDesc
+     *            XML description of one device
+     * @throws LibvirtException
+     */
+    public void detachDeviceFlags(String xmlDesc, int flags) throws LibvirtException {
+        libvirt.virDomainDetachDeviceFlags(VDP, xmlDesc, flags);
+        processError();
+    }
+    
 
     @Override
     public void finalize() throws LibvirtException {
@@ -225,6 +266,7 @@ public class Domain {
      * Extract information about a domain. Note that if the connection used to
      * get the domain is limited only a partial set of the information can be
      * extracted.
+     * @see <a href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainGetInfo">Libvirt Documentation</a>
      * 
      * @return a DomainInfo object describing this domain
      * @throws LibvirtException
@@ -239,6 +281,24 @@ public class Domain {
         }
         return returnValue;
     }
+    
+    /**
+     * Extract information about progress of a background job on a domain. 
+     * Will return an error if the domain is not active.
+     * @see <a href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainGetJobInfo">Libvirt Documentation</a>
+     * @return a DomainJobInfo object describing this domain
+     * @throws LibvirtException
+     */
+    public DomainJobInfo getJobInfo() throws LibvirtException {
+        DomainJobInfo returnValue = null;
+        virDomainJobInfo vInfo = new virDomainJobInfo();
+        int success = libvirt.virDomainGetJobInfo(VDP, vInfo);
+        processError();
+        if (success == 0) {
+            returnValue = new DomainJobInfo(vInfo);
+        }
+        return returnValue;
+    }    
 
     /**
      * Retrieve the maximum amount of physical memory allocated to a domain.

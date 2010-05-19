@@ -93,6 +93,7 @@ public interface Libvirt extends Library {
     public static int VIR_DOMAIN_SCHED_FIELD_LENGTH = 80;
 
     // Connection Functions
+    public String virConnectBaselineCPU(ConnectionPointer virConnectPtr, String[] xmlCPUs, int ncpus, int flags);
     public int virConnCopyLastError(ConnectionPointer virConnectPtr, virError to);
     public int virConnectClose(ConnectionPointer virConnectPtr);
     public int virConnectCompareCPU(ConnectionPointer virConnectPtr, String xmlDesc, int flags);
@@ -144,8 +145,9 @@ public interface Libvirt extends Library {
     public void virSetErrorFunc(Pointer userData, VirErrorCallback callback);    
 
     // Domain functions
-    public ConnectionPointer virDomainGetConnect(DomainPointer virDomainPtr);
+    public int virDomainAbortJob(DomainPointer virDomainPtr);
     public int virDomainAttachDevice(DomainPointer virDomainPtr, String deviceXML);
+    public int virDomainAttachDeviceFlags(DomainPointer virDomainPtr, String deviceXML, int flags);    
     public int virDomainBlockStats(DomainPointer virDomainPtr, String path, virDomainBlockStats stats, int size);
     public int virDomainCoreDump(DomainPointer virDomainPtr, String to, int flags);
     public int virDomainCreate(DomainPointer virDomainPtr);
@@ -154,10 +156,13 @@ public interface Libvirt extends Library {
     public DomainPointer virDomainDefineXML(ConnectionPointer virConnectPtr, String xmlDesc);
     public int virDomainDestroy(DomainPointer virDomainPtr);
     public int virDomainDetachDevice(DomainPointer virDomainPtr, String deviceXML);
+    public int virDomainDetachDeviceFlags(DomainPointer virDomainPtr, String deviceXML, int flags);    
     public int virDomainFree(DomainPointer virDomainPtr);
     public int virDomainGetAutostart(DomainPointer virDomainPtr, IntByReference value);
+    public ConnectionPointer virDomainGetConnect(DomainPointer virDomainPtr);    
     public int virDomainGetID(DomainPointer virDomainPtr);
     public int virDomainGetInfo(DomainPointer virDomainPtr, virDomainInfo vInfo);
+    public int virDomainGetJobInfo(DomainPointer virDomainPtr, virDomainJobInfo vInfo);    
     public NativeLong virDomainGetMaxMemory(DomainPointer virDomainPtr);
     public int virDomainGetMaxVcpus(DomainPointer virDomainPtr);
     public String virDomainGetName(DomainPointer virDomainPtr);
