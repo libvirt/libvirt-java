@@ -34,40 +34,25 @@ public class Device {
     Device(Connect virConnect, DevicePointer VDP) {
         this.virConnect = virConnect;
         this.VDP = VDP;
-        this.libvirt = virConnect.libvirt;
+        libvirt = virConnect.libvirt;
     }
 
     /**
-     * Returns the name of the device
+     * Destroy the device object. The virtual device is removed from the host
+     * operating system. This function may require privileged access.
      * 
      * @throws LibvirtException
+     * @returns 0 for success, -1 for failure.
      */
-    public String getName() throws LibvirtException {
-        String name = libvirt.virNodeDeviceGetName(VDP);
-        processError();
-        return name;
-    }
+    public int destroy() throws LibvirtException {
+        int success = 0;
+        if (VDP != null) {
+            success = libvirt.virNodeDeviceDestroy(VDP);
+            processError();
+            VDP = null;
+        }
 
-    /**
-     * Returns the parent of the device
-     * 
-     * @throws LibvirtException
-     */
-    public String getParent() throws LibvirtException {
-        String parent = libvirt.virNodeDeviceGetParent(VDP);
-        processError();
-        return parent;
-    }
-
-    /**
-     * Returns the number of capabilities which the instance has.
-     * 
-     * @throws LibvirtException
-     */
-    public int getNumberOfCapabilities() throws LibvirtException {
-        int num = libvirt.virNodeDeviceNumOfCaps(VDP);
-        processError();
-        return num;
+        return success;
     }
 
     /**
@@ -80,56 +65,6 @@ public class Device {
         int num = libvirt.virNodeDeviceDettach(VDP);
         processError();
         return num;
-    }
-
-    /**
-     * ReAttach a device to the node.
-     * 
-     * @throws LibvirtException
-     */
-    public int reAttach() throws LibvirtException {
-        int num = libvirt.virNodeDeviceReAttach(VDP);
-        processError();
-        return num;
-    }
-
-    /**
-     * Reset a previously dettached node device to the node before or after
-     * assigning it to a guest.
-     * 
-     * @throws LibvirtException
-     */
-    public int reset() throws LibvirtException {
-        int num = libvirt.virNodeDeviceReset(VDP);
-        processError();
-        return num;
-    }
-
-    /**
-     * List the capabilities of the device
-     * 
-     * @throws LibvirtException
-     */
-    public String[] listCapabilities() throws LibvirtException {
-        int maxCaps = this.getNumberOfCapabilities();
-        String[] names = new String[maxCaps];
-
-        if (maxCaps > 0) {
-            libvirt.virNodeDeviceListCaps(VDP, names, maxCaps);
-            processError();
-        }
-        return names;
-    }
-
-    /**
-     * Returns the XML description of the device
-     * 
-     * @throws LibvirtException
-     */
-    public String getXMLDescription() throws LibvirtException {
-        String desc = libvirt.virNodeDeviceGetXMLDesc(VDP);
-        processError();
-        return desc;
     }
 
     @Override
@@ -156,21 +91,63 @@ public class Device {
     }
 
     /**
-     * Destroy the device object. The virtual device is removed from the host
-     * operating system. This function may require privileged access.
+     * Returns the name of the device
      * 
      * @throws LibvirtException
-     * @returns 0 for success, -1 for failure.
      */
-    public int destroy() throws LibvirtException {
-        int success = 0;
-        if (VDP != null) {
-            success = libvirt.virNodeDeviceDestroy(VDP);
-            processError();
-            VDP = null;
-        }
+    public String getName() throws LibvirtException {
+        String name = libvirt.virNodeDeviceGetName(VDP);
+        processError();
+        return name;
+    }
 
-        return success;
+    /**
+     * Returns the number of capabilities which the instance has.
+     * 
+     * @throws LibvirtException
+     */
+    public int getNumberOfCapabilities() throws LibvirtException {
+        int num = libvirt.virNodeDeviceNumOfCaps(VDP);
+        processError();
+        return num;
+    }
+
+    /**
+     * Returns the parent of the device
+     * 
+     * @throws LibvirtException
+     */
+    public String getParent() throws LibvirtException {
+        String parent = libvirt.virNodeDeviceGetParent(VDP);
+        processError();
+        return parent;
+    }
+
+    /**
+     * Returns the XML description of the device
+     * 
+     * @throws LibvirtException
+     */
+    public String getXMLDescription() throws LibvirtException {
+        String desc = libvirt.virNodeDeviceGetXMLDesc(VDP);
+        processError();
+        return desc;
+    }
+
+    /**
+     * List the capabilities of the device
+     * 
+     * @throws LibvirtException
+     */
+    public String[] listCapabilities() throws LibvirtException {
+        int maxCaps = getNumberOfCapabilities();
+        String[] names = new String[maxCaps];
+
+        if (maxCaps > 0) {
+            libvirt.virNodeDeviceListCaps(VDP, names, maxCaps);
+            processError();
+        }
+        return names;
     }
 
     /**
@@ -179,5 +156,28 @@ public class Device {
      */
     protected void processError() throws LibvirtException {
         virConnect.processError();
+    }
+
+    /**
+     * ReAttach a device to the node.
+     * 
+     * @throws LibvirtException
+     */
+    public int reAttach() throws LibvirtException {
+        int num = libvirt.virNodeDeviceReAttach(VDP);
+        processError();
+        return num;
+    }
+
+    /**
+     * Reset a previously dettached node device to the node before or after
+     * assigning it to a guest.
+     * 
+     * @throws LibvirtException
+     */
+    public int reset() throws LibvirtException {
+        int num = libvirt.virNodeDeviceReset(VDP);
+        processError();
+        return num;
     }
 }

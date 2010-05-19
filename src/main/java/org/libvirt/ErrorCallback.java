@@ -6,8 +6,8 @@ import org.libvirt.jna.virError;
 import com.sun.jna.Pointer;
 
 /**
- * Callback class to allow users of the API to handle the Error messages in a more
- * robust fashion.
+ * Callback class to allow users of the API to handle the Error messages in a
+ * more robust fashion.
  * 
  * @author bkearney
  * 

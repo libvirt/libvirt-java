@@ -67,7 +67,7 @@ public class StoragePool {
     StoragePool(Connect virConnect, StoragePoolPointer VSPP) {
         this.virConnect = virConnect;
         this.VSPP = VSPP;
-        this.libvirt = virConnect.libvirt;
+        libvirt = virConnect.libvirt;
     }
 
     /**
@@ -123,7 +123,7 @@ public class StoragePool {
     /**
      * Free a storage pool object, releasing all memory associated with it. Does
      * not change the state of the pool on the host.
-     *
+     * 
      * @throws LibvirtException
      * @return number of references left (>= 0) for success, -1 for failure.
      */
@@ -236,29 +236,35 @@ public class StoragePool {
 
     /**
      * Determine if the storage pool is currently running
-     * @see <a href="http://www.libvirt.org/html/libvirt-libvirt.html#virStoragePoolIsActive">Libvirt Documentation</a>
-     * @return  1 if running, 0 if inactive, -1 on error
+     * 
+     * @see <a
+     *      href="http://www.libvirt.org/html/libvirt-libvirt.html#virStoragePoolIsActive">Libvirt
+     *      Documentation</a>
+     * @return 1 if running, 0 if inactive, -1 on error
      * @throws LibvirtException
      */
     public int isActive() throws LibvirtException {
-        int returnValue = libvirt.virStoragePoolIsActive(VSPP) ;
-        processError() ;
-        return returnValue ;
+        int returnValue = libvirt.virStoragePoolIsActive(VSPP);
+        processError();
+        return returnValue;
     }
-    
+
     /**
-     * Determine if the storage pool has a persistent configuration which means 
+     * Determine if the storage pool has a persistent configuration which means
      * it will still exist after shutting down
-     * @see <a href="http://www.libvirt.org/html/libvirt-libvirt.html#virStoragePoolIsPersistent">Libvirt Documentation</a>
+     * 
+     * @see <a
+     *      href="http://www.libvirt.org/html/libvirt-libvirt.html#virStoragePoolIsPersistent">Libvirt
+     *      Documentation</a>
      * @return 1 if persistent, 0 if transient, -1 on error
      * @throws LibvirtException
      */
     public int isPersistent() throws LibvirtException {
-        int returnValue = libvirt.virStoragePoolIsPersistent(VSPP) ;
-        processError() ;
-        return returnValue ;
-    }    
-    
+        int returnValue = libvirt.virStoragePoolIsPersistent(VSPP);
+        processError();
+        return returnValue;
+    }
+
     /**
      * Fetch list of storage volume names
      * 
@@ -267,7 +273,7 @@ public class StoragePool {
      * @throws LibvirtException
      */
     public String[] listVolumes() throws LibvirtException {
-        int num = this.numOfVolumes();
+        int num = numOfVolumes();
         String[] returnValue = new String[num];
         libvirt.virStoragePoolListVolumes(VSPP, returnValue, num);
         processError();

@@ -40,6 +40,26 @@ public class Stream {
         return returnValue;
     }
 
+    /**
+     * Register a callback to be notified when a stream becomes writable, or
+     * readable.
+     * 
+     * @see <a
+     *      href="http://www.libvirt.org/html/libvirt-libvirt.html#virStreamEventAddCallback">Libvirt
+     *      Docs</a>
+     * @param events
+     *            the events to monitor
+     * @param cb
+     *            the callback method
+     * @return 0 for success, -1 for failure
+     * @throws LibvirtException
+     */
+    public int addCallback(int events, Libvirt.VirStreamEventCallback cb) throws LibvirtException {
+        int returnValue = libvirt.virStreamEventAddCallback(VSP, events, cb, null, null);
+        processError();
+        return returnValue;
+    }
+
     @Override
     public void finalize() throws LibvirtException {
         free();
@@ -97,18 +117,35 @@ public class Stream {
         processError();
         return returnValue;
     }
-    
+
     /**
      * Batch receive method
+     * 
      * @see http://www.libvirt.org/html/libvirt-libvirt.html#virStreamRecvAll
-     * @param handler the callback handler
+     * @param handler
+     *            the callback handler
      * @return 0 if successfule, -1 otherwise
      * @throws LibvirtException
      */
     public int receiveAll(Libvirt.VirStreamSinkFunc handler) throws LibvirtException {
         int returnValue = libvirt.virStreamRecvAll(VSP, handler, null);
         processError();
-        return returnValue;        
+        return returnValue;
+    }
+
+    /**
+     * Remove an event callback from the stream
+     * 
+     * @see <a
+     *      href="http://www.libvirt.org/html/libvirt-libvirt.html#virStreamEventRemoveCallback">Libvirt
+     *      Docs</a>
+     * @return 0 for success, -1 for failure
+     * @throws LibvirtException
+     */
+    public int removeCallback() throws LibvirtException {
+        int returnValue = libvirt.virStreamEventRemoveCallback(VSP);
+        processError();
+        return returnValue;
     }
 
     /**
@@ -125,57 +162,38 @@ public class Stream {
         processError();
         return returnValue;
     }
-    
-    
+
     /**
      * Batch send method
-     * @see <a href="http://www.libvirt.org/html/libvirt-libvirt.html#virStreamSendAll">Libvirt Documentation</a>
-     * @param handler the callback handler
+     * 
+     * @see <a
+     *      href="http://www.libvirt.org/html/libvirt-libvirt.html#virStreamSendAll">Libvirt
+     *      Documentation</a>
+     * @param handler
+     *            the callback handler
      * @return 0 if successfule, -1 otherwise
      * @throws LibvirtException
      */
     public int sendAll(Libvirt.VirStreamSourceFunc handler) throws LibvirtException {
         int returnValue = libvirt.virStreamSendAll(VSP, handler, null);
         processError();
-        return returnValue;        
-    }  
-    
+        return returnValue;
+    }
+
     /**
-     * Register a callback to be notified when a stream becomes writable, or readable. 
-     * @see <a href="http://www.libvirt.org/html/libvirt-libvirt.html#virStreamEventAddCallback">Libvirt Docs</a>
-     * @param events the events to monitor
-     * @param cb the callback method
+     * Changes the set of events to monitor for a stream.
+     * 
+     * @see <a
+     *      href="http://www.libvirt.org/html/libvirt-libvirt.html#virStreamEventUpdateCallback">Libvirt
+     *      Docs</a>
+     * @param events
+     *            the events to monitor
      * @return 0 for success, -1 for failure
      * @throws LibvirtException
      */
-    public int addCallback(int events, Libvirt.VirStreamEventCallback cb) throws LibvirtException {
-        int returnValue = libvirt.virStreamEventAddCallback(VSP, events, cb, null, null);
-        processError();
-        return returnValue;                
-    }
-    
-    /**
-     * Changes the set of events to monitor for a stream. 
-     * @see <a href="http://www.libvirt.org/html/libvirt-libvirt.html#virStreamEventUpdateCallback">Libvirt Docs</a>
-     * @param events the events to monitor
-     * @return 0 for success, -1 for failure
-     * @throws LibvirtException
-     */    
     public int updateCallback(int events) throws LibvirtException {
         int returnValue = libvirt.virStreamEventUpdateCallback(VSP, events);
         processError();
-        return returnValue;                
-    }    
-    
-    /**
-     * Remove an event callback from the stream 
-     * @see <a href="http://www.libvirt.org/html/libvirt-libvirt.html#virStreamEventRemoveCallback">Libvirt Docs</a>
-     * @return 0 for success, -1 for failure
-     * @throws LibvirtException
-     */      
-    public int removeCallback() throws LibvirtException {
-        int returnValue = libvirt.virStreamEventRemoveCallback(VSP);
-        processError();
-        return returnValue;                
-    }      
+        return returnValue;
+    }
 }

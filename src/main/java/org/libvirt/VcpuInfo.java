@@ -21,9 +21,9 @@ public class VcpuInfo {
     }
 
     public VcpuInfo(virVcpuInfo vVcpu) {
-        this.number = vVcpu.number;
-        this.cpuTime = vVcpu.cpuTime;
-        this.cpu = vVcpu.cpu;
-        this.state = VcpuState.values()[vVcpu.state];
+        number = vVcpu.number;
+        cpuTime = vVcpu.cpuTime;
+        cpu = vVcpu.cpu;
+        state = VcpuState.values()[vVcpu.state];
     }
 }

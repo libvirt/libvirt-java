@@ -23,13 +23,13 @@ public class DomainInterfaceStats {
     }
 
     public DomainInterfaceStats(virDomainInterfaceStats vStats) {
-        this.rx_bytes = vStats.rx_bytes;
-        this.rx_packets = vStats.rx_packets;
-        this.rx_errs = vStats.rx_errs;
-        this.rx_drop = vStats.rx_drop;
-        this.tx_bytes = vStats.tx_bytes;
-        this.tx_packets = vStats.tx_packets;
-        this.tx_errs = vStats.tx_errs;
-        this.tx_drop = vStats.tx_drop;
+        rx_bytes = vStats.rx_bytes;
+        rx_packets = vStats.rx_packets;
+        rx_errs = vStats.rx_errs;
+        rx_drop = vStats.rx_drop;
+        tx_bytes = vStats.tx_bytes;
+        tx_packets = vStats.tx_packets;
+        tx_errs = vStats.tx_errs;
+        tx_drop = vStats.tx_drop;
     }
 }

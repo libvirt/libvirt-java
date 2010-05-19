@@ -71,11 +71,11 @@ public class DomainInfo {
     }
 
     public DomainInfo(virDomainInfo info) {
-        this.cpuTime = info.cpuTime;
-        this.maxMem = info.maxMem.longValue();
-        this.memory = info.memory.longValue();
-        this.nrVirtCpu = info.nrVirtCpu;
-        this.state = DomainState.values()[info.state];
+        cpuTime = info.cpuTime;
+        maxMem = info.maxMem.longValue();
+        memory = info.memory.longValue();
+        nrVirtCpu = info.nrVirtCpu;
+        state = DomainState.values()[info.state];
     }
 
     public String toString() {

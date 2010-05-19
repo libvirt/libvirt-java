@@ -37,7 +37,7 @@ public class Network {
     Network(Connect virConnect, NetworkPointer VNP) {
         this.virConnect = virConnect;
         this.VNP = VNP;
-        this.libvirt = virConnect.libvirt;
+        libvirt = virConnect.libvirt;
     }
 
     /**
@@ -190,29 +190,35 @@ public class Network {
 
     /**
      * Determine if the network is currently running
-     * @see <a href="http://www.libvirt.org/html/libvirt-libvirt.html#virNetworkIsActive">Libvirt Documentation</a>
-     * @return  1 if running, 0 if inactive, -1 on error
+     * 
+     * @see <a
+     *      href="http://www.libvirt.org/html/libvirt-libvirt.html#virNetworkIsActive">Libvirt
+     *      Documentation</a>
+     * @return 1 if running, 0 if inactive, -1 on error
      * @throws LibvirtException
      */
     public int isActive() throws LibvirtException {
-        int returnValue = libvirt.virNetworkIsActive(VNP) ;
-        processError() ;
-        return returnValue ;
+        int returnValue = libvirt.virNetworkIsActive(VNP);
+        processError();
+        return returnValue;
     }
-    
+
     /**
-     * Determine if the network has a persistent configuration which means 
-     * it will still exist after shutting down
-     * @see <a href="http://www.libvirt.org/html/libvirt-libvirt.html#virNetworkIsPersistent">Libvirt Documentation</a>
+     * Determine if the network has a persistent configuration which means it
+     * will still exist after shutting down
+     * 
+     * @see <a
+     *      href="http://www.libvirt.org/html/libvirt-libvirt.html#virNetworkIsPersistent">Libvirt
+     *      Documentation</a>
      * @return 1 if persistent, 0 if transient, -1 on error
      * @throws LibvirtException
      */
     public int isPersistent() throws LibvirtException {
-        int returnValue = libvirt.virNetworkIsPersistent(VNP) ;
-        processError() ;
-        return returnValue ;
-    }    
-    
+        int returnValue = libvirt.virNetworkIsPersistent(VNP);
+        processError();
+        return returnValue;
+    }
+
     protected void processError() throws LibvirtException {
         virConnect.processError();
     }

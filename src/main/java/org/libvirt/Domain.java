@@ -73,10 +73,13 @@ public class Domain {
     }
 
     /**
-     * Requests that the current background job be aborted at 
-     * the soonest opportunity. This will block until the job has either 
-     * completed, or aborted.
-     * @see <a href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainAbortJob">Libvirt Documentation</a>
+     * Requests that the current background job be aborted at the soonest
+     * opportunity. This will block until the job has either completed, or
+     * aborted.
+     * 
+     * @see <a
+     *      href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainAbortJob">Libvirt
+     *      Documentation</a>
      * @return 0 in case of success and -1 in case of failure.
      * @throws LibvirtException
      */
@@ -85,10 +88,13 @@ public class Domain {
         processError();
         return returnValue;
     }
-    
+
     /**
      * Creates a virtual device attachment to backend.
-     * @see <a href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainAttachDevice">Libvirt Documentation</a> 
+     * 
+     * @see <a
+     *      href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainAttachDevice">Libvirt
+     *      Documentation</a>
      * @param xmlDesc
      *            XML description of one device
      * @throws LibvirtException
@@ -97,19 +103,23 @@ public class Domain {
         libvirt.virDomainAttachDevice(VDP, xmlDesc);
         processError();
     }
-    
+
     /**
      * Creates a virtual device attachment to backend.
-     * @see <a href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainAttachDeviceFlags">Libvirt Documentation</a>
+     * 
+     * @see <a
+     *      href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainAttachDeviceFlags">Libvirt
+     *      Documentation</a>
      * @param xmlDesc
      *            XML description of one device
-     * @param flags the an OR'ed set of virDomainDeviceModifyFlags
+     * @param flags
+     *            the an OR'ed set of virDomainDeviceModifyFlags
      * @throws LibvirtException
      */
     public void attachDeviceFlags(String xmlDesc, int flags) throws LibvirtException {
         libvirt.virDomainAttachDeviceFlags(VDP, xmlDesc, flags);
         processError();
-    }    
+    }
 
     /**
      * Returns block device (disk) stats for block devices attached to this
@@ -132,87 +142,7 @@ public class Domain {
         processError();
         return new DomainBlockStats(stats);
     }
-    
-    /**
-     * Creates a new snapshot of a domain based on the snapshot xml contained in xmlDesc.
-     * @see <a href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainSnapshotCreateXML">Libvirt Documentation</a>
-     * @param xmlDesc   string containing an XML description of the domain
-     * @return the snapshot, or null on Error
-     * @throws LibvirtException
-     */
-    public DomainSnapshot snapshotCreateXML(String xmlDesc) throws LibvirtException {
-        DomainSnapshotPointer ptr = libvirt.virDomainSnapshotCreateXML(VDP, xmlDesc, 0);
-        processError() ;
-        DomainSnapshot returnValue = null ;
-        if (ptr != null) {
-            returnValue = new DomainSnapshot(virConnect, ptr);
-        }
-        return returnValue ;
-    }
-    
-    /**
-     * Get the current snapshot for a domain, if any.
-     * @see <a href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainSnapshotCurrent">Libvirt Documentation</a>
-     * @return the snapshot, or null on Error
-     * @throws LibvirtException
-     */
-    public DomainSnapshot snapshotCurrent() throws LibvirtException {
-        DomainSnapshotPointer ptr = libvirt.virDomainSnapshotCurrent(VDP, 0);
-        processError() ;
-        DomainSnapshot returnValue = null ;
-        if (ptr != null) {
-            returnValue = new DomainSnapshot(virConnect, ptr);
-        }
-        return returnValue ;
-    }    
-    
-    /**
-     * Provides the number of domain snapshots for this domain..
-     * @see <a href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainSnapshotNum">Libvirt Documentation</a>
-     */
-    public int snapshotNum() throws LibvirtException {
-        int returnValue = libvirt.virDomainSnapshotNum(VDP, 0);
-        processError();
-        return returnValue;
-    }
-    
-    /**
-     * Collect the list of domain snapshots for the given domain.
-     * @see <a href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainSnapshotListNames">Libvirt Documentation</a>
-     * @return The list of names, or null if an error 
-     * @throws LibvirtException
-     */
-    public String[] snapshotListNames() throws LibvirtException {
-        String[] returnValue = null ;
-        int num = snapshotNum() ;
-        if (num >= 0) {
-            returnValue = new String[num] ;
-            if (num > 0) {
-                libvirt.virDomainSnapshotListNames(VDP, returnValue, num, 0);
-                processError() ;
-            }
-        }
-        return returnValue ;
-    }
-    
-    
-    /**
-     * Retrieve a snapshot by name
-     * @see <a href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainSnapshotLookupByName">Libvirt Documentation</a>
-     * @param name the name
-     * @return The located snapshot, or null if an error
-     * @throws LibvirtException
-     */
-    public DomainSnapshot snapshotLookupByName(String name) throws LibvirtException {
-        DomainSnapshotPointer ptr = libvirt.virDomainSnapshotLookupByName(VDP, name, 0);
-        processError() ;
-        DomainSnapshot returnValue = null ;
-        if (ptr != null) {
-            returnValue = new DomainSnapshot(virConnect, ptr);
-        }
-        return returnValue ;
-    }
-    
+
     /**
      * Dumps the core of this domain on a given file for analysis. Note that for
      * remote Xen Daemon the file path will be interpreted in the remote host.
@@ -262,7 +192,10 @@ public class Domain {
 
     /**
      * Destroys a virtual device attachment to backend.
-     * @see <a href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainDetachDevice">Libvirt Documentation</a>
+     * 
+     * @see <a
+     *      href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainDetachDevice">Libvirt
+     *      Documentation</a>
      * @param xmlDesc
      *            XML description of one device
      * @throws LibvirtException
@@ -271,10 +204,13 @@ public class Domain {
         libvirt.virDomainDetachDevice(VDP, xmlDesc);
         processError();
     }
-    
+
     /**
      * Destroys a virtual device attachment to backend.
-     * @see <a href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainDetachDeviceFlags">Libvirt Documentation</a>
+     * 
+     * @see <a
+     *      href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainDetachDeviceFlags">Libvirt
+     *      Documentation</a>
      * @param xmlDesc
      *            XML description of one device
      * @throws LibvirtException
@@ -283,7 +219,6 @@ public class Domain {
         libvirt.virDomainDetachDeviceFlags(VDP, xmlDesc, flags);
         processError();
     }
-    
 
     @Override
     public void finalize() throws LibvirtException {
@@ -347,7 +282,10 @@ public class Domain {
      * Extract information about a domain. Note that if the connection used to
      * get the domain is limited only a partial set of the information can be
      * extracted.
-     * @see <a href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainGetInfo">Libvirt Documentation</a>
+     * 
+     * @see <a
+     *      href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainGetInfo">Libvirt
+     *      Documentation</a>
      * 
      * @return a DomainInfo object describing this domain
      * @throws LibvirtException
@@ -362,11 +300,14 @@ public class Domain {
         }
         return returnValue;
     }
-    
+
     /**
-     * Extract information about progress of a background job on a domain. 
-     * Will return an error if the domain is not active.
-     * @see <a href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainGetJobInfo">Libvirt Documentation</a>
+     * Extract information about progress of a background job on a domain. Will
+     * return an error if the domain is not active.
+     * 
+     * @see <a
+     *      href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainGetJobInfo">Libvirt
+     *      Documentation</a>
      * @return a DomainJobInfo object describing this domain
      * @throws LibvirtException
      */
@@ -379,7 +320,7 @@ public class Domain {
             returnValue = new DomainJobInfo(vInfo);
         }
         return returnValue;
-    }    
+    }
 
     /**
      * Retrieve the maximum amount of physical memory allocated to a domain.
@@ -420,27 +361,7 @@ public class Domain {
         return returnValue;
     }
 
-    /** 
-     * This function provides memory statistics for the domain.
-     * @param number the number of stats to retrieve
-     * @return the collection of stats, or null if an error occurs.
-     * @throws LibvirtException
-     */
-    public MemoryStatistic[] memoryStats(int number) throws LibvirtException {
-        virDomainMemoryStats[] stats = new virDomainMemoryStats[number] ;
-        MemoryStatistic[] returnStats = null;        
-        int result = libvirt.virDomainMemoryStats(VDP, stats, number, 0);
-        processError() ;
-        if (result >= 0) {
-            returnStats = new MemoryStatistic[result] ;
-            for (int x = 0 ; x < result ; x++) {
-                returnStats[x] = new MemoryStatistic(stats[x]);
-            }
-        }
-        return returnStats ;
-    }
-    
-    /** 
+    /**
      * Gets the type of domain operation system.
      * 
      * @return the type
@@ -591,18 +512,20 @@ public class Domain {
         processError();
         return returnValue;
     }
-    
+
     /**
      * Determine if the domain has a snapshot
-     * @see <a href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainHasCurrentSnapshot>Libvirt Documentation</a>
-     * @return  1 if running, 0 if inactive, -1 on error
+     * 
+     * @see <a href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainHasCurrentSnapshot>Libvirt
+     *      Documentation</a>
+     * @return 1 if running, 0 if inactive, -1 on error
      * @throws LibvirtException
      */
     public int hasCurrentSnapshot() throws LibvirtException {
-        int returnValue = libvirt.virDomainHasCurrentSnapshot(VDP, 0) ;
-        processError() ;
-        return returnValue ;
-    }    
+        int returnValue = libvirt.virDomainHasCurrentSnapshot(VDP, 0);
+        processError();
+        return returnValue;
+    }
 
     /**
      * Returns network interface stats for interfaces attached to this domain.
@@ -623,31 +546,59 @@ public class Domain {
         processError();
         return new DomainInterfaceStats(stats);
     }
-    
+
     /**
      * Determine if the domain is currently running
-     * @see <a href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainIsActive">Libvirt Documentation</a>
-     * @return  1 if running, 0 if inactive, -1 on error
+     * 
+     * @see <a
+     *      href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainIsActive">Libvirt
+     *      Documentation</a>
+     * @return 1 if running, 0 if inactive, -1 on error
      * @throws LibvirtException
      */
     public int isActive() throws LibvirtException {
-        int returnValue = libvirt.virDomainIsActive(VDP) ;
-        processError() ;
-        return returnValue ;
+        int returnValue = libvirt.virDomainIsActive(VDP);
+        processError();
+        return returnValue;
     }
-    
+
     /**
-     * Determine if the domain has a persistent configuration which means 
-     * it will still exist after shutting down
-     * @see <a href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainIsPersistent">Libvirt Documentation</a>
+     * Determine if the domain has a persistent configuration which means it
+     * will still exist after shutting down
+     * 
+     * @see <a
+     *      href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainIsPersistent">Libvirt
+     *      Documentation</a>
      * @return 1 if persistent, 0 if transient, -1 on error
      * @throws LibvirtException
      */
     public int isPersistent() throws LibvirtException {
-        int returnValue = libvirt.virDomainIsPersistent(VDP) ;
-        processError() ;
-        return returnValue ;
-    }    
+        int returnValue = libvirt.virDomainIsPersistent(VDP);
+        processError();
+        return returnValue;
+    }
+
+    /**
+     * This function provides memory statistics for the domain.
+     * 
+     * @param number
+     *            the number of stats to retrieve
+     * @return the collection of stats, or null if an error occurs.
+     * @throws LibvirtException
+     */
+    public MemoryStatistic[] memoryStats(int number) throws LibvirtException {
+        virDomainMemoryStats[] stats = new virDomainMemoryStats[number];
+        MemoryStatistic[] returnStats = null;
+        int result = libvirt.virDomainMemoryStats(VDP, stats, number, 0);
+        processError();
+        if (result >= 0) {
+            returnStats = new MemoryStatistic[result];
+            for (int x = 0; x < result; x++) {
+                returnStats[x] = new MemoryStatistic(stats[x]);
+            }
+        }
+        return returnStats;
+    }
 
     /**
      * Migrate this domain object from its current host to the destination host
@@ -779,17 +730,21 @@ public class Domain {
         libvirt.virDomainResume(VDP);
         processError();
     }
-    
+
     /**
      * Revert the domain to a given snapshot.
-     * @see <a href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainRevertToSnapshot">Libvirt Documentation</>
-     * @param snapshot the snapshot to revert to
+     * 
+     * @see <a href=
+     *      "http://www.libvirt.org/html/libvirt-libvirt.html#virDomainRevertToSnapshot"
+     *      >Libvirt Documentation</>
+     * @param snapshot
+     *            the snapshot to revert to
      * @return 0 if the creation is successful, -1 on error.
      * @throws LibvirtException
      */
     public int revertToSnapshot(DomainSnapshot snapshot) throws LibvirtException {
         int returnCode = libvirt.virDomainRevertToSnapshot(snapshot.VDSP, 0);
-        processError() ;
+        processError();
         return returnCode;
     }
 
@@ -890,6 +845,103 @@ public class Domain {
     public void shutdown() throws LibvirtException {
         libvirt.virDomainShutdown(VDP);
         processError();
+    }
+
+    /**
+     * Creates a new snapshot of a domain based on the snapshot xml contained in
+     * xmlDesc.
+     * 
+     * @see <a
+     *      href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainSnapshotCreateXML">Libvirt
+     *      Documentation</a>
+     * @param xmlDesc
+     *            string containing an XML description of the domain
+     * @return the snapshot, or null on Error
+     * @throws LibvirtException
+     */
+    public DomainSnapshot snapshotCreateXML(String xmlDesc) throws LibvirtException {
+        DomainSnapshotPointer ptr = libvirt.virDomainSnapshotCreateXML(VDP, xmlDesc, 0);
+        processError();
+        DomainSnapshot returnValue = null;
+        if (ptr != null) {
+            returnValue = new DomainSnapshot(virConnect, ptr);
+        }
+        return returnValue;
+    }
+
+    /**
+     * Get the current snapshot for a domain, if any.
+     * 
+     * @see <a
+     *      href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainSnapshotCurrent">Libvirt
+     *      Documentation</a>
+     * @return the snapshot, or null on Error
+     * @throws LibvirtException
+     */
+    public DomainSnapshot snapshotCurrent() throws LibvirtException {
+        DomainSnapshotPointer ptr = libvirt.virDomainSnapshotCurrent(VDP, 0);
+        processError();
+        DomainSnapshot returnValue = null;
+        if (ptr != null) {
+            returnValue = new DomainSnapshot(virConnect, ptr);
+        }
+        return returnValue;
+    }
+
+    /**
+     * Collect the list of domain snapshots for the given domain.
+     * 
+     * @see <a
+     *      href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainSnapshotListNames">Libvirt
+     *      Documentation</a>
+     * @return The list of names, or null if an error
+     * @throws LibvirtException
+     */
+    public String[] snapshotListNames() throws LibvirtException {
+        String[] returnValue = null;
+        int num = snapshotNum();
+        if (num >= 0) {
+            returnValue = new String[num];
+            if (num > 0) {
+                libvirt.virDomainSnapshotListNames(VDP, returnValue, num, 0);
+                processError();
+            }
+        }
+        return returnValue;
+    }
+
+    /**
+     * Retrieve a snapshot by name
+     * 
+     * @see <a
+     *      href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainSnapshotLookupByName">Libvirt
+     *      Documentation</a>
+     * @param name
+     *            the name
+     * @return The located snapshot, or null if an error
+     * @throws LibvirtException
+     */
+    public DomainSnapshot snapshotLookupByName(String name) throws LibvirtException {
+        DomainSnapshotPointer ptr = libvirt.virDomainSnapshotLookupByName(VDP, name, 0);
+        processError();
+        DomainSnapshot returnValue = null;
+        if (ptr != null) {
+            returnValue = new DomainSnapshot(virConnect, ptr);
+        }
+        return returnValue;
+    }
+
+    /**
+     * Provides the number of domain snapshots for this domain..
+     * 
+     * @see <a
+     *      href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainSnapshotNum">Libvirt
+     *      Documentation</a>
+     */
+    public int snapshotNum() throws LibvirtException {
+        int returnValue = libvirt.virDomainSnapshotNum(VDP, 0);
+        processError();
+        return returnValue;
     }
 
     /**

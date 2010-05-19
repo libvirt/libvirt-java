@@ -19,10 +19,10 @@ public class DomainBlockStats {
     }
 
     public DomainBlockStats(virDomainBlockStats vStats) {
-        this.rd_req = vStats.rd_req;
-        this.rd_bytes = vStats.rd_bytes;
-        this.wr_req = vStats.wr_req;
-        this.wr_bytes = vStats.wr_bytes;
-        this.errs = vStats.errs;
+        rd_req = vStats.rd_req;
+        rd_bytes = vStats.rd_bytes;
+        wr_req = vStats.wr_req;
+        wr_bytes = vStats.wr_bytes;
+        errs = vStats.errs;
     }
 }

@@ -60,7 +60,7 @@ public class StorageVol {
     StorageVol(Connect virConnect, StorageVolPointer VSVP) {
         this.virConnect = virConnect;
         this.VSVP = VSVP;
-        this.libvirt = virConnect.libvirt;
+        libvirt = virConnect.libvirt;
     }
 
     /**

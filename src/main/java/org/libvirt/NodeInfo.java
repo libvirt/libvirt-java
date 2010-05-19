@@ -45,14 +45,14 @@ public class NodeInfo {
     }
 
     public NodeInfo(virNodeInfo vInfo) {
-        this.model = Native.toString(vInfo.model);
-        this.memory = vInfo.memory.longValue();
-        this.cpus = vInfo.cpus;
-        this.mhz = vInfo.mhz;
-        this.nodes = vInfo.nodes;
-        this.sockets = vInfo.sockets;
-        this.cores = vInfo.cores;
-        this.threads = vInfo.threads;
+        model = Native.toString(vInfo.model);
+        memory = vInfo.memory.longValue();
+        cpus = vInfo.cpus;
+        mhz = vInfo.mhz;
+        nodes = vInfo.nodes;
+        sockets = vInfo.sockets;
+        cores = vInfo.cores;
+        threads = vInfo.threads;
     }
 
     /**

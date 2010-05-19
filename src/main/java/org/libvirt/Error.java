@@ -7,8 +7,6 @@ import org.libvirt.jna.DomainPointer;
 import org.libvirt.jna.NetworkPointer;
 import org.libvirt.jna.virError;
 
-import com.sun.jna.Pointer;
-
 /**
  * An error which is returned from libvirt,
  */
@@ -44,7 +42,8 @@ public class Error implements Serializable {
         VIR_FROM_ONE, /* Error from OpenNebula driver */
         VIR_FROM_ESX, /* Error from ESX driver */
         VIR_FROM_PHYP, /* Error from IBM power hypervisor */
-        VIR_FROM_SECRET /* Error from secret storage */
+        VIR_FROM_SECRET
+        /* Error from secret storage */
     }
 
     public static enum ErrorLevel {
@@ -124,7 +123,8 @@ public class Error implements Serializable {
         VIR_ERR_MULTIPLE_INTERFACES, /* more than one matching interface found */
         VIR_WAR_NO_SECRET, /* failed to start secret storage */
         VIR_ERR_INVALID_SECRET, /* invalid secret */
-        VIR_ERR_NO_SECRET /* secret not found */
+        VIR_ERR_NO_SECRET
+        /* secret not found */
 
     }
 

@@ -75,18 +75,23 @@ public class Connect {
         ConnectionPointer conn = Libvirt.INSTANCE.virSecretGetConnect(secret.VSP);
         return new Connect(conn);
     }
-    
+
     /**
      * Get the version of a connection.
-     * @see <a href="http://www.libvirt.org/html/libvirt-libvirt.html#virConnectGetLibVersion">Libvirt Documentation</a>
-     * @param conn the connection to use.
-     * @return  -1 in case of failure,  versions have the format major * 1,000,000 + minor * 1,000 + release.
+     * 
+     * @see <a
+     *      href="http://www.libvirt.org/html/libvirt-libvirt.html#virConnectGetLibVersion">Libvirt
+     *      Documentation</a>
+     * @param conn
+     *            the connection to use.
+     * @return -1 in case of failure, versions have the format major * 1,000,000
+     *         + minor * 1,000 + release.
      */
     public static long connectionVersion(Connect conn) {
-        LongByReference libVer = new LongByReference();        
-        int result = Libvirt.INSTANCE.virConnectGetLibVersion(conn.VCP, libVer) ;
-        return result != -1 ? libVer.getValue() : -1 ;
-    }    
+        LongByReference libVer = new LongByReference();
+        int result = Libvirt.INSTANCE.virConnectGetLibVersion(conn.VCP, libVer);
+        return result != -1 ? libVer.getValue() : -1;
+    }
 
     /**
      * Helper function to convert bytes into ints for the UUID calls
@@ -223,8 +228,11 @@ public class Connect {
     }
 
     /**
-     * Computes the most feature-rich CPU which is compatible with all given host CPUs.
-     * @param xmlCPUs array of XML descriptions of host CPUs
+     * Computes the most feature-rich CPU which is compatible with all given
+     * host CPUs.
+     * 
+     * @param xmlCPUs
+     *            array of XML descriptions of host CPUs
      * @return XML description of the computed CPU or NULL on error.
      * @throws LibvirtException
      */
@@ -233,7 +241,7 @@ public class Connect {
         processError();
         return returnValue;
     }
-    
+
     /**
      * Closes the connection to the hypervisor/driver. Calling any methods on
      * the object after close() will result in an exception.
@@ -254,18 +262,20 @@ public class Connect {
         }
         return success;
     }
-    
-    
+
     /**
      * Compares the given CPU description with the host CPU
-     * @see <a href="http://www.libvirt.org/html/libvirt-libvirt.html#virConnectCompareCPU">Libvirt Documentation</a>
+     * 
+     * @see <a
+     *      href="http://www.libvirt.org/html/libvirt-libvirt.html#virConnectCompareCPU">Libvirt
+     *      Documentation</a>
      * @param xmlDesc
      * @return comparison result according to enum CPUCompareResult
      * @throws LibvirtException
      */
     public CPUCompareResult compareCPU(String xmlDesc) throws LibvirtException {
         int rawResult = libvirt.virConnectCompareCPU(VCP, xmlDesc, 0);
-        processError();        
+        processError();
         return CPUCompareResult.get(rawResult);
     }
 
@@ -648,30 +658,6 @@ public class Connect {
         processError();
         return hvVer.getValue();
     }
-    
-    /**
-     * Determine if the connection is encrypted
-     * @see <a href="http://www.libvirt.org/html/libvirt-libvirt.html#virConnectIsEncrypted">Libvirt Documentation</a>
-     * @return 1 if encrypted, 0 if not encrypted, -1 on error
-     * @throws LibvirtException
-     */
-    public int isEncrypted() throws LibvirtException {
-        int returnValue = libvirt.virConnectIsEncrypted(VCP);
-        processError() ;
-        return returnValue;
-    }
-    
-    /**
-     * Determine if the connection is secure
-     * @see <a href="http://www.libvirt.org/html/libvirt-libvirt.html#virConnectIsSecure">Libvirt Documentation</a>
-     * @return 1 if secure, 0 if not secure, -1 on error
-     * @throws LibvirtException
-     */
-    public int isSecure() throws LibvirtException {
-        int returnValue = libvirt.virConnectIsSecure(VCP);
-        processError() ;
-        return returnValue;
-    }    
 
     /**
      * Define an interface (or modify existing interface configuration)
@@ -718,6 +704,36 @@ public class Connect {
         if (ptr != null) {
             returnValue = new Interface(this, ptr);
         }
+        return returnValue;
+    }
+
+    /**
+     * Determine if the connection is encrypted
+     * 
+     * @see <a
+     *      href="http://www.libvirt.org/html/libvirt-libvirt.html#virConnectIsEncrypted">Libvirt
+     *      Documentation</a>
+     * @return 1 if encrypted, 0 if not encrypted, -1 on error
+     * @throws LibvirtException
+     */
+    public int isEncrypted() throws LibvirtException {
+        int returnValue = libvirt.virConnectIsEncrypted(VCP);
+        processError();
+        return returnValue;
+    }
+
+    /**
+     * Determine if the connection is secure
+     * 
+     * @see <a
+     *      href="http://www.libvirt.org/html/libvirt-libvirt.html#virConnectIsSecure">Libvirt
+     *      Documentation</a>
+     * @return 1 if secure, 0 if not secure, -1 on error
+     * @throws LibvirtException
+     */
+    public int isSecure() throws LibvirtException {
+        int returnValue = libvirt.virConnectIsSecure(VCP);
+        processError();
         return returnValue;
     }
 
@@ -1371,15 +1387,18 @@ public class Connect {
         processError();
         return new StorageVol(this, sPtr);
     }
-    
+
     /**
-     * Creates a new stream object which can be used to perform streamed I/O with other public API function.
-     * @param flags use Stream.VIR_STREAM_NONBLOCK if non-blocking is required
+     * Creates a new stream object which can be used to perform streamed I/O
+     * with other public API function.
+     * 
+     * @param flags
+     *            use Stream.VIR_STREAM_NONBLOCK if non-blocking is required
      * @return the new object
      */
     public Stream virStreamNew(int flags) throws LibvirtException {
         StreamPointer sPtr = libvirt.virStreamNew(VCP, flags);
-        processError() ;
+        processError();
         return new Stream(this, sPtr);
     }
 }

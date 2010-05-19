@@ -40,52 +40,7 @@ public class Interface {
     Interface(Connect virConnect, InterfacePointer VIP) {
         this.virConnect = virConnect;
         this.VIP = VIP;
-        this.libvirt = virConnect.libvirt;
-    }
-
-    /**
-     * Returns the name of the interface
-     * 
-     * @throws LibvirtException
-     */
-    public String getName() throws LibvirtException {
-        String name = libvirt.virInterfaceGetName(VIP);
-        processError();
-        return name;
-    }
-
-    /**
-     * Returns the mac string of the interface
-     * 
-     * @throws LibvirtException
-     */
-    public String getMACString() throws LibvirtException {
-        String name = libvirt.virInterfaceGetMACString(VIP);
-        processError();
-        return name;
-    }
-
-    /**
-     * Returns the XML description for theinterface
-     * 
-     * @throws LibvirtException
-     */
-    public String getXMLDescription(int flags) throws LibvirtException {
-        String xml = libvirt.virInterfaceGetXMLDesc(VIP, flags);
-        processError();
-        return xml;
-    }
-
-    /**
-     * Undefine an interface, ie remove it from the config. This does not free
-     * the associated virInterfacePtr object.
-     * 
-     * @throws LibvirtException
-     */
-    public int undefine() throws LibvirtException {
-        int returnValue = libvirt.virInterfaceUndefine(VIP);
-        processError();
-        return returnValue;
+        libvirt = virConnect.libvirt;
     }
 
     /**
@@ -116,18 +71,6 @@ public class Interface {
     public void finalize() throws LibvirtException {
         free();
     }
-    
-    /**
-     * Determine if the interface is currently running
-     * @see <a href="http://www.libvirt.org/html/libvirt-libvirt.html#virInterfaceIsActive">Libvirt Documentation</a>
-     * @return  1 if running, 0 if inactive, -1 on error
-     * @throws LibvirtException
-     */
-    public int isActive() throws LibvirtException {
-        int returnValue = libvirt.virInterfaceIsActive(VIP) ;
-        processError() ;
-        return returnValue ;
-    }    
 
     /**
      * Frees this interface object. The running instance is kept alive. The data
@@ -148,10 +91,70 @@ public class Interface {
     }
 
     /**
+     * Returns the mac string of the interface
+     * 
+     * @throws LibvirtException
+     */
+    public String getMACString() throws LibvirtException {
+        String name = libvirt.virInterfaceGetMACString(VIP);
+        processError();
+        return name;
+    }
+
+    /**
+     * Returns the name of the interface
+     * 
+     * @throws LibvirtException
+     */
+    public String getName() throws LibvirtException {
+        String name = libvirt.virInterfaceGetName(VIP);
+        processError();
+        return name;
+    }
+
+    /**
+     * Returns the XML description for theinterface
+     * 
+     * @throws LibvirtException
+     */
+    public String getXMLDescription(int flags) throws LibvirtException {
+        String xml = libvirt.virInterfaceGetXMLDesc(VIP, flags);
+        processError();
+        return xml;
+    }
+
+    /**
+     * Determine if the interface is currently running
+     * 
+     * @see <a
+     *      href="http://www.libvirt.org/html/libvirt-libvirt.html#virInterfaceIsActive">Libvirt
+     *      Documentation</a>
+     * @return 1 if running, 0 if inactive, -1 on error
+     * @throws LibvirtException
+     */
+    public int isActive() throws LibvirtException {
+        int returnValue = libvirt.virInterfaceIsActive(VIP);
+        processError();
+        return returnValue;
+    }
+
+    /**
      * Error handling logic to throw errors. Must be called after every libvirt
      * call.
      */
     protected void processError() throws LibvirtException {
         virConnect.processError();
+    }
+
+    /**
+     * Undefine an interface, ie remove it from the config. This does not free
+     * the associated virInterfacePtr object.
+     * 
+     * @throws LibvirtException
+     */
+    public int undefine() throws LibvirtException {
+        int returnValue = libvirt.virInterfaceUndefine(VIP);
+        processError();
+        return returnValue;
     }
 }
