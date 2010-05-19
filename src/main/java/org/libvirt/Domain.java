@@ -3,6 +3,7 @@ package org.libvirt;
 import org.libvirt.jna.DomainPointer;
 import org.libvirt.jna.DomainSnapshotPointer;
 import org.libvirt.jna.Libvirt;
+import org.libvirt.jna.virDomainBlockInfo;
 import org.libvirt.jna.virDomainBlockStats;
 import org.libvirt.jna.virDomainInfo;
 import org.libvirt.jna.virDomainInterfaceStats;
@@ -122,6 +123,22 @@ public class Domain {
     }
 
     /**
+     * This function returns block device (disk) stats for block devices
+     * attached to the domain.
+     * 
+     * @param path
+     *            the path to the block device
+     * @return the info, or null if an error
+     * @throws LibvirtException
+     */
+    public DomainBlockInfo blockInfo(String path) throws LibvirtException {
+        virDomainBlockInfo info = new virDomainBlockInfo();
+        int success = libvirt.virDomainGetBlockInfo(VDP, path, info, 0);
+        processError();
+        return success == 0 ? new DomainBlockInfo(info) : null;
+    }
+
+    /**
      * Returns block device (disk) stats for block devices attached to this
      * domain. The path parameter is the name of the block device. Get this by
      * calling virDomainGetXMLDesc and finding the <target dev='...'> attribute
@@ -138,9 +155,9 @@ public class Domain {
      */
     public DomainBlockStats blockStats(String path) throws LibvirtException {
         virDomainBlockStats stats = new virDomainBlockStats();
-        libvirt.virDomainBlockStats(VDP, path, stats, stats.size());
+        int success = libvirt.virDomainBlockStats(VDP, path, stats, stats.size());
         processError();
-        return new DomainBlockStats(stats);
+        return success == 0 ? new DomainBlockStats(stats) : null;
     }
 
     /**
@@ -516,8 +533,8 @@ public class Domain {
     /**
      * Determine if the domain has a snapshot
      * 
-     * @see <a href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainHasCurrentSnapshot>Libvir
-     *      t Documentation</a>
+     * @see <a href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainHasCurrentSnapshot>Libvi
+     *      r t Documentation</a>
      * @return 1 if running, 0 if inactive, -1 on error
      * @throws LibvirtException
      */
@@ -530,8 +547,8 @@ public class Domain {
     /**
      * Determine if the domain has a managed save image
      * 
-     * @see <a href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainHasManagedSaveImage>Libvir
-     *      t Documentation</a>
+     * @see <a href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainHasManagedSaveImage>Libvi
+     *      r t Documentation</a>
      * @return 0 if no image is present, 1 if an image is present, and -1 in
      *         case of error
      * @throws LibvirtException

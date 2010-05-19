@@ -174,7 +174,8 @@ public interface Libvirt extends Library {
     public int virDomainDetachDeviceFlags(DomainPointer virDomainPtr, String deviceXML, int flags);    
     public int virDomainFree(DomainPointer virDomainPtr);
     public int virDomainGetAutostart(DomainPointer virDomainPtr, IntByReference value);
-    public ConnectionPointer virDomainGetConnect(DomainPointer virDomainPtr);    
+    public ConnectionPointer virDomainGetConnect(DomainPointer virDomainPtr);  
+    public int virDomainGetBlockInfo(DomainPointer virDomainPtr, String path, virDomainBlockInfo info, int flags);
     public int virDomainGetID(DomainPointer virDomainPtr);
     public int virDomainGetInfo(DomainPointer virDomainPtr, virDomainInfo vInfo);
     public int virDomainGetJobInfo(DomainPointer virDomainPtr, virDomainJobInfo vInfo);    
