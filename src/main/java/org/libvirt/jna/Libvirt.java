@@ -174,6 +174,7 @@ public interface Libvirt extends Library {
     public int virDomainGetUUIDString(DomainPointer virDomainPtr, byte[] uuidString);
     public int virDomainGetVcpus(DomainPointer virDomainPtr, virVcpuInfo[] info, int maxInfo, byte[] cpumaps, int maplen);
     public String virDomainGetXMLDesc(DomainPointer virDomainPtr, int flags);
+    public int virDomainHasCurrentSnapshot(DomainPointer virDomainPtr, int flags);
     public int virDomainInterfaceStats(DomainPointer virDomainPtr, String path, virDomainInterfaceStats stats, int size);
     public int virDomainIsActive(DomainPointer virDomainPtr);
     public int virDomainIsPersistent(DomainPointer virDomainPtr);    
@@ -189,6 +190,7 @@ public interface Libvirt extends Library {
     public int virDomainPinVcpu(DomainPointer virDomainPtr, int vcpu, byte[] cpumap, int maplen);
     public int virDomainReboot(DomainPointer virDomainPtr, int flags);
     public int virDomainRestore(ConnectionPointer virConnectPtr, String from);
+    public int virDomainRevertToSnapshot(DomainSnapshotPointer virDomainSnapshotPtr, int flags);
     public int virDomainResume(DomainPointer virDomainPtr);
     public int virDomainSave(DomainPointer virDomainPtr, String to);
     public int virDomainSetAutostart(DomainPointer virDomainPtr, int autoStart);
@@ -326,4 +328,14 @@ public interface Libvirt extends Library {
     public int virStreamSendAll(StreamPointer virStreamPtr, Libvirt.VirStreamSourceFunc handler, Pointer opaque);    
     public int virStreamRecv(StreamPointer virStreamPtr, byte[] data, NativeLong length);
     public int virStreamRecvAll(StreamPointer virStreamPtr, Libvirt.VirStreamSinkFunc handler, Pointer opaque);
+    
+    //DomainSnapshot Methods
+    public DomainSnapshotPointer virDomainSnapshotCreateXML(DomainPointer virDomainPtr, String xmlDesc, int flags);
+    public DomainSnapshotPointer virDomainSnapshotCurrent(DomainPointer virDomainPtr, int flags);
+    public int virDomainSnapshotDelete(DomainSnapshotPointer virDomainSnapshotPtr, int flags);       
+    public String virDomainSnapshotGetXMLDesc(DomainSnapshotPointer virDomainSnapshotPtr, int flags);
+    public int virDomainSnapshotFree(DomainSnapshotPointer virDomainSnapshotPtr);    
+    public int virDomainSnapshotListNames(DomainPointer virDomainPtr, String[] names, int nameslen, int flags);
+    public DomainSnapshotPointer virDomainSnapshotLookupByName(DomainPointer virDomainPtr, String name, int flags);    
+    public int virDomainSnapshotNum(DomainPointer virDomainPtr, int flags);
 }
