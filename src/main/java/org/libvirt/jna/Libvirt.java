@@ -48,7 +48,11 @@ import com.sun.jna.ptr.LongByReference;
  * virSecretRef 
  *  
  * LIBVIRT_0.7.2 
- * virStreamRef 
+ * virStreamRef
+ * 
+ * LIBVIRT_0.8.0 
+ * virNWFilterRef
+ *  
  */
 public interface Libvirt extends Library {
     // Callbacks
@@ -81,9 +85,16 @@ public interface Libvirt extends Library {
         public void eventCallback(StreamPointer virStreamPointer, int events, Pointer opaque) ;
     }
     
+    /** 
+     * Generic Callbacks
+     */
     interface VirFreeCallback extends Callback {
         public void freeCallback(Pointer opaque) ;
     }    
+    
+    interface VirConnectDomainEventGenericCallback extends Callback {
+        public void eventCallback(ConnectionPointer virConnectPtr, DomainPointer virDomainPointer, Pointer opaque) ;
+    }
     
     Libvirt INSTANCE = (Libvirt) Native.loadLibrary("virt", Libvirt.class);
 
@@ -97,6 +108,8 @@ public interface Libvirt extends Library {
     public int virConnCopyLastError(ConnectionPointer virConnectPtr, virError to);
     public int virConnectClose(ConnectionPointer virConnectPtr);
     public int virConnectCompareCPU(ConnectionPointer virConnectPtr, String xmlDesc, int flags);
+    public int virConnectDomainEventRegisterAny(ConnectionPointer virConnectPtr, DomainPointer virDomainPtr, int eventID, Libvirt.VirConnectDomainEventGenericCallback cb, Pointer opaque, Libvirt.VirFreeCallback freecb);
+    public int virConnectDomainEventDeregisterAny(ConnectionPointer virConnectPtr, int callbackID) ;
     public void virConnSetErrorFunc(ConnectionPointer virConnectPtr, Pointer userData, VirErrorCallback callback);
     public int virConnectIsEncrypted(ConnectionPointer virConnectPtr) ;
     public int virConnectIsSecure(ConnectionPointer virConnectPtr) ;    
@@ -115,6 +128,7 @@ public interface Libvirt extends Library {
     public int virConnectListDomains(ConnectionPointer virConnectPtr, int[] ids, int maxnames);
     public int virConnectListInterfaces(ConnectionPointer virConnectPtr, String[] name, int maxNames);
     public int virConnectListNetworks(ConnectionPointer virConnectPtr, String[] name, int maxnames);
+    public int virConnectListNWFilters(ConnectionPointer virConnectPtr, String[] name, int maxnames);    
     public int virConnectListSecrets(ConnectionPointer virConnectPtr, String[] uids, int maxUids);
     public int virConnectListStoragePools(ConnectionPointer virConnectPtr, String[] names, int maxnames);
     public int virConnectNumOfDefinedDomains(ConnectionPointer virConnectPtr);
@@ -124,6 +138,7 @@ public interface Libvirt extends Library {
     public int virConnectNumOfDomains(ConnectionPointer virConnectPtr);
     public int virConnectNumOfInterfaces(ConnectionPointer virConnectPtr);
     public int virConnectNumOfNetworks(ConnectionPointer virConnectPtr);
+    public int virConnectNumOfNWFilters(ConnectionPointer virConnectPtr);    
     public int virConnectNumOfSecrets(ConnectionPointer virConnectPtr);      
     public int virConnectNumOfStoragePools(ConnectionPointer virConnectPtr);  
     public ConnectionPointer virConnectOpen(String name);
@@ -175,6 +190,7 @@ public interface Libvirt extends Library {
     public int virDomainGetVcpus(DomainPointer virDomainPtr, virVcpuInfo[] info, int maxInfo, byte[] cpumaps, int maplen);
     public String virDomainGetXMLDesc(DomainPointer virDomainPtr, int flags);
     public int virDomainHasCurrentSnapshot(DomainPointer virDomainPtr, int flags);
+    public int virDomainHasManagedSaveImage(DomainPointer virDomainPtr, int flags);    
     public int virDomainInterfaceStats(DomainPointer virDomainPtr, String path, virDomainInterfaceStats stats, int size);
     public int virDomainIsActive(DomainPointer virDomainPtr);
     public int virDomainIsPersistent(DomainPointer virDomainPtr);    
@@ -182,8 +198,11 @@ public interface Libvirt extends Library {
     public DomainPointer virDomainLookupByName(ConnectionPointer virConnectPtr, String name);
     public DomainPointer virDomainLookupByUUID(ConnectionPointer virConnectPtr, byte[] uuidBytes);
     public DomainPointer virDomainLookupByUUIDString(ConnectionPointer virConnectPtr, String uuidstr);
+    public int virDomainManagedSave(DomainPointer virDomainPtr, int flags);
+    public int virDomainManagedSaveRemove(DomainPointer virDomainPtr, int flags);    
     public DomainPointer virDomainMigrate(DomainPointer virDomainPtr, ConnectionPointer virConnectPtr,
             NativeLong flags, String dname, String uri, NativeLong bandwidth);
+    public int virDomainMigrateSetMaxDowntime(DomainPointer virDomainPtr, long downtime, int flags);    
     public int virDomainMigrateToURI(DomainPointer virDomainPtr, String duri, 
             NativeLong flags, String dname, NativeLong bandwidth);
     public int virDomainMemoryStats(DomainPointer virDomainPtr, virDomainMemoryStats[] stats, int nr_stats, int flags);
@@ -200,6 +219,7 @@ public interface Libvirt extends Library {
     public int virDomainSetVcpus(DomainPointer virDomainPtr, int nvcpus);
     public int virDomainShutdown(DomainPointer virDomainPtr);
     public int virDomainSuspend(DomainPointer virDomainPtr);
+    public int virDomainUpdateDeviceFlags(DomainPointer virDomainPtr, String xml, int flags);
     public int virDomainUndefine(DomainPointer virDomainPtr);
 
     // Network functions
@@ -286,6 +306,7 @@ public interface Libvirt extends Library {
     public StorageVolPointer virStorageVolLookupByKey(ConnectionPointer virConnectPtr, String name);
     public StorageVolPointer virStorageVolLookupByName(StoragePoolPointer storagePoolPtr, String name);
     public StorageVolPointer virStorageVolLookupByPath(ConnectionPointer virConnectPtr, String path);
+    public int virStorageVolWipe(StorageVolPointer storageVolPtr, int flags);
 
     // Interface Methods
     public int virInterfaceCreate(InterfacePointer virDevicePointer);
@@ -338,4 +359,16 @@ public interface Libvirt extends Library {
     public int virDomainSnapshotListNames(DomainPointer virDomainPtr, String[] names, int nameslen, int flags);
     public DomainSnapshotPointer virDomainSnapshotLookupByName(DomainPointer virDomainPtr, String name, int flags);    
     public int virDomainSnapshotNum(DomainPointer virDomainPtr, int flags);
+    
+    // Network Filter Methods
+    public String virNWFilterGetXMLDesc(NetworkFilterPointer virNWFilterPtr, int flags);
+    public NetworkFilterPointer virNWFilterDefineXML(ConnectionPointer virConnectPtr, String xml);    
+    public int virNWFilterFree(NetworkFilterPointer virNWFilterPtr);
+    public NetworkFilterPointer virNWFilterLookupByName(ConnectionPointer virConnectPtr, String name);
+    public NetworkFilterPointer virNWFilterLookupByUUID(ConnectionPointer virConnectPtr, byte[] uuidBytes);
+    public NetworkFilterPointer virNWFilterLookupByUUIDString(ConnectionPointer virConnectPtr, String uuidstr);
+    public String virNWFilterGetName(NetworkFilterPointer virNWFilterPtr);   
+    public int virNWFilterGetUUID(NetworkFilterPointer virNWFilterPtr, byte[] uuidString);
+    public int virNWFilterGetUUIDString(NetworkFilterPointer virNWFilterPtr, byte[] uuidString);    
+    public int virNWFilterUndefine(NetworkFilterPointer virNWFilterPtr);    
 }

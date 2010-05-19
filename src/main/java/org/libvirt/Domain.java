@@ -516,13 +516,28 @@ public class Domain {
     /**
      * Determine if the domain has a snapshot
      * 
-     * @see <a href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainHasCurrentSnapshot>Libvirt
-     *      Documentation</a>
+     * @see <a href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainHasCurrentSnapshot>Libvir
+     *      t Documentation</a>
      * @return 1 if running, 0 if inactive, -1 on error
      * @throws LibvirtException
      */
     public int hasCurrentSnapshot() throws LibvirtException {
         int returnValue = libvirt.virDomainHasCurrentSnapshot(VDP, 0);
+        processError();
+        return returnValue;
+    }
+
+    /**
+     * Determine if the domain has a managed save image
+     * 
+     * @see <a href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainHasManagedSaveImage>Libvir
+     *      t Documentation</a>
+     * @return 0 if no image is present, 1 if an image is present, and -1 in
+     *         case of error
+     * @throws LibvirtException
+     */
+    public int hasManagedSaveImage() throws LibvirtException {
+        int returnValue = libvirt.virDomainHasManagedSaveImage(VDP, 0);
         processError();
         return returnValue;
     }
@@ -574,6 +589,36 @@ public class Domain {
      */
     public int isPersistent() throws LibvirtException {
         int returnValue = libvirt.virDomainIsPersistent(VDP);
+        processError();
+        return returnValue;
+    }
+
+    /**
+     * suspend a domain and save its memory contents to a file on disk.
+     * 
+     * @see <a
+     *      href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainManagedSave">Libvirt
+     *      Documentation</a>
+     * @return 0 in case of success or -1 in case of failure
+     * @throws LibvirtException
+     */
+    public int managedSave() throws LibvirtException {
+        int returnValue = libvirt.virDomainManagedSave(VDP, 0);
+        processError();
+        return returnValue;
+    }
+
+    /**
+     * Remove any managed save images from the domain
+     * 
+     * @see <a
+     *      href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainManagedSaveRemove">Libvirt
+     *      Documentation</a>
+     * @return
+     * @throws LibvirtException
+     */
+    public int managedSaveRemote() throws LibvirtException {
+        int returnValue = libvirt.virDomainManagedSaveRemove(VDP, 0);
         processError();
         return returnValue;
     }
@@ -648,6 +693,24 @@ public class Domain {
         DomainPointer newPtr = libvirt.virDomainMigrate(VDP, dconn.VCP, new NativeLong(flags), dname, uri, new NativeLong(bandwidth));
         processError();
         return new Domain(dconn, newPtr);
+    }
+
+    /**
+     * Sets maximum tolerable time for which the domain is allowed to be paused
+     * at the end of live migration.
+     * 
+     * @see <a
+     *      href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainMigrateSetMaxDowntime">LIbvirt
+     *      Documentation</a>
+     * @param downtime
+     *            the time to be down
+     * @return 0 in case of success, -1 otherwise.
+     * @throws LibvirtException
+     */
+    public int migrateSetMaxDowntime(long downtime) throws LibvirtException {
+        int returnValue = libvirt.virDomainMigrateSetMaxDowntime(VDP, downtime, 0);
+        processError();
+        return returnValue;
     }
 
     /**
@@ -965,6 +1028,25 @@ public class Domain {
     public void undefine() throws LibvirtException {
         libvirt.virDomainUndefine(VDP);
         processError();
+    }
+
+    /**
+     * Change a virtual device on a domain
+     * 
+     * @see <a
+     *      href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainUpdateDeviceFlags">Libvirt
+     *      Documentation</a>
+     * @param xml
+     *            the xml to update with
+     * @param flags
+     *            controls the update
+     * @return 0 in case of success, -1 in case of failure.
+     * @throws LibvirtException
+     */
+    public int updateDeviceFlags(String xml, int flags) throws LibvirtException {
+        int returnValue = libvirt.virDomainUpdateDeviceFlags(VDP, xml, flags);
+        processError();
+        return returnValue;
     }
 
 }

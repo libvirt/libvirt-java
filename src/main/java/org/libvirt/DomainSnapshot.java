@@ -11,7 +11,7 @@ public class DomainSnapshot {
     DomainSnapshotPointer VDSP;
 
     /**
-     * The Connect Object that represents the Hypervisor of this Domain
+     * The Connect Object that represents the Hypervisor of this Domain Snapshot
      */
     private Connect virConnect;
 

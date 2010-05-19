@@ -7,6 +7,7 @@ import org.libvirt.jna.DevicePointer;
 import org.libvirt.jna.DomainPointer;
 import org.libvirt.jna.InterfacePointer;
 import org.libvirt.jna.Libvirt;
+import org.libvirt.jna.NetworkFilterPointer;
 import org.libvirt.jna.NetworkPointer;
 import org.libvirt.jna.SecretPointer;
 import org.libvirt.jna.StoragePoolPointer;
@@ -371,6 +372,48 @@ public class Connect {
         if (ptr != null) {
             returnValue = new Domain(this, ptr);
         }
+        return returnValue;
+    }
+
+    /**
+     * Removes an event callback.
+     * 
+     * @see <a
+     *      href="http://www.libvirt.org/html/libvirt-libvirt.html#virConnectDomainEventDeregisterAny">Libvirt
+     *      Documentation</a>
+     * @param callbackID
+     *            the callback to deregister
+     * @return
+     * @throws LibvirtException
+     */
+    public int domainEventDeregisterAny(int callbackID) throws LibvirtException {
+        int returnValue = libvirt.virConnectDomainEventDeregisterAny(VCP, callbackID);
+        processError();
+        return returnValue;
+    }
+
+    /**
+     * Adds a callback to receive notifications of arbitrary domain events
+     * occurring on a domain.
+     * 
+     * @see <a
+     *      href="http://www.libvirt.org/html/libvirt-libvirt.html#virConnectDomainEventRegisterAny">Libvirt
+     *      Documentation</a>
+     * @param domain
+     *            option domain to limit the events monitored
+     * @param eventId
+     *            the events to monitor
+     * @param cb
+     *            the callback function to use.
+     * @return . The return value from this method is a positive integer
+     *         identifier for the callback. -1 if an error
+     * @throws LibvirtException
+     */
+    public int domainEventRegisterAny(Domain domain, int eventId, Libvirt.VirConnectDomainEventGenericCallback cb)
+            throws LibvirtException {
+        DomainPointer ptr = domain == null ? null : domain.VDP;
+        int returnValue = libvirt.virConnectDomainEventRegisterAny(VCP, ptr, eventId, cb, null, null);
+        processError();
         return returnValue;
     }
 
@@ -856,6 +899,22 @@ public class Connect {
     }
 
     /**
+     * Lists the names of the network filters
+     * 
+     * @return an Array of Strings that contains the names network filters
+     * @throws LibvirtException
+     */
+    public String[] listNetworkFilters() throws LibvirtException {
+        int maxnames = numOfNetworkFilters();
+        String[] names = new String[maxnames];
+        if (maxnames > 0) {
+            libvirt.virConnectListNWFilters(VCP, names, maxnames);
+            processError();
+        }
+        return names;
+    }
+
+    /**
      * Lists the active networks.
      * 
      * @return an Array of Strings that contains the names of the active
@@ -941,6 +1000,99 @@ public class Connect {
         processError();
         if (ptr != null) {
             returnValue = new Network(this, ptr);
+        }
+        return returnValue;
+    }
+
+    /**
+     * Defines a networkFilter
+     * 
+     * @param xmlDesc
+     *            the descirption of the filter
+     * @return the new filer
+     * @throws LibvirtException
+     * @see <a
+     *      href="http://www.libvirt.org/html/libvirt-libvirt.html#virNWFilterDefineXML"
+     *      > Libvirt Documentation </a>
+     */
+    public NetworkFilter networkFilterDefineXML(String xmlDesc) throws LibvirtException {
+        NetworkFilter returnValue = null;
+        NetworkFilterPointer ptr = libvirt.virNWFilterDefineXML(VCP, xmlDesc);
+        processError();
+        if (ptr != null) {
+            returnValue = new NetworkFilter(this, ptr);
+        }
+        return returnValue;
+    }
+
+    /**
+     * Fetch a network filter based on its unique name
+     * 
+     * @param name
+     *            name of network filter to fetch
+     * @return network filter object
+     * @throws LibvirtException
+     * @see <a
+     *      href="http://www.libvirt.org/html/libvirt-libvirt.html#virNWFilterLookupByName"
+     *      > Libvirt Documentation </a>
+     */
+    public NetworkFilter networkFilterLookupByName(String name) throws LibvirtException {
+        NetworkFilter returnValue = null;
+        NetworkFilterPointer ptr = libvirt.virNWFilterLookupByName(VCP, name);
+        processError();
+        if (ptr != null) {
+            returnValue = new NetworkFilter(this, ptr);
+        }
+        return returnValue;
+    }
+
+    /**
+     * Looks up a network filter based on its UUID in array form. The UUID Array
+     * contains an unpacked representation of the UUID, each int contains only
+     * one byte.
+     * 
+     * @param UUID
+     *            the UUID as an unpacked int array
+     * @return the network filter object
+     * @throws LibvirtException
+     */
+    public NetworkFilter networkFilterLookupByUUID(int[] UUID) throws LibvirtException {
+        byte[] uuidBytes = Connect.createUUIDBytes(UUID);
+        NetworkFilter returnValue = null;
+        NetworkFilterPointer ptr = libvirt.virNWFilterLookupByUUID(VCP, uuidBytes);
+        processError();
+        if (ptr != null) {
+            returnValue = new NetworkFilter(this, ptr);
+        }
+        return returnValue;
+    }
+
+    /**
+     * Fetch a network filter based on its globally unique id
+     * 
+     * @param UUID
+     *            a java UUID
+     * @return a new network filter object
+     * @throws LibvirtException
+     */
+    public NetworkFilter networkFilterLookupByUUID(UUID uuid) throws LibvirtException {
+        return networkFilterLookupByUUIDString(uuid.toString());
+    }
+
+    /**
+     * Looks up a network filter based on its UUID in String form.
+     * 
+     * @param UUID
+     *            the UUID in canonical String representation
+     * @return the Network Filter object
+     * @throws LibvirtException
+     */
+    public NetworkFilter networkFilterLookupByUUIDString(String UUID) throws LibvirtException {
+        NetworkFilter returnValue = null;
+        NetworkFilterPointer ptr = libvirt.virNWFilterLookupByUUIDString(VCP, UUID);
+        processError();
+        if (ptr != null) {
+            returnValue = new NetworkFilter(this, ptr);
         }
         return returnValue;
     }
@@ -1110,6 +1262,18 @@ public class Connect {
      */
     public int numOfInterfaces() throws LibvirtException {
         int returnValue = libvirt.virConnectNumOfInterfaces(VCP);
+        processError();
+        return returnValue;
+    }
+
+    /**
+     * Provides the number of network filters
+     * 
+     * @return the number of network filters
+     * @throws LibvirtException
+     */
+    public int numOfNetworkFilters() throws LibvirtException {
+        int returnValue = libvirt.virConnectNumOfNWFilters(VCP);
         processError();
         return returnValue;
     }
@@ -1396,7 +1560,7 @@ public class Connect {
      *            use Stream.VIR_STREAM_NONBLOCK if non-blocking is required
      * @return the new object
      */
-    public Stream virStreamNew(int flags) throws LibvirtException {
+    public Stream streamNew(int flags) throws LibvirtException {
         StreamPointer sPtr = libvirt.virStreamNew(VCP, flags);
         processError();
         return new Stream(this, sPtr);

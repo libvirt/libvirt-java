@@ -195,4 +195,19 @@ public class StorageVol {
         processError();
         return new StoragePool(virConnect, ptr);
     }
+
+    /**
+     * Ensure data previously on a volume is not accessible to future reads
+     * 
+     * @see <a
+     *      href="http://www.libvirt.org/html/libvirt-libvirt.html#virStorageVolWipe">Libvirt
+     *      Documentation</a>
+     * @return 0 on success, or -1 on error
+     * @throws LibvirtException
+     */
+    public int wipe() throws LibvirtException {
+        int returnValue = libvirt.virStorageVolWipe(VSVP, 0);
+        processError();
+        return returnValue;
+    }
 }
