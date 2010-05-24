@@ -75,7 +75,7 @@
 		<rpm specfile="${spec}" command="-ba" topdir="${rpm.topdir}" />
 	</target>
 
-	<target name="maven" depends="build">
+	<target name="maven" depends="build" description="publish the maven repo">
 		<mkdir dir="target/repo" />
 		<get src="http://mirror.its.uidaho.edu/pub/apache/maven/binaries/maven-ant-tasks-2.1.0.jar" dest="target/maven-ant-tasks-2.1.0.jar" />
 		<copy file="pom.xml.in" tofile="target/pom.xml" overwrite="true" filtering="true">
@@ -107,7 +107,7 @@
 		  	</scp>
 	</target>
 	
-	<target name="publish_source" depends="build">	
+	<target name="publish_source" depends="build" description="Publish the source tarball">	
 		<input message="Username for copying source files: "
 		       addproperty="scp.username"/>
 		<input message="Passphrase: "
@@ -121,7 +121,7 @@
 		
 	</target>
 	
-	<target name="publish_srpm" depends="build">	
+	<target name="publish_srpm" depends="build" description="publish the srpm">	
 		<input message="Username for copying source files: "
 		       addproperty="scp.username"/>
 		<input message="Passphrase: "
