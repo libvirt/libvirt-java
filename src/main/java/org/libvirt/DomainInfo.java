@@ -78,13 +78,8 @@ public class DomainInfo {
         state = DomainState.values()[info.state];
     }
 
+    @Override
     public String toString() {
-        StringBuffer result = new StringBuffer("");
-        result.append("state:" + state + "\n");
-        result.append("maxMem:" + maxMem + "\n");
-        result.append("memory:" + memory + "\n");
-        result.append("nrVirtCpu:" + nrVirtCpu + "\n");
-        result.append("cpuTime:" + cpuTime + "\n");
-        return result.toString();
+        return String.format("state:%s%nmaxMem:%d%nmemory:%d%nnrVirtCpu:%d%ncpuTime:%d%n", state, maxMem, memory, nrVirtCpu, cpuTime);
     }
 }

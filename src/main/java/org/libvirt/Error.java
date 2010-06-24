@@ -305,20 +305,6 @@ public class Error implements Serializable {
 
     @Override
     public String toString() {
-        StringBuffer output = new StringBuffer();
-        output.append("level:" + level + "\n");
-        output.append("code:" + code + "\n");
-        output.append("domain:" + domain + "\n");
-        output.append("hasConn:" + hasConn() + "\n");
-        output.append("hasDom:" + hasDom() + "\n");
-        output.append("hasNet:" + hasNet() + "\n");
-        output.append("message:" + message + "\n");
-        output.append("str1:" + str1 + "\n");
-        output.append("str2:" + str2 + "\n");
-        output.append("str3:" + str3 + "\n");
-        output.append("int1:" + int1 + "\n");
-        output.append("int2:" + int2 + "\n");
-        return output.toString();
-
+        return String.format("level:%s%ncode:%s%ndomain:%s%nhasConn:%b%nhasDom:%b%nhasNet:%b%nmessage:%s%nstr1:%s%nstr2:%s%nstr3:%s%nint1:%d%nint2:%d%n", level, code, domain, hasConn(), hasDom(), hasNet(), message, str1, str2, str3, int1, int2);
     }
 }

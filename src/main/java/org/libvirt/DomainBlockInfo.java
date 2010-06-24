@@ -36,4 +36,9 @@ public class DomainBlockInfo {
     public void setPhysical(long physical) {
         this.physical = physical;
     }
+
+    @Override
+    public String toString() {
+        return String.format("capacity:%d%nallocation:%d%nphysical:%d%n", capacity, allocation, physical);
+    }
 }

@@ -27,4 +27,9 @@ public class MemoryStatistic {
     public void setValue(long val) {
         this.val = val;
     }
+
+    @Override
+    public String toString() {
+        return String.format("tag:%d%nval:%d%n", tag, val);
+    }
 }

@@ -82,12 +82,8 @@ public class StoragePoolInfo {
         this(vInfo.state, vInfo.capacity, vInfo.allocation, vInfo.available);
     }
 
+    @Override
     public String toString() {
-        StringBuffer result = new StringBuffer("");
-        result.append("state:" + state + "\n");
-        result.append("capacity:" + capacity + "\n");
-        result.append("allocation:" + allocation + "\n");
-        result.append("available:" + available + "\n");
-        return result.toString();
+        return String.format("state:%s%ncapacity:%d%nallocation:%d%navailable:%d%n", state, capacity, allocation, available);
     }
 }

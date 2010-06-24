@@ -60,11 +60,8 @@ public class StorageVolInfo {
         this(volInfo.type, volInfo.capacity, volInfo.allocation);
     }
 
+    @Override
     public String toString() {
-        StringBuffer result = new StringBuffer("");
-        result.append("type:" + type + "\n");
-        result.append("capacity:" + capacity + "\n");
-        result.append("allocation:" + allocation + "\n");
-        return result.toString();
+        return String.format("type:%s%ncapacity:%d%nallocation:%d%n", type, capacity, allocation);
     }
 }

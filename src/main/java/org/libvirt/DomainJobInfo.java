@@ -126,4 +126,9 @@ public class DomainJobInfo {
     public void setType(int type) {
         this.type = type;
     }
+
+    @Override
+    public String toString() {
+        return String.format("type:%d%ntimeElapsed:%d%ntimeRemaining:%d%ndataTotal:%d%ndataProcessed:%d%ndataRemaining:%d%nmemTotal:%d%nmemProcessed:%d%nmemRemaining:%d%nfileTotal:%d%nfileProcessed:%d%nfileRemaining:%d%n", type, timeElapsed, timeRemaining, dataTotal, dataProcessed, dataRemaining, memTotal, memProcessed, memRemaining, fileTotal, fileProcessed, fileRemaining);
+    }
 }

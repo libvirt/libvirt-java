@@ -62,4 +62,9 @@ public class NodeInfo {
     public int maxCpus() {
         return nodes * sockets * cores * threads;
     }
+
+    @Override
+    public String toString() {
+        return String.format("model:%s%nmemory:%d%ncpus:%d%nmhz:%d%nnodes:%d%nsockets:%d%ncores:%d%nthreads:%d%n", model, memory, cpus, mhz, nodes, sockets, cores, threads);
+    }
 }

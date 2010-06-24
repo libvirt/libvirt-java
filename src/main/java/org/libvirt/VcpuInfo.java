@@ -26,4 +26,9 @@ public class VcpuInfo {
         cpu = vVcpu.cpu;
         state = VcpuState.values()[vVcpu.state];
     }
+
+    @Override
+    public String toString() {
+        return String.format("number:%d%ncpuTime:%d%ncpu:%d%nstate:%s%n", number, cpuTime, cpu, state);
+    }
 }
