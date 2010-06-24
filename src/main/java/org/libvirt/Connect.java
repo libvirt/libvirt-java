@@ -130,7 +130,7 @@ public class Connect {
     }
 
     /**
-     * the native virConnectPtr.
+     * The native virConnectPtr.
      */
     protected ConnectionPointer VCP;
 
@@ -1565,4 +1565,14 @@ public class Connect {
         processError();
         return new Stream(this, sPtr);
     }
+    
+    /**
+     * Verify the connect is active.
+     *
+     * @return boolean   The true connected, or false not.
+     * @throws LibvirtException
+     */
+    public boolean isConnected() throws LibvirtException {
+        return ( ( VCP != null ) ? true : false );
+    }    
 }

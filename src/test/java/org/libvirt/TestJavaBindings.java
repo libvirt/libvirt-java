@@ -50,6 +50,7 @@ public class TestJavaBindings extends TestCase {
         assertEquals("nodeInfo.threads", 2, nodeInfo.threads);
         // These are basically no-exception tests
         assertTrue("conn.getCellsFreeMemory", conn.getCellsFreeMemory(0, 10) > 0);
+        assertTrue("conn.isConnectd", conn.isConnected());
         // Test Hypervisor does not support this.
         // assertTrue("conn.getFreeMemory", conn.getFreeMemory() > 0);
     }
@@ -189,6 +190,7 @@ public class TestJavaBindings extends TestCase {
     public void testAccessAfterClose() throws Exception {
         Connect conn = new Connect("test:///default", false);
         conn.close();
+        assertTrue("conn.isConnected should be false", !conn.isConnected());
         try {
             conn.getHostName();
         } catch (LibvirtException e) {
