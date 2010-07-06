@@ -166,6 +166,7 @@ public interface Libvirt extends Library {
     public int virDomainBlockStats(DomainPointer virDomainPtr, String path, virDomainBlockStats stats, int size);
     public int virDomainCoreDump(DomainPointer virDomainPtr, String to, int flags);
     public int virDomainCreate(DomainPointer virDomainPtr);
+    public int virDomainCreateWithFlags(DomainPointer virDomainPtr, int flags);    
     public DomainPointer virDomainCreateLinux(ConnectionPointer virConnectPtr, String xmlDesc, int flags);
     public DomainPointer virDomainCreateXML(ConnectionPointer virConnectPtr, String xmlDesc, int flags);
     public DomainPointer virDomainDefineXML(ConnectionPointer virConnectPtr, String xmlDesc);

@@ -189,9 +189,23 @@ public class Domain {
      * 
      * @throws LibvirtException
      */
-    public void create() throws LibvirtException {
-        libvirt.virDomainCreate(VDP);
+    public int create() throws LibvirtException {
+        int returnValue = libvirt.virDomainCreate(VDP);
         processError();
+        return returnValue;
+    }
+    
+    /**
+     * Launches this defined domain with the provide flags.
+     * If the call succeed the domain moves from
+     * the defined to the running domains pools.
+     * 
+     * @throws LibvirtException
+     */
+    public int create(int flags) throws LibvirtException {
+        int returnValue = libvirt.virDomainCreateWithFlags(VDP, flags);
+        processError();
+        return returnValue;
     }
 
     /**
