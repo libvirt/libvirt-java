@@ -47,7 +47,7 @@ public abstract class SchedParameter {
     public static virSchedParameter toNative(SchedParameter param) {
         virSchedParameter returnValue = new virSchedParameter();
         returnValue.value = new virSchedParameterValue();
-        returnValue.field = Arrays.copyOf(param.field.getBytes(), Libvirt.VIR_DOMAIN_SCHED_FIELD_LENGTH);
+        returnValue.field = copyOf(param.field.getBytes(), Libvirt.VIR_DOMAIN_SCHED_FIELD_LENGTH);
         returnValue.type = param.getType();
         switch (param.getType()) {
             case (1):
@@ -71,6 +71,16 @@ public abstract class SchedParameter {
 
         }
         return returnValue;
+    }
+    
+    public static byte[] copyOf(byte[] original, int length) {
+        byte[] returnValue = new byte[length];
+        int originalLength = original.length ;
+        Arrays.fill(returnValue, (byte)0);
+        for (int x = 0 ; x < originalLength ; x++) {
+            returnValue[x] = original[x] ;
+        }
+        return returnValue ;
     }
 
     /**
