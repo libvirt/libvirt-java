@@ -52,21 +52,27 @@ public abstract class SchedParameter {
         switch (param.getType()) {
             case (1):
                 returnValue.value.i = ((SchedIntParameter) param).value;
+                returnValue.value.setType(int.class);
                 break;
             case (2):
                 returnValue.value.ui = ((SchedUintParameter) param).value;
+                returnValue.value.setType(int.class);
                 break;
             case (3):
                 returnValue.value.l = ((SchedLongParameter) param).value;
+                returnValue.value.setType(long.class);
                 break;
             case (4):
                 returnValue.value.ul = ((SchedUlongParameter) param).value;
+                returnValue.value.setType(long.class);
                 break;
             case (5):
                 returnValue.value.d = ((SchedDoubleParameter) param).value;
+                returnValue.value.setType(double.class);
                 break;
             case (6):
                 returnValue.value.b = (byte) (((SchedBooleanParameter) param).value ? 1 : 0);
+                returnValue.value.setType(byte.class);
                 break;
 
         }
