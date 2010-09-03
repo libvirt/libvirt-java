@@ -28,21 +28,4 @@ public class ErrorHandler {
             throw new LibvirtException(error);
         }
     }
-
-    /**
-     * Look for the latest error from libvirt tied to a connection
-     * 
-     * @param libvirt
-     *            the active connection
-     * @throws LibvirtException
-     */
-    public static void processError(Libvirt libvirt, ConnectionPointer conn) throws LibvirtException {
-        virError vError = new virError();
-        int errorCode = libvirt.virConnCopyLastError(conn, vError);
-        if (errorCode > 0) {
-            Error error = new Error(vError);
-            libvirt.virConnResetLastError(conn);
-            throw new LibvirtException(error);
-        }
-    }
 }

@@ -1319,7 +1319,7 @@ public class Connect {
      * @throws LibvirtException
      */
     protected void processError() throws LibvirtException {
-        ErrorHandler.processError(libvirt, VCP);
+        ErrorHandler.processError(libvirt);
     }
 
     /**
