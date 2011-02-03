@@ -86,6 +86,11 @@ rm -rf %{buildroot}
 %{_javadocdir}/%{name}
 
 %changelog
+* Mon Feb 3 2011 Bryan Kearney <bkearney@redhat.com) - 0.4.7-1
+- Only throw errors on real errors.
+- Remote non thread safe error reporting
+- BZ 600819 Incorrect scheduler parameter value passed to native API.
+
 * Mon Jul 6 2010 Bryan Kearney <bkearney@redhat.com) - 0.4.6-1
 - Added libvirt support up to 0.8.2 API
 
