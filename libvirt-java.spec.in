@@ -2,7 +2,7 @@ Summary:    Java bindings for the libvirt virtualization API
 Name:       libvirt-java
 Version:    @version@
 Prefix:     libvirt
-Release:    @release@%{?dist}
+Release:    @release@%{?dist}%{?extra_release}
 License:    LGPLv2+
 BuildArch:  noarch
 Group:      Development/Libraries
