@@ -146,6 +146,17 @@ public class Secret {
     }
 
     /**
+     * Sets the value of the secret
+     *
+     * @return 0 on success, -1 on failure.
+     */
+    public int setValue(byte[] value) throws LibvirtException {
+        int returnValue = libvirt.virSecretSetValue(VSP, value, new NativeLong(value.length), 0);
+        processError();
+        return returnValue;
+    }
+
+    /**
      * Undefines, but does not free, the Secret.
      * 
      * @return 0 on success, -1 on failure.

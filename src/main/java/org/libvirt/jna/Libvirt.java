@@ -336,6 +336,7 @@ public interface Libvirt extends Library {
     public SecretPointer virSecretLookupByUUID(ConnectionPointer virConnectPtr, byte[] uuidBytes);
     public SecretPointer virSecretLookupByUUIDString(ConnectionPointer virConnectPtr, String uuidstr);
     public int virSecretSetValue(SecretPointer virSecretPtr, String value, NativeLong value_size, int flags);        
+    public int virSecretSetValue(SecretPointer virSecretPtr, byte[] value, NativeLong value_size, int flags);
     public int virSecretUndefine(SecretPointer virSecretPtr);
     
     //Stream Methods
