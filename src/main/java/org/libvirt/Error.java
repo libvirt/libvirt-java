@@ -42,8 +42,24 @@ public class Error implements Serializable {
         VIR_FROM_ONE, /* Error from OpenNebula driver */
         VIR_FROM_ESX, /* Error from ESX driver */
         VIR_FROM_PHYP, /* Error from IBM power hypervisor */
-        VIR_FROM_SECRET
-        /* Error from secret storage */
+        VIR_FROM_SECRET, /* Error from secret storage */
+        VIR_FROM_CPU, /* Error from CPU driver */
+        VIR_FROM_XENAPI, /* Error from XenAPI */
+        VIR_FROM_NWFILTER, /* Error from network filter driver */
+        VIR_FROM_HOOK, /* Error from Synchronous hooks */
+        VIR_FROM_DOMAIN_SNAPSHOT, /* Error from domain snapshot */
+        VIR_FROM_AUDIT, /* Error from auditing subsystem */
+        VIR_FROM_SYSINFO, /* Error from sysinfo/SMBIOS */
+        VIR_FROM_STREAMS, /* Error from I/O streams */
+        VIR_FROM_VMWARE, /* Error from VMware driver */
+        VIR_FROM_EVENT, /* Error from event loop impl */
+        VIR_FROM_LIBXL, /* Error from libxenlight driver */
+        VIR_FROM_LOCKING, /* Error from lock manager */
+        VIR_FROM_HYPERV, /* Error from Hyper-V driver */
+        VIR_FROM_CAPABILITIES, /* Error from capabilities */
+        VIR_FROM_URI, /* Error from URI handling */
+        VIR_FROM_AUTH, /* Error from auth handling */
+        VIR_FROM_DBUS, /* Error from DBus */
     }
 
     public static enum ErrorLevel {
@@ -123,9 +139,28 @@ public class Error implements Serializable {
         VIR_ERR_MULTIPLE_INTERFACES, /* more than one matching interface found */
         VIR_WAR_NO_SECRET, /* failed to start secret storage */
         VIR_ERR_INVALID_SECRET, /* invalid secret */
-        VIR_ERR_NO_SECRET
-        /* secret not found */
-
+        VIR_ERR_NO_SECRET, /* secret not found */
+        VIR_ERR_CONFIG_UNSUPPORTED, /* unsupported configuration construct */
+        VIR_ERR_OPERATION_TIMEOUT, /* timeout occurred during operation */
+        VIR_ERR_MIGRATE_PERSIST_FAILED, /* a migration worked, but making the
+                                           VM persist on the dest host failed */
+        VIR_ERR_HOOK_SCRIPT_FAILED, /* a synchronous hook script failed */
+        VIR_ERR_INVALID_DOMAIN_SNAPSHOT, /* invalid domain snapshot */
+        VIR_ERR_NO_DOMAIN_SNAPSHOT, /* domain snapshot not found */
+        VIR_ERR_INVALID_STREAM, /* stream pointer not valid */
+        VIR_ERR_ARGUMENT_UNSUPPORTED, /* valid API use but unsupported by
+                                           the given driver */
+        VIR_ERR_STORAGE_PROBE_FAILED, /* storage pool probe failed */
+        VIR_ERR_STORAGE_POOL_BUILT, /* storage pool already built */
+        VIR_ERR_SNAPSHOT_REVERT_RISKY, /* force was not requested for a
+                                           risky domain snapshot revert */
+        VIR_ERR_OPERATION_ABORTED, /* operation on a domain was
+                                           canceled/aborted by user */
+        VIR_ERR_AUTH_CANCELLED, /* authentication cancelled */
+        VIR_ERR_NO_DOMAIN_METADATA, /* The metadata is not present */
+        VIR_ERR_MIGRATE_UNSAFE, /* Migration is not safe */
+        VIR_ERR_OVERFLOW, /* integer overflow */
+        VIR_ERR_BLOCK_COPY_ACTIVE, /* action prevented by block copy job */
     }
 
     /**
