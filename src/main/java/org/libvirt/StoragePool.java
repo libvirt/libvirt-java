@@ -306,7 +306,7 @@ public class StoragePool {
      * @throws LibvirtException
      */
     public void refresh(int flags) throws LibvirtException {
-        libvirt.virStoragePoolRefresh(VSPP);
+        libvirt.virStoragePoolRefresh(VSPP, flags);
         processError();
     }
 

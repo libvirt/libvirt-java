@@ -290,7 +290,7 @@ public interface Libvirt extends Library {
     public StoragePoolPointer virStoragePoolLookupByUUIDString(ConnectionPointer virConnectPtr, String uuidstr);
     public StoragePoolPointer virStoragePoolLookupByVolume(StorageVolPointer storageVolPtr);
     public int virStoragePoolNumOfVolumes(StoragePoolPointer storagePoolPtr);
-    public int virStoragePoolRefresh(StoragePoolPointer storagePoolPtr);
+    public int virStoragePoolRefresh(StoragePoolPointer storagePoolPtr, int flags);
     public int virStoragePoolSetAutostart(StoragePoolPointer storagePoolPtr, int autostart);
     public int virStoragePoolUndefine(StoragePoolPointer storagePoolPtr);
 
