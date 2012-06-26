@@ -330,7 +330,7 @@ public interface Libvirt extends Library {
     public int virSecretGetUUID(SecretPointer virSecretPtr, byte[] uuidString);
     public int virSecretGetUUIDString(SecretPointer virSecretPtr, byte[] uuidString);
     public String virSecretGetUsageID(SecretPointer virSecretPtr);   
-    public String virSecretGetValue(SecretPointer virSecretPtr, NativeLong value_size, int flags);      
+    public Pointer virSecretGetValue(SecretPointer virSecretPtr, LongByReference value_size, int flags);
     public String virSecretGetXMLDesc(SecretPointer virSecretPtr, int flags);      
     public SecretPointer virSecretLookupByUsage(ConnectionPointer virConnectPtr, int usageType, String usageID);
     public SecretPointer virSecretLookupByUUID(ConnectionPointer virConnectPtr, byte[] uuidBytes);

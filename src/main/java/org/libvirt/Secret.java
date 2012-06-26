@@ -5,6 +5,9 @@ import org.libvirt.jna.SecretPointer;
 
 import com.sun.jna.Native;
 import com.sun.jna.NativeLong;
+import com.sun.jna.ptr.LongByReference;
+import com.sun.jna.Pointer;
+import java.nio.ByteBuffer;
 
 /**
  * A secret defined by libvirt
@@ -105,13 +108,29 @@ public class Secret {
     }
 
     /**
-     * Fetches the value of the secret
-     * 
+     * Fetches the value of the secret as a string (note that
+     * this may not always work and getByteValue() is more reliable)
+     * This is just kept for backward compatibility
+     *
      * @return the value of the secret, or null on failure.
      */
     public String getValue() throws LibvirtException {
-        String returnValue = libvirt.virSecretGetValue(VSP, new NativeLong(), 0);
+        String returnValue = new String(getByteValue());
+        return returnValue;
+    }
+
+    /**
+     * Fetches the value of the secret as a byte array
+     *
+     * @return the value of the secret, or null on failure.
+     */
+    public byte[] getByteValue() throws LibvirtException {
+        LongByReference value_size = new LongByReference();
+        Pointer value = libvirt.virSecretGetValue(VSP, value_size, 0);
         processError();
+        ByteBuffer bb = value.getByteBuffer(0, value_size.getValue());
+        byte[] returnValue = new byte[bb.remaining()];
+        bb.get(returnValue);
         return returnValue;
     }
 
