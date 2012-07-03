@@ -10,9 +10,9 @@ import com.sun.jna.Native;
 
 /**
  * The abstract parent of the actual Schedparameter classes
- * 
+ *
  * @author stoty
- * 
+ *
  */
 public abstract class SchedParameter {
 
@@ -78,7 +78,7 @@ public abstract class SchedParameter {
         }
         return returnValue;
     }
-    
+
     public static byte[] copyOf(byte[] original, int length) {
         byte[] returnValue = new byte[length];
         int originalLength = original.length ;
@@ -96,21 +96,21 @@ public abstract class SchedParameter {
 
     /**
      * The type of the parameter
-     * 
+     *
      * @return the Type of the parameter
      */
     public abstract int getType();
 
     /**
      * Utility function for displaying the type
-     * 
+     *
      * @return the Type of the parameter as string
      */
     public abstract String getTypeAsString();
 
     /**
      * Utility function for displaying the value
-     * 
+     *
      * @return the value of the parameter in String form
      */
     public abstract String getValueAsString();
