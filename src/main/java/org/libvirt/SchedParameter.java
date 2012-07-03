@@ -24,13 +24,13 @@ public abstract class SchedParameter {
                     returnValue = new SchedIntParameter(vParam.value.i);
                     break;
                 case (2):
-                    returnValue = new SchedUintParameter(vParam.value.ui);
+                    returnValue = new SchedUintParameter(vParam.value.i);
                     break;
                 case (3):
                     returnValue = new SchedLongParameter(vParam.value.l);
                     break;
                 case (4):
-                    returnValue = new SchedUlongParameter(vParam.value.ul);
+                    returnValue = new SchedUlongParameter(vParam.value.l);
                     break;
                 case (5):
                     returnValue = new SchedDoubleParameter(vParam.value.d);
@@ -55,7 +55,7 @@ public abstract class SchedParameter {
                 returnValue.value.setType(int.class);
                 break;
             case (2):
-                returnValue.value.ui = ((SchedUintParameter) param).value;
+                returnValue.value.i = ((SchedUintParameter) param).value;
                 returnValue.value.setType(int.class);
                 break;
             case (3):
@@ -63,7 +63,7 @@ public abstract class SchedParameter {
                 returnValue.value.setType(long.class);
                 break;
             case (4):
-                returnValue.value.ul = ((SchedUlongParameter) param).value;
+                returnValue.value.l = ((SchedUlongParameter) param).value;
                 returnValue.value.setType(long.class);
                 break;
             case (5):
