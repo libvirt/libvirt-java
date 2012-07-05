@@ -69,7 +69,7 @@ public class Connect {
      * existing network's connection, use the getConnection method directly.
      * Thie method returns a new connection.
      *
-     * @param network
+     * @param secret
      * @return a new connection
      */
     public static Connect connectionForSecret(Secret secret) {
@@ -477,7 +477,7 @@ public class Connect {
     /**
      * Fetch a domain based on its globally unique id
      *
-     * @param UUID
+     * @param uuid
      *            a java UUID
      * @return a new domain object
      * @throws LibvirtException
@@ -1070,7 +1070,7 @@ public class Connect {
     /**
      * Fetch a network filter based on its globally unique id
      *
-     * @param UUID
+     * @param uuid
      *            a java UUID
      * @return a new network filter object
      * @throws LibvirtException
@@ -1141,7 +1141,7 @@ public class Connect {
     /**
      * Fetch a network based on its globally unique id
      *
-     * @param UUID
+     * @param uuid
      *            a java UUID
      * @return a new network object
      * @throws LibvirtException
@@ -1380,7 +1380,7 @@ public class Connect {
     /**
      * Fetch a secret based on its globally unique id
      *
-     * @param UUID
+     * @param uuid
      *            a java UUID
      * @return a new domain object
      * @throws LibvirtException
@@ -1499,7 +1499,7 @@ public class Connect {
     /**
      * Fetch a storage pool based on its globally unique id
      *
-     * @param UUID
+     * @param uuid
      *            a java UUID
      * @return a new network object
      * @throws LibvirtException

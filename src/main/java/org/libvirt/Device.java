@@ -42,7 +42,7 @@ public class Device {
      * operating system. This function may require privileged access.
      *
      * @throws LibvirtException
-     * @returns 0 for success, -1 for failure.
+     * @return 0 for success, -1 for failure.
      */
     public int destroy() throws LibvirtException {
         int success = 0;
