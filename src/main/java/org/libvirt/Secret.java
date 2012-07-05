@@ -42,7 +42,7 @@ public class Secret {
 
     /**
      * Release the secret handle. The underlying secret continues to exist.
-     * 
+     *
      * @throws LibvirtException
      * @return 0 on success, or -1 on error.
      */
@@ -60,7 +60,7 @@ public class Secret {
     /**
      * Get the unique identifier of the object with which this secret is to be
      * used.
-     * 
+     *
      * @return a string identifying the object using the secret, or NULL upon
      *         error
      * @throws LibvirtException
@@ -73,7 +73,7 @@ public class Secret {
 
     /**
      * Get the UUID for this secret.
-     * 
+     *
      * @return the UUID as an unpacked int array
      * @throws LibvirtException
      * @see <a href="http://www.ietf.org/rfc/rfc4122.txt">rfc4122</a>
@@ -91,7 +91,7 @@ public class Secret {
 
     /**
      * Gets the UUID for this secret as string.
-     * 
+     *
      * @return the UUID in canonical String format
      * @throws LibvirtException
      * @see <a href="http://www.ietf.org/rfc/rfc4122.txt">rfc4122</a>
@@ -136,7 +136,7 @@ public class Secret {
 
     /**
      * Fetches an XML document describing attributes of the secret.
-     * 
+     *
      * @return the XML document
      */
     public String getXMLDesc() throws LibvirtException {
@@ -155,7 +155,7 @@ public class Secret {
 
     /**
      * Sets the value of the secret
-     * 
+     *
      * @return 0 on success, -1 on failure.
      */
     public int setValue(String value) throws LibvirtException {
@@ -177,7 +177,7 @@ public class Secret {
 
     /**
      * Undefines, but does not free, the Secret.
-     * 
+     *
      * @return 0 on success, -1 on failure.
      */
     public int undefine() throws LibvirtException {

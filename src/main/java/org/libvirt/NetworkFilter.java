@@ -35,7 +35,7 @@ public class NetworkFilter {
     /**
      * Release the network filter handle. The underlying snapshot continues to
      * exist.
-     * 
+     *
      * @throws LibvirtException
      * @return 0 on success, or -1 on error.
      */
@@ -52,7 +52,7 @@ public class NetworkFilter {
 
     /**
      * Gets the public name for this network filter
-     * 
+     *
      * @return the name
      * @throws LibvirtException
      */
@@ -64,7 +64,7 @@ public class NetworkFilter {
 
     /**
      * Get the UUID for this network filter.
-     * 
+     *
      * @return the UUID as an unpacked int array
      * @throws LibvirtException
      * @see <a href="http://www.ietf.org/rfc/rfc4122.txt">rfc4122</a>
@@ -82,7 +82,7 @@ public class NetworkFilter {
 
     /**
      * Gets the UUID for this network filter as string.
-     * 
+     *
      * @return the UUID in canonical String format
      * @throws LibvirtException
      * @see <a href="http://www.ietf.org/rfc/rfc4122.txt">rfc4122</a>
@@ -100,7 +100,7 @@ public class NetworkFilter {
 
     /**
      * Fetches an XML document describing attributes of the network filter.
-     * 
+     *
      * @see <a
      *      href="http://www.libvirt.org/html/libvirt-libvirt.html#virNWFilterGetXMLDesc">Libvirt
      *      Documentation</a>
@@ -122,7 +122,7 @@ public class NetworkFilter {
 
     /**
      * undefine the network filter
-     * 
+     *
      * @throws LibvirtException
      */
     public void undefine() throws LibvirtException {

@@ -58,7 +58,7 @@ public class StoragePool {
      * Constructs a VirStoragePool object from a known native virStoragePoolPtr,
      * and a VirConnect object. For use when native libvirt returns a
      * virStoragePoolPtr, i.e. error handling.
-     * 
+     *
      * @param virConnect
      *            the Domain's hypervisor
      * @param VSPP
@@ -72,7 +72,7 @@ public class StoragePool {
 
     /**
      * Build the underlying storage pool
-     * 
+     *
      * @param flags
      *            future flags, use 0 for now
      */
@@ -83,7 +83,7 @@ public class StoragePool {
 
     /**
      * Starts this inactive storage pool
-     * 
+     *
      * @param flags
      *            future flags, use 0 for now
      */
@@ -95,7 +95,7 @@ public class StoragePool {
     /**
      * Delete the underlying pool resources. This is a non-recoverable
      * operation. The virStoragePool object itself is not free'd.
-     * 
+     *
      * @param flags
      *            flags for obliteration process
      */
@@ -123,7 +123,7 @@ public class StoragePool {
     /**
      * Free a storage pool object, releasing all memory associated with it. Does
      * not change the state of the pool on the host.
-     * 
+     *
      * @throws LibvirtException
      * @return number of references left (>= 0) for success, -1 for failure.
      */
@@ -140,7 +140,7 @@ public class StoragePool {
     /**
      * Fetches the value of the autostart flag, which determines whether the
      * pool is automatically started at boot time
-     * 
+     *
      * @return the result
      * @throws LibvirtException
      */
@@ -153,7 +153,7 @@ public class StoragePool {
 
     /**
      * Provides the connection pointer associated with a storage pool.
-     * 
+     *
      * @return the Connect object
      */
     public Connect getConnect() {
@@ -163,7 +163,7 @@ public class StoragePool {
     /**
      * Get volatile information about the storage pool such as free space /
      * usage summary
-     * 
+     *
      * @return a StoragePoolInfo object describing this storage pool
      * @throws LibvirtException
      */
@@ -176,7 +176,7 @@ public class StoragePool {
 
     /**
      * Fetch the locally unique name of the storage pool
-     * 
+     *
      * @return the name
      * @throws LibvirtException
      */
@@ -188,7 +188,7 @@ public class StoragePool {
 
     /**
      * Fetch the globally unique ID of this storage pool
-     * 
+     *
      * @return the UUID as an unpacked int array
      * @throws LibvirtException
      */
@@ -205,7 +205,7 @@ public class StoragePool {
 
     /**
      * Fetch the globally unique ID of the storage pool as a string
-     * 
+     *
      * @return the UUID in canonical String format
      * @throws LibvirtException
      */
@@ -223,7 +223,7 @@ public class StoragePool {
     /**
      * Fetch an XML document describing all aspects of the storage pool. This is
      * suitable for later feeding back into the virStoragePoolCreateXML method.
-     * 
+     *
      * @param flags
      *            flags for XML format options (set of virDomainXMLFlags)
      * @return a XML document -java @throws LibvirtException
@@ -236,7 +236,7 @@ public class StoragePool {
 
     /**
      * Determine if the storage pool is currently running
-     * 
+     *
      * @see <a
      *      href="http://www.libvirt.org/html/libvirt-libvirt.html#virStoragePoolIsActive">Libvirt
      *      Documentation</a>
@@ -252,7 +252,7 @@ public class StoragePool {
     /**
      * Determine if the storage pool has a persistent configuration which means
      * it will still exist after shutting down
-     * 
+     *
      * @see <a
      *      href="http://www.libvirt.org/html/libvirt-libvirt.html#virStoragePoolIsPersistent">Libvirt
      *      Documentation</a>
@@ -267,7 +267,7 @@ public class StoragePool {
 
     /**
      * Fetch list of storage volume names
-     * 
+     *
      * @return an Array of Strings that contains the names of the storage
      *         volumes
      * @throws LibvirtException
@@ -282,7 +282,7 @@ public class StoragePool {
 
     /**
      * Fetch the number of storage volumes within a pool
-     * 
+     *
      * @return the number of storage pools
      * @throws LibvirtException
      */
@@ -300,7 +300,7 @@ public class StoragePool {
      * Request that the pool refresh its list of volumes. This may involve
      * communicating with a remote server, and/or initializing new devices at
      * the OS layer
-     * 
+     *
      * @param flags
      *            flags to control refresh behaviour (currently unused, use 0)
      * @throws LibvirtException
@@ -312,7 +312,7 @@ public class StoragePool {
 
     /**
      * Sets the autostart flag
-     * 
+     *
      * @param autostart
      *            new flag setting
      * @throws LibvirtException
@@ -324,7 +324,7 @@ public class StoragePool {
     /**
      * Create a storage volume within a pool based on an XML description. Not
      * all pools support creation of volumes
-     * 
+     *
      * @param xmlDesc
      *            description of volume to create
      * @param flags
@@ -342,7 +342,7 @@ public class StoragePool {
      * Create a storage volume in the parent pool, using the 'clonevol' volume
      * as input. Information for the new volume (name, perms) are passed via a
      * typical volume XML description.
-     * 
+     *
      * @return
      * @throws LibvirtException
      */
@@ -356,7 +356,7 @@ public class StoragePool {
     /**
      * Fetch an object representing to a storage volume based on its name within
      * a pool
-     * 
+     *
      * @param name
      *            name of storage volume
      * @return The StorageVol object found
@@ -370,7 +370,7 @@ public class StoragePool {
 
     /**
      * Undefine an inactive storage pool
-     * 
+     *
      * @throws LibvirtException
      */
     public void undefine() throws LibvirtException {

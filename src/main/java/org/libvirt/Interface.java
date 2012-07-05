@@ -31,7 +31,7 @@ public class Interface {
     /**
      * Constructs an Interface object from an InterfacePointer, and a Connect
      * object.
-     * 
+     *
      * @param virConnect
      *            the Interfaces hypervisor
      * @param VIP
@@ -46,7 +46,7 @@ public class Interface {
     /**
      * Create and start a defined network. If the call succeed the network moves
      * from the defined to the running networks pools.
-     * 
+     *
      * @throws LibvirtException
      */
     public int create() throws LibvirtException {
@@ -58,7 +58,7 @@ public class Interface {
     /**
      * Destroy the network object. The running instance is shutdown if not down
      * already and all resources used by it are given back to the hypervisor.
-     * 
+     *
      * @throws LibvirtException
      */
     public int destroy() throws LibvirtException {
@@ -75,7 +75,7 @@ public class Interface {
     /**
      * Frees this interface object. The running instance is kept alive. The data
      * structure is freed and should not be used thereafter.
-     * 
+     *
      * @throws LibvirtException
      * @return number of references left (>= 0) for success, -1 for failure.
      */
@@ -92,7 +92,7 @@ public class Interface {
 
     /**
      * Returns the mac string of the interface
-     * 
+     *
      * @throws LibvirtException
      */
     public String getMACString() throws LibvirtException {
@@ -103,7 +103,7 @@ public class Interface {
 
     /**
      * Returns the name of the interface
-     * 
+     *
      * @throws LibvirtException
      */
     public String getName() throws LibvirtException {
@@ -114,7 +114,7 @@ public class Interface {
 
     /**
      * Returns the XML description for theinterface
-     * 
+     *
      * @throws LibvirtException
      */
     public String getXMLDescription(int flags) throws LibvirtException {
@@ -125,7 +125,7 @@ public class Interface {
 
     /**
      * Determine if the interface is currently running
-     * 
+     *
      * @see <a
      *      href="http://www.libvirt.org/html/libvirt-libvirt.html#virInterfaceIsActive">Libvirt
      *      Documentation</a>
@@ -149,7 +149,7 @@ public class Interface {
     /**
      * Undefine an interface, ie remove it from the config. This does not free
      * the associated virInterfacePtr object.
-     * 
+     *
      * @throws LibvirtException
      */
     public int undefine() throws LibvirtException {

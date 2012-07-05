@@ -91,7 +91,7 @@ public class Domain {
     /**
      * Constructs a Domain object from a known native DomainPointer, and a
      * Connect object.
-     * 
+     *
      * @param virConnect
      *            the Domain's hypervisor
      * @param VDP
@@ -107,7 +107,7 @@ public class Domain {
      * Requests that the current background job be aborted at the soonest
      * opportunity. This will block until the job has either completed, or
      * aborted.
-     * 
+     *
      * @see <a
      *      href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainAbortJob">Libvirt
      *      Documentation</a>
@@ -122,7 +122,7 @@ public class Domain {
 
     /**
      * Creates a virtual device attachment to backend.
-     * 
+     *
      * @see <a
      *      href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainAttachDevice">Libvirt
      *      Documentation</a>
@@ -137,7 +137,7 @@ public class Domain {
 
     /**
      * Creates a virtual device attachment to backend.
-     * 
+     *
      * @see <a
      *      href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainAttachDeviceFlags">Libvirt
      *      Documentation</a>
@@ -155,7 +155,7 @@ public class Domain {
     /**
      * This function returns block device (disk) stats for block devices
      * attached to the domain.
-     * 
+     *
      * @param path
      *            the path to the block device
      * @return the info, or null if an error
@@ -177,7 +177,7 @@ public class Domain {
      * multiple calls to this function. Individual fields within the
      * DomainBlockStats object may be returned as -1, which indicates that the
      * hypervisor does not support that particular statistic.
-     * 
+     *
      * @param path
      *            path to the block device
      * @return the statistics in a DomainBlockStats object
@@ -193,7 +193,7 @@ public class Domain {
     /**
      * Dumps the core of this domain on a given file for analysis. Note that for
      * remote Xen Daemon the file path will be interpreted in the remote host.
-     * 
+     *
      * @param to
      *            path for the core file
      * @param flags
@@ -216,7 +216,7 @@ public class Domain {
     /**
      * Launches this defined domain. If the call succeed the domain moves from
      * the defined to the running domains pools.
-     * 
+     *
      * @throws LibvirtException
      */
     public int create() throws LibvirtException {
@@ -224,12 +224,12 @@ public class Domain {
         processError();
         return returnValue;
     }
-    
+
     /**
      * Launches this defined domain with the provide flags.
      * If the call succeed the domain moves from
      * the defined to the running domains pools.
-     * 
+     *
      * @throws LibvirtException
      */
     public int create(int flags) throws LibvirtException {
@@ -243,7 +243,7 @@ public class Domain {
      * already and all resources used by it are given back to the hypervisor.
      * The data structure is freed and should not be used thereafter if the call
      * does not return an error. This function may requires priviledged access
-     * 
+     *
      * @throws LibvirtException
      */
     public void destroy() throws LibvirtException {
@@ -253,7 +253,7 @@ public class Domain {
 
     /**
      * Destroys a virtual device attachment to backend.
-     * 
+     *
      * @see <a
      *      href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainDetachDevice">Libvirt
      *      Documentation</a>
@@ -268,7 +268,7 @@ public class Domain {
 
     /**
      * Destroys a virtual device attachment to backend.
-     * 
+     *
      * @see <a
      *      href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainDetachDeviceFlags">Libvirt
      *      Documentation</a>
@@ -289,7 +289,7 @@ public class Domain {
     /**
      * Frees this domain object. The running instance is kept alive. The data
      * structure is freed and should not be used thereafter.
-     * 
+     *
      * @throws LibvirtException
      * @return number of references left (>= 0) for success, -1 for failure.
      */
@@ -307,7 +307,7 @@ public class Domain {
     /**
      * Provides a boolean value indicating whether the network is configured to
      * be automatically started when the host machine boots.
-     * 
+     *
      * @return the result
      * @throws LibvirtException
      */
@@ -320,7 +320,7 @@ public class Domain {
 
     /**
      * Provides the connection object associated with a domain.
-     * 
+     *
      * @return the Connect object
      */
     public Connect getConnect() {
@@ -329,7 +329,7 @@ public class Domain {
 
     /**
      * Gets the hypervisor ID number for the domain
-     * 
+     *
      * @return the hypervisor ID
      * @throws LibvirtException
      */
@@ -343,11 +343,11 @@ public class Domain {
      * Extract information about a domain. Note that if the connection used to
      * get the domain is limited only a partial set of the information can be
      * extracted.
-     * 
+     *
      * @see <a
      *      href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainGetInfo">Libvirt
      *      Documentation</a>
-     * 
+     *
      * @return a DomainInfo object describing this domain
      * @throws LibvirtException
      */
@@ -365,7 +365,7 @@ public class Domain {
     /**
      * Extract information about progress of a background job on a domain. Will
      * return an error if the domain is not active.
-     * 
+     *
      * @see <a
      *      href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainGetJobInfo">Libvirt
      *      Documentation</a>
@@ -385,7 +385,7 @@ public class Domain {
 
     /**
      * Retrieve the maximum amount of physical memory allocated to a domain.
-     * 
+     *
      * @return the memory in kilobytes
      * @throws LibvirtException
      */
@@ -400,7 +400,7 @@ public class Domain {
      * If the guest is inactive, this is basically the same as
      * virConnectGetMaxVcpus. If the guest is running this will reflect the
      * maximum number of virtual CPUs the guest was booted with.
-     * 
+     *
      * @return the number of VCPUs
      * @throws LibvirtException
      */
@@ -412,7 +412,7 @@ public class Domain {
 
     /**
      * Gets the public name for this domain
-     * 
+     *
      * @return the name
      * @throws LibvirtException
      */
@@ -424,7 +424,7 @@ public class Domain {
 
     /**
      * Gets the type of domain operation system.
-     * 
+     *
      * @return the type
      * @throws LibvirtException
      */
@@ -436,7 +436,7 @@ public class Domain {
 
     /**
      * Gets the scheduler parameters.
-     * 
+     *
      * @return an array of SchedParameter objects
      * @throws LibvirtException
      */
@@ -464,7 +464,7 @@ public class Domain {
     // but we handle that in getSchedulerParameters internally.
     /**
      * Gets the scheduler type.
-     * 
+     *
      * @return the type of the scheduler
      * @throws LibvirtException
      */
@@ -479,7 +479,7 @@ public class Domain {
 
     /**
      * Get the UUID for this domain.
-     * 
+     *
      * @return the UUID as an unpacked int array
      * @throws LibvirtException
      * @see <a href="http://www.ietf.org/rfc/rfc4122.txt">rfc4122</a>
@@ -497,7 +497,7 @@ public class Domain {
 
     /**
      * Gets the UUID for this domain as string.
-     * 
+     *
      * @return the UUID in canonical String format
      * @throws LibvirtException
      * @see <a href="http://www.ietf.org/rfc/rfc4122.txt">rfc4122</a>
@@ -516,7 +516,7 @@ public class Domain {
     /**
      * Returns the cpumaps for this domain Only the lower 8 bits of each int in
      * the array contain information.
-     * 
+     *
      * @return a bitmap of real CPUs for all vcpus of this domain
      * @throws LibvirtException
      */
@@ -541,7 +541,7 @@ public class Domain {
 
     /**
      * Extracts information about virtual CPUs of this domain
-     * 
+     *
      * @return an array of VcpuInfo object describing the VCPUs
      * @throws LibvirtException
      */
@@ -560,7 +560,7 @@ public class Domain {
     /**
      * Provides an XML description of the domain. The description may be reused
      * later to relaunch the domain with createLinux().
-     * 
+     *
      * @param flags
      *            not used
      * @return the XML description String
@@ -576,7 +576,7 @@ public class Domain {
 
     /**
      * Determine if the domain has a snapshot
-     * 
+     *
      * @see <a href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainHasCurrentSnapshot>Libvi
      *      r t Documentation</a>
      * @return 1 if running, 0 if inactive, -1 on error
@@ -590,7 +590,7 @@ public class Domain {
 
     /**
      * Determine if the domain has a managed save image
-     * 
+     *
      * @see <a href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainHasManagedSaveImage>Libvi
      *      r t Documentation</a>
      * @return 0 if no image is present, 1 if an image is present, and -1 in
@@ -610,7 +610,7 @@ public class Domain {
      * multiple calls to this function. Individual fields within the
      * DomainInterfaceStats object may be returned as -1, which indicates that
      * the hypervisor does not support that particular statistic.
-     * 
+     *
      * @param path
      *            path to the interface
      * @return the statistics in a DomainInterfaceStats object
@@ -625,7 +625,7 @@ public class Domain {
 
     /**
      * Determine if the domain is currently running
-     * 
+     *
      * @see <a
      *      href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainIsActive">Libvirt
      *      Documentation</a>
@@ -641,7 +641,7 @@ public class Domain {
     /**
      * Determine if the domain has a persistent configuration which means it
      * will still exist after shutting down
-     * 
+     *
      * @see <a
      *      href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainIsPersistent">Libvirt
      *      Documentation</a>
@@ -656,7 +656,7 @@ public class Domain {
 
     /**
      * suspend a domain and save its memory contents to a file on disk.
-     * 
+     *
      * @see <a
      *      href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainManagedSave">Libvirt
      *      Documentation</a>
@@ -671,7 +671,7 @@ public class Domain {
 
     /**
      * Remove any managed save images from the domain
-     * 
+     *
      * @see <a
      *      href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainManagedSaveRemove">Libvirt
      *      Documentation</a>
@@ -686,7 +686,7 @@ public class Domain {
 
     /**
      * This function provides memory statistics for the domain.
-     * 
+     *
      * @param number
      *            the number of stats to retrieve
      * @return the collection of stats, or null if an error occurs.
@@ -734,7 +734,7 @@ public class Domain {
      * migration imposed by the underlying technology - for example it may not
      * be possible to migrate between different processors even with the same
      * architecture, or between different types of hypervisor.
-     * 
+     *
      * @param dconn
      *            destination host (a Connect object)
      * @param flags
@@ -759,7 +759,7 @@ public class Domain {
     /**
      * Sets maximum tolerable time for which the domain is allowed to be paused
      * at the end of live migration.
-     * 
+     *
      * @see <a
      *      href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainMigrateSetMaxDowntime">LIbvirt
      *      Documentation</a>
@@ -777,10 +777,10 @@ public class Domain {
     /**
      * Migrate the domain object from its current host to the destination host
      * given by duri.
-     * 
+     *
      * @see http
      *      ://www.libvirt.org/html/libvirt-libvirt.html#virDomainMigrateToURI
-     * 
+     *
      * @param uri
      *            The destination URI
      * @param flags
@@ -801,7 +801,7 @@ public class Domain {
     /**
      * Dynamically changes the real CPUs which can be allocated to a virtual
      * CPU. This function requires priviledged access to the hypervisor.
-     * 
+     *
      * @param vcpu
      *            virtual cpu number
      * @param cpumap
@@ -833,7 +833,7 @@ public class Domain {
      * Reboot this domain, the domain object is still usable there after but the
      * domain OS is being stopped for a restart. Note that the guest OS may
      * ignore the request.
-     * 
+     *
      * @param flags
      *            extra flags for the reboot operation, not used yet
      * @throws LibvirtException
@@ -847,7 +847,7 @@ public class Domain {
      * Resume this suspended domain, the process is restarted from the state
      * where it was frozen by calling virSuspendDomain(). This function may
      * requires privileged access
-     * 
+     *
      * @throws LibvirtException
      */
     public void resume() throws LibvirtException {
@@ -857,7 +857,7 @@ public class Domain {
 
     /**
      * Revert the domain to a given snapshot.
-     * 
+     *
      * @see <a href=
      *      "http://www.libvirt.org/html/libvirt-libvirt.html#virDomainRevertToSnapshot"
      *      >Libvirt Documentation</>
@@ -877,7 +877,7 @@ public class Domain {
      * After the call, if successful, the domain is not listed as running
      * anymore (this may be a problem). Use Connect.virDomainRestore() to
      * restore a domain after saving.
-     * 
+     *
      * @param to
      *            path for the output file
      * @throws LibvirtException
@@ -890,7 +890,7 @@ public class Domain {
     /**
      * Configures the network to be automatically started when the host machine
      * boots.
-     * 
+     *
      * @param autostart
      * @throws LibvirtException
      */
@@ -903,7 +903,7 @@ public class Domain {
     /**
      * * Dynamically change the maximum amount of physical memory allocated to a
      * domain. This function requires priviledged access to the hypervisor.
-     * 
+     *
      * @param memory
      *            the amount memory in kilobytes
      * @throws LibvirtException
@@ -917,7 +917,7 @@ public class Domain {
      * Dynamically changes the target amount of physical memory allocated to
      * this domain. This function may requires priviledged access to the
      * hypervisor.
-     * 
+     *
      * @param memory
      *            in kilobytes
      * @throws LibvirtException
@@ -929,7 +929,7 @@ public class Domain {
 
     /**
      * Changes the scheduler parameters
-     * 
+     *
      * @param params
      *            an array of SchedParameter objects to be changed
      * @throws LibvirtException
@@ -948,7 +948,7 @@ public class Domain {
      * that this call may fail if the underlying virtualization hypervisor does
      * not support it or if growing the number is arbitrary limited. This
      * function requires priviledged access to the hypervisor.
-     * 
+     *
      * @param nvcpus
      *            the new number of virtual CPUs for this domain
      * @throws LibvirtException
@@ -963,7 +963,7 @@ public class Domain {
      * the domain OS is being stopped. Note that the guest OS may ignore the
      * request. TODO: should we add an option for reboot, knowing it may not be
      * doable in the general case ?
-     * 
+     *
      * @throws LibvirtException
      */
     public void shutdown() throws LibvirtException {
@@ -974,7 +974,7 @@ public class Domain {
     /**
      * Creates a new snapshot of a domain based on the snapshot xml contained in
      * xmlDesc.
-     * 
+     *
      * @see <a
      *      href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainSnapshotCreateXML">Libvirt
      *      Documentation</a>
@@ -995,7 +995,7 @@ public class Domain {
 
     /**
      * Get the current snapshot for a domain, if any.
-     * 
+     *
      * @see <a
      *      href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainSnapshotCurrent">Libvirt
      *      Documentation</a>
@@ -1014,7 +1014,7 @@ public class Domain {
 
     /**
      * Collect the list of domain snapshots for the given domain.
-     * 
+     *
      * @see <a
      *      href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainSnapshotListNames">Libvirt
      *      Documentation</a>
@@ -1036,7 +1036,7 @@ public class Domain {
 
     /**
      * Retrieve a snapshot by name
-     * 
+     *
      * @see <a
      *      href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainSnapshotLookupByName">Libvirt
      *      Documentation</a>
@@ -1057,7 +1057,7 @@ public class Domain {
 
     /**
      * Provides the number of domain snapshots for this domain..
-     * 
+     *
      * @see <a
      *      href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainSnapshotNum">Libvirt
      *      Documentation</a>
@@ -1073,7 +1073,7 @@ public class Domain {
      * to CPU resources and I/O but the memory used by the domain at the
      * hypervisor level will stay allocated. Use Domain.resume() to reactivate
      * the domain. This function requires priviledged access.
-     * 
+     *
      * @throws LibvirtException
      */
     public void suspend() throws LibvirtException {
@@ -1083,7 +1083,7 @@ public class Domain {
 
     /**
      * undefines this domain but does not stop it if it is running
-     * 
+     *
      * @throws LibvirtException
      */
     public void undefine() throws LibvirtException {
@@ -1093,10 +1093,8 @@ public class Domain {
 
     /**
      * Change a virtual device on a domain
-     * 
-     * @see <a
-     *      href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainUpdateDeviceFlags">Libvirt
-     *      Documentation</a>
+     *
+     * @see <a href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainUpdateDeviceFlags">Libvirt Documentation</a>
      * @param xml
      *            the xml to update with
      * @param flags

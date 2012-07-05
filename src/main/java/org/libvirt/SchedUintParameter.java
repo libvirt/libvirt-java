@@ -2,10 +2,10 @@ package org.libvirt;
 
 /**
  * Class for representing an unsigned int scheduler parameter
- * 
- * 
+ *
+ *
  * @author stoty
- * 
+ *
  */
 public final class SchedUintParameter extends SchedParameter {
     /**

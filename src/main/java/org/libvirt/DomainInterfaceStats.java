@@ -4,9 +4,9 @@ import org.libvirt.jna.virDomainInterfaceStats;
 
 /**
  * The Domain.interfaceStats method returns th network counters in this object
- * 
+ *
  * @author stoty
- * 
+ *
  */
 public class DomainInterfaceStats {
     public long rx_bytes;

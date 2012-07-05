@@ -43,7 +43,7 @@ public class Stream {
     /**
      * Register a callback to be notified when a stream becomes writable, or
      * readable.
-     * 
+     *
      * @see <a
      *      href="http://www.libvirt.org/html/libvirt-libvirt.html#virStreamEventAddCallback">Libvirt
      *      Docs</a>
@@ -68,7 +68,7 @@ public class Stream {
     /**
      * Indicate that there is no further data is to be transmitted on the
      * stream.
-     * 
+     *
      * @return 0 if success, -1 if failure
      * @throws LibvirtException
      */
@@ -81,7 +81,7 @@ public class Stream {
     /**
      * Decrement the reference count on a stream, releasing the stream object if
      * the reference count has hit zero.
-     * 
+     *
      * @throws LibvirtException
      * @return 0 on success, or -1 on error.
      */
@@ -106,7 +106,7 @@ public class Stream {
 
     /**
      * Receieves data from teh stream into the buffer provided.
-     * 
+     *
      * @param data
      *            the put the sata into
      * @return the number of bytes read, -1 on error, -2 if the buffer is empty
@@ -120,7 +120,7 @@ public class Stream {
 
     /**
      * Batch receive method
-     * 
+     *
      * @see http://www.libvirt.org/html/libvirt-libvirt.html#virStreamRecvAll
      * @param handler
      *            the callback handler
@@ -135,7 +135,7 @@ public class Stream {
 
     /**
      * Remove an event callback from the stream
-     * 
+     *
      * @see <a
      *      href="http://www.libvirt.org/html/libvirt-libvirt.html#virStreamEventRemoveCallback">Libvirt
      *      Docs</a>
@@ -150,7 +150,7 @@ public class Stream {
 
     /**
      * Write a series of bytes to the stream.
-     * 
+     *
      * @param data
      *            the data to write
      * @return the number of bytes written, -1 on error, -2 if the buffer is
@@ -165,7 +165,7 @@ public class Stream {
 
     /**
      * Batch send method
-     * 
+     *
      * @see <a
      *      href="http://www.libvirt.org/html/libvirt-libvirt.html#virStreamSendAll">Libvirt
      *      Documentation</a>
@@ -182,10 +182,8 @@ public class Stream {
 
     /**
      * Changes the set of events to monitor for a stream.
-     * 
-     * @see <a
-     *      href="http://www.libvirt.org/html/libvirt-libvirt.html#virStreamEventUpdateCallback">Libvirt
-     *      Docs</a>
+     *
+     * @see <a href="http://www.libvirt.org/html/libvirt-libvirt.html#virStreamEventUpdateCallback">Libvirt Docs</a>
      * @param events
      *            the events to monitor
      * @return 0 for success, -1 for failure

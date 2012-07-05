@@ -25,7 +25,7 @@ public class Device {
 
     /**
      * Constructs a Device object from a DevicePointer, and a Connect object.
-     * 
+     *
      * @param virConnect
      *            the Domain's hypervisor
      * @param VDP
@@ -40,7 +40,7 @@ public class Device {
     /**
      * Destroy the device object. The virtual device is removed from the host
      * operating system. This function may require privileged access.
-     * 
+     *
      * @throws LibvirtException
      * @returns 0 for success, -1 for failure.
      */
@@ -58,7 +58,7 @@ public class Device {
     /**
      * Dettach the node device from the node itself so that it may be assigned
      * to a guest domain.
-     * 
+     *
      * @throws LibvirtException
      */
     public int detach() throws LibvirtException {
@@ -75,7 +75,7 @@ public class Device {
     /**
      * Frees this device object. The running instance is kept alive. The data
      * structure is freed and should not be used thereafter.
-     * 
+     *
      * @throws LibvirtException
      * @return number of references left (>= 0) for success, -1 for failure.
      */
@@ -92,7 +92,7 @@ public class Device {
 
     /**
      * Returns the name of the device
-     * 
+     *
      * @throws LibvirtException
      */
     public String getName() throws LibvirtException {
@@ -103,7 +103,7 @@ public class Device {
 
     /**
      * Returns the number of capabilities which the instance has.
-     * 
+     *
      * @throws LibvirtException
      */
     public int getNumberOfCapabilities() throws LibvirtException {
@@ -114,7 +114,7 @@ public class Device {
 
     /**
      * Returns the parent of the device
-     * 
+     *
      * @throws LibvirtException
      */
     public String getParent() throws LibvirtException {
@@ -125,7 +125,7 @@ public class Device {
 
     /**
      * Returns the XML description of the device
-     * 
+     *
      * @throws LibvirtException
      */
     public String getXMLDescription() throws LibvirtException {
@@ -136,7 +136,7 @@ public class Device {
 
     /**
      * List the capabilities of the device
-     * 
+     *
      * @throws LibvirtException
      */
     public String[] listCapabilities() throws LibvirtException {
@@ -160,7 +160,7 @@ public class Device {
 
     /**
      * ReAttach a device to the node.
-     * 
+     *
      * @throws LibvirtException
      */
     public int reAttach() throws LibvirtException {
@@ -172,7 +172,7 @@ public class Device {
     /**
      * Reset a previously dettached node device to the node before or after
      * assigning it to a guest.
-     * 
+     *
      * @throws LibvirtException
      */
     public int reset() throws LibvirtException {

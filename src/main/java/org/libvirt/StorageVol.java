@@ -51,7 +51,7 @@ public class StorageVol {
      * Constructs a VirStorageVol object from a known native virStoragePoolPtr,
      * and a VirConnect object. For use when native libvirt returns a
      * virStorageVolPtr, i.e. error handling.
-     * 
+     *
      * @param virConnect
      *            the Domain's hypervisor
      * @param VSVP
@@ -65,7 +65,7 @@ public class StorageVol {
 
     /**
      * Delete the storage volume from the pool
-     * 
+     *
      * @param flags
      *            future flags, use 0 for now
      * @throws LibvirtException
@@ -83,7 +83,7 @@ public class StorageVol {
     /**
      * Release the storage volume handle. The underlying storage volume contains
      * to exist
-     * 
+     *
      * @throws LibvirtException
      * @return number of references left (>= 0) for success, -1 for failure.
      */
@@ -100,7 +100,7 @@ public class StorageVol {
     /**
      * Provides the connection object associated with a storage volume. The
      * reference counter on the connection is not increased by this call.
-     * 
+     *
      * @return the Connect object
      */
     public Connect getConnect() {
@@ -110,7 +110,7 @@ public class StorageVol {
     /**
      * Fetches volatile information about the storage volume such as its current
      * allocation
-     * 
+     *
      * @return StorageVolInfo object
      * @throws LibvirtException
      */
@@ -124,7 +124,7 @@ public class StorageVol {
     /**
      * Fetch the storage volume key. This is globally unique, so the same volume
      * will have the same key no matter what host it is accessed from
-     * 
+     *
      * @return the key
      * @throws LibvirtException
      */
@@ -136,7 +136,7 @@ public class StorageVol {
 
     /**
      * Fetch the storage volume name. This is unique within the scope of a pool
-     * 
+     *
      * @return the name
      * @throws LibvirtException
      */
@@ -151,7 +151,7 @@ public class StorageVol {
      * is either persistent across hosts, or dynamically assigned at pool
      * startup. Consult pool documentation for information on getting the
      * persistent naming
-     * 
+     *
      * @return the storage volume path
      * @throws LibvirtException
      */
@@ -163,7 +163,7 @@ public class StorageVol {
 
     /**
      * Fetch an XML document describing all aspects of this storage volume
-     * 
+     *
      * @param flags
      *            flags for XML generation (unused, pass 0)
      * @return the XML document
@@ -177,7 +177,7 @@ public class StorageVol {
 
     /**
      * Error handling logic which should be called after every libvirt call
-     * 
+     *
      * @throws LibvirtException
      */
     protected void processError() throws LibvirtException {
@@ -186,7 +186,7 @@ public class StorageVol {
 
     /**
      * Fetch a storage pool which contains this volume
-     * 
+     *
      * @return StoragePool object,
      * @throws LibvirtException
      */
@@ -198,10 +198,8 @@ public class StorageVol {
 
     /**
      * Ensure data previously on a volume is not accessible to future reads
-     * 
-     * @see <a
-     *      href="http://www.libvirt.org/html/libvirt-libvirt.html#virStorageVolWipe">Libvirt
-     *      Documentation</a>
+     *
+     * @see <a href="http://www.libvirt.org/html/libvirt-libvirt.html#virStorageVolWipe">Libvirt Documentation</a>
      * @return 0 on success, or -1 on error
      * @throws LibvirtException
      */

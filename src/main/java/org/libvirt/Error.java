@@ -164,7 +164,7 @@ public class Error implements Serializable {
     }
 
     /**
-     * 
+     *
      */
     private static final long serialVersionUID = -4780109197014633842L;
 
@@ -202,7 +202,7 @@ public class Error implements Serializable {
 
     /**
      * Gets he error code
-     * 
+     *
      * @return a VirErroNumber
      */
     public ErrorNumber getCode() {
@@ -212,7 +212,7 @@ public class Error implements Serializable {
     /**
      * returns the Connection associated with the error, if available
      * Deprecated, always throw an exception now
-     * 
+     *
      * @return the Connect object
      * @throws ErrorException
      * @deprecated
@@ -224,7 +224,7 @@ public class Error implements Serializable {
 
     /**
      * returns the Domain associated with the error, if available
-     * 
+     *
      * @return Domain object
      * @throws ErrorException
      * @deprecated
@@ -236,7 +236,7 @@ public class Error implements Serializable {
 
     /**
      * Tells What part of the library raised this error
-     * 
+     *
      * @return a ErrorDomain
      */
     public ErrorDomain getDomain() {
@@ -259,7 +259,7 @@ public class Error implements Serializable {
 
     /**
      * Tells how consequent is the error
-     * 
+     *
      * @return a ErrorLevel
      */
     public ErrorLevel getLevel() {
@@ -268,7 +268,7 @@ public class Error implements Serializable {
 
     /**
      * Returns human-readable informative error messag
-     * 
+     *
      * @return error message
      */
     public String getMessage() {
@@ -277,7 +277,7 @@ public class Error implements Serializable {
 
     /**
      * Returns the network associated with the error, if available
-     * 
+     *
      * @return Network object
      * @throws ErrorException
      * @deprecated
@@ -311,7 +311,7 @@ public class Error implements Serializable {
     /**
      * Does this error has a valid Connection object attached? NOTE: deprecated,
      * should return false
-     * 
+     *
      * @return false
      */
     public boolean hasConn() {
@@ -321,7 +321,7 @@ public class Error implements Serializable {
     /**
      * Does this error has a valid Domain object attached? NOTE: deprecated,
      * should return false
-     * 
+     *
      * @return false
      */
     public boolean hasDom() {
@@ -331,7 +331,7 @@ public class Error implements Serializable {
     /**
      * Does this error has a valid Network object attached? NOTE: deprecated,
      * should return false
-     * 
+     *
      * @return false
      */
     public boolean hasNet() {

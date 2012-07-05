@@ -4,7 +4,7 @@ import org.libvirt.jna.virDomainBlockStats;
 
 /**
  * This class holds the counters for block device statistics.
- * 
+ *
  * @author stoty
  * @see Domain#blockStats
  */

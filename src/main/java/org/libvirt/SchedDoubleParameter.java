@@ -2,9 +2,9 @@ package org.libvirt;
 
 /**
  * Class for representing a double scheduler parameter
- * 
+ *
  * @author stoty
- * 
+ *
  */
 public final class SchedDoubleParameter extends SchedParameter {
     /**

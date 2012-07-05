@@ -4,14 +4,14 @@ import org.libvirt.jna.virDomainInfo;
 
 /**
  * This object is returned by Domain.getInfo()
- * 
+ *
  * @author stoty
- * 
+ *
  */
 public class DomainInfo {
     /**
      * @author stoty
-     * 
+     *
      */
     public static enum DomainState {
         /**

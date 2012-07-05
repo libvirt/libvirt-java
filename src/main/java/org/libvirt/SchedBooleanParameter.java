@@ -2,9 +2,9 @@ package org.libvirt;
 
 /**
  * Class for representing a boolean scheduler parameter
- * 
+ *
  * @author stoty
- * 
+ *
  */
 public final class SchedBooleanParameter extends SchedParameter {
     /**

@@ -3,7 +3,7 @@ package org.libvirt;
 /**
  * This exception is thrown by all classes and methods of libvirt when the
  * underlying libvirt library indicates an error
- * 
+ *
  * @author stoty
  * @see Error
  */
@@ -21,7 +21,7 @@ public class LibvirtException extends Exception {
     /**
      * Returns the underlying Error objects that contains details about the
      * cause of the exception
-     * 
+     *
      * @return the underlying Error object
      */
     public Error getError() {

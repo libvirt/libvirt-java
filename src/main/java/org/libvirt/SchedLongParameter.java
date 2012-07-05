@@ -2,9 +2,9 @@ package org.libvirt;
 
 /**
  * Class for representing a long int scheduler parameter
- * 
+ *
  * @author stoty
- * 
+ *
  */
 public final class SchedLongParameter extends SchedParameter {
     /**

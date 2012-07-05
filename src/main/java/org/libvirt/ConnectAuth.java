@@ -8,9 +8,9 @@ import com.sun.jna.Pointer;
 /**
  * We diverge from the C implementation There is no explicit cbdata field, you
  * should just add any extra data to the child class's instance.
- * 
+ *
  * @author stoty
- * 
+ *
  */
 public abstract class ConnectAuth implements Libvirt.VirConnectAuthCallback {
     public class Credential {
@@ -38,7 +38,7 @@ public abstract class ConnectAuth implements Libvirt.VirConnectAuthCallback {
 
         /**
          * Convenience constructor to be called from the JNI side
-         * 
+         *
          * @param type
          * @param prompt
          * @param challenge
@@ -85,7 +85,7 @@ public abstract class ConnectAuth implements Libvirt.VirConnectAuthCallback {
 
     /**
      * @author stoty
-     * 
+     *
      */
     public static enum CredentialType {
 
@@ -133,7 +133,7 @@ public abstract class ConnectAuth implements Libvirt.VirConnectAuthCallback {
 
         /**
          * Maps the java CredentialType Enum to libvirt's integer constant
-         * 
+         *
          * @return The integer equivalent
          */
         @SuppressWarnings("all")
@@ -190,7 +190,7 @@ public abstract class ConnectAuth implements Libvirt.VirConnectAuthCallback {
 
     /**
      * The callback function that fills the credentials in
-     * 
+     *
      * @param cred
      *            the array of credentials passed by libvirt
      * @return 0 if the defresult field contains a vailde response, -1 otherwise

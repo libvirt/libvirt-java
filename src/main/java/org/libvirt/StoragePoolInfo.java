@@ -49,7 +49,7 @@ public class StoragePoolInfo {
     /**
      * This is meant to be called from the JNI side, as a convenience
      * constructor
-     * 
+     *
      * @param state
      *            the state, as defined by libvirt
      * @param capacity

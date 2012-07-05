@@ -35,7 +35,7 @@ public class StorageVolInfo {
     /**
      * This is meant to be called from the JNI side, as a convenience
      * constructor
-     * 
+     *
      * @param type
      *            the type, as defined by libvirt
      * @param capacity

@@ -8,9 +8,9 @@ import com.sun.jna.Pointer;
 /**
  * Callback class to allow users of the API to handle the Error messages in a
  * more robust fashion.
- * 
+ *
  * @author bkearney
- * 
+ *
  */
 public class ErrorCallback implements Libvirt.VirErrorCallback {
     public void errorCallback(Pointer userData, virError error) {

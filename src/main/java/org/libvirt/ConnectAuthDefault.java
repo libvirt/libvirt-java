@@ -7,7 +7,7 @@ import java.io.InputStreamReader;
  * Implements virConnectAuthPtrDefault functionality from libvirt.c without the
  * external method support It's not officially a part of the libvirt API, but
  * provided here for completeness, testing, and as an example
- * 
+ *
  * @author stoty
  */
 public final class ConnectAuthDefault extends ConnectAuth {
