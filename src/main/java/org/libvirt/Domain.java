@@ -678,7 +678,7 @@ public class Domain {
      * @return
      * @throws LibvirtException
      */
-    public int managedSaveRemote() throws LibvirtException {
+    public int managedSaveRemove() throws LibvirtException {
         int returnValue = libvirt.virDomainManagedSaveRemove(VDP, 0);
         processError();
         return returnValue;
