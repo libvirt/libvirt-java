@@ -1,0 +1,9 @@
+Homepage: http://libvirt.org/java.html
+Maintainer: Wido den Hollander <wido@widodh.nl>
+Section: java
+Priority: optional
+Version: @version@
+Package: libvirt-java
+Architecture: all
+Depends: libjna-java (>= 3.2.4), libvirt0 (>= 0.9.8)
+Description: These Java bindings expose the C API in a Java friendly way
