@@ -121,7 +121,7 @@ public class Stream {
     /**
      * Batch receive method
      *
-     * @see http://www.libvirt.org/html/libvirt-libvirt.html#virStreamRecvAll
+     * @see <a href="http://www.libvirt.org/html/libvirt-libvirt.html#virStreamRecvAll">virStreamRecvAll</a>
      * @param handler
      *            the callback handler
      * @return 0 if successfule, -1 otherwise

@@ -675,7 +675,7 @@ public class Domain {
      * @see <a
      *      href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainManagedSaveRemove">Libvirt
      *      Documentation</a>
-     * @return
+     * @return 0 in case of success, and -1 in case of error
      * @throws LibvirtException
      */
     public int managedSaveRemove() throws LibvirtException {
@@ -778,8 +778,9 @@ public class Domain {
      * Migrate the domain object from its current host to the destination host
      * given by duri.
      *
-     * @see http
-     *      ://www.libvirt.org/html/libvirt-libvirt.html#virDomainMigrateToURI
+     * @see <a
+     *       href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainMigrateToURI">
+     *       virDomainMigrateToURI</a>
      *
      * @param uri
      *            The destination URI

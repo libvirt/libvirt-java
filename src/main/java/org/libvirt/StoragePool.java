@@ -343,7 +343,7 @@ public class StoragePool {
      * as input. Information for the new volume (name, perms) are passed via a
      * typical volume XML description.
      *
-     * @return
+     * @return The storage volume, or {@code null} on error.
      * @throws LibvirtException
      */
     public StorageVol storageVolCreateXMLFrom(String xmlDesc, StorageVol cloneVolume, int flags)

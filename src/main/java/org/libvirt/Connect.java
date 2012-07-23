@@ -383,7 +383,7 @@ public class Connect {
      *      Documentation</a>
      * @param callbackID
      *            the callback to deregister
-     * @return
+     * @return 0 on success, -1 on failure
      * @throws LibvirtException
      */
     public int domainEventDeregisterAny(int callbackID) throws LibvirtException {
@@ -509,7 +509,7 @@ public class Connect {
      * domain configuration file describing the domain. The format of the native
      * data is hypervisor dependant.
      *
-     * @return
+     * @return domain XML as String, or {@code null} on error
      * @throws LibvirtException
      */
     public String domainXMLFromNative(String nativeFormat, String nativeConfig, int flags) throws LibvirtException {
@@ -523,7 +523,7 @@ public class Connect {
      * native configuration file describing the domain. The format of the native
      * data is hypervisor dependant.
      *
-     * @return
+     * @return domain XML as String, or {@code null} on error
      * @throws LibvirtException
      */
     public String domainXMLToNative(String nativeFormat, String domainXML, int flags) throws LibvirtException {

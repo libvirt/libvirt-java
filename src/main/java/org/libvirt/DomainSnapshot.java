@@ -34,7 +34,7 @@ public class DomainSnapshot {
      *      Documentation</a>
      * @param flags
      *            controls teh deletion
-     * @return
+     * @return 0 if the selected snapshot(s) were successfully deleted, -1 on error.
      * @throws LibvirtException
      */
     public int delete(int flags) throws LibvirtException {
