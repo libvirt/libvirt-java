@@ -12,6 +12,21 @@ import org.libvirt.jna.virError;
  */
 public class Error implements Serializable {
 
+    /**
+     * Returns the element of the given array at the specified index,
+     * or the last element of the array if the index is not less than
+     * {@code values.length}.
+     *
+     * @return n-th item of {@code values} when {@code n <
+     *          values.length}, otherwise the last item of {@code values}.
+     */
+    private static final <T> T safeElementAt(final int n, final T[] values) {
+        assert(n >= 0 && values.length > 0);
+
+        int idx = Math.min(n, values.length - 1);
+        return values[idx];
+    }
+
     public static enum ErrorDomain {
         VIR_FROM_NONE, VIR_FROM_XEN, /* Error at Xen hypervisor layer */
         VIR_FROM_XEND, /* Error at connection with xend daemon */
@@ -60,6 +75,11 @@ public class Error implements Serializable {
         VIR_FROM_URI, /* Error from URI handling */
         VIR_FROM_AUTH, /* Error from auth handling */
         VIR_FROM_DBUS, /* Error from DBus */
+        VIR_FROM_UNKNOWN; /* unknown error domain (must be the last entry!) */
+
+        protected static final ErrorDomain wrap(int value) {
+            return safeElementAt(value, values());
+        }
     }
 
     public static enum ErrorLevel {
@@ -71,7 +91,13 @@ public class Error implements Serializable {
         /**
          * An error
          */
-        VIR_ERR_ERROR
+        VIR_ERR_ERROR,
+
+        VIR_ERR_UNKNOWN; /* must be the last entry! */
+
+        protected static final ErrorLevel wrap(int value) {
+            return safeElementAt(value, values());
+        }
     }
 
     public static enum ErrorNumber {
@@ -161,6 +187,11 @@ public class Error implements Serializable {
         VIR_ERR_MIGRATE_UNSAFE, /* Migration is not safe */
         VIR_ERR_OVERFLOW, /* integer overflow */
         VIR_ERR_BLOCK_COPY_ACTIVE, /* action prevented by block copy job */
+        VIR_ERR_UNKNOWN; /* unknown error (must be the last entry!) */
+
+        protected static final ErrorNumber wrap(int value) {
+            return safeElementAt(value, values());
+        }
     }
 
     /**
@@ -181,14 +212,10 @@ public class Error implements Serializable {
     int int2;
     NetworkPointer VNP; /* Deprecated */
 
-    public Error() {
-
-    }
-
     public Error(virError vError) {
-        code = ErrorNumber.values()[vError.code];
-        domain = ErrorDomain.values()[vError.domain];
-        level = ErrorLevel.values()[vError.level];
+        code = code.wrap(vError.code);
+        domain = domain.wrap(vError.domain);
+        level = level.wrap(vError.level);
         message = vError.message;
         str1 = vError.str1;
         str2 = vError.str2;
