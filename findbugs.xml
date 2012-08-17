@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- This runs the findbugs [http://findbugs.sourceforge.net/] ant task for -->
+<!-- the libvirt-java jar file. -->
+
+<!-- You must have findbugs installed and Ant needs to be able to -->
+<!-- locate the findbugs-java.jar file. -->
+
+<!-- Either use the -lib command line option or copy this jar -->
+<!-- to ${user.home}/.ant/lib or ${ant.home}/lib. -->
+
+<!-- E.g. -->
+
+<!-- "ant -Dfindbugs.home=/path/fb -lib /path/fb/lib/findbugs-ant.jar -f findbugs.xml" -->
+
+<project name="Libvirt Java Bindings - Findbugs" default="findbugs">
+	<!-- findbugs task definition -->
+	<taskdef name="findbugs" classname="edu.umd.cs.findbugs.anttask.FindBugsTask" />
+
+	<!-- enable debugging to let findbugs report line numbers -->
+	<property name="javac.debug" value="on" />
+
+	<import file="build.xml"/>
+
+	<property name="findbugs.output" value="text" />
+
+	<target name="findbugs" depends="build">
+		<findbugs home="${findbugs.home}"
+				  output="${findbugs.output}" >
+			<auxClasspath refid="compile.classpath" />
+			<sourcePath path="${basedir}/src/main/java" />
+			<class location="${jar.file}" />
+		</findbugs>
+	</target>
+
+</project>
