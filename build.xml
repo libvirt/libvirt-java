@@ -42,8 +42,8 @@
 	</target>
 
 	<target name="build" depends="init" description="builds the code and jar files">
-		<javac srcdir="src/main/java" includes="**/*.java" classpathref="compile.classpath" destdir="target/classes" />
-		<javac srcdir="src/test/java" includes="**/*.java" classpathref="test.classpath" destdir="target/testclasses" />
+		<javac srcdir="src/main/java" debug="${javac.debug}" includes="**/*.java" classpathref="compile.classpath" destdir="target/classes" includeAntRuntime="false" />
+		<javac srcdir="src/test/java" debug="${javac.debug}" includes="**/*.java" classpathref="test.classpath" destdir="target/testclasses" includeAntRuntime="false" />
 		<jar destfile="${jar.file}" basedir="target/classes" />
 	</target>
 
