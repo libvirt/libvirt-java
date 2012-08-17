@@ -116,7 +116,7 @@ public class StoragePool {
     }
 
     @Override
-    public void finalize() throws LibvirtException {
+    protected void finalize() throws LibvirtException {
         free();
     }
 
