@@ -199,18 +199,18 @@ public class Error implements Serializable {
      */
     private static final long serialVersionUID = -4780109197014633842L;
 
-    ErrorNumber code;
-    ErrorDomain domain;
-    String message;
-    ErrorLevel level;
-    ConnectionPointer VCP; /* Deprecated */
-    DomainPointer VDP; /* Deprecated */
-    String str1;
-    String str2;
-    String str3;
-    int int1;
-    int int2;
-    NetworkPointer VNP; /* Deprecated */
+    private ErrorNumber code;
+    private ErrorDomain domain;
+    private String message;
+    private ErrorLevel level;
+    private ConnectionPointer VCP; /* Deprecated */
+    private DomainPointer VDP; /* Deprecated */
+    private String str1;
+    private String str2;
+    private String str3;
+    private int int1;
+    private int int2;
+    private NetworkPointer VNP; /* Deprecated */
 
     public Error(virError vError) {
         code = code.wrap(vError.code);

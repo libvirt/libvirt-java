@@ -12,7 +12,7 @@ public class Stream {
     /**
      * the native virStreamPtr.
      */
-    StreamPointer VSP;
+    private StreamPointer VSP;
 
     /**
      * The Connect Object that represents the Hypervisor of this Domain
