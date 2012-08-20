@@ -109,6 +109,14 @@ public interface Libvirt extends Library {
 
     // Connection Functions
     String virConnectBaselineCPU(ConnectionPointer virConnectPtr, String[] xmlCPUs, int ncpus, int flags);
+
+    /**
+     * @deprecated as of libvirt 0.6.0, all errors reported in the
+     * per-connection object are also duplicated in the global error
+     * object. This method remains for backwards compatibility. Use
+     * {@link #virCopyLastError} instead.
+    */
+    @Deprecated
     int virConnCopyLastError(ConnectionPointer virConnectPtr, virError to);
     int virConnectClose(ConnectionPointer virConnectPtr);
     int virConnectCompareCPU(ConnectionPointer virConnectPtr, String xmlDesc, int flags);
@@ -148,6 +156,14 @@ public interface Libvirt extends Library {
     ConnectionPointer virConnectOpen(String name);
     ConnectionPointer virConnectOpenAuth(String name, virConnectAuth auth, int flags);
     ConnectionPointer virConnectOpenReadOnly(String name);
+
+    /**
+     * @deprecated as of libvirt 0.6.0, all errors reported in the
+     * per-connection object are also duplicated in the global error
+     * object. This method remains only for backwards compatibility.
+     * Use {@link #virGetLastError} instead.
+     */
+    @Deprecated
     virError virConnGetLastError(ConnectionPointer virConnectPtr);
     int virConnResetLastError(ConnectionPointer virConnectPtr);
     String virConnectDomainXMLFromNative(ConnectionPointer virConnectPtr, String nativeFormat,
