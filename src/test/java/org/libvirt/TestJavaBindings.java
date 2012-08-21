@@ -4,28 +4,35 @@ import java.util.UUID;
 
 import junit.framework.TestCase;
 
-public class TestJavaBindings extends TestCase {
-
-    int UUIDArray[] = { Integer.decode("0x00"), Integer.decode("0x4b"), Integer.decode("0x96"), Integer.decode("0xe1"),
+public final class TestJavaBindings extends TestCase {
+    final int UUIDArray[] = { Integer.decode("0x00"), Integer.decode("0x4b"), Integer.decode("0x96"), Integer.decode("0xe1"),
             Integer.decode("0x2d"), Integer.decode("0x78"), Integer.decode("0xc3"), Integer.decode("0x0f"),
             Integer.decode("0x5a"), Integer.decode("0xa5"), Integer.decode("0xf0"), Integer.decode("0x3c"),
             Integer.decode("0x87"), Integer.decode("0xd2"), Integer.decode("0x1e"), Integer.decode("0x67") };
 
-    public void testErrorCallback() throws Exception {
+    private Connect conn;
+
+    protected void setUp() throws LibvirtException {
+        conn = new Connect("test:///default", false);
+    }
+
+    protected void tearDown() throws LibvirtException {
+        conn.close();
+        conn = null;
+    }
+
+    public void testConnectionErrorCallback() throws LibvirtException {
         DummyErrorCallback cb = new DummyErrorCallback();
-        Connect.setErrorCallback(cb);
+        conn.setConnectionErrorCallback(cb);
+
         try {
-            Connect conn = new Connect("test:///someUrl", false);
-        } catch (Exception e) {
-            // eat it
-        }
-        assertTrue("We should have caught an error", cb.error);
-        Connect conn = new Connect("test:///default", false);
-        conn.setConnectionErrorCallback(cb) ;
+            conn.domainDefineXML("fail, miserably");
+        } catch (LibvirtException e) {} // ignore
+
+        assertTrue("Error callback was not called", cb.error);
     }
 
     public void testConnection() throws Exception {
-        Connect conn = new Connect("test:///default", false);
         assertEquals("conn.getType()", "Test", conn.getType());
         assertEquals("conn.getURI()", "test:///default", conn.getURI());
         assertEquals("conn.getMaxVcpus(xen)", 32, conn.getMaxVcpus("xen"));
@@ -39,7 +46,6 @@ public class TestJavaBindings extends TestCase {
     }
 
     public void testNodeInfo() throws Exception {
-        Connect conn = new Connect("test:///default", false);
         NodeInfo nodeInfo = conn.nodeInfo();
         assertEquals("nodeInfo.model", "i686", nodeInfo.model);
         assertEquals("nodeInfo.memory", 3145728, nodeInfo.memory);
@@ -56,8 +62,6 @@ public class TestJavaBindings extends TestCase {
     }
 
     public void testNetworkCreate() throws Exception {
-        Connect conn = new Connect("test:///default", false);
-
         Network network1 = conn.networkCreateXML("<network>" + "  <name>createst</name>"
                 + "  <uuid>004b96e1-2d78-c30f-5aa5-f03c87d21e68</uuid>" + "  <bridge name='createst'/>"
                 + "  <forward dev='eth0'/>" + "  <ip address='192.168.66.1' netmask='255.255.255.0'>" + "    <dhcp>"
@@ -103,8 +107,6 @@ public class TestJavaBindings extends TestCase {
     }
 
     public void testDomainCreate() throws Exception {
-        Connect conn = new Connect("test:///default", false);
-
         Domain dom1 = conn.domainDefineXML("<domain type='test' id='2'>" + "  <name>deftest</name>"
                 + "  <uuid>004b96e1-2d78-c30f-5aa5-f03c87d21e70</uuid>" + "  <memory>8388608</memory>"
                 + "  <vcpu>2</vcpu>" + "  <os><type arch='i686'>hvm</type></os>" + "  <on_reboot>restart</on_reboot>"
@@ -129,7 +131,7 @@ public class TestJavaBindings extends TestCase {
         this.validateDomainData(conn.domainLookupByUUID(UUID.fromString("004b96e1-2d78-c30f-5aa5-f03c87d21e67")));
     }
 
-    public void validateDomainData(Domain dom) throws Exception {
+    private void validateDomainData(Domain dom) throws Exception {
         assertEquals("dom.getName()", "createst", dom.getName());
         assertEquals("dom.getMaxMemory()", 8388608, dom.getMaxMemory());
         // Not supported by the test driver
@@ -162,7 +164,6 @@ public class TestJavaBindings extends TestCase {
     }
 
     public void testInterfaces() throws Exception {
-        Connect conn = new Connect("test:///default", false);
         assertEquals("numOfInterfaces:", 1, conn.numOfInterfaces());
         assertEquals("numOfInterfaces:", 0, conn.numOfDefinedInterfaces());
         assertEquals("listDefinedInterfaces:", "eth1", conn.listInterfaces()[0]);
@@ -188,18 +189,18 @@ public class TestJavaBindings extends TestCase {
     }
 
     public void testAccessAfterClose() throws Exception {
-        Connect conn = new Connect("test:///default", false);
         conn.close();
         assertTrue("conn.isConnected should be false", !conn.isConnected());
+        LibvirtException virException = null;
         try {
             conn.getHostName();
         } catch (LibvirtException e) {
-            // eat it
+            virException = e;
         }
+        assertNotNull(virException);
     }
     
     public void testStoragePool() throws Exception {
-        Connect conn = new Connect("test:///default", false);           
         StoragePool pool1 = conn.storagePoolDefineXML("<pool type='dir'>"
                 + "  <name>pool1</name>"
                 + "  <target>"

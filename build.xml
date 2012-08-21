@@ -49,11 +49,14 @@
 	</target>
 
 	<target name="test" depends="build" description="tests the code">
-		<junit printsummary="yes" fork="yes">
+		<junit printsummary="yes" fork="yes" forkMode="perBatch">
 			<formatter type="plain" />
 			<classpath refid="test.classpath" />
-			<test name="org.libvirt.TestJavaBindings" outfile="target/testResults">
-			</test>
+			<batchtest todir="target">
+				<fileset dir="src/test/java">
+					<include name="**/Test*.java" />
+				</fileset>
+			</batchtest>
 		</junit>
 	</target>
 
