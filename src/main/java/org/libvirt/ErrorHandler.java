@@ -20,14 +20,11 @@ public class ErrorHandler {
      * @throws LibvirtException
      */
     public static void processError(Libvirt libvirt) throws LibvirtException {
-        virError vError = new virError();
-        int errorCode = libvirt.virCopyLastError(vError);
-        if (errorCode > 0) {
+        virError vError = libvirt.virGetLastError();
+        if (vError != null) {
             Error error = new Error(vError);
-            libvirt.virResetLastError();
             /*
-             * FIXME: Don't throw exceptions for VIR_ERR_WARNING
-             * level errors
+             * Don't throw exceptions for VIR_ERR_WARNING level errors
              */
             if (error.getLevel() == Error.ErrorLevel.VIR_ERR_ERROR) {
                 throw new LibvirtException(error);
