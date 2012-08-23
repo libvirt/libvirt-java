@@ -33,6 +33,7 @@
 	<target name="init">
 		<mkdir dir="target/classes" />
 		<mkdir dir="target/testclasses" />
+		<mkdir dir="target/cache" />
 		<copy file="README.in" tofile="README" overwrite="true" filtering="true">
 			<filterset filtersfile="build.properties" />
 		</copy>
@@ -42,13 +43,27 @@
 		<delete dir="target" />
 	</target>
 
-	<target name="build" depends="init" description="builds the code and jar files">
-		<javac srcdir="src/main/java" debug="${javac.debug}" includes="**/*.java" classpathref="compile.classpath" destdir="target/classes" includeAntRuntime="false" />
-		<javac srcdir="src/test/java" debug="${javac.debug}" includes="**/*.java" classpathref="test.classpath" destdir="target/testclasses" includeAntRuntime="false" />
+	<target name="jar" description="build the jar" depends="build">
 		<jar destfile="${jar.file}" basedir="target/classes" />
 	</target>
 
-	<target name="test" depends="build" description="tests the code">
+	<target name="buildtests" description="build test classes" depends="build">
+		<depend srcdir="src/test/java"
+				destdir="target/testclasses"
+				cache="target/cache"
+				closure="true" />
+		<javac srcdir="src/test/java" debug="${javac.debug}" includes="**/*.java" classpathref="test.classpath" destdir="target/testclasses" includeAntRuntime="false" />
+	</target>
+
+	<target name="build" depends="init" description="builds the code">
+		<depend srcdir="src/main/java"
+				destdir="target/classes"
+				cache="target/cache"
+				closure="true" />
+		<javac srcdir="src/main/java" debug="${javac.debug}" includes="**/*.java" classpathref="compile.classpath" destdir="target/classes" includeAntRuntime="false" />
+	</target>
+
+	<target name="test" depends="buildtests" description="tests the code">
 		<junit printsummary="yes" fork="yes" forkMode="perBatch">
 			<formatter type="plain" />
 			<classpath refid="test.classpath" />
@@ -81,7 +96,7 @@
 		</copy>
 	</target>
 
-	<target name="deb" depends="build" description="build a debian Debian package">
+	<target name="deb" depends="build,jar" description="build a debian Debian package">
 		<mkdir dir="${debian.pkgdir}/DEBIAN" />
 		<copy file="debian/control.in" tofile="${debian.controlfile}" overwrite="true" filtering="true">
 			<filterset filtersfile="build.properties" />
@@ -103,7 +118,7 @@
 		<rpm specfile="${spec}" command="-ba" topdir="${rpm.topdir}" />
 	</target>
 
-	<target name="maven" depends="build,docs,src" description="publish the maven repo">
+	<target name="maven" depends="build,jar,docs,src" description="publish the maven repo">
 		<mkdir dir="target/repo" />
 		<get src="http://repo1.maven.org/maven2/org/apache/maven/maven-ant-tasks/2.1.3/maven-ant-tasks-2.1.3.jar" dest="target/maven-ant-tasks-2.1.3.jar" />
 		<copy file="pom.xml.in" tofile="target/pom.xml" overwrite="true" filtering="true">
