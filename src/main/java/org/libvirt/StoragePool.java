@@ -4,6 +4,7 @@ import org.libvirt.jna.Libvirt;
 import org.libvirt.jna.StoragePoolPointer;
 import org.libvirt.jna.StorageVolPointer;
 import org.libvirt.jna.virStoragePoolInfo;
+import static org.libvirt.Library.libvirt;
 
 import com.sun.jna.Native;
 import com.sun.jna.ptr.IntByReference;
@@ -50,11 +51,6 @@ public class StoragePool {
     protected Connect virConnect;
 
     /**
-     * the libvirt instance
-     */
-    protected Libvirt libvirt;
-
-    /**
      * Constructs a VirStoragePool object from a known native virStoragePoolPtr,
      * and a VirConnect object. For use when native libvirt returns a
      * virStoragePoolPtr, i.e. error handling.
@@ -67,7 +63,6 @@ public class StoragePool {
     StoragePool(Connect virConnect, StoragePoolPointer VSPP) {
         this.virConnect = virConnect;
         this.VSPP = VSPP;
-        libvirt = virConnect.libvirt;
     }
 
     /**

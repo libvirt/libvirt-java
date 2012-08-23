@@ -2,6 +2,7 @@ package org.libvirt;
 
 import org.libvirt.jna.InterfacePointer;
 import org.libvirt.jna.Libvirt;
+import static org.libvirt.Library.libvirt;
 
 /**
  * A device which is attached to a node
@@ -24,11 +25,6 @@ public class Interface {
     private Connect virConnect;
 
     /**
-     * The libvirt connection from the hypervisor
-     */
-    protected Libvirt libvirt;
-
-    /**
      * Constructs an Interface object from an InterfacePointer, and a Connect
      * object.
      *
@@ -40,7 +36,6 @@ public class Interface {
     Interface(Connect virConnect, InterfacePointer VIP) {
         this.virConnect = virConnect;
         this.VIP = VIP;
-        libvirt = virConnect.libvirt;
     }
 
     /**

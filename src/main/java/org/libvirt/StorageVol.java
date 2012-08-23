@@ -4,6 +4,7 @@ import org.libvirt.jna.Libvirt;
 import org.libvirt.jna.StoragePoolPointer;
 import org.libvirt.jna.StorageVolPointer;
 import org.libvirt.jna.virStorageVolInfo;
+import static org.libvirt.Library.libvirt;
 
 /**
  * An acutal storage bucket.
@@ -43,11 +44,6 @@ public class StorageVol {
     protected Connect virConnect;
 
     /**
-     * the libvirt instance
-     */
-    protected Libvirt libvirt;
-
-    /**
      * Constructs a VirStorageVol object from a known native virStoragePoolPtr,
      * and a VirConnect object. For use when native libvirt returns a
      * virStorageVolPtr, i.e. error handling.
@@ -60,7 +56,6 @@ public class StorageVol {
     StorageVol(Connect virConnect, StorageVolPointer VSVP) {
         this.virConnect = virConnect;
         this.VSVP = VSVP;
-        libvirt = virConnect.libvirt;
     }
 
     /**

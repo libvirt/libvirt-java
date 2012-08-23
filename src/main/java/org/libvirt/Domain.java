@@ -11,6 +11,7 @@ import org.libvirt.jna.virDomainJobInfo;
 import org.libvirt.jna.virDomainMemoryStats;
 import org.libvirt.jna.virSchedParameter;
 import org.libvirt.jna.virVcpuInfo;
+import static org.libvirt.Library.libvirt;
 
 import com.sun.jna.Native;
 import com.sun.jna.NativeLong;
@@ -86,11 +87,6 @@ public class Domain {
     private Connect virConnect;
 
     /**
-     * The libvirt connection from the hypervisor
-     */
-    protected Libvirt libvirt;
-
-    /**
      * Constructs a Domain object from a known native DomainPointer, and a
      * Connect object.
      *
@@ -102,7 +98,6 @@ public class Domain {
     Domain(Connect virConnect, DomainPointer VDP) {
         this.virConnect = virConnect;
         this.VDP = VDP;
-        libvirt = virConnect.libvirt;
     }
 
     /**

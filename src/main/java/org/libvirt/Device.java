@@ -2,6 +2,7 @@ package org.libvirt;
 
 import org.libvirt.jna.DevicePointer;
 import org.libvirt.jna.Libvirt;
+import static org.libvirt.Library.libvirt;
 
 /**
  * A device which is attached to a node
@@ -19,11 +20,6 @@ public class Device {
     private Connect virConnect;
 
     /**
-     * The libvirt connection from the hypervisor
-     */
-    protected Libvirt libvirt;
-
-    /**
      * Constructs a Device object from a DevicePointer, and a Connect object.
      *
      * @param virConnect
@@ -34,7 +30,6 @@ public class Device {
     Device(Connect virConnect, DevicePointer VDP) {
         this.virConnect = virConnect;
         this.VDP = VDP;
-        libvirt = virConnect.libvirt;
     }
 
     /**

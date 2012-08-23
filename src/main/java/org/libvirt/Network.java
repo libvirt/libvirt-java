@@ -2,6 +2,7 @@ package org.libvirt;
 
 import org.libvirt.jna.Libvirt;
 import org.libvirt.jna.NetworkPointer;
+import static org.libvirt.Library.libvirt;
 
 import com.sun.jna.Native;
 import com.sun.jna.ptr.IntByReference;
@@ -22,11 +23,6 @@ public class Network {
     protected Connect virConnect;
 
     /**
-     * The libvirt connection from the hypervisor
-     */
-    protected Libvirt libvirt;
-
-    /**
      * Constructs a Network object from a known native virNetworkPtr, and a
      * Connect object. For use when native libvirt returns a virConnectPtr, i.e.
      * error handling.
@@ -37,7 +33,6 @@ public class Network {
     Network(Connect virConnect, NetworkPointer VNP) {
         this.virConnect = virConnect;
         this.VNP = VNP;
-        libvirt = virConnect.libvirt;
     }
 
     /**

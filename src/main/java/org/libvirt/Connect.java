@@ -15,6 +15,7 @@ import org.libvirt.jna.StorageVolPointer;
 import org.libvirt.jna.StreamPointer;
 import org.libvirt.jna.virConnectAuth;
 import org.libvirt.jna.virNodeInfo;
+import static org.libvirt.Library.libvirt;
 
 import com.sun.jna.Memory;
 import com.sun.jna.NativeLong;
@@ -27,16 +28,6 @@ import com.sun.jna.ptr.LongByReference;
  * @author stoty
  */
 public class Connect {
-
-    // Load the native part
-    static {
-        Libvirt.INSTANCE.virInitialize();
-        try {
-            ErrorHandler.processError(Libvirt.INSTANCE);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
     /**
      * Creates a new connection object from the domain. If all you want is the
@@ -133,11 +124,6 @@ public class Connect {
      * The native virConnectPtr.
      */
     protected ConnectionPointer VCP;
-
-    /**
-     * The libvirt library
-     */
-    Libvirt libvirt = Libvirt.INSTANCE;
 
     /**
      * Protected constructor to return a Connection with ConnectionPointer

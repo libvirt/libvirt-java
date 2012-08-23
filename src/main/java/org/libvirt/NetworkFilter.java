@@ -2,6 +2,7 @@ package org.libvirt;
 
 import org.libvirt.jna.Libvirt;
 import org.libvirt.jna.NetworkFilterPointer;
+import static org.libvirt.Library.libvirt;
 
 import com.sun.jna.Native;
 
@@ -16,15 +17,9 @@ public class NetworkFilter {
      */
     private Connect virConnect;
 
-    /**
-     * The libvirt connection from the hypervisor
-     */
-    protected Libvirt libvirt;
-
     public NetworkFilter(Connect virConnect, NetworkFilterPointer NFP) {
         this.NFP = NFP;
         this.virConnect = virConnect;
-        libvirt = virConnect.libvirt;
     }
 
     @Override

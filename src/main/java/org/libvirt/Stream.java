@@ -2,6 +2,7 @@ package org.libvirt;
 
 import org.libvirt.jna.Libvirt;
 import org.libvirt.jna.StreamPointer;
+import static org.libvirt.Library.libvirt;
 
 import com.sun.jna.NativeLong;
 
@@ -19,15 +20,9 @@ public class Stream {
      */
     private Connect virConnect;
 
-    /**
-     * The libvirt connection from the hypervisor
-     */
-    protected Libvirt libvirt;
-
     Stream(Connect virConnect, StreamPointer VSP) {
         this.virConnect = virConnect;
         this.VSP = VSP;
-        libvirt = virConnect.libvirt;
     }
 
     /**

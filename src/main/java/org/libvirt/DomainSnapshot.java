@@ -2,6 +2,7 @@ package org.libvirt;
 
 import org.libvirt.jna.DomainSnapshotPointer;
 import org.libvirt.jna.Libvirt;
+import static org.libvirt.Library.libvirt;
 
 public class DomainSnapshot {
 
@@ -15,15 +16,9 @@ public class DomainSnapshot {
      */
     private Connect virConnect;
 
-    /**
-     * The libvirt connection from the hypervisor
-     */
-    protected Libvirt libvirt;
-
     public DomainSnapshot(Connect virConnect, DomainSnapshotPointer VDSP) {
         this.VDSP = VDSP;
         this.virConnect = virConnect;
-        libvirt = virConnect.libvirt;
     }
 
     /**

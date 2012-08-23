@@ -2,6 +2,7 @@ package org.libvirt;
 
 import org.libvirt.jna.Libvirt;
 import org.libvirt.jna.SecretPointer;
+import static org.libvirt.Library.libvirt;
 
 import com.sun.jna.Native;
 import com.sun.jna.NativeLong;
@@ -24,15 +25,9 @@ public class Secret {
      */
     private Connect virConnect;
 
-    /**
-     * The libvirt connection from the hypervisor
-     */
-    protected Libvirt libvirt;
-
     Secret(Connect virConnect, SecretPointer VSP) {
         this.virConnect = virConnect;
         this.VSP = VSP;
-        libvirt = virConnect.libvirt;
     }
 
     @Override
