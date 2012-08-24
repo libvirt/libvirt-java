@@ -14,7 +14,9 @@ import org.libvirt.jna.virVcpuInfo;
 
 import com.sun.jna.Native;
 import com.sun.jna.NativeLong;
+import com.sun.jna.Pointer;
 import com.sun.jna.ptr.IntByReference;
+import com.sun.jna.ptr.PointerByReference;
 
 /**
  * A virtual machine defined within libvirt.
@@ -443,9 +445,11 @@ public class Domain {
     public SchedParameter[] getSchedulerParameters() throws LibvirtException {
         IntByReference nParams = new IntByReference();
         SchedParameter[] returnValue = new SchedParameter[0];
-        String scheduler = libvirt.virDomainGetSchedulerType(VDP, nParams);
+        Pointer pScheduler = libvirt.virDomainGetSchedulerType(VDP, nParams);
         processError();
-        if (scheduler != null) {
+        if (pScheduler != null) {
+            String scheduler = pScheduler.getString(0);
+            libvirt.virFree(new PointerByReference(pScheduler));
             virSchedParameter[] nativeParams = new virSchedParameter[nParams.getValue()];
             returnValue = new SchedParameter[nParams.getValue()];
             libvirt.virDomainGetSchedulerParameters(VDP, nativeParams, nParams);
@@ -470,10 +474,11 @@ public class Domain {
      */
     public String[] getSchedulerType() throws LibvirtException {
         IntByReference nParams = new IntByReference();
-        String returnValue = libvirt.virDomainGetSchedulerType(VDP, nParams);
+        Pointer pScheduler = libvirt.virDomainGetSchedulerType(VDP, nParams);
         processError();
         String[] array = new String[1];
-        array[0] = returnValue;
+        array[0] = pScheduler.getString(0);
+        libvirt.virFree(new PointerByReference(pScheduler));
         return array;
     }
 

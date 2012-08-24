@@ -7,6 +7,7 @@ import com.sun.jna.NativeLong;
 import com.sun.jna.Pointer;
 import com.sun.jna.ptr.IntByReference;
 import com.sun.jna.ptr.LongByReference;
+import com.sun.jna.ptr.PointerByReference;
 
 /**
  * The libvirt interface which is exposed via JNA. The complete API is
@@ -55,6 +56,9 @@ import com.sun.jna.ptr.LongByReference;
  *
  */
 public interface Libvirt extends Library {
+    // Memory management
+    void virFree(PointerByReference ptr);
+
     // Callbacks
     /**
      * Callback interface for authorization
@@ -186,7 +190,7 @@ public interface Libvirt extends Library {
     public String virDomainGetOSType(DomainPointer virDomainPtr);
     public int virDomainGetSchedulerParameters(DomainPointer virDomainPtr, virSchedParameter[] params,
             IntByReference nparams);
-    public String virDomainGetSchedulerType(DomainPointer virDomainPtr, IntByReference nparams);
+    Pointer virDomainGetSchedulerType(DomainPointer virDomainPtr, IntByReference nparams);
     public int virDomainGetUUID(DomainPointer virDomainPtr, byte[] uuidString);
     public int virDomainGetUUIDString(DomainPointer virDomainPtr, byte[] uuidString);
     public int virDomainGetVcpus(DomainPointer virDomainPtr, virVcpuInfo[] info, int maxInfo, byte[] cpumaps, int maplen);
