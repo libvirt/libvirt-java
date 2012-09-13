@@ -3,7 +3,7 @@ Name:       libvirt-java
 Version:    @version@
 Prefix:     libvirt
 Release:    @release@%{?dist}%{?extra_release}
-License:    LGPLv2+
+License:    MIT
 BuildArch:  noarch
 Group:      Development/Libraries
 Source:     http://libvirt.org/sources/java/%{name}-%{version}.tar.gz
@@ -72,7 +72,7 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root)
-%doc AUTHORS COPYING NEWS README INSTALL
+%doc AUTHORS LICENCE NEWS README INSTALL
 %{_javadir}/*.jar
 
 %files devel

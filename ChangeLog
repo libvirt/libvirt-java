@@ -1,10 +1,13 @@
+Deprecated, the log of changes can be found on the git server
+	http://libvirt.org/git/?p=libvirt-java.git;a=summary
+
 Thu Oct 29 2009 Bryan Kearney <bkearney@redhat.com>
-    * Added maven building tools.
-    * Fixed connection and domain bugs found by Thomas Treutner
-    
+	* Added maven building tools.
+	* Fixed connection and domain bugs found by Thomas Treutner
+
 Wed Jul 29 2009 Bryan Kearney <bkearney@redhat.com>
-    * refactored the code to use jna (https://jna.dev.java.net/)
-    
+	* refactored the code to use jna (https://jna.dev.java.net/)
+
 Mon May 11 10:49:54 CEST 2009 Daniel Veillard <veillard@redhat.com>
 
 	* src/jni/org_libvirt_Domain.c: fix a cut and paste bug pointed out

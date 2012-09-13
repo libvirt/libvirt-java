@@ -1,10 +1,10 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" 
+<project xmlns="http://maven.apache.org/POM/4.0.0"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
+        xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
         http://maven.apache.org/xsd/maven-4.0.0.xsd">
-        
+
     <modelVersion>4.0.0</modelVersion>
-    
+
     <groupId>org.libvirt</groupId>
     <artifactId>libvirt</artifactId>
     <packaging>jar</packaging>
@@ -14,12 +14,12 @@
     <url>http://www.libvirt.org</url>
     <licenses>
         <license>
-            <name>LGPLv2.1</name>
-            <url>http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt</url>
+            <name>MIT license</name>
+            <url>http://www.opensource.org/licenses/mit-license.php</url>
         </license>
     </licenses>
     <scm>
-    	<url>http://www.libvirt.org/git/?p=libvirt-java.git;a=summary</url>
+	<url>http://www.libvirt.org/git/?p=libvirt-java.git;a=summary</url>
     </scm>
 
     <dependencies>
