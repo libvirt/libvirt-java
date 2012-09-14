@@ -10,6 +10,7 @@
 	<property name="debian.pkgdir" value="target/libvirt-java" />
 	<property name="debian.controlfile" value="${debian.pkgdir}/DEBIAN/control" />
 	<property name="debian.pkg" value="target/libvirt-java_${version}_all.deb" />
+	<property environment="env"/>
 
 	<path id="compile.classpath">
 		<fileset dir="${jar.dir}">
@@ -96,63 +97,64 @@
 
 	<target name="maven" depends="build" description="publish the maven repo">
 		<mkdir dir="target/repo" />
-		<get src="http://mirrors.ibiblio.org/apache/maven/binaries/maven-ant-tasks-2.1.3.jar" dest="target/maven-ant-tasks-2.1.3.jar" />
+		<get src="http://repo1.maven.org/maven2/org/apache/maven/maven-ant-tasks/2.1.3/maven-ant-tasks-2.1.3.jar" dest="target/maven-ant-tasks-2.1.3.jar" />
 		<copy file="pom.xml.in" tofile="target/pom.xml" overwrite="true" filtering="true">
 			<filterset filtersfile="build.properties" />
 		</copy>
 		<path id="maven-ant-tasks.classpath" path="target/maven-ant-tasks-2.1.3.jar" />
 		<typedef resource="org/apache/maven/artifact/ant/antlib.xml" uri="antlib:org.apache.maven.artifact.ant" classpathref="maven-ant-tasks.classpath" />
 		<input message="Username for copying source files: "
-		       addproperty="scp.username"/>
+			addproperty="scp.username" defaultvalue="${env.USER}"/>
+		<input message="The homedirectory of the user: "
+			addproperty="scp.home" defaultvalue="${env.HOME}"/>
 		<input message="Passphrase: "
-		       addproperty="scp.passphrase"/>	
-		  <scp file="${scp.username}@www.libvirt.org:/data/www/maven2"
-		       todir="target/repo"
-		       keyfile="${user.home}/.ssh/id_rsa"
-		  	   sftp="true"
-		       passphrase="${scp.passphrase}"
-		  />		
+			addproperty="scp.passphrase"/>
+		<scp file="${scp.username}@www.libvirt.org:/data/www/maven2"
+			todir="target/repo"
+			keyfile="${scp.home}/.ssh/id_rsa"
+			sftp="true"
+			passphrase="${scp.passphrase}"/>
 		<artifact:pom id="mypom" file="target/pom.xml" />
 		<artifact:install file="${jar.file}">
 			<localRepository path="target/repo" />
 			<pom refid="mypom" />
 		</artifact:install>
-		  <scp todir="${scp.username}@www.libvirt.org:/data/www/maven2"
-		       keyfile="${user.home}/.ssh/id_rsa"
-		  	   sftp="true"
-		       passphrase="${scp.passphrase}">
-				<fileset dir="target/repo">
-				</fileset>				  	
-		  	</scp>
+		<scp todir="${scp.username}@www.libvirt.org:/data/www/maven2"
+			keyfile="${scp.home}/.ssh/id_rsa"
+			sftp="true"
+			passphrase="${scp.passphrase}">
+			<fileset dir="target/repo"/>
+		</scp>
 	</target>
-	
+
 	<target name="publish_source" depends="build" description="Publish the source tarball">	
 		<input message="Username for copying source files: "
-		       addproperty="scp.username"/>
+			addproperty="scp.username" defaultvalue="${env.USER}"/>
+		<input message="The homedirectory of the user: "
+			addproperty="scp.home" defaultvalue="${env.HOME}"/>
 		<input message="Passphrase: "
-		       addproperty="scp.passphrase"/>		
-		  <scp file="${src.file}"
-		       todir="${scp.username}@www.libvirt.org:/data/ftp/libvirt/java"
-		       keyfile="${user.home}/.ssh/id_rsa"
-		  	   sftp="true"
-		       passphrase="${scp.passphrase}"
-		  />
-		
+			addproperty="scp.passphrase"/>
+		<scp file="${src.file}"
+			todir="${scp.username}@www.libvirt.org:/data/ftp/libvirt/java"
+			keyfile="${scp.home}/.ssh/id_rsa"
+			sftp="true"
+			passphrase="${scp.passphrase}"/>
 	</target>
-	
-	<target name="publish_srpm" depends="build" description="publish the srpm">	
+
+	<target name="publish_srpm" depends="build" description="publish the srpm">
 		<input message="Username for copying source files: "
-		       addproperty="scp.username"/>
+			addproperty="scp.username" defaultvalue="${env.USER}"/>
+		<input message="The homedirectory of the user: "
+			addproperty="scp.home" defaultvalue="${env.HOME}"/>
 		<input message="Passphrase: "
-		       addproperty="scp.passphrase"/>			
-		  <scp todir="${scp.username}@www.libvirt.org:/data/ftp/libvirt/java"
-		       keyfile="${user.home}/.ssh/id_rsa"
-		  	   sftp="true"
-		       passphrase="${scp.passphrase}">
+			addproperty="scp.passphrase"/>
+		<scp todir="${scp.username}@www.libvirt.org:/data/ftp/libvirt/java"
+			keyfile="${scp.home}/.ssh/id_rsa"
+			sftp="true"
+			passphrase="${scp.passphrase}">
 			<fileset dir="${rpm.topdir}/SRPMS">
 				<include name="libvirt-java-${version}-${release}*.src.rpm"/>
-			</fileset>		
-			</scp>
-	</target>	
-
+			</fileset>
+		</scp>
+	</target>
 </project>
