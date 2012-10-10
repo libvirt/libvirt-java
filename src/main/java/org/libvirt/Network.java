@@ -5,6 +5,7 @@ import org.libvirt.jna.NetworkPointer;
 import static org.libvirt.Library.libvirt;
 
 import com.sun.jna.Native;
+import com.sun.jna.Pointer;
 import com.sun.jna.ptr.IntByReference;
 
 /**
@@ -105,9 +106,13 @@ public class Network {
      * @throws LibvirtException
      */
     public String getBridgeName() throws LibvirtException {
-        String returnValue = libvirt.virNetworkGetBridgeName(VNP);
+        final Pointer ptr = libvirt.virNetworkGetBridgeName(VNP);
         processError();
-        return returnValue;
+        try {
+            return Library.getString(ptr);
+        } finally {
+            Library.free(ptr);
+        }
     }
 
     /**
@@ -178,9 +183,13 @@ public class Network {
      * @throws LibvirtException
      */
     public String getXMLDesc(int flags) throws LibvirtException {
-        String returnValue = libvirt.virNetworkGetXMLDesc(VNP, flags);
+        Pointer ptr = libvirt.virNetworkGetXMLDesc(VNP, flags);
         processError();
-        return returnValue;
+        try {
+            return Library.getString(ptr);
+        } finally {
+            Library.free(ptr);
+        }
     }
 
     /**

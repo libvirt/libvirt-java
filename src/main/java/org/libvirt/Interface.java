@@ -4,6 +4,8 @@ import org.libvirt.jna.InterfacePointer;
 import org.libvirt.jna.Libvirt;
 import static org.libvirt.Library.libvirt;
 
+import com.sun.jna.Pointer;
+
 /**
  * A device which is attached to a node
  */
@@ -113,9 +115,13 @@ public class Interface {
      * @throws LibvirtException
      */
     public String getXMLDescription(int flags) throws LibvirtException {
-        String xml = libvirt.virInterfaceGetXMLDesc(VIP, flags);
+        Pointer xml = libvirt.virInterfaceGetXMLDesc(VIP, flags);
         processError();
-        return xml;
+        try {
+            return Library.getString(xml);
+        } finally {
+            Library.free(xml);
+        }
     }
 
     /**

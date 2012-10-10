@@ -426,9 +426,13 @@ public class Domain {
      * @throws LibvirtException
      */
     public String getOSType() throws LibvirtException {
-        String returnValue = libvirt.virDomainGetOSType(VDP);
+        Pointer ptr = libvirt.virDomainGetOSType(VDP);
         processError();
-        return returnValue;
+        try {
+            return Library.getString(ptr);
+        } finally {
+            Library.free(ptr);
+        }
     }
 
     /**
@@ -443,8 +447,8 @@ public class Domain {
         Pointer pScheduler = libvirt.virDomainGetSchedulerType(VDP, nParams);
         processError();
         if (pScheduler != null) {
-            String scheduler = pScheduler.getString(0);
-            libvirt.virFree(new PointerByReference(pScheduler));
+            String scheduler = Library.getString(pScheduler);
+            Library.free(pScheduler);
             virSchedParameter[] nativeParams = new virSchedParameter[nParams.getValue()];
             returnValue = new SchedParameter[nParams.getValue()];
             libvirt.virDomainGetSchedulerParameters(VDP, nativeParams, nParams);
@@ -472,8 +476,8 @@ public class Domain {
         Pointer pScheduler = libvirt.virDomainGetSchedulerType(VDP, nParams);
         processError();
         String[] array = new String[1];
-        array[0] = pScheduler.getString(0);
-        libvirt.virFree(new PointerByReference(pScheduler));
+        array[0] = Library.getString(pScheduler);
+        Library.free(pScheduler);
         return array;
     }
 
@@ -569,9 +573,13 @@ public class Domain {
      *      Description format </a>
      */
     public String getXMLDesc(int flags) throws LibvirtException {
-        String returnValue = libvirt.virDomainGetXMLDesc(VDP, flags);
+        Pointer ptr = libvirt.virDomainGetXMLDesc(VDP, flags);
         processError();
-        return returnValue;
+        try {
+            return Library.getString(ptr);
+        } finally {
+            Library.free(ptr);
+        }
     }
 
     /**

@@ -19,6 +19,7 @@ import static org.libvirt.Library.libvirt;
 
 import com.sun.jna.Memory;
 import com.sun.jna.NativeLong;
+import com.sun.jna.Pointer;
 import com.sun.jna.ptr.LongByReference;
 
 /**
@@ -510,8 +511,12 @@ public class Connect {
      *      description</a>
      */
     public String getCapabilities() throws LibvirtException {
-        String returnValue = libvirt.virConnectGetCapabilities(VCP);
-        return processError(returnValue);
+        Pointer ptr = processError(libvirt.virConnectGetCapabilities(VCP));
+        try {
+            return Library.getString(ptr);
+        } finally {
+            Library.free(ptr);
+        }
     }
 
     /**
@@ -545,7 +550,12 @@ public class Connect {
      * @throws LibvirtException
      */
     public String getHostName() throws LibvirtException {
-        return processError(libvirt.virConnectGetHostname(VCP));
+        Pointer ptr = processError(libvirt.virConnectGetHostname(VCP));
+        try {
+            return Library.getString(ptr);
+        } finally {
+            Library.free(ptr);
+        }
     }
 
     /**
@@ -701,11 +711,13 @@ public class Connect {
      */
     public String[] listDefinedDomains() throws LibvirtException {
         int maxnames = numOfDefinedDomains();
-        String[] names = new String[maxnames];
         if (maxnames > 0) {
-            processError(libvirt.virConnectListDefinedDomains(VCP, names, maxnames));
+            final Pointer[] names = new Pointer[maxnames];
+            final int n = processError(libvirt.virConnectListDefinedDomains(VCP, names, maxnames));
+            return Library.toStringArray(names, n);
+        } else {
+            return Library.NO_STRINGS;
         }
-        return names;
     }
 
     /**
@@ -716,12 +728,14 @@ public class Connect {
      * @throws LibvirtException
      */
     public String[] listDefinedInterfaces() throws LibvirtException {
-        int num = numOfDefinedInterfaces();
-        String[] returnValue = new String[num];
-        if (num > 0) {
-            processError(libvirt.virConnectListDefinedInterfaces(VCP, returnValue, num));
+        final int max = numOfDefinedInterfaces();
+        if (max > 0) {
+            final Pointer[] ifs = new Pointer[max];
+            final int n = processError(libvirt.virConnectListDefinedInterfaces(VCP, ifs, max));
+            return Library.toStringArray(ifs, n);
+        } else {
+            return Library.NO_STRINGS;
         }
-        return returnValue;
     }
 
     /**
@@ -733,12 +747,13 @@ public class Connect {
      */
     public String[] listDefinedNetworks() throws LibvirtException {
         int maxnames = numOfDefinedNetworks();
-        String[] names = new String[maxnames];
-
         if (maxnames > 0) {
-            processError(libvirt.virConnectListDefinedNetworks(VCP, names, maxnames));
+            final Pointer[] names = new Pointer[maxnames];
+            final int n = processError(libvirt.virConnectListDefinedNetworks(VCP, names, maxnames));
+            return Library.toStringArray(names, n);
+        } else {
+            return Library.NO_STRINGS;
         }
-        return names;
     }
 
     /**
@@ -750,9 +765,13 @@ public class Connect {
      */
     public String[] listDefinedStoragePools() throws LibvirtException {
         int num = numOfDefinedStoragePools();
-        String[] returnValue = new String[num];
-        processError(libvirt.virConnectListDefinedStoragePools(VCP, returnValue, num));
-        return returnValue;
+        if (num > 0) {
+            Pointer[] pools = new Pointer[num];
+            final int n = processError(libvirt.virConnectListDefinedStoragePools(VCP, pools, num));
+            return Library.toStringArray(pools, n);
+        } else {
+            return Library.NO_STRINGS;
+        }
     }
 
     /**
@@ -763,12 +782,13 @@ public class Connect {
      */
     public String[] listDevices(String capabilityName) throws LibvirtException {
         int maxDevices = numOfDevices(capabilityName);
-        String[] names = new String[maxDevices];
-
         if (maxDevices > 0) {
-            processError(libvirt.virNodeListDevices(VCP, capabilityName, names, maxDevices, 0));
+            Pointer[] names = new Pointer[maxDevices];
+            final int n = processError(libvirt.virNodeListDevices(VCP, capabilityName, names, maxDevices, 0));
+            return Library.toStringArray(names, n);
+        } else {
+            return Library.NO_STRINGS;
         }
-        return names;
     }
 
     /**
@@ -796,11 +816,13 @@ public class Connect {
      */
     public String[] listInterfaces() throws LibvirtException {
         int num = numOfInterfaces();
-        String[] returnValue = new String[num];
         if (num > 0) {
-            processError(libvirt.virConnectListInterfaces(VCP, returnValue, num));
+            Pointer[] ifs = new Pointer[num];
+            final int n = processError(libvirt.virConnectListInterfaces(VCP, ifs, num));
+            return Library.toStringArray(ifs, n);
+        } else {
+            return Library.NO_STRINGS;
         }
-        return returnValue;
     }
 
     /**
@@ -811,11 +833,13 @@ public class Connect {
      */
     public String[] listNetworkFilters() throws LibvirtException {
         int maxnames = numOfNetworkFilters();
-        String[] names = new String[maxnames];
         if (maxnames > 0) {
-            processError(libvirt.virConnectListNWFilters(VCP, names, maxnames));
+            Pointer[] names = new Pointer[maxnames];
+            final int n = processError(libvirt.virConnectListNWFilters(VCP, names, maxnames));
+            return Library.toStringArray(names, n);
+        } else {
+            return Library.NO_STRINGS;
         }
-        return names;
     }
 
     /**
@@ -827,12 +851,13 @@ public class Connect {
      */
     public String[] listNetworks() throws LibvirtException {
         int maxnames = numOfNetworks();
-        String[] names = new String[maxnames];
-
         if (maxnames > 0) {
-            processError(libvirt.virConnectListNetworks(VCP, names, maxnames));
+            Pointer[] names = new Pointer[maxnames];
+            final int n = processError(libvirt.virConnectListNetworks(VCP, names, maxnames));
+            return Library.toStringArray(names, n);
+        } else {
+            return Library.NO_STRINGS;
         }
-        return names;
     }
 
     /**
@@ -843,9 +868,13 @@ public class Connect {
      */
     public String[] listSecrets() throws LibvirtException {
         int num = numOfSecrets();
-        String[] returnValue = new String[num];
-        processError(libvirt.virConnectListSecrets(VCP, returnValue, num));
-        return returnValue;
+        if (num > 0) {
+            Pointer[] returnValue = new Pointer[num];
+            final int n = processError(libvirt.virConnectListSecrets(VCP, returnValue, num));
+            return Library.toStringArray(returnValue, n);
+        } else {
+            return Library.NO_STRINGS;
+        }
     }
 
     /**
@@ -857,9 +886,13 @@ public class Connect {
      */
     public String[] listStoragePools() throws LibvirtException {
         int num = numOfStoragePools();
-        String[] returnValue = new String[num];
-        processError(libvirt.virConnectListStoragePools(VCP, returnValue, num));
-        return returnValue;
+        if (num > 0) {
+            Pointer[] returnValue = new Pointer[num];
+            final int n = processError(libvirt.virConnectListStoragePools(VCP, returnValue, num));
+            return Library.toStringArray(returnValue, n);
+        } else {
+            return Library.NO_STRINGS;
+        }
     }
 
     /**
