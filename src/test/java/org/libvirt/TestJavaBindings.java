@@ -158,9 +158,6 @@ public final class TestJavaBindings extends TestCase {
         dom.setSchedulerParameters(pars);
         
         dom.getSchedulerParameters() ;        
-
-        assertNotNull(Connect.connectionForDomain(dom));
-        assertTrue(Connect.connectionForDomain(dom) != dom.getConnect());
     }
 
     public void testInterfaces() throws Exception {

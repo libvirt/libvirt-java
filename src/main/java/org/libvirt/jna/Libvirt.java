@@ -192,7 +192,6 @@ public interface Libvirt extends Library {
     int virDomainDetachDeviceFlags(DomainPointer virDomainPtr, String deviceXML, int flags);
     int virDomainFree(DomainPointer virDomainPtr);
     int virDomainGetAutostart(DomainPointer virDomainPtr, IntByReference value);
-    ConnectionPointer virDomainGetConnect(DomainPointer virDomainPtr);
     int virDomainGetBlockInfo(DomainPointer virDomainPtr, String path, virDomainBlockInfo info, int flags);
     int virDomainGetID(DomainPointer virDomainPtr);
     int virDomainGetInfo(DomainPointer virDomainPtr, virDomainInfo vInfo);
@@ -242,7 +241,6 @@ public interface Libvirt extends Library {
     int virDomainUndefine(DomainPointer virDomainPtr);
 
     // Network functions
-    ConnectionPointer virNetworkGetConnect(NetworkPointer virnetworkPtr);
     int virNetworkCreate(NetworkPointer virConnectPtr);
     NetworkPointer virNetworkCreateXML(ConnectionPointer virConnectPtr, String xmlDesc);
     NetworkPointer virNetworkDefineXML(ConnectionPointer virConnectPtr, String xmlDesc);
@@ -341,7 +339,6 @@ public interface Libvirt extends Library {
     int virInterfaceUndefine(InterfacePointer virDevicePointer);
 
     // Secret Methods
-    ConnectionPointer virSecretGetConnect(SecretPointer virSecretPtr);
     int virSecretFree(SecretPointer virSecretPtr);
     SecretPointer virSecretDefineXML(ConnectionPointer virConnectPtr, String xml, int flags);
     int virSecretGetUUID(SecretPointer virSecretPtr, byte[] uuidString);

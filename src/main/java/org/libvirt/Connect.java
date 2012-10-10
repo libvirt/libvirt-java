@@ -31,45 +31,6 @@ import com.sun.jna.ptr.LongByReference;
 public class Connect {
 
     /**
-     * Creates a new connection object from the domain. If all you want is the
-     * existing domain's connection, use the getConnection method directly. Thie
-     * method returns a new connection.
-     *
-     * @param domain
-     * @return a new connection
-     */
-    public static Connect connectionForDomain(Domain domain) {
-        ConnectionPointer conn = Libvirt.INSTANCE.virDomainGetConnect(domain.VDP);
-        return new Connect(conn);
-    }
-
-    /**
-     * Creates a new connection object from the network. If all you want is the
-     * existing network's connection, use the getConnection method directly.
-     * Thie method returns a new connection.
-     *
-     * @param network
-     * @return a new connection
-     */
-    public static Connect connectionForNetwork(Network network) {
-        ConnectionPointer conn = Libvirt.INSTANCE.virNetworkGetConnect(network.VNP);
-        return new Connect(conn);
-    }
-
-    /**
-     * Creates a new connection object from the network. If all you want is the
-     * existing network's connection, use the getConnection method directly.
-     * Thie method returns a new connection.
-     *
-     * @param secret
-     * @return a new connection
-     */
-    public static Connect connectionForSecret(Secret secret) {
-        ConnectionPointer conn = Libvirt.INSTANCE.virSecretGetConnect(secret.VSP);
-        return new Connect(conn);
-    }
-
-    /**
      * Get the version of a connection.
      *
      * @see <a
