@@ -13,6 +13,7 @@
 	<property name="debian.controlfile" value="${debian.pkgdir}/DEBIAN/control" />
 	<property name="debian.pkg" value="target/libvirt-java_${version}_all.deb" />
 	<property environment="env"/>
+	<property name="javac.debug" value="off" />
 
 	<path id="compile.classpath">
 		<fileset dir="${jar.dir}">
