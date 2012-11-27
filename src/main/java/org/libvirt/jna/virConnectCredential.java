@@ -13,4 +13,10 @@ public class virConnectCredential extends Structure implements Structure.ByRefer
     // public Pointer result;
     public String result;
     public int resultlen;
+
+    protected java.util.List getFieldOrder() {
+        return java.util.Arrays.asList(new String[] {
+            "type", "prompt", "challenge", "defresult",
+            "result", "resultlen" });
+    }
 }

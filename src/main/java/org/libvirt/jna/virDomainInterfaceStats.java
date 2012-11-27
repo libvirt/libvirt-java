@@ -23,4 +23,9 @@ public class virDomainInterfaceStats extends Structure {
     public long tx_drop; // this is a long long in the code, so a long mapping
     // is correct
 
+    protected java.util.List getFieldOrder() {
+        return java.util.Arrays.asList(new String[] {
+            "rx_bytes", "rx_packets", "rx_errs", "rx_drop",
+            "tx_bytes", "tx_packets", "tx_errs", "tx_drop" });
+    }
 }

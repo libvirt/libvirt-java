@@ -12,4 +12,9 @@ public class virDomainInfo extends Structure {
     public NativeLong memory;
     public short nrVirtCpu;
     public long cpuTime;
+
+    protected java.util.List getFieldOrder() {
+        return java.util.Arrays.asList(new String[] {
+            "state", "maxMem", "memory", "nrVirtCpu", "cpuTime" });
+    }
 }

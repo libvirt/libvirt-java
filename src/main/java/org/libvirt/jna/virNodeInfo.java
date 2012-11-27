@@ -21,4 +21,10 @@ public class virNodeInfo extends Structure {
     public int sockets;
     public int cores;
     public int threads;
+
+    protected java.util.List getFieldOrder() {
+        return java.util.Arrays.asList(new String[] {
+            "model", "memory", "cpus", "mhz", "nodes",
+            "sockets", "cores", "threads" });
+    }
 }

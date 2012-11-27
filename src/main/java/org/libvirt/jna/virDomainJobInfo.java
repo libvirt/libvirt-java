@@ -15,4 +15,11 @@ public class virDomainJobInfo extends Structure {
     public long fileTotal;
     public long fileProcessed;
     public long fileRemaining;
+
+    protected java.util.List getFieldOrder() {
+        return java.util.Arrays.asList(new String[] {
+            "type", "timeElapsed", "timeRemaining", "dataTotal",
+            "dataProcessed", "dataRemaining", "memTotal", "memProcessed",
+            "memRemaining", "fileTotal", "fileProcessed", "fileRemaining" });
+    }
 }

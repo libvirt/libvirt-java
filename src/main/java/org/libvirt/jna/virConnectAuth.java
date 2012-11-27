@@ -11,4 +11,9 @@ public class virConnectAuth extends Structure {
     public int ncredtype;
     public Libvirt.VirConnectAuthCallback cb;
     public Pointer cbdata;
+
+    protected java.util.List getFieldOrder() {
+        return java.util.Arrays.asList(new String[] {
+            "credtype", "ncredtype", "cb", "cbdata" });
+    }
 }

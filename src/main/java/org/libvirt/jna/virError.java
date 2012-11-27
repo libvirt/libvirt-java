@@ -19,4 +19,10 @@ public class virError extends Structure {
     public int int1;
     public int int2;
     public NetworkPointer net;
+
+    protected java.util.List getFieldOrder() {
+        return java.util.Arrays.asList(new String[] {
+            "code", "domain", "message", "level", "conn", "dom",
+            "str1", "str2", "str3", "int1", "int2", "net" });
+    }
 }

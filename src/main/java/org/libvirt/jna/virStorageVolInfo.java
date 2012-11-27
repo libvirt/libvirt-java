@@ -12,4 +12,8 @@ public class virStorageVolInfo extends Structure {
     public long allocation; // this is a long long in the code, so a long
     // mapping is correct
 
+    protected java.util.List getFieldOrder() {
+        return java.util.Arrays.asList(new String[] {
+            "type", "capacity", "allocation" });
+    }
 }

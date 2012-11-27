@@ -12,4 +12,8 @@ public class virVcpuInfo extends Structure {
     // is correct
     public int cpu;
 
+    protected java.util.List getFieldOrder() {
+        return java.util.Arrays.asList(new String[] {
+            "number", "state", "cpuTime", "cpu" });
+    }
 }

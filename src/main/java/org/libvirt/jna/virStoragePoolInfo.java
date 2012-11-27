@@ -13,4 +13,9 @@ public class virStoragePoolInfo extends Structure {
     // mapping is correct
     public long available; // this is a long long in the code, so a long mapping
     // is correct
+
+    protected java.util.List getFieldOrder() {
+        return java.util.Arrays.asList(new String[] {
+            "state", "capacity", "allocation", "available" });
+    }
 }
