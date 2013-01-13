@@ -94,6 +94,40 @@ public class Domain {
         public static final int SNAPSHOTS_METADATA = (1 << 1);
     }
 
+    public static final class SnapshotListFlags {
+        /**
+         * Filter by snapshots with no parents, when listing a domain
+         */
+        public static final int ROOTS       = (1 << 0);
+
+        /**
+         * List all descendants, not just children, when listing a snapshot
+         */
+        public static final int DESCENDANTS = (1 << 0);
+
+        /** For historical reasons, groups do not use contiguous bits. */
+
+        /**
+         * Filter by snapshots with no children
+         */
+        public static final int LEAVES      = (1 << 2);
+
+        /**
+         * Filter by snapshots that have children
+         */
+        public static final int NO_LEAVES   = (1 << 3);
+
+        /**
+         * Filter by snapshots which have metadata
+         */
+        public static final int METADATA    = (1 << 1);
+
+        /**
+         * Filter by snapshots with no metadata
+         */
+        public static final int NO_METADATA = (1 << 4);
+    }
+
     /**
      * the native virDomainPtr.
      */
@@ -1057,7 +1091,7 @@ public class Domain {
     }
 
     /**
-     * Collect the list of domain snapshots for the given domain.
+     * Collect the list of domain snapshots for the given domain. With the option to pass flags
      *
      * @see <a
      *      href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainSnapshotListNames">Libvirt
@@ -1065,17 +1099,34 @@ public class Domain {
      * @return The list of names, or null if an error
      * @throws LibvirtException
      */
-    public String[] snapshotListNames() throws LibvirtException {
+    public String[] snapshotListNames(int flags) throws LibvirtException {
         String[] returnValue = null;
         int num = snapshotNum();
         if (num >= 0) {
             returnValue = new String[num];
             if (num > 0) {
-                libvirt.virDomainSnapshotListNames(VDP, returnValue, num, 0);
+                libvirt.virDomainSnapshotListNames(VDP, returnValue, num, flags);
                 processError();
             }
         }
         return returnValue;
+    }
+
+    /**
+     * Collect the list of domain snapshots for the given domain.
+     * <p>
+     * This is just a convenience method, it has the same effect
+     * as calling {@code snapshotListNames(0);}.
+     *
+     * @see #snapshotListNames(int)
+     * @see <a
+     *      href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainSnapshotListNames">
+     *        virDomainSnapshotListNames</a>
+     * @return The list of names, or null if an error
+     * @throws LibvirtException
+     */
+    public String[] snapshotListNames() throws LibvirtException {
+        return snapshotListNames(0);
     }
 
     /**
