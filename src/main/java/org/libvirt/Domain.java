@@ -785,6 +785,80 @@ public class Domain {
 
     /**
      * Migrate this domain object from its current host to the destination host
+     * given by dconn (a connection to the destination host).
+     * <p>
+     * Flags may be bitwise OR'ed values of
+     * {@link org.libvirt.Domain.MigrateFlags MigrateFlags}.
+     * <p>
+     * If a hypervisor supports renaming domains during migration, then you may
+     * set the dname parameter to the new name (otherwise it keeps the same name).
+     * <p>
+     * If this is not supported by the hypervisor, dname must be {@code null} or
+     * else you will get an exception.
+     * <p>
+     * Since typically the two hypervisors connect directly to each other in order
+     * to perform the migration, you may need to specify a path from the source
+     * to the destination. This is the purpose of the uri parameter.
+     * <p>
+     * If uri is {@code null}, then libvirt will try to find the best method.
+     * <p>
+     * Uri may specify the hostname or IP address of the destination host as seen
+     * from the source, or uri may be a URI giving transport, hostname, user,
+     * port, etc. in the usual form.
+     * <p>
+     * Uri should only be specified if you want to migrate over a specific interface
+     * on the remote host.
+     * <p>
+     * For Qemu/KVM, the URI should be of the form {@code "tcp://hostname[:port]"}.
+     * <p>
+     * This does not require TCP auth to be setup between the connections, since
+     * migrate uses a straight TCP connection (unless using the PEER2PEER flag,
+     * in which case URI should be a full fledged libvirt URI).
+     * <p>
+     * Refer also to driver documentation for the particular URIs supported.
+     * <p>
+     * The maximum bandwidth (in Mbps) that will be used to do
+     * migration can be specified with the bandwidth parameter. If
+     * set to 0, libvirt will choose a suitable default.
+     * <p>
+     * Some hypervisors do not support this feature and will return an
+     * error if bandwidth is not 0. To see which features are
+     * supported by the current hypervisor, see
+     * Connect.getCapabilities, /capabilities/host/migration_features.
+     * <p>
+     * There are many limitations on migration imposed by the underlying technology
+     * for example it may not be possible to migrate between different processors
+     * even with the same architecture, or between different types of hypervisor.
+     * <p>
+     * If the hypervisor supports it, dxml can be used to alter
+     * host-specific portions of the domain XML that will be used on
+     * the destination.
+     *
+     * @param dconn
+     *            destination host (a Connect object)
+     * @param dxml
+     *            (optional) XML config for launching guest on target
+     * @param flags
+     *            flags
+     * @param dname
+     *            (optional) rename domain to this at destination
+     * @param uri
+     *            (optional) dest hostname/URI as seen from the source host
+     * @param bandwidth
+     *            (optional) specify migration bandwidth limit in Mbps
+     * @return the new domain object if the migration was
+     *         successful. Note that the new domain object exists in
+     *         the scope of the destination connection (dconn).
+     * @throws LibvirtException if the migration fails
+     */
+    public Domain migrate(Connect dconn, long flags, String dxml, String dname, String uri, long bandwidth) throws LibvirtException {
+        DomainPointer newPtr = libvirt.virDomainMigrate2(VDP, dconn.VCP, dxml, new NativeLong(flags), dname, uri, new NativeLong(bandwidth));
+        processError();
+        return new Domain(dconn, newPtr);
+    }
+
+    /**
+     * Migrate this domain object from its current host to the destination host
      * given by dconn (a connection to the destination host). Flags may be one
      * of more of the following: Domain.VIR_MIGRATE_LIVE Attempt a live
      * migration. If a hypervisor supports renaming domains during migration,

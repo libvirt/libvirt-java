@@ -221,6 +221,8 @@ public interface Libvirt extends Library {
     int virDomainManagedSaveRemove(DomainPointer virDomainPtr, int flags);
     DomainPointer virDomainMigrate(DomainPointer virDomainPtr, ConnectionPointer virConnectPtr,
             NativeLong flags, String dname, String uri, NativeLong bandwidth);
+    DomainPointer virDomainMigrate2(DomainPointer virDomainPtr, ConnectionPointer virConnectPtr,
+            String dxml, NativeLong flags, String dname, String uri, NativeLong bandwidth);
     int virDomainMigrateSetMaxDowntime(DomainPointer virDomainPtr, long downtime, int flags);
     int virDomainMigrateToURI(DomainPointer virDomainPtr, String duri,
             NativeLong flags, String dname, NativeLong bandwidth);
