@@ -240,6 +240,7 @@ public interface Libvirt extends Library {
     int virDomainSuspend(DomainPointer virDomainPtr);
     int virDomainUpdateDeviceFlags(DomainPointer virDomainPtr, String xml, int flags);
     int virDomainUndefine(DomainPointer virDomainPtr);
+    int virDomainUndefineFlags(DomainPointer virDomainPtr, int flags);
 
     // Network functions
     int virNetworkCreate(NetworkPointer virConnectPtr);

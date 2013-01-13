@@ -83,6 +83,17 @@ public class Domain {
         static final int VIR_DOMAIN_XML_UPDATE_CPU   = (1 << 2); /* update guest CPU requirements according to host CPU */
     }
 
+    public static final class UndefineFlags {
+        /**
+         * Also remove any managed save
+         */
+        public static final int MANAGED_SAVE = (1 << 0);
+        /**
+         * If last use of domain, then also remove any snapshot metadata
+         */
+        public static final int SNAPSHOTS_METADATA = (1 << 1);
+    }
+
     /**
      * the native virDomainPtr.
      */
@@ -1121,6 +1132,19 @@ public class Domain {
      */
     public void undefine() throws LibvirtException {
         libvirt.virDomainUndefine(VDP);
+        processError();
+    }
+
+    /**
+     * Undefines this domain but does not stop if it it is running. With option for passing flags
+     *
+     * @see <a href="http://libvirt.org/html/libvirt-libvirt.html#virDomainUndefineFlags">Libvirt Documentation</a>
+     * @param flags
+     *            flags for undefining the domain. See virDomainUndefineFlagsValues for more information
+     * @throws LibvirtException
+    */
+    public void undefine(int flags) throws LibvirtException {
+        libvirt.virDomainUndefineFlags(VDP, flags);
         processError();
     }
 
