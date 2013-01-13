@@ -926,6 +926,42 @@ public class Domain {
     }
 
     /**
+     * Migrate the domain object from its current host to the destination
+     * denoted by a given URI.
+     * <p>
+     * The destination is given either in dconnuri (if the
+     * {@link MigrateFlags#VIR_MIGRATE_PEER2PEER PEER2PEER}
+     * is flag set), or in miguri (if neither the
+     * {@link MigrateFlags#VIR_MIGRATE_PEER2PEER PEER2PEER} nor the
+     * {@link MigrateFlags#VIR_MIGRATE_TUNNELLED TUNNELLED} migration
+     * flag is set in flags).
+     *
+     * @see <a
+     * href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainMigrateToURI">
+     * virDomainMigrateToURI</a>
+     *
+     * @param dconnuri
+     *            (optional) URI for target libvirtd if @flags includes VIR_MIGRATE_PEER2PEER
+     * @param miguri
+     *            (optional) URI for invoking the migration, not if @flags includs VIR_MIGRATE_TUNNELLED
+     * @param dxml
+     *            (optional) XML config for launching guest on target
+     * @param flags
+     *            Controls the migrate
+     * @param dname
+     *            The name at the destnation
+     * @param bandwidth
+     *            Specify the migration bandwidth
+     * @return 0 if successful
+     * @throws LibvirtException
+     */
+    public int migrateToURI(String dconnuri, String miguri, String dxml, long flags, String dname, long bandwidth) throws LibvirtException {
+        int returnValue = libvirt.virDomainMigrateToURI2(VDP, dconnuri, miguri, dxml, new NativeLong(flags), dname, new NativeLong(bandwidth));
+        processError();
+        return returnValue;
+    }
+
+    /**
      * Migrate the domain object from its current host to the destination host
      * given by duri.
      *

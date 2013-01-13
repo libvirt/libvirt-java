@@ -226,6 +226,8 @@ public interface Libvirt extends Library {
     int virDomainMigrateSetMaxDowntime(DomainPointer virDomainPtr, long downtime, int flags);
     int virDomainMigrateToURI(DomainPointer virDomainPtr, String duri,
             NativeLong flags, String dname, NativeLong bandwidth);
+    int virDomainMigrateToURI2(DomainPointer virDomainPtr, String dconnuri, String miguri,
+            String dxml, NativeLong flags, String dname, NativeLong bandwidth);
     int virDomainMemoryStats(DomainPointer virDomainPtr, virDomainMemoryStats[] stats, int nr_stats, int flags);
     int virDomainPinVcpu(DomainPointer virDomainPtr, int vcpu, byte[] cpumap, int maplen);
     int virDomainReboot(DomainPointer virDomainPtr, int flags);
