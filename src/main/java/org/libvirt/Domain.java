@@ -24,6 +24,13 @@ import com.sun.jna.ptr.PointerByReference;
  */
 public class Domain {
 
+    public static final class BlockResizeFlags {
+        /**
+         * size is in bytes instead of KiB
+         */
+        public static final int BYTES = 1;
+    }
+
     static final class CreateFlags {
         static final int VIR_DOMAIN_NONE = 0;
         static final int VIR_DOMAIN_SNAPSHOT_CREATE_REDEFINE    = (1 << 0); /* Restore or alter
@@ -186,6 +193,23 @@ public class Domain {
         processError();
         return success == 0 ? new DomainBlockStats(stats) : null;
     }
+
+    /**
+     * Resize a block device of domain while the domain is running.
+     *
+     * @param disk
+     *           path to the block image, or shorthand (like vda)
+     * @param size
+     *           the new size of the block devices
+     * @param flags
+     *           bitwise OR'ed values of {@link BlockResizeFlags}
+     * @throws LibvirtException
+     */
+    public void blockResize(String disk, long size, int flags) throws LibvirtException {
+        int returnValue = libvirt.virDomainBlockResize(VDP, disk, size, flags);
+        processError();
+    }
+
 
     /**
      * Dumps the core of this domain on a given file for analysis. Note that for

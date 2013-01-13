@@ -181,6 +181,7 @@ public interface Libvirt extends Library {
     int virDomainAttachDevice(DomainPointer virDomainPtr, String deviceXML);
     int virDomainAttachDeviceFlags(DomainPointer virDomainPtr, String deviceXML, int flags);
     int virDomainBlockStats(DomainPointer virDomainPtr, String path, virDomainBlockStats stats, int size);
+    int virDomainBlockResize(DomainPointer virDomainPtr, String disk, long size, int flags);
     int virDomainCoreDump(DomainPointer virDomainPtr, String to, int flags);
     int virDomainCreate(DomainPointer virDomainPtr);
     int virDomainCreateWithFlags(DomainPointer virDomainPtr, int flags);
