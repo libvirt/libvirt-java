@@ -22,6 +22,23 @@ public class StorageVol {
         static final int VIR_STORAGE_POOL_DELETE_ZEROED = 1;
     }
 
+    public static final class ResizeFlags {
+        /**
+         * force allocation of new size
+        */
+        public static final int ALLOCATE = 1;
+
+        /**
+         * size is relative to current
+         */
+        public static final int DELTA = 2;
+
+        /**
+         * allow decrease in capacity
+         */
+        public static final int SHRINK = 4;
+    }
+
     public static enum Type {
         /**
          * Regular file based volumes
@@ -200,6 +217,23 @@ public class StorageVol {
      */
     public int wipe() throws LibvirtException {
         int returnValue = libvirt.virStorageVolWipe(VSVP, 0);
+        processError();
+        return returnValue;
+    }
+
+    /**
+     * Resize a volume
+     *
+     * @see <a href="http://www.libvirt.org/html/libvirt-libvirt.html#virStorageVolResize">Libvirt Documentation</a>
+     * @param capacity
+     *               new capacity for volume
+     * @param flags
+     *               flags for resizing, see libvirt API for exact flags
+     * @return 0 on success, or -1 on error
+     * @throws LibvirtException
+     */
+    public int resize(long capacity, int flags) throws LibvirtException {
+        int returnValue = libvirt.virStorageVolResize(VSVP, capacity, flags);
         processError();
         return returnValue;
     }

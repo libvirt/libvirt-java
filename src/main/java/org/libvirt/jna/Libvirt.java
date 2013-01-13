@@ -325,6 +325,7 @@ public interface Libvirt extends Library {
     StorageVolPointer virStorageVolLookupByName(StoragePoolPointer storagePoolPtr, String name);
     StorageVolPointer virStorageVolLookupByPath(ConnectionPointer virConnectPtr, String path);
     int virStorageVolWipe(StorageVolPointer storageVolPtr, int flags);
+    int virStorageVolResize(StorageVolPointer storageVolPtr, long capacity, int flags);
 
     // Interface Methods
     int virInterfaceCreate(InterfacePointer virDevicePointer);
