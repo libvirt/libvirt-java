@@ -1058,17 +1058,39 @@ public class Domain {
      *      Documentation</a>
      * @param xmlDesc
      *            string containing an XML description of the domain
+     * @param flags
+     *            flags for creating the snapshot, see the virDomainSnapshotCreateFlags for the flag options
      * @return the snapshot, or null on Error
      * @throws LibvirtException
      */
-    public DomainSnapshot snapshotCreateXML(String xmlDesc) throws LibvirtException {
-        DomainSnapshotPointer ptr = libvirt.virDomainSnapshotCreateXML(VDP, xmlDesc, 0);
+    public DomainSnapshot snapshotCreateXML(String xmlDesc, int flags) throws LibvirtException {
+        DomainSnapshotPointer ptr = libvirt.virDomainSnapshotCreateXML(VDP, xmlDesc, flags);
         processError();
         DomainSnapshot returnValue = null;
         if (ptr != null) {
             returnValue = new DomainSnapshot(virConnect, ptr);
         }
         return returnValue;
+    }
+
+    /**
+     * Creates a new snapshot of a domain based on the snapshot xml contained in
+     * xmlDesc.
+     * <p>
+     * This is just a convenience method, it has the same effect
+     * as calling {@code snapshotCreateXML(xmlDesc, 0);}.
+     *
+     * @see #snapshotCreateXML(int)
+     * @see <a
+     *      href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainSnapshotCreateXML">Libvirt
+     *      Documentation</a>
+     * @param xmlDesc
+     *            string containing an XML description of the domain
+     * @return the snapshot, or null on Error
+     * @throws LibvirtException
+     */
+    public DomainSnapshot snapshotCreateXML(String xmlDesc) throws LibvirtException {
+        return snapshotCreateXML(xmlDesc, 0);
     }
 
     /**
