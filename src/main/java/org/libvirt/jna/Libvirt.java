@@ -76,6 +76,14 @@ public interface Libvirt extends Library {
      */
     interface VirDomainEventCallback extends Callback {}
 
+    interface VirConnectDomainEventIOErrorCallback extends VirDomainEventCallback {
+        void eventCallback(ConnectionPointer virConnectPtr, DomainPointer virDomainPointer,
+                           String srcPath,
+                           String devAlias,
+                           int action,
+                           Pointer opaque);
+    }
+
     /**
      * Error callback
      */

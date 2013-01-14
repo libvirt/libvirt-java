@@ -20,6 +20,7 @@ import org.libvirt.jna.virConnectAuth;
 import org.libvirt.jna.virNodeInfo;
 
 import static org.libvirt.Library.libvirt;
+import static org.libvirt.Library.getConstant;
 import static org.libvirt.ErrorHandler.processError;
 import static org.libvirt.ErrorHandler.processErrorIfZero;
 
@@ -425,6 +426,64 @@ public class Connect {
         // track the handler
         // Note: it is important that the callback does not get GCed
         handlers.put(l, new RegisteredEventListener(cb, ret));
+    }
+
+    void domainEventRegister(Domain domain, final IOErrorListener cb) throws LibvirtException {
+        if (cb == null)
+            throw new IllegalArgumentException("IOError callback cannot be null");
+
+        Libvirt.VirConnectDomainEventIOErrorCallback virCB = new Libvirt.VirConnectDomainEventIOErrorCallback() {
+                @Override
+                public void eventCallback(ConnectionPointer virConnectPtr, DomainPointer virDomainPointer,
+                                          String srcPath,
+                                          String devAlias,
+                                          int action,
+                                          Pointer opaque) {
+                    assert VCP.equals(virConnectPtr);
+
+                    try {
+                        Domain d = Domain.constructIncRef(Connect.this, virDomainPointer);
+                        cb.onIOError(d,
+                                     srcPath,
+                                     devAlias,
+                                     getConstant(IOErrorAction.class, action));
+                    } catch (LibvirtException e) {
+                        throw new RuntimeException("libvirt error in IOError callback", e);
+                    }
+                }
+            };
+
+        domainEventRegister(domain, DomainEventID.IO_ERROR, virCB, cb);
+    }
+
+    /**
+     * Adds the specified I/O error listener to receive I/O error events
+     * for domains of this connection.
+     *
+     * @see <a
+     *      href="http://www.libvirt.org/html/libvirt-libvirt.html#virConnectDomainEventRegisterAny">Libvirt
+     *      Documentation</a>
+     * @param l
+     *            the I/O error listener
+     * @throws LibvirtException on failure
+     */
+    public void addIOErrorListener(final IOErrorListener l) throws LibvirtException {
+        domainEventRegister(null, l);
+    }
+
+    /**
+     * Removes the specified I/O error listener so that it no longer
+     * receives I/O error events.
+     *
+     * @param l    the I/O error listener
+     * @throws     LibvirtException
+     *
+     * @see <a
+     *       href="http://www.libvirt.org/html/libvirt-libvirt.html#virConnectDomainEventDeregisterAny"
+     *      >virConnectDomainEventDeregisterAny</a>
+     */
+    public void removeIOErrorListener(IOErrorListener l) throws LibvirtException {
+        domainEventDeregister(DomainEventID.IO_ERROR, l);
     }
 
     /**

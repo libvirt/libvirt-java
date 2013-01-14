@@ -191,4 +191,24 @@ final class Library {
                 libvirt.virEventUpdateTimeout(timer, 0);
         }
     }
+
+    /**
+     * Look up a constant of an enum by its ordinal number.
+     *
+     * @return the corresponding enum constant when such a constant exists,
+     *         otherwise the element which has the biggest ordinal number
+     *         assigned.
+     *
+     * @throws IllegalArgumentException if {@code ordinal} is negative
+     */
+    static <T extends Enum<T>> T getConstant(final Class<T> c, final int ordinal) {
+        if (ordinal < 0)
+            throw new IllegalArgumentException("ordinal must be >= 0");
+
+        T[] a = c.getEnumConstants();
+
+        assert a.length > 0 : "there must be at least one enum constant";
+
+        return a[Math.min(ordinal, a.length - 1)];
+    }
 }

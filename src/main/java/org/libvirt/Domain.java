@@ -1,5 +1,6 @@
 package org.libvirt;
 
+import org.libvirt.event.IOErrorListener;
 import org.libvirt.jna.DomainPointer;
 import org.libvirt.jna.DomainSnapshotPointer;
 import org.libvirt.jna.Libvirt;
@@ -1032,6 +1033,21 @@ public class Domain {
      */
     public void resume() throws LibvirtException {
         processError(libvirt.virDomainResume(VDP));
+    }
+
+    /**
+     * Adds a callback to receive notifications of IOError domain events
+     * occurring on this domain.
+     *
+     * @see <a
+     *      href="http://www.libvirt.org/html/libvirt-libvirt.html#virConnectDomainEventRegisterAny">Libvirt
+     *      Documentation</a>
+     * @param cb
+     *            the IOErrorCallback instance
+     * @throws LibvirtException on failure
+     */
+    public void addIOErrorListener(final IOErrorListener cb) throws LibvirtException {
+        virConnect.domainEventRegister(this, cb);
     }
 
     /**
