@@ -185,6 +185,10 @@ public interface Libvirt extends Library {
     void virResetLastError();
     void virSetErrorFunc(Pointer userData, VirErrorCallback callback);
 
+    // Event loop functions.
+    int virEventRegisterDefaultImpl();
+    int virEventRunDefaultImpl();
+
     // Domain functions
     int virDomainAbortJob(DomainPointer virDomainPtr);
     int virDomainAttachDevice(DomainPointer virDomainPtr, String deviceXML);
