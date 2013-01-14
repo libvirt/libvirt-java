@@ -495,6 +495,72 @@ public class Connect {
         domainEventRegister(domain, DomainEventID.REBOOT, virCB, cb);
     }
 
+    void domainEventRegister(Domain domain, final LifecycleListener cb) throws LibvirtException {
+        if (cb == null)
+            throw new IllegalArgumentException("LifecycleCallback cannot be null");
+
+        Libvirt.VirConnectDomainEventCallback virCB = new Libvirt.VirConnectDomainEventCallback() {
+                @Override
+                public int eventCallback(ConnectionPointer virConnectPtr, DomainPointer virDomainPointer,
+                                         final int eventCode,
+                                         final int detailCode,
+                                         Pointer opaque) {
+                    assert VCP.equals(virConnectPtr);
+
+                    try {
+                        Domain dom = Domain.constructIncRef(Connect.this, virDomainPointer);
+                        DomainEventType type = getConstant(DomainEventType.class, eventCode);
+                        DomainEvent event = new DomainEvent(type, detailCode);
+
+                        cb.onLifecycleChange(dom, event);
+                    } catch (LibvirtException e) {
+                        throw new RuntimeException("libvirt error in lifecycle callback", e);
+                    }
+
+                    // always return 0, regardless of what the
+                    // callback method returned. This may need to be
+                    // changed in the future, in case the return value
+                    // is used for something by libvirt.
+                    return 0;
+                }
+            };
+
+        domainEventRegister(domain, DomainEventID.LIFECYCLE, virCB, cb);
+    }
+
+    /**
+     * Adds the specified listener to receive lifecycle events for
+     * domains of this connection.
+     *
+     * @param  l  the lifecycle listener
+     * @throws    LibvirtException on failure
+     *
+     * @see #removeLifecycleListener
+     * @see Domain#addLifecycleListener
+     * @see <a
+     *       href="http://www.libvirt.org/html/libvirt-libvirt.html#virConnectDomainEventRegisterAny"
+     *      >virConnectDomainEventRegisterAny</a>
+     */
+    public void addLifecycleListener(final LifecycleListener l) throws LibvirtException
+    {
+        domainEventRegister(null, l);
+    }
+
+    /**
+     * Removes the specified lifecycle event listener so that it no longer
+     * receives lifecycle events.
+     *
+     * @param l    the lifecycle event listener
+     * @throws     LibvirtException
+     *
+     * @see <a
+     *       href="http://www.libvirt.org/html/libvirt-libvirt.html#virConnectDomainEventDeregisterAny"
+     *      >virConnectDomainEventDeregisterAny</a>
+     */
+    public void removeLifecycleListener(LifecycleListener l) throws LibvirtException {
+        domainEventDeregister(DomainEventID.LIFECYCLE, l);
+    }
+
     /**
      * Adds the specified reboot listener to receive reboot events for
      * domains of this connection.

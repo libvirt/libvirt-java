@@ -14,6 +14,7 @@ import org.libvirt.jna.virDomainMemoryStats;
 import org.libvirt.jna.virSchedParameter;
 import org.libvirt.jna.virVcpuInfo;
 import org.libvirt.event.RebootListener;
+import org.libvirt.event.LifecycleListener;
 import static org.libvirt.Library.libvirt;
 import static org.libvirt.ErrorHandler.processError;
 import static org.libvirt.ErrorHandler.processErrorIfZero;
@@ -1064,6 +1065,23 @@ public class Domain {
      * @since 1.5.2
      */
     public void addRebootListener(final RebootListener l) throws LibvirtException {
+        virConnect.domainEventRegister(this, l);
+    }
+
+    /**
+     * Adds the specified listener to receive lifecycle events for this domain.
+     *
+     * @param  l   the lifecycle listener
+     * @throws LibvirtException on failure
+     *
+     * @see Connect#addLifecycleListener
+     * @see Connect#removeLifecycleListener
+     * @see <a
+     *       href="http://www.libvirt.org/html/libvirt-libvirt.html#virConnectDomainEventRegisterAny"
+     *      >virConnectDomainEventRegisterAny</a>
+     */
+    public void addLifecycleListener(final LifecycleListener l) throws LibvirtException
+    {
         virConnect.domainEventRegister(this, l);
     }
 

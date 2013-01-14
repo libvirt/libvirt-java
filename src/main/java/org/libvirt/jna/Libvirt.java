@@ -88,6 +88,13 @@ public interface Libvirt extends Library {
         void eventCallback(ConnectionPointer virConnectPtr, DomainPointer virDomainPointer, Pointer opaque);
     }
 
+    interface VirConnectDomainEventCallback extends VirDomainEventCallback {
+        int eventCallback(ConnectionPointer virConnectPtr, DomainPointer virDomainPointer,
+                          int event,
+                          int detail,
+                          Pointer opaque);
+    }
+
     /**
      * Error callback
      */
