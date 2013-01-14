@@ -18,6 +18,7 @@ import org.libvirt.jna.StorageVolPointer;
 import org.libvirt.jna.StreamPointer;
 import org.libvirt.jna.virConnectAuth;
 import org.libvirt.jna.virNodeInfo;
+import org.libvirt.event.*;
 
 import static org.libvirt.Library.libvirt;
 import static org.libvirt.Library.getConstant;
@@ -468,6 +469,46 @@ public class Connect {
      * @throws LibvirtException on failure
      */
     public void addIOErrorListener(final IOErrorListener l) throws LibvirtException {
+        domainEventRegister(null, l);
+    }
+
+    void domainEventRegister(Domain domain, final RebootListener cb) throws LibvirtException {
+        if (cb == null)
+            throw new IllegalArgumentException("RebootCallback cannot be null");
+
+        Libvirt.VirConnectDomainEventGenericCallback virCB = new Libvirt.VirConnectDomainEventGenericCallback() {
+                @Override
+                public void eventCallback(ConnectionPointer virConnectPtr,
+                                          DomainPointer virDomainPointer,
+                                          Pointer opaque) {
+                    assert VCP.equals(virConnectPtr);
+
+                    try {
+                        Domain d = Domain.constructIncRef(Connect.this, virDomainPointer);
+                        cb.onReboot(d);
+                    } catch (LibvirtException e) {
+                        throw new RuntimeException("libvirt error in reboot callback", e);
+                    }
+                }
+            };
+
+        domainEventRegister(domain, DomainEventID.REBOOT, virCB, cb);
+    }
+
+    /**
+     * Adds the specified reboot listener to receive reboot events for
+     * domains of this connection.
+     *
+     * @param l   the reboot listener
+     * @throws    LibvirtException on failure
+     *
+     * @see Domain#addRebootListener
+     * @see <a
+     *       href="http://www.libvirt.org/html/libvirt-libvirt.html#virConnectDomainEventRegisterAny"
+     *      >virConnectDomainEventRegisterAny</a>
+     * @since 1.5.2
+     */
+    public void addRebootListener(final RebootListener l) throws LibvirtException {
         domainEventRegister(null, l);
     }
 
