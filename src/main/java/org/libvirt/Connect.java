@@ -1,7 +1,10 @@
 package org.libvirt;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
+import org.libvirt.event.*;
 import org.libvirt.jna.ConnectionPointer;
 import org.libvirt.jna.DevicePointer;
 import org.libvirt.jna.DomainPointer;
@@ -32,6 +35,27 @@ import com.sun.jna.ptr.LongByReference;
  * @author stoty
  */
 public class Connect {
+
+    // registered event listeners by DomainEventID
+    private Map<EventListener, RegisteredEventListener>[] eventListeners = makeHashMapArray(DomainEventID.LAST);
+
+    private static final class RegisteredEventListener {
+        public final int callbackId;
+
+        // We need to keep a reference to the callback to prevent it from being GCed
+        @SuppressWarnings("unused")
+        public final Libvirt.VirDomainEventCallback callback;
+
+        public RegisteredEventListener(Libvirt.VirDomainEventCallback callback, int callbackId) {
+            this.callback = callback;
+            this.callbackId = callbackId;
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    private static <K, V> HashMap<K, V>[] makeHashMapArray(int size) {
+        return new HashMap[size];
+    }
 
     /**
      * Event IDs.
@@ -358,42 +382,49 @@ public class Connect {
     }
 
     /**
-     * Removes an event callback.
+     * Removes the event listener for the given eventID parameter so
+     * that it no longer receives events.
+     *
+     * @param eventID    the domain event identifier
+     * @param l          the event listener
+     * @throws           LibvirtException
      *
      * @see <a
-     *      href="http://www.libvirt.org/html/libvirt-libvirt.html#virConnectDomainEventDeregisterAny">Libvirt
-     *      Documentation</a>
-     * @param callbackID
-     *            the callback to deregister
-     * @return <em>ignore</em> (always 0)
-     * @throws LibvirtException
+     *       href="http://www.libvirt.org/html/libvirt-libvirt.html#virConnectDomainEventDeregisterAny"
+     *      >virConnectDomainEventDeregisterAny</a>
      */
-    public int domainEventDeregisterAny(int callbackID) throws LibvirtException {
-        return processError(libvirt.virConnectDomainEventDeregisterAny(VCP, callbackID));
+    private void domainEventDeregister(int eventID, EventListener l) throws LibvirtException {
+        if (l == null)
+            return;
+
+        Map<EventListener, RegisteredEventListener> handlers = eventListeners[eventID];
+
+        if (handlers == null) return;
+
+        RegisteredEventListener listener = handlers.remove(l);
+
+        if (listener != null)
+            processError(libvirt.virConnectDomainEventDeregisterAny(VCP, listener.callbackId));
     }
 
-    /**
-     * Adds a callback to receive notifications of arbitrary domain events
-     * occurring on a domain.
-     *
-     * @see <a
-     *      href="http://www.libvirt.org/html/libvirt-libvirt.html#virConnectDomainEventRegisterAny">Libvirt
-     *      Documentation</a>
-     * @param domain
-     *            option domain to limit the events monitored
-     * @param eventId
-     *            the events to monitor
-     * @param cb
-     *            the callback function to use.
-     * @return The return value from this method is a positive integer
-     *         identifier for the callback.
-     * @throws LibvirtException on failure
-     */
-    public int domainEventRegisterAny(Domain domain, int eventId, Libvirt.VirConnectDomainEventGenericCallback cb)
-            throws LibvirtException {
+    private void domainEventRegister(Domain domain, int eventID, Libvirt.VirDomainEventCallback cb, EventListener l)
+        throws LibvirtException
+    {
+        Map<EventListener, RegisteredEventListener> handlers = eventListeners[eventID];
+
+        if (handlers == null) {
+            handlers = new HashMap<EventListener, RegisteredEventListener>();
+            eventListeners[eventID] = handlers;
+        } else if (handlers.containsKey(l)) {
+            return;
+        }
+
         DomainPointer ptr = domain == null ? null : domain.VDP;
-        int returnValue = libvirt.virConnectDomainEventRegisterAny(VCP, ptr, eventId, cb, null, null);
-        return processError(returnValue);
+        int ret = processError(libvirt.virConnectDomainEventRegisterAny(VCP, ptr, eventID, cb, null, null));
+
+        // track the handler
+        // Note: it is important that the callback does not get GCed
+        handlers.put(l, new RegisteredEventListener(cb, ret));
     }
 
     /**

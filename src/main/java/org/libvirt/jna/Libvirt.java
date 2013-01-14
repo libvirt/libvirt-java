@@ -65,6 +65,19 @@ public interface Libvirt extends Library {
     }
 
     /**
+     * Domain Event Callbacks
+     */
+
+    /**
+     * Common Event Callback super interface.
+     *
+     * All domain event callbacks extend this interface.
+     *
+     * @see #virConnectDomainEventRegisterAny
+     */
+    interface VirDomainEventCallback extends Callback {}
+
+    /**
      * Error callback
      */
     interface VirErrorCallback extends Callback {
@@ -91,10 +104,6 @@ public interface Libvirt extends Library {
      */
     interface VirFreeCallback extends Callback {
         void freeCallback(Pointer opaque) ;
-    }
-
-    interface VirConnectDomainEventGenericCallback extends Callback {
-        void eventCallback(ConnectionPointer virConnectPtr, DomainPointer virDomainPointer, Pointer opaque) ;
     }
 
     /*
@@ -124,7 +133,10 @@ public interface Libvirt extends Library {
     int virConnCopyLastError(ConnectionPointer virConnectPtr, virError to);
     int virConnectClose(ConnectionPointer virConnectPtr);
     int virConnectCompareCPU(ConnectionPointer virConnectPtr, String xmlDesc, int flags);
-    int virConnectDomainEventRegisterAny(ConnectionPointer virConnectPtr, DomainPointer virDomainPtr, int eventID, Libvirt.VirConnectDomainEventGenericCallback cb, Pointer opaque, Libvirt.VirFreeCallback freecb);
+
+    // Register Domain Event Callbacks
+    int virConnectDomainEventRegisterAny(ConnectionPointer virConnectPtr, DomainPointer virDomainPtr, int eventID, VirDomainEventCallback cb, Pointer opaque, Libvirt.VirFreeCallback freecb);
+
     int virConnectDomainEventDeregisterAny(ConnectionPointer virConnectPtr, int callbackID) ;
     void virConnSetErrorFunc(ConnectionPointer virConnectPtr, Pointer userData, VirErrorCallback callback);
     int virConnectIsAlive(ConnectionPointer virConnectPtr);
