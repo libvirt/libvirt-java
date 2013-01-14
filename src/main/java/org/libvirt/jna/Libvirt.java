@@ -161,6 +161,7 @@ public interface Libvirt extends Library {
     ConnectionPointer virConnectOpen(String name);
     ConnectionPointer virConnectOpenAuth(String name, virConnectAuth auth, int flags);
     ConnectionPointer virConnectOpenReadOnly(String name);
+    int virConnectSetKeepAlive(ConnectionPointer virConnectPtr, int interval, int count);
 
     /**
      * @deprecated as of libvirt 0.6.0, all errors reported in the
