@@ -42,6 +42,7 @@ public final class TestJavaBindings extends TestCase {
         assertTrue("conn.getLibVirVersion()", conn.getLibVirVersion() > 6000);
         assertTrue("conn.connectionVersion()", Connect.connectionVersion(conn) > 6000);        
         assertEquals("conn.getVersion()", 2, conn.getVersion());
+        assertTrue("conn.isAlive", conn.isAlive());
         assertTrue("conn.isEncrypted", conn.isEncrypted() == 0);
         assertTrue("conn.isSecure", conn.isSecure() == 1);        
     }

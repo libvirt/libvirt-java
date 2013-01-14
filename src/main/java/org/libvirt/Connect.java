@@ -1387,4 +1387,16 @@ public class Connect {
     public boolean isConnected() throws LibvirtException {
         return ( ( VCP != null ) ? true : false );
     }
+
+    /**
+     * Determine if the connection to the hypervisor is still alive.
+     * <p>
+     * A connection will be classed as alive if it is either local,
+     * or running over a channel (TCP or UNIX socket) which is not closed.
+     *
+     * @return {@code true} if alive, {@code false} otherwise.
+     */
+    public boolean isAlive() throws LibvirtException {
+        return (1 == processError(libvirt.virConnectIsAlive(VCP)));
+    }
 }
