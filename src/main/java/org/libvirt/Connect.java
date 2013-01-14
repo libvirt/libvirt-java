@@ -569,6 +569,65 @@ public class Connect {
         domainEventRegister(domain, DomainEventID.PMWAKEUP, virCB, cb);
     }
 
+    void domainEventRegister(Domain domain, final PMSuspendListener cb) throws LibvirtException {
+        if (cb == null)
+            throw new IllegalArgumentException("PMSuspendCallback cannot be null");
+
+        Libvirt.VirDomainEventCallback virCB =
+            new Libvirt.VirConnectDomainEventPMChangeCallback() {
+                @Override
+                public void eventCallback(ConnectionPointer virConnectPtr, DomainPointer virDomainPointer,
+                                          int reason, Pointer opaque) {
+                    assert VCP.equals(virConnectPtr);
+
+                    try {
+                        Domain d = Domain.constructIncRef(Connect.this, virDomainPointer);
+                        cb.onPMSuspend(d, getConstant(PMSuspendReason.class, reason));
+                    } catch (LibvirtException e) {
+                        throw new RuntimeException("libvirt error in PMSuspend callback", e);
+                    }
+                }
+            };
+
+        domainEventRegister(domain, DomainEventID.PMSUSPEND, virCB, cb);
+    }
+
+    /**
+     * Adds the specified listener to receive PMSuspend events for
+     * domains of this connection.
+     *
+     * @param  l   the PMSuspend listener
+     * @throws     LibvirtException on failure
+     *
+     * @see #removePMSuspendListener
+     * @see Domain#addPMSuspendListener
+     * @see <a
+     *       href="http://www.libvirt.org/html/libvirt-libvirt.html#virConnectDomainEventRegisterAny"
+     *      >virConnectDomainEventRegisterAny</a>
+     *
+     * @since 1.5.2
+     */
+    public void addPMSuspendListener(final PMSuspendListener l) throws LibvirtException {
+        domainEventRegister(null, l);
+    }
+
+    /**
+     * Removes the specified PMSuspend listener so that it no longer
+     * receives PMSuspend events.
+     *
+     * @param l    the PMSuspend listener
+     * @throws     LibvirtException
+     *
+     * @see <a
+     *       href="http://www.libvirt.org/html/libvirt-libvirt.html#virConnectDomainEventDeregisterAny"
+     *      >virConnectDomainEventDeregisterAny</a>
+     *
+     * @since 1.5.2
+     */
+    public void removePMSuspendListener(final PMSuspendListener l) throws LibvirtException {
+        domainEventDeregister(DomainEventID.PMWAKEUP, l);
+    }
+
     /**
      * Adds the specified listener to receive PMWakeup events for
      * domains of this connection.
