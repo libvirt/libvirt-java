@@ -546,6 +546,63 @@ public class Connect {
         domainEventRegister(null, l);
     }
 
+    void domainEventRegister(Domain domain, final PMWakeupListener cb) throws LibvirtException {
+        if (cb == null)
+            throw new IllegalArgumentException("PMWakeupCallback cannot be null");
+
+        Libvirt.VirDomainEventCallback virCB =
+            new Libvirt.VirConnectDomainEventPMChangeCallback() {
+                @Override
+                public void eventCallback(ConnectionPointer virConnectPtr, DomainPointer virDomainPointer,
+                                          int reason, Pointer opaque) {
+                    assert VCP.equals(virConnectPtr);
+
+                    try {
+                        Domain d = Domain.constructIncRef(Connect.this, virDomainPointer);
+                        cb.onPMWakeup(d, getConstant(PMWakeupReason.class, reason));
+                    } catch (LibvirtException e) {
+                        throw new RuntimeException("libvirt error handling PMWakeup callback", e);
+                    }
+                }
+            };
+
+        domainEventRegister(domain, DomainEventID.PMWAKEUP, virCB, cb);
+    }
+
+    /**
+     * Adds the specified listener to receive PMWakeup events for
+     * domains of this connection.
+     *
+     * @param  l   the PMWakeup listener
+     * @throws     LibvirtException on failure
+     *
+     * @see #removePMWakeupListener
+     * @see Domain#addPMWakeupListener
+     * @see <a
+     *       href="http://www.libvirt.org/html/libvirt-libvirt.html#virConnectDomainEventRegisterAny"
+     *      >virConnectDomainEventRegisterAny</a>
+     *
+     * @since 1.5.2
+     */
+    public void addPMWakeupListener(final PMWakeupListener l) throws LibvirtException {
+        domainEventRegister(null, l);
+    }
+
+    /**
+     * Removes the specified PMWakeup listener so that it no longer
+     * receives PMWakeup events.
+     *
+     * @param l    the PMWakeup listener
+     * @throws     LibvirtException
+     *
+     * @see <a
+     *       href="http://www.libvirt.org/html/libvirt-libvirt.html#virConnectDomainEventDeregisterAny"
+     *      >virConnectDomainEventDeregisterAny</a>
+     */
+    public void removePMWakeupListener(final PMWakeupListener l) throws LibvirtException {
+        domainEventDeregister(DomainEventID.PMWAKEUP, l);
+    }
+
     /**
      * Removes the specified lifecycle event listener so that it no longer
      * receives lifecycle events.

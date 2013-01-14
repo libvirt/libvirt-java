@@ -95,6 +95,12 @@ public interface Libvirt extends Library {
                           Pointer opaque);
     }
 
+    // PMWakeup and PMSuspend have the same callback interface.
+    interface VirConnectDomainEventPMChangeCallback extends VirDomainEventCallback {
+        void eventCallback(ConnectionPointer virConnectPtr, DomainPointer virDomainPointer,
+                           int reason, Pointer opaque);
+    }
+
     /**
      * Error callback
      */
