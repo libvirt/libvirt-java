@@ -1,5 +1,8 @@
 package org.libvirt.jna;
 
+import java.util.Arrays;
+import java.util.List;
+
 import com.sun.jna.Structure;
 
 public class virDomainJobInfo extends Structure {
@@ -16,10 +19,13 @@ public class virDomainJobInfo extends Structure {
     public long fileProcessed;
     public long fileRemaining;
 
-    protected java.util.List getFieldOrder() {
-        return java.util.Arrays.asList(new String[] {
+    private static final List fields = Arrays.asList(
             "type", "timeElapsed", "timeRemaining", "dataTotal",
             "dataProcessed", "dataRemaining", "memTotal", "memProcessed",
-            "memRemaining", "fileTotal", "fileProcessed", "fileRemaining" });
+            "memRemaining", "fileTotal", "fileProcessed", "fileRemaining");
+
+    @Override
+    protected List getFieldOrder() {
+        return fields;
     }
 }

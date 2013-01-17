@@ -1,5 +1,8 @@
 package org.libvirt.jna;
 
+import java.util.Arrays;
+import java.util.List;
+
 import com.sun.jna.Structure;
 
 /**
@@ -10,8 +13,11 @@ public class virSchedParameter extends Structure {
     public int type;
     public virSchedParameterValue value;
 
-    protected java.util.List getFieldOrder() {
-        return java.util.Arrays.asList(new String[] {
-            "field", "type", "value" });
+    private static final List fields = Arrays.asList(
+            "field", "type", "value");
+
+    @Override
+    protected List getFieldOrder() {
+        return fields;
     }
 }

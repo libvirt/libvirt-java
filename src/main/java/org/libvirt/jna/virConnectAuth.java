@@ -1,5 +1,8 @@
 package org.libvirt.jna;
 
+import java.util.Arrays;
+import java.util.List;
+
 import com.sun.jna.Pointer;
 import com.sun.jna.Structure;
 
@@ -12,8 +15,11 @@ public class virConnectAuth extends Structure {
     public Libvirt.VirConnectAuthCallback cb;
     public Pointer cbdata;
 
-    protected java.util.List getFieldOrder() {
-        return java.util.Arrays.asList(new String[] {
-            "credtype", "ncredtype", "cb", "cbdata" });
+    private static final List fields = Arrays.asList(
+            "credtype", "ncredtype", "cb", "cbdata");
+
+    @Override
+    protected List getFieldOrder() {
+        return fields;
     }
 }

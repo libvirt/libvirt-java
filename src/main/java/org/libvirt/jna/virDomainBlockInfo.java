@@ -1,5 +1,8 @@
 package org.libvirt.jna;
 
+import java.util.Arrays;
+import java.util.List;
+
 import com.sun.jna.Structure;
 
 public class virDomainBlockInfo extends Structure {
@@ -7,8 +10,11 @@ public class virDomainBlockInfo extends Structure {
     public long allocation;
     public long physical;
 
-    protected java.util.List getFieldOrder() {
-        return java.util.Arrays.asList(new String[] {
-            "capacity", "allocation", "physical" });
+    private static final List fields = Arrays.asList(
+            "capacity", "allocation", "physical");
+
+    @Override
+    protected List getFieldOrder() {
+        return fields;
     }
 }

@@ -1,5 +1,8 @@
 package org.libvirt.jna;
 
+import java.util.Arrays;
+import java.util.List;
+
 import com.sun.jna.NativeLong;
 import com.sun.jna.Structure;
 
@@ -13,8 +16,11 @@ public class virDomainInfo extends Structure {
     public short nrVirtCpu;
     public long cpuTime;
 
-    protected java.util.List getFieldOrder() {
-        return java.util.Arrays.asList(new String[] {
-            "state", "maxMem", "memory", "nrVirtCpu", "cpuTime" });
+    private static final List fields = Arrays.asList(
+            "state", "maxMem", "memory", "nrVirtCpu", "cpuTime");
+
+    @Override
+    protected List getFieldOrder() {
+        return fields;
     }
 }

@@ -1,5 +1,8 @@
 package org.libvirt.jna;
 
+import java.util.Arrays;
+import java.util.List;
+
 import com.sun.jna.NativeLong;
 import com.sun.jna.Structure;
 
@@ -22,9 +25,12 @@ public class virNodeInfo extends Structure {
     public int cores;
     public int threads;
 
-    protected java.util.List getFieldOrder() {
-        return java.util.Arrays.asList(new String[] {
+    private static final List fields = Arrays.asList(
             "model", "memory", "cpus", "mhz", "nodes",
-            "sockets", "cores", "threads" });
+            "sockets", "cores", "threads");
+
+    @Override
+    protected List getFieldOrder() {
+        return fields;
     }
 }

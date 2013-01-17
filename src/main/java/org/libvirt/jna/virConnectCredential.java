@@ -1,5 +1,8 @@
 package org.libvirt.jna;
 
+import java.util.Arrays;
+import java.util.List;
+
 import com.sun.jna.Structure;
 
 /**
@@ -14,9 +17,12 @@ public class virConnectCredential extends Structure implements Structure.ByRefer
     public String result;
     public int resultlen;
 
-    protected java.util.List getFieldOrder() {
-        return java.util.Arrays.asList(new String[] {
+    private static final List fields = Arrays.asList(
             "type", "prompt", "challenge", "defresult",
-            "result", "resultlen" });
+            "result", "resultlen");
+
+    @Override
+    protected List getFieldOrder() {
+        return fields;
     }
 }

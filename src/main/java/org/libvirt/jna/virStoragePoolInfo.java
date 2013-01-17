@@ -1,5 +1,8 @@
 package org.libvirt.jna;
 
+import java.util.Arrays;
+import java.util.List;
+
 import com.sun.jna.Structure;
 
 /**
@@ -14,8 +17,11 @@ public class virStoragePoolInfo extends Structure {
     public long available; // this is a long long in the code, so a long mapping
     // is correct
 
-    protected java.util.List getFieldOrder() {
-        return java.util.Arrays.asList(new String[] {
-            "state", "capacity", "allocation", "available" });
+    private static final List fields = Arrays.asList(
+            "state", "capacity", "allocation", "available");
+
+    @Override
+    protected List getFieldOrder() {
+        return fields;
     }
 }

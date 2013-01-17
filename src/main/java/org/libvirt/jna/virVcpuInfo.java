@@ -1,5 +1,8 @@
 package org.libvirt.jna;
 
+import java.util.Arrays;
+import java.util.List;
+
 import com.sun.jna.Structure;
 
 /**
@@ -12,8 +15,11 @@ public class virVcpuInfo extends Structure {
     // is correct
     public int cpu;
 
-    protected java.util.List getFieldOrder() {
-        return java.util.Arrays.asList(new String[] {
-            "number", "state", "cpuTime", "cpu" });
+    private static final List fields = Arrays.asList(
+            "number", "state", "cpuTime", "cpu");
+
+    @Override
+    protected List getFieldOrder() {
+        return fields;
     }
 }

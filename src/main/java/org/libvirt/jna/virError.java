@@ -1,5 +1,8 @@
 package org.libvirt.jna;
 
+import java.util.Arrays;
+import java.util.List;
+
 import com.sun.jna.Pointer;
 import com.sun.jna.Structure;
 
@@ -20,9 +23,12 @@ public class virError extends Structure {
     public int int2;
     public NetworkPointer net;
 
-    protected java.util.List getFieldOrder() {
-        return java.util.Arrays.asList(new String[] {
+    private static final List fields = Arrays.asList(
             "code", "domain", "message", "level", "conn", "dom",
-            "str1", "str2", "str3", "int1", "int2", "net" });
+            "str1", "str2", "str3", "int1", "int2", "net");
+
+    @Override
+    protected List getFieldOrder() {
+        return fields;
     }
 }

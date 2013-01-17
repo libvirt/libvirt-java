@@ -1,5 +1,8 @@
 package org.libvirt.jna;
 
+import java.util.Arrays;
+import java.util.List;
+
 import com.sun.jna.Structure;
 
 /**
@@ -23,9 +26,12 @@ public class virDomainInterfaceStats extends Structure {
     public long tx_drop; // this is a long long in the code, so a long mapping
     // is correct
 
-    protected java.util.List getFieldOrder() {
-        return java.util.Arrays.asList(new String[] {
+    private static final List fields = Arrays.asList(
             "rx_bytes", "rx_packets", "rx_errs", "rx_drop",
-            "tx_bytes", "tx_packets", "tx_errs", "tx_drop" });
+            "tx_bytes", "tx_packets", "tx_errs", "tx_drop");
+
+    @Override
+    protected List getFieldOrder() {
+        return fields;
     }
 }
