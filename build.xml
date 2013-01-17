@@ -64,7 +64,7 @@
 	</target>
 
 	<target name="test" depends="buildtests" description="tests the code">
-		<junit printsummary="yes" fork="yes" forkMode="perBatch">
+		<junit printsummary="yes" fork="yes" forkMode="perBatch" failureproperty="tests.failed">
 			<formatter type="plain" />
 			<classpath refid="test.classpath" />
 			<batchtest todir="target">
@@ -73,6 +73,7 @@
 				</fileset>
 			</batchtest>
 		</junit>
+		<fail message="Tests failed: check test reports." if="tests.failed" />
 	</target>
 
 	<target name="docs" depends="build" description="builds the javadoc">
