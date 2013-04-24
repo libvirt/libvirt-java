@@ -3,6 +3,7 @@ package org.libvirt;
 import org.libvirt.jna.DomainPointer;
 import org.libvirt.jna.DomainSnapshotPointer;
 import org.libvirt.jna.Libvirt;
+import org.libvirt.jna.SizeT;
 import org.libvirt.jna.virDomainBlockInfo;
 import org.libvirt.jna.virDomainBlockStats;
 import org.libvirt.jna.virDomainInfo;
@@ -233,7 +234,7 @@ public class Domain {
      */
     public DomainBlockStats blockStats(String path) throws LibvirtException {
         virDomainBlockStats stats = new virDomainBlockStats();
-        int success = libvirt.virDomainBlockStats(VDP, path, stats, stats.size());
+        int success = libvirt.virDomainBlockStats(VDP, path, stats, new SizeT(stats.size()));
         processError();
         return success == 0 ? new DomainBlockStats(stats) : null;
     }
@@ -694,7 +695,7 @@ public class Domain {
      */
     public DomainInterfaceStats interfaceStats(String path) throws LibvirtException {
         virDomainInterfaceStats stats = new virDomainInterfaceStats();
-        libvirt.virDomainInterfaceStats(VDP, path, stats, stats.size());
+        libvirt.virDomainInterfaceStats(VDP, path, stats, new SizeT(stats.size()));
         processError();
         return new DomainInterfaceStats(stats);
     }

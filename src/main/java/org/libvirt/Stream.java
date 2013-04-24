@@ -1,10 +1,9 @@
 package org.libvirt;
 
 import org.libvirt.jna.Libvirt;
+import org.libvirt.jna.SizeT;
 import org.libvirt.jna.StreamPointer;
 import static org.libvirt.Library.libvirt;
-
-import com.sun.jna.NativeLong;
 
 public class Stream {
 
@@ -108,7 +107,7 @@ public class Stream {
      * @throws LibvirtException
      */
     public int receive(byte[] data) throws LibvirtException {
-        int returnValue = libvirt.virStreamRecv(VSP, data, new NativeLong(data.length));
+        int returnValue = libvirt.virStreamRecv(VSP, data, new SizeT(data.length));
         processError();
         return returnValue;
     }
@@ -151,7 +150,7 @@ public class Stream {
      * @throws LibvirtException
      */
     public int send(String data) throws LibvirtException {
-        int returnValue = libvirt.virStreamSend(VSP, data, new NativeLong(data.length()));
+        int returnValue = libvirt.virStreamSend(VSP, data, new SizeT(data.length()));
         processError();
         return returnValue;
     }

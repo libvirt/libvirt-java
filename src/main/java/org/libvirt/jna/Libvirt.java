@@ -180,7 +180,7 @@ public interface Libvirt extends Library {
     int virDomainAbortJob(DomainPointer virDomainPtr);
     int virDomainAttachDevice(DomainPointer virDomainPtr, String deviceXML);
     int virDomainAttachDeviceFlags(DomainPointer virDomainPtr, String deviceXML, int flags);
-    int virDomainBlockStats(DomainPointer virDomainPtr, String path, virDomainBlockStats stats, int size);
+    int virDomainBlockStats(DomainPointer virDomainPtr, String path, virDomainBlockStats stats, SizeT size);
     int virDomainBlockResize(DomainPointer virDomainPtr, String disk, long size, int flags);
     int virDomainCoreDump(DomainPointer virDomainPtr, String to, int flags);
     int virDomainCreate(DomainPointer virDomainPtr);
@@ -210,7 +210,7 @@ public interface Libvirt extends Library {
     Pointer virDomainGetXMLDesc(DomainPointer virDomainPtr, int flags);
     int virDomainHasCurrentSnapshot(DomainPointer virDomainPtr, int flags);
     int virDomainHasManagedSaveImage(DomainPointer virDomainPtr, int flags);
-    int virDomainInterfaceStats(DomainPointer virDomainPtr, String path, virDomainInterfaceStats stats, int size);
+    int virDomainInterfaceStats(DomainPointer virDomainPtr, String path, virDomainInterfaceStats stats, SizeT size);
     int virDomainIsActive(DomainPointer virDomainPtr);
     int virDomainIsPersistent(DomainPointer virDomainPtr);
     DomainPointer virDomainLookupByID(ConnectionPointer virConnectPtr, int id);
@@ -351,13 +351,13 @@ public interface Libvirt extends Library {
     int virSecretGetUUID(SecretPointer virSecretPtr, byte[] uuidString);
     int virSecretGetUUIDString(SecretPointer virSecretPtr, byte[] uuidString);
     String virSecretGetUsageID(SecretPointer virSecretPtr);
-    Pointer virSecretGetValue(SecretPointer virSecretPtr, LongByReference value_size, int flags);
+    Pointer virSecretGetValue(SecretPointer virSecretPtr, SizeTByReference value_size, int flags);
     String virSecretGetXMLDesc(SecretPointer virSecretPtr, int flags);
     SecretPointer virSecretLookupByUsage(ConnectionPointer virConnectPtr, int usageType, String usageID);
     SecretPointer virSecretLookupByUUID(ConnectionPointer virConnectPtr, byte[] uuidBytes);
     SecretPointer virSecretLookupByUUIDString(ConnectionPointer virConnectPtr, String uuidstr);
-    int virSecretSetValue(SecretPointer virSecretPtr, String value, NativeLong value_size, int flags);
-    int virSecretSetValue(SecretPointer virSecretPtr, byte[] value, NativeLong value_size, int flags);
+    int virSecretSetValue(SecretPointer virSecretPtr, String value, SizeT value_size, int flags);
+    int virSecretSetValue(SecretPointer virSecretPtr, byte[] value, SizeT value_size, int flags);
     int virSecretUndefine(SecretPointer virSecretPtr);
 
     //Stream Methods
@@ -369,9 +369,9 @@ public interface Libvirt extends Library {
     int virStreamFinish(StreamPointer virStreamPtr) ;
     int virStreamFree(StreamPointer virStreamPtr) ;
     StreamPointer virStreamNew(ConnectionPointer virConnectPtr, int flags) ;
-    int virStreamSend(StreamPointer virStreamPtr, String data, NativeLong size);
+    int virStreamSend(StreamPointer virStreamPtr, String data, SizeT size);
     int virStreamSendAll(StreamPointer virStreamPtr, Libvirt.VirStreamSourceFunc handler, Pointer opaque);
-    int virStreamRecv(StreamPointer virStreamPtr, byte[] data, NativeLong length);
+    int virStreamRecv(StreamPointer virStreamPtr, byte[] data, SizeT length);
     int virStreamRecvAll(StreamPointer virStreamPtr, Libvirt.VirStreamSinkFunc handler, Pointer opaque);
 
     //DomainSnapshot Methods

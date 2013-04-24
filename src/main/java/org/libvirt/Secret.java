@@ -2,11 +2,11 @@ package org.libvirt;
 
 import org.libvirt.jna.Libvirt;
 import org.libvirt.jna.SecretPointer;
+import org.libvirt.jna.SizeT;
+import org.libvirt.jna.SizeTByReference;
 import static org.libvirt.Library.libvirt;
 
 import com.sun.jna.Native;
-import com.sun.jna.NativeLong;
-import com.sun.jna.ptr.LongByReference;
 import com.sun.jna.Pointer;
 import java.nio.ByteBuffer;
 
@@ -120,7 +120,7 @@ public class Secret {
      * @return the value of the secret, or null on failure.
      */
     public byte[] getByteValue() throws LibvirtException {
-        LongByReference value_size = new LongByReference();
+        SizeTByReference value_size = new SizeTByReference();
         Pointer value = libvirt.virSecretGetValue(VSP, value_size, 0);
         processError();
         ByteBuffer bb = value.getByteBuffer(0, value_size.getValue());
@@ -154,7 +154,7 @@ public class Secret {
      * @return 0 on success, -1 on failure.
      */
     public int setValue(String value) throws LibvirtException {
-        int returnValue = libvirt.virSecretSetValue(VSP, value, new NativeLong(value.length()), 0);
+        int returnValue = libvirt.virSecretSetValue(VSP, value, new SizeT(value.length()), 0);
         processError();
         return returnValue;
     }
@@ -165,7 +165,7 @@ public class Secret {
      * @return 0 on success, -1 on failure.
      */
     public int setValue(byte[] value) throws LibvirtException {
-        int returnValue = libvirt.virSecretSetValue(VSP, value, new NativeLong(value.length), 0);
+        int returnValue = libvirt.virSecretSetValue(VSP, value, new SizeT(value.length), 0);
         processError();
         return returnValue;
     }
