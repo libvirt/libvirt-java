@@ -1,7 +1,6 @@
 package org.libvirt;
 
 import org.libvirt.jna.DomainSnapshotPointer;
-import org.libvirt.jna.Libvirt;
 import static org.libvirt.Library.libvirt;
 
 public class DomainSnapshot {

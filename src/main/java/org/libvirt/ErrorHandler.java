@@ -1,6 +1,5 @@
 package org.libvirt;
 
-import org.libvirt.jna.ConnectionPointer;
 import org.libvirt.jna.Libvirt;
 import org.libvirt.jna.virError;
 

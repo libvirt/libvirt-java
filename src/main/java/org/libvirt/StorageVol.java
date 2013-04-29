@@ -1,6 +1,5 @@
 package org.libvirt;
 
-import org.libvirt.jna.Libvirt;
 import org.libvirt.jna.StoragePoolPointer;
 import org.libvirt.jna.StorageVolPointer;
 import org.libvirt.jna.virStorageVolInfo;

@@ -1,7 +1,6 @@
 package org.libvirt;
 
 import org.libvirt.jna.InterfacePointer;
-import org.libvirt.jna.Libvirt;
 import static org.libvirt.Library.libvirt;
 
 import com.sun.jna.Pointer;
