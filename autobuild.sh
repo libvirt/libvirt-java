@@ -7,7 +7,7 @@ test -n "$1" && RESULTS=$1 || RESULTS=results.log
 
 ant clean || :
 
-ant build docs
+ant build jar docs
 
 ant test 2>&1 | tee $RESULTS
 

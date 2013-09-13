@@ -53,7 +53,7 @@ API documentation for %{name}.
 %setup -q
 
 %build
-ant build docs
+ant build jar docs
 
 %install
 rm -fr %{buildroot}
