@@ -86,6 +86,10 @@ rm -rf %{buildroot}
 %{_javadocdir}/%{name}
 
 %changelog
+* Fri Sep 13 2013 Daniel Veillard <veillard@redhat.com> - 0.5.0
+- A few bug and portability fixes
+- Some improvements and better migration and storage support
+
 * Fri Jul 6 2012 Daniel Veillard <veillard@redhat.com> - 0.4.8-1
 - Add flags to StoragePoolRefresh
 - use byte[] array for secretGetValue
