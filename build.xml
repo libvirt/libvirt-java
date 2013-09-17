@@ -52,7 +52,7 @@
 				destdir="target/testclasses"
 				cache="target/cache"
 				closure="true" />
-		<javac srcdir="src/test/java" debug="${javac.debug}" includes="**/*.java" classpathref="test.classpath" destdir="target/testclasses" includeAntRuntime="false" />
+		<javac srcdir="src/test/java" debug="${javac.debug}" source="${java.source}" target="${java.target}" includes="**/*.java" classpathref="test.classpath" destdir="target/testclasses" includeAntRuntime="false" />
 	</target>
 
 	<target name="build" depends="init" description="builds the code">
@@ -60,7 +60,7 @@
 				destdir="target/classes"
 				cache="target/cache"
 				closure="true" />
-		<javac srcdir="src/main/java" debug="${javac.debug}" includes="**/*.java" classpathref="compile.classpath" destdir="target/classes" includeAntRuntime="false" />
+		<javac srcdir="src/main/java" debug="${javac.debug}" source="${java.source}" target="${java.target}" includes="**/*.java" classpathref="compile.classpath" destdir="target/classes" includeAntRuntime="false" />
 	</target>
 
 	<target name="test" depends="buildtests" description="tests the code">
