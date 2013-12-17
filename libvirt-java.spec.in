@@ -59,8 +59,7 @@ ant build jar docs
 rm -fr %{buildroot}
 install -d -m0755 %{buildroot}%{_javadir}
 install -d -m0755 %{buildroot}%{_javadocdir}/%{name}-%{version}
-cp target/%{prefix}-%{version}.jar %{buildroot}%{_javadir}
-%{__ln_s} %{_javadir}/%{prefix}-%{version}.jar %{buildroot}%{_javadir}/%{prefix}.jar 
+cp target/%{prefix}-%{version}.jar %{buildroot}%{_javadir}/%{prefix}.jar
 cp -r target/javadoc/* %{buildroot}%{_javadocdir}/%{name}-%{version}
 %{__ln_s} %{_javadocdir}/%{name}-%{version} %{buildroot}%{_javadocdir}/%{name}
 
