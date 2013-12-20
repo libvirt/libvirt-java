@@ -1,5 +1,10 @@
 package org.libvirt;
 
+import org.libvirt.event.*;
+
+import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import junit.framework.TestCase;
@@ -11,6 +16,15 @@ public final class TestJavaBindings extends TestCase {
             Integer.decode("0x87"), Integer.decode("0xd2"), Integer.decode("0x1e"), Integer.decode("0x67") };
 
     private Connect conn;
+
+    static {
+        // do this once for each JVM instance, before connecting
+        try {
+            Library.initEventLoop();
+        } catch (LibvirtException e) {
+            // XXX warn
+        }
+    }
 
     protected void setUp() throws LibvirtException {
         conn = new Connect("test:///default", false);
@@ -236,5 +250,60 @@ public final class TestJavaBindings extends TestCase {
         assertTrue("pool1 should be persistent", pool1.isPersistent() == 1);
         assertTrue("pool1 should not be active", pool1.isActive() == 0);        
         assertTrue("Domain2 should be active", defaultPool.isActive() == 1);         
+    }
+
+    public void testDomainEvents() throws Exception {
+        final List<DomainEventType> events = new ArrayList<DomainEventType>();
+        final Thread t = new Thread() {
+                @Override
+                public void run() {
+                    try {
+                        Library.runEventLoop();
+                    } catch (LibvirtException e) {
+                        fail("LibvirtException was thrown: " + e);
+                    } catch (InterruptedException e) {
+                    }
+                }
+            };
+        t.setDaemon(true);
+        t.start();
+
+        LifecycleListener listener = new LifecycleListener() {
+            @Override
+            public int onLifecycleChange(Domain d, DomainEvent e)
+            {
+                events.add(e.getType());
+
+                return 0;
+            }
+        };
+        try {
+            conn.addLifecycleListener(listener);
+
+            Domain dom = conn.domainDefineXML("<domain type='test' id='2'>" + "  <name>deftest</name>"
+                + "  <uuid>004b96e1-2d78-c30f-5aa5-f03c87d21e70</uuid>" + "  <memory>8388608</memory>"
+                + "  <vcpu>2</vcpu>" + "  <os><type arch='i686'>hvm</type></os>" + "  <on_reboot>restart</on_reboot>"
+                + "  <on_poweroff>destroy</on_poweroff>" + "  <on_crash>restart</on_crash>" + "</domain>");
+
+            dom.create();
+            dom.suspend();
+            dom.resume();
+            dom.destroy();
+            dom.undefine();
+
+            // wait until (presumably) all events have been processed
+            Thread.sleep(300);
+
+            assertEquals(Arrays.asList(DomainEventType.DEFINED,
+                                       DomainEventType.STARTED,
+                                       DomainEventType.SUSPENDED,
+                                       DomainEventType.RESUMED,
+                                       DomainEventType.STOPPED,
+                                       DomainEventType.UNDEFINED),
+                         events);
+        } finally {
+            conn.removeLifecycleListener(listener);
+            Library.stopEventLoop();
+        }
     }
 }
