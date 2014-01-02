@@ -280,7 +280,7 @@ public interface Libvirt extends Library {
     String virNodeDeviceGetName(DevicePointer virDevicePointer);
     String virNodeDeviceGetParent(DevicePointer virDevicePointer);
     int virNodeDeviceNumOfCaps(DevicePointer virDevicePointer);
-    int virNodeDeviceListCaps(DevicePointer virDevicePointer, String[] names, int maxNames);
+    int virNodeDeviceListCaps(DevicePointer virDevicePointer, Pointer[] names, int maxNames);
     String virNodeDeviceGetXMLDesc(DevicePointer virDevicePointer);
     int virNodeDeviceFree(DevicePointer virDevicePointer);
     int virNodeDeviceDettach(DevicePointer virDevicePointer);

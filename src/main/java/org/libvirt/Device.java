@@ -3,6 +3,8 @@ package org.libvirt;
 import org.libvirt.jna.DevicePointer;
 import static org.libvirt.Library.libvirt;
 
+import com.sun.jna.Pointer;
+
 /**
  * A device which is attached to a node
  */
@@ -135,13 +137,15 @@ public class Device {
      */
     public String[] listCapabilities() throws LibvirtException {
         int maxCaps = getNumberOfCapabilities();
-        String[] names = new String[maxCaps];
 
         if (maxCaps > 0) {
-            libvirt.virNodeDeviceListCaps(VDP, names, maxCaps);
+            Pointer[] ptrs = new Pointer[maxCaps];
+            int got = libvirt.virNodeDeviceListCaps(VDP, ptrs, maxCaps);
             processError();
+            return Library.toStringArray(ptrs, got);
+        } else {
+            return Library.NO_STRINGS;
         }
-        return names;
     }
 
     /**
