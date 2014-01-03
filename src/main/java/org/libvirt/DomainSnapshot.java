@@ -2,6 +2,7 @@ package org.libvirt;
 
 import org.libvirt.jna.DomainSnapshotPointer;
 import static org.libvirt.Library.libvirt;
+import static org.libvirt.ErrorHandler.processError;
 
 public class DomainSnapshot {
 
@@ -28,14 +29,13 @@ public class DomainSnapshot {
      *      Documentation</a>
      * @param flags
      *            controls the deletion
-     * @return 0 if the selected snapshot(s) were successfully deleted, -1 on error.
+     * @return <em>ignore</em> (always 0)
      * @throws LibvirtException
      */
     public int delete(int flags) throws LibvirtException {
         int success = 0;
         if (VDSP != null) {
-            success = libvirt.virDomainSnapshotDelete(VDSP, flags);
-            processError();
+            success = processError(libvirt.virDomainSnapshotDelete(VDSP, flags));
             VDSP = null;
         }
 
@@ -52,13 +52,12 @@ public class DomainSnapshot {
      * exist.
      *
      * @throws LibvirtException
-     * @return 0 on success, or -1 on error.
+     * @return 0 on success
      */
     public int free() throws LibvirtException {
         int success = 0;
         if (VDSP != null) {
-            success = libvirt.virDomainSnapshotFree(VDSP);
-            processError();
+            success = processError(libvirt.virDomainSnapshotFree(VDSP));
             VDSP = null;
         }
 
@@ -72,16 +71,6 @@ public class DomainSnapshot {
      * @return the XML document
      */
     public String getXMLDesc() throws LibvirtException {
-        String returnValue = libvirt.virDomainSnapshotGetXMLDesc(VDSP, 0);
-        processError();
-        return returnValue;
-    }
-
-    /**
-     * Error handling logic to throw errors. Must be called after every libvirt
-     * call.
-     */
-    protected void processError() throws LibvirtException {
-        virConnect.processError();
+        return processError(libvirt.virDomainSnapshotGetXMLDesc(VDSP, 0));
     }
 }
