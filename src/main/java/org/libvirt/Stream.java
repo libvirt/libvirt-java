@@ -4,6 +4,7 @@ import org.libvirt.jna.Libvirt;
 import org.libvirt.jna.SizeT;
 import org.libvirt.jna.StreamPointer;
 import static org.libvirt.Library.libvirt;
+import static org.libvirt.ErrorHandler.processError;
 
 public class Stream {
 
@@ -27,11 +28,11 @@ public class Stream {
     /**
      * Request that the in progress data transfer be cancelled abnormally before
      * the end of the stream has been reached
+     *
+     * @return <em>ignore</em> (always 0)
      */
     public int abort() throws LibvirtException {
-        int returnValue = libvirt.virStreamAbort(VSP);
-        processError();
-        return returnValue;
+        return processError(libvirt.virStreamAbort(VSP));
     }
 
     /**
@@ -45,13 +46,11 @@ public class Stream {
      *            the events to monitor
      * @param cb
      *            the callback method
-     * @return 0 for success, -1 for failure
+     * @return <em>ignore</em> (always 0)
      * @throws LibvirtException
      */
     public int addCallback(int events, Libvirt.VirStreamEventCallback cb) throws LibvirtException {
-        int returnValue = libvirt.virStreamEventAddCallback(VSP, events, cb, null, null);
-        processError();
-        return returnValue;
+        return processError(libvirt.virStreamEventAddCallback(VSP, events, cb, null, null));
     }
 
     @Override
@@ -63,39 +62,28 @@ public class Stream {
      * Indicate that there is no further data is to be transmitted on the
      * stream.
      *
-     * @return 0 if success, -1 if failure
+     * @return <em>ignore</em> (always 0)
      * @throws LibvirtException
      */
     public int finish() throws LibvirtException {
-        int returnValue = libvirt.virStreamFinish(VSP);
-        processError();
-        return returnValue;
+        return processError(libvirt.virStreamFinish(VSP));
     }
 
     /**
      * Decrement the reference count on a stream, releasing the stream object if
      * the reference count has hit zero.
      *
+     * @return <em>ignore</em> (always 0)
      * @throws LibvirtException
-     * @return 0 on success, or -1 on error.
      */
     public int free() throws LibvirtException {
         int success = 0;
         if (VSP != null) {
-            success = libvirt.virStreamFree(VSP);
-            processError();
+            processError(libvirt.virStreamFree(VSP));
             VSP = null;
         }
 
         return success;
-    }
-
-    /**
-     * Error handling logic to throw errors. Must be called after every libvirt
-     * call.
-     */
-    protected void processError() throws LibvirtException {
-        virConnect.processError();
     }
 
     /**
@@ -107,9 +95,7 @@ public class Stream {
      * @throws LibvirtException
      */
     public int receive(byte[] data) throws LibvirtException {
-        int returnValue = libvirt.virStreamRecv(VSP, data, new SizeT(data.length));
-        processError();
-        return returnValue;
+        return processError(libvirt.virStreamRecv(VSP, data, new SizeT(data.length)));
     }
 
     /**
@@ -118,26 +104,22 @@ public class Stream {
      * @see <a href="http://www.libvirt.org/html/libvirt-libvirt.html#virStreamRecvAll">virStreamRecvAll</a>
      * @param handler
      *            the callback handler
-     * @return 0 if successfule, -1 otherwise
+     * @return <em>ignore</em> (always 0)
      * @throws LibvirtException
      */
     public int receiveAll(Libvirt.VirStreamSinkFunc handler) throws LibvirtException {
-        int returnValue = libvirt.virStreamRecvAll(VSP, handler, null);
-        processError();
-        return returnValue;
+        return processError(libvirt.virStreamRecvAll(VSP, handler, null));
     }
 
     /**
      * Remove an event callback from the stream
      *
      * @see <a href="http://www.libvirt.org/html/libvirt-libvirt.html#virStreamEventRemoveCallback">Libvirt Docs</a>
-     * @return 0 for success, -1 for failure
+     * @return <em>ignore</em> (always 0)
      * @throws LibvirtException
      */
     public int removeCallback() throws LibvirtException {
-        int returnValue = libvirt.virStreamEventRemoveCallback(VSP);
-        processError();
-        return returnValue;
+        return processError(libvirt.virStreamEventRemoveCallback(VSP));
     }
 
     /**
@@ -150,9 +132,7 @@ public class Stream {
      * @throws LibvirtException
      */
     public int send(String data) throws LibvirtException {
-        int returnValue = libvirt.virStreamSend(VSP, data, new SizeT(data.length()));
-        processError();
-        return returnValue;
+        return processError(libvirt.virStreamSend(VSP, data, new SizeT(data.length())));
     }
 
     /**
@@ -163,13 +143,11 @@ public class Stream {
      *      Documentation</a>
      * @param handler
      *            the callback handler
-     * @return 0 if successfule, -1 otherwise
+     * @return <em>ignore</em> (always 0)
      * @throws LibvirtException
      */
     public int sendAll(Libvirt.VirStreamSourceFunc handler) throws LibvirtException {
-        int returnValue = libvirt.virStreamSendAll(VSP, handler, null);
-        processError();
-        return returnValue;
+        return processError(libvirt.virStreamSendAll(VSP, handler, null));
     }
 
     /**
@@ -178,12 +156,10 @@ public class Stream {
      * @see <a href="http://www.libvirt.org/html/libvirt-libvirt.html#virStreamEventUpdateCallback">Libvirt Docs</a>
      * @param events
      *            the events to monitor
-     * @return 0 for success, -1 for failure
+     * @return <em>ignore</em> (always 0)
      * @throws LibvirtException
      */
     public int updateCallback(int events) throws LibvirtException {
-        int returnValue = libvirt.virStreamEventUpdateCallback(VSP, events);
-        processError();
-        return returnValue;
+        return processError(libvirt.virStreamEventUpdateCallback(VSP, events));
     }
 }
