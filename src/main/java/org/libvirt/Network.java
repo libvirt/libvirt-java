@@ -3,6 +3,7 @@ package org.libvirt;
 import org.libvirt.jna.Libvirt;
 import org.libvirt.jna.NetworkPointer;
 import static org.libvirt.Library.libvirt;
+import static org.libvirt.ErrorHandler.processError;
 
 import com.sun.jna.Native;
 import com.sun.jna.Pointer;
@@ -43,8 +44,7 @@ public class Network {
      * @throws LibvirtException
      */
     public void create() throws LibvirtException {
-        libvirt.virNetworkCreate(VNP);
-        processError();
+        processError(libvirt.virNetworkCreate(VNP));
     }
 
     /**
@@ -56,8 +56,7 @@ public class Network {
      * @throws LibvirtException
      */
     public void destroy() throws LibvirtException {
-        libvirt.virNetworkDestroy(VNP);
-        processError();
+        processError(libvirt.virNetworkDestroy(VNP));
     }
 
     @Override
@@ -71,13 +70,12 @@ public class Network {
      * return an error.
      *
      * @throws LibvirtException
-     * @return number of references left (>= 0) for success, -1 for failure.
+     * @return number of references left (>= 0)
      */
     public int free() throws LibvirtException {
         int success = 0;
         if (VNP != null) {
-            success = libvirt.virNetworkFree(VNP);
-            processError();
+            success = processError(libvirt.virNetworkFree(VNP));
             VNP = null;
         }
 
@@ -93,8 +91,7 @@ public class Network {
      */
     public boolean getAutostart() throws LibvirtException {
         IntByReference autoStart = new IntByReference();
-        libvirt.virNetworkGetAutostart(VNP, autoStart);
-        processError();
+        processError(libvirt.virNetworkGetAutostart(VNP, autoStart));
         return (autoStart.getValue() != 0) ? true : false;
     }
 
@@ -106,8 +103,7 @@ public class Network {
      * @throws LibvirtException
      */
     public String getBridgeName() throws LibvirtException {
-        final Pointer ptr = libvirt.virNetworkGetBridgeName(VNP);
-        processError();
+        final Pointer ptr = processError(libvirt.virNetworkGetBridgeName(VNP));
         try {
             return Library.getString(ptr);
         } finally {
@@ -131,9 +127,7 @@ public class Network {
      * @throws LibvirtException
      */
     public String getName() throws LibvirtException {
-        String returnValue = libvirt.virNetworkGetName(VNP);
-        processError();
-        return returnValue;
+        return processError(libvirt.virNetworkGetName(VNP));
     }
 
     /**
@@ -145,13 +139,8 @@ public class Network {
      */
     public int[] getUUID() throws LibvirtException {
         byte[] bytes = new byte[Libvirt.VIR_UUID_BUFLEN];
-        int success = libvirt.virNetworkGetUUID(VNP, bytes);
-        processError();
-        int[] returnValue = new int[0];
-        if (success == 0) {
-            returnValue = Connect.convertUUIDBytes(bytes);
-        }
-        return returnValue;
+        processError(libvirt.virNetworkGetUUID(VNP, bytes));
+        return Connect.convertUUIDBytes(bytes);
     }
 
     /**
@@ -163,13 +152,8 @@ public class Network {
      */
     public String getUUIDString() throws LibvirtException {
         byte[] bytes = new byte[Libvirt.VIR_UUID_STRING_BUFLEN];
-        int success = libvirt.virNetworkGetUUIDString(VNP, bytes);
-        processError();
-        String returnValue = null;
-        if (success == 0) {
-            returnValue = Native.toString(bytes);
-        }
-        return returnValue;
+        processError(libvirt.virNetworkGetUUIDString(VNP, bytes));
+        return Native.toString(bytes);
     }
 
     /**
@@ -183,8 +167,7 @@ public class Network {
      * @throws LibvirtException
      */
     public String getXMLDesc(int flags) throws LibvirtException {
-        Pointer ptr = libvirt.virNetworkGetXMLDesc(VNP, flags);
-        processError();
+        Pointer ptr = processError(libvirt.virNetworkGetXMLDesc(VNP, flags));
         try {
             return Library.getString(ptr);
         } finally {
@@ -202,9 +185,7 @@ public class Network {
      * @throws LibvirtException
      */
     public int isActive() throws LibvirtException {
-        int returnValue = libvirt.virNetworkIsActive(VNP);
-        processError();
-        return returnValue;
+        return processError(libvirt.virNetworkIsActive(VNP));
     }
 
     /**
@@ -218,13 +199,7 @@ public class Network {
      * @throws LibvirtException
      */
     public int isPersistent() throws LibvirtException {
-        int returnValue = libvirt.virNetworkIsPersistent(VNP);
-        processError();
-        return returnValue;
-    }
-
-    protected void processError() throws LibvirtException {
-        virConnect.processError();
+        return processError(libvirt.virNetworkIsPersistent(VNP));
     }
 
     /**
@@ -237,8 +212,7 @@ public class Network {
      */
     public void setAutostart(boolean autostart) throws LibvirtException {
         int autoValue = autostart ? 1 : 0;
-        libvirt.virNetworkSetAutostart(VNP, autoValue);
-        processError();
+        processError(libvirt.virNetworkSetAutostart(VNP, autoValue));
     }
 
     /**
@@ -247,8 +221,7 @@ public class Network {
      * @throws LibvirtException
      */
     public void undefine() throws LibvirtException {
-        libvirt.virNetworkUndefine(VNP);
-        processError();
+        processError(libvirt.virNetworkUndefine(VNP));
     }
 
 }
