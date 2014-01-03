@@ -2,6 +2,7 @@ package org.libvirt;
 
 import org.libvirt.jna.InterfacePointer;
 import static org.libvirt.Library.libvirt;
+import static org.libvirt.ErrorHandler.processError;
 
 import com.sun.jna.Pointer;
 
@@ -51,9 +52,7 @@ public class Interface {
      * @throws LibvirtException
      */
     public int create() throws LibvirtException {
-        int returnValue = libvirt.virInterfaceCreate(VIP);
-        processError();
-        return returnValue;
+        return processError(libvirt.virInterfaceCreate(VIP));
     }
 
     /**
@@ -72,9 +71,7 @@ public class Interface {
      * @throws LibvirtException
      */
     public int destroy() throws LibvirtException {
-        int returnValue = libvirt.virInterfaceDestroy(VIP);
-        processError();
-        return returnValue;
+        return processError(libvirt.virInterfaceDestroy(VIP));
     }
 
     @Override
@@ -87,13 +84,12 @@ public class Interface {
      * structure is freed and should not be used thereafter.
      *
      * @throws LibvirtException
-     * @return number of references left (>= 0) for success, -1 for failure.
+     * @return number of references left (>= 0)
      */
     public int free() throws LibvirtException {
         int success = 0;
         if (VIP != null) {
-            success = libvirt.virInterfaceFree(VIP);
-            processError();
+            success = processError(libvirt.virInterfaceFree(VIP));
             VIP = null;
         }
 
@@ -106,9 +102,7 @@ public class Interface {
      * @throws LibvirtException
      */
     public String getMACString() throws LibvirtException {
-        String name = libvirt.virInterfaceGetMACString(VIP);
-        processError();
-        return name;
+        return processError(libvirt.virInterfaceGetMACString(VIP));
     }
 
     /**
@@ -117,9 +111,7 @@ public class Interface {
      * @throws LibvirtException
      */
     public String getName() throws LibvirtException {
-        String name = libvirt.virInterfaceGetName(VIP);
-        processError();
-        return name;
+        return processError(libvirt.virInterfaceGetName(VIP));
     }
 
     /**
@@ -128,8 +120,7 @@ public class Interface {
      * @throws LibvirtException
      */
     public String getXMLDescription(int flags) throws LibvirtException {
-        Pointer xml = libvirt.virInterfaceGetXMLDesc(VIP, flags);
-        processError();
+        Pointer xml = processError(libvirt.virInterfaceGetXMLDesc(VIP, flags));
         try {
             return Library.getString(xml);
         } finally {
@@ -143,21 +134,11 @@ public class Interface {
      * @see <a
      *      href="http://www.libvirt.org/html/libvirt-libvirt.html#virInterfaceIsActive">Libvirt
      *      Documentation</a>
-     * @return 1 if running, 0 if inactive, -1 on error
+     * @return 1 if running, 0 if inactive
      * @throws LibvirtException
      */
     public int isActive() throws LibvirtException {
-        int returnValue = libvirt.virInterfaceIsActive(VIP);
-        processError();
-        return returnValue;
-    }
-
-    /**
-     * Error handling logic to throw errors. Must be called after every libvirt
-     * call.
-     */
-    protected void processError() throws LibvirtException {
-        virConnect.processError();
+        return processError(libvirt.virInterfaceIsActive(VIP));
     }
 
     /**
@@ -167,8 +148,6 @@ public class Interface {
      * @throws LibvirtException
      */
     public int undefine() throws LibvirtException {
-        int returnValue = libvirt.virInterfaceUndefine(VIP);
-        processError();
-        return returnValue;
+        return processError(libvirt.virInterfaceUndefine(VIP));
     }
 }
