@@ -5,6 +5,7 @@ import org.libvirt.jna.StoragePoolPointer;
 import org.libvirt.jna.StorageVolPointer;
 import org.libvirt.jna.virStoragePoolInfo;
 import static org.libvirt.Library.libvirt;
+import static org.libvirt.ErrorHandler.processError;
 
 import com.sun.jna.Native;
 import com.sun.jna.ptr.IntByReference;
@@ -72,8 +73,7 @@ public class StoragePool {
      *            future flags, use 0 for now
      */
     public void build(int flags) throws LibvirtException {
-        libvirt.virStoragePoolBuild(VSPP, flags);
-        processError();
+        processError(libvirt.virStoragePoolBuild(VSPP, flags));
     }
 
     /**
@@ -83,8 +83,7 @@ public class StoragePool {
      *            future flags, use 0 for now
      */
     public void create(int flags) throws LibvirtException {
-        libvirt.virStoragePoolCreate(VSPP, flags);
-        processError();
+        processError(libvirt.virStoragePoolCreate(VSPP, flags));
     }
 
     /**
@@ -95,8 +94,7 @@ public class StoragePool {
      *            flags for obliteration process
      */
     public void delete(int flags) throws LibvirtException {
-        libvirt.virStoragePoolDelete(VSPP, flags);
-        processError();
+        processError(libvirt.virStoragePoolDelete(VSPP, flags));
     }
 
     /**
@@ -106,8 +104,7 @@ public class StoragePool {
      * This does not free the associated virStoragePoolPtr object.
      */
     public void destroy() throws LibvirtException {
-        libvirt.virStoragePoolDestroy(VSPP);
-        processError();
+        processError(libvirt.virStoragePoolDestroy(VSPP));
     }
 
     @Override
@@ -120,13 +117,12 @@ public class StoragePool {
      * not change the state of the pool on the host.
      *
      * @throws LibvirtException
-     * @return number of references left (>= 0) for success, -1 for failure.
+     * @return number of references left (>= 0)
      */
     public int free() throws LibvirtException {
         int success = 0;
         if (VSPP != null) {
-            success = libvirt.virStoragePoolFree(VSPP);
-            processError();
+            success = processError(libvirt.virStoragePoolFree(VSPP));
             VSPP = null;
         }
         return success;
@@ -141,8 +137,7 @@ public class StoragePool {
      */
     public boolean getAutostart() throws LibvirtException {
         IntByReference autoStart = new IntByReference();
-        libvirt.virStoragePoolGetAutostart(VSPP, autoStart);
-        processError();
+        processError(libvirt.virStoragePoolGetAutostart(VSPP, autoStart));
         return autoStart.getValue() != 0 ? true : false;
     }
 
@@ -164,8 +159,7 @@ public class StoragePool {
      */
     public StoragePoolInfo getInfo() throws LibvirtException {
         virStoragePoolInfo vInfo = new virStoragePoolInfo();
-        libvirt.virStoragePoolGetInfo(VSPP, vInfo);
-        processError();
+        processError(libvirt.virStoragePoolGetInfo(VSPP, vInfo));
         return new StoragePoolInfo(vInfo);
     }
 
@@ -176,9 +170,7 @@ public class StoragePool {
      * @throws LibvirtException
      */
     public String getName() throws LibvirtException {
-        String returnValue = libvirt.virStoragePoolGetName(VSPP);
-        processError();
-        return returnValue;
+        return processError(libvirt.virStoragePoolGetName(VSPP));
     }
 
     /**
@@ -189,13 +181,8 @@ public class StoragePool {
      */
     public int[] getUUID() throws LibvirtException {
         byte[] bytes = new byte[Libvirt.VIR_UUID_BUFLEN];
-        int success = libvirt.virStoragePoolGetUUID(VSPP, bytes);
-        processError();
-        int[] returnValue = new int[0];
-        if (success == 0) {
-            returnValue = Connect.convertUUIDBytes(bytes);
-        }
-        return returnValue;
+        processError(libvirt.virStoragePoolGetUUID(VSPP, bytes));
+        return Connect.convertUUIDBytes(bytes);
     }
 
     /**
@@ -206,13 +193,8 @@ public class StoragePool {
      */
     public String getUUIDString() throws LibvirtException {
         byte[] bytes = new byte[Libvirt.VIR_UUID_STRING_BUFLEN];
-        int success = libvirt.virStoragePoolGetUUIDString(VSPP, bytes);
-        processError();
-        String returnValue = null;
-        if (success == 0) {
-            returnValue = Native.toString(bytes);
-        }
-        return returnValue;
+        processError(libvirt.virStoragePoolGetUUIDString(VSPP, bytes));
+        return Native.toString(bytes);
     }
 
     /**
@@ -224,9 +206,7 @@ public class StoragePool {
      * @return a XML document -java @throws LibvirtException
      */
     public String getXMLDesc(int flags) throws LibvirtException {
-        String returnValue = libvirt.virStoragePoolGetXMLDesc(VSPP, flags);
-        processError();
-        return returnValue;
+        return processError(libvirt.virStoragePoolGetXMLDesc(VSPP, flags));
     }
 
     /**
@@ -235,13 +215,11 @@ public class StoragePool {
      * @see <a
      *      href="http://www.libvirt.org/html/libvirt-libvirt.html#virStoragePoolIsActive">Libvirt
      *      Documentation</a>
-     * @return 1 if running, 0 if inactive, -1 on error
+     * @return 1 if running, 0 if inactive
      * @throws LibvirtException
      */
     public int isActive() throws LibvirtException {
-        int returnValue = libvirt.virStoragePoolIsActive(VSPP);
-        processError();
-        return returnValue;
+        return processError(libvirt.virStoragePoolIsActive(VSPP));
     }
 
     /**
@@ -251,13 +229,11 @@ public class StoragePool {
      * @see <a
      *      href="http://www.libvirt.org/html/libvirt-libvirt.html#virStoragePoolIsPersistent">Libvirt
      *      Documentation</a>
-     * @return 1 if persistent, 0 if transient, -1 on error
+     * @return 1 if persistent, 0 if transient
      * @throws LibvirtException
      */
     public int isPersistent() throws LibvirtException {
-        int returnValue = libvirt.virStoragePoolIsPersistent(VSPP);
-        processError();
-        return returnValue;
+        return processError(libvirt.virStoragePoolIsPersistent(VSPP));
     }
 
     /**
@@ -270,8 +246,7 @@ public class StoragePool {
     public String[] listVolumes() throws LibvirtException {
         int num = numOfVolumes();
         String[] returnValue = new String[num];
-        libvirt.virStoragePoolListVolumes(VSPP, returnValue, num);
-        processError();
+        processError(libvirt.virStoragePoolListVolumes(VSPP, returnValue, num));
         return returnValue;
     }
 
@@ -282,13 +257,7 @@ public class StoragePool {
      * @throws LibvirtException
      */
     public int numOfVolumes() throws LibvirtException {
-        int returnValue = libvirt.virStoragePoolNumOfVolumes(VSPP);
-        processError();
-        return returnValue;
-    }
-
-    protected void processError() throws LibvirtException {
-        virConnect.processError();
+        return processError(libvirt.virStoragePoolNumOfVolumes(VSPP));
     }
 
     /**
@@ -301,8 +270,7 @@ public class StoragePool {
      * @throws LibvirtException
      */
     public void refresh(int flags) throws LibvirtException {
-        libvirt.virStoragePoolRefresh(VSPP, flags);
-        processError();
+        processError(libvirt.virStoragePoolRefresh(VSPP, flags));
     }
 
     /**
@@ -328,8 +296,7 @@ public class StoragePool {
      * @throws LibvirtException
      */
     public StorageVol storageVolCreateXML(String xmlDesc, int flags) throws LibvirtException {
-        StorageVolPointer sPtr = libvirt.virStorageVolCreateXML(VSPP, xmlDesc, flags);
-        processError();
+        StorageVolPointer sPtr = processError(libvirt.virStorageVolCreateXML(VSPP, xmlDesc, flags));
         return new StorageVol(virConnect, sPtr);
     }
 
@@ -338,13 +305,12 @@ public class StoragePool {
      * as input. Information for the new volume (name, perms) are passed via a
      * typical volume XML description.
      *
-     * @return The storage volume, or {@code null} on error.
+     * @return The storage volume
      * @throws LibvirtException
      */
     public StorageVol storageVolCreateXMLFrom(String xmlDesc, StorageVol cloneVolume, int flags)
             throws LibvirtException {
-        StorageVolPointer sPtr = libvirt.virStorageVolCreateXMLFrom(VSPP, xmlDesc, cloneVolume.VSVP, flags);
-        processError();
+        StorageVolPointer sPtr = processError(libvirt.virStorageVolCreateXMLFrom(VSPP, xmlDesc, cloneVolume.VSVP, flags));
         return new StorageVol(virConnect, sPtr);
     }
 
@@ -354,13 +320,13 @@ public class StoragePool {
      *
      * @param name
      *            name of storage volume
-     * @return The StorageVol object found
+     * @return a StorageVol object, or {@code null} if not found.
      * @throws LibvirtException
      */
     public StorageVol storageVolLookupByName(String name) throws LibvirtException {
-        StorageVolPointer sPtr = libvirt.virStorageVolLookupByName(VSPP, name);
-        processError();
-        return new StorageVol(virConnect, sPtr);
+        StorageVolPointer sPtr = processError(libvirt.virStorageVolLookupByName(VSPP, name));
+
+        return (sPtr == null) ? null : new StorageVol(virConnect, sPtr);
     }
 
     /**
@@ -369,8 +335,7 @@ public class StoragePool {
      * @throws LibvirtException
      */
     public void undefine() throws LibvirtException {
-        libvirt.virStoragePoolUndefine(VSPP);
-        processError();
+        processError(libvirt.virStoragePoolUndefine(VSPP));
     }
 
 }
