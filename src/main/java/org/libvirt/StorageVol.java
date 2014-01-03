@@ -4,6 +4,7 @@ import org.libvirt.jna.StoragePoolPointer;
 import org.libvirt.jna.StorageVolPointer;
 import org.libvirt.jna.virStorageVolInfo;
 import static org.libvirt.Library.libvirt;
+import static org.libvirt.ErrorHandler.processError;
 
 /**
  * An acutal storage bucket.
@@ -82,8 +83,7 @@ public class StorageVol {
      * @throws LibvirtException
      */
     public void delete(int flags) throws LibvirtException {
-        libvirt.virStorageVolDelete(VSVP, flags);
-        processError();
+        processError(libvirt.virStorageVolDelete(VSVP, flags));
     }
 
     @Override
@@ -96,13 +96,12 @@ public class StorageVol {
      * to exist
      *
      * @throws LibvirtException
-     * @return number of references left (>= 0) for success, -1 for failure.
+     * @return number of references left (>= 0)
      */
     public int free() throws LibvirtException {
         int success = 0;
         if (VSVP != null) {
-            libvirt.virStorageVolFree(VSVP);
-            processError();
+            success = processError(libvirt.virStorageVolFree(VSVP));
             VSVP = null;
         }
         return success;
@@ -127,8 +126,7 @@ public class StorageVol {
      */
     public StorageVolInfo getInfo() throws LibvirtException {
         virStorageVolInfo vInfo = new virStorageVolInfo();
-        libvirt.virStorageVolGetInfo(VSVP, vInfo);
-        processError();
+        processError(libvirt.virStorageVolGetInfo(VSVP, vInfo));
         return new StorageVolInfo(vInfo);
     }
 
@@ -140,9 +138,7 @@ public class StorageVol {
      * @throws LibvirtException
      */
     public String getKey() throws LibvirtException {
-        String returnValue = libvirt.virStorageVolGetKey(VSVP);
-        processError();
-        return returnValue;
+        return processError(libvirt.virStorageVolGetKey(VSVP));
     }
 
     /**
@@ -152,9 +148,7 @@ public class StorageVol {
      * @throws LibvirtException
      */
     public String getName() throws LibvirtException {
-        String returnValue = libvirt.virStorageVolGetName(VSVP);
-        processError();
-        return returnValue;
+        return processError(libvirt.virStorageVolGetName(VSVP));
     }
 
     /**
@@ -167,9 +161,7 @@ public class StorageVol {
      * @throws LibvirtException
      */
     public String getPath() throws LibvirtException {
-        String returnValue = libvirt.virStorageVolGetPath(VSVP);
-        processError();
-        return returnValue;
+        return processError(libvirt.virStorageVolGetPath(VSVP));
     }
 
     /**
@@ -181,43 +173,29 @@ public class StorageVol {
      * @throws LibvirtException
      */
     public String getXMLDesc(int flags) throws LibvirtException {
-        String returnValue = libvirt.virStorageVolGetXMLDesc(VSVP, flags);
-        processError();
-        return returnValue;
-    }
-
-    /**
-     * Error handling logic which should be called after every libvirt call
-     *
-     * @throws LibvirtException
-     */
-    protected void processError() throws LibvirtException {
-        virConnect.processError();
+        return processError(libvirt.virStorageVolGetXMLDesc(VSVP, flags));
     }
 
     /**
      * Fetch a storage pool which contains this volume
      *
-     * @return StoragePool object,
+     * @return StoragePool object, or {@code null} if not found.
      * @throws LibvirtException
      */
     public StoragePool storagePoolLookupByVolume() throws LibvirtException {
-        StoragePoolPointer ptr = libvirt.virStoragePoolLookupByVolume(VSVP);
-        processError();
-        return new StoragePool(virConnect, ptr);
+        StoragePoolPointer ptr = processError(libvirt.virStoragePoolLookupByVolume(VSVP));
+        return (ptr == null) ? null : new StoragePool(virConnect, ptr);
     }
 
     /**
      * Ensure data previously on a volume is not accessible to future reads
      *
      * @see <a href="http://www.libvirt.org/html/libvirt-libvirt.html#virStorageVolWipe">Libvirt Documentation</a>
-     * @return 0 on success, or -1 on error
+     * @return <em>ignore</em> (always 0)
      * @throws LibvirtException
      */
     public int wipe() throws LibvirtException {
-        int returnValue = libvirt.virStorageVolWipe(VSVP, 0);
-        processError();
-        return returnValue;
+        return processError(libvirt.virStorageVolWipe(VSVP, 0));
     }
 
     /**
@@ -228,12 +206,10 @@ public class StorageVol {
      *               new capacity for volume
      * @param flags
      *               flags for resizing, see libvirt API for exact flags
-     * @return 0 on success, or -1 on error
+     * @return <em>ignore</em> (always 0)
      * @throws LibvirtException
      */
     public int resize(long capacity, int flags) throws LibvirtException {
-        int returnValue = libvirt.virStorageVolResize(VSVP, capacity, flags);
-        processError();
-        return returnValue;
+        return processError(libvirt.virStorageVolResize(VSVP, capacity, flags));
     }
 }
