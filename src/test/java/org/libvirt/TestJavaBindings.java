@@ -46,6 +46,20 @@ public final class TestJavaBindings extends TestCase {
         assertTrue("conn.isSecure", conn.isSecure() == 1);        
     }
 
+    /*
+     * Excercise the listCapabilities method of the Device class.
+     */
+    public void testDeviceListCapabilities() throws Exception {
+        Device dev = this.conn.deviceLookupByName("computer");
+        String[] caps = dev.listCapabilities();
+
+        // check that all caps are non-empty strings
+        for (String c: caps) {
+            assertNotNull("capability is null", c);
+            assertFalse("capability is empty", c.isEmpty());
+        }
+    }
+
     public void testNodeInfo() throws Exception {
         NodeInfo nodeInfo = conn.nodeInfo();
         assertEquals("nodeInfo.model", "i686", nodeInfo.model);
