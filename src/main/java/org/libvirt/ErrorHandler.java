@@ -75,4 +75,9 @@ public class ErrorHandler {
         if (str == null) processError();
         return str;
     }
+
+    static final long processErrorIfZero(long ret) throws LibvirtException {
+        if (ret == 0) processError();
+        return ret;
+    }
 }
