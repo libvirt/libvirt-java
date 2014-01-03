@@ -3,6 +3,7 @@ package org.libvirt;
 import org.libvirt.jna.Libvirt;
 import org.libvirt.jna.NetworkFilterPointer;
 import static org.libvirt.Library.libvirt;
+import static org.libvirt.ErrorHandler.processError;
 
 import com.sun.jna.Native;
 
@@ -32,13 +33,12 @@ public class NetworkFilter {
      * exist.
      *
      * @throws LibvirtException
-     * @return 0 on success, or -1 on error.
+     * @return <em>ignore</em> (always 0)
      */
     public int free() throws LibvirtException {
         int success = 0;
         if (NFP != null) {
-            success = libvirt.virNWFilterFree(NFP);
-            processError();
+            success = processError(libvirt.virNWFilterFree(NFP));
             NFP = null;
         }
 
@@ -52,9 +52,7 @@ public class NetworkFilter {
      * @throws LibvirtException
      */
     public String getName() throws LibvirtException {
-        String returnValue = libvirt.virNWFilterGetName(NFP);
-        processError();
-        return returnValue;
+        return processError(libvirt.virNWFilterGetName(NFP));
     }
 
     /**
@@ -66,13 +64,8 @@ public class NetworkFilter {
      */
     public int[] getUUID() throws LibvirtException {
         byte[] bytes = new byte[Libvirt.VIR_UUID_BUFLEN];
-        int success = libvirt.virNWFilterGetUUID(NFP, bytes);
-        processError();
-        int[] returnValue = new int[0];
-        if (success == 0) {
-            returnValue = Connect.convertUUIDBytes(bytes);
-        }
-        return returnValue;
+        processError(libvirt.virNWFilterGetUUID(NFP, bytes));
+        return Connect.convertUUIDBytes(bytes);
     }
 
     /**
@@ -84,13 +77,8 @@ public class NetworkFilter {
      */
     public String getUUIDString() throws LibvirtException {
         byte[] bytes = new byte[Libvirt.VIR_UUID_STRING_BUFLEN];
-        int success = libvirt.virNWFilterGetUUIDString(NFP, bytes);
-        processError();
-        String returnValue = null;
-        if (success == 0) {
-            returnValue = Native.toString(bytes);
-        }
-        return returnValue;
+        processError(libvirt.virNWFilterGetUUIDString(NFP, bytes));
+        return Native.toString(bytes);
     }
 
     /**
@@ -102,17 +90,7 @@ public class NetworkFilter {
      * @return the XML document
      */
     public String getXMLDesc() throws LibvirtException {
-        String returnValue = libvirt.virNWFilterGetXMLDesc(NFP, 0);
-        processError();
-        return returnValue;
-    }
-
-    /**
-     * Error handling logic to throw errors. Must be called after every libvirt
-     * call.
-     */
-    protected void processError() throws LibvirtException {
-        virConnect.processError();
+        return processError(libvirt.virNWFilterGetXMLDesc(NFP, 0));
     }
 
     /**
@@ -121,7 +99,6 @@ public class NetworkFilter {
      * @throws LibvirtException
      */
     public void undefine() throws LibvirtException {
-        libvirt.virNWFilterUndefine(NFP);
-        processError();
+        processError(libvirt.virNWFilterUndefine(NFP));
     }
 }
