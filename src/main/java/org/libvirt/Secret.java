@@ -5,6 +5,7 @@ import org.libvirt.jna.SecretPointer;
 import org.libvirt.jna.SizeT;
 import org.libvirt.jna.SizeTByReference;
 import static org.libvirt.Library.libvirt;
+import static org.libvirt.ErrorHandler.processError;
 
 import com.sun.jna.Native;
 import com.sun.jna.Pointer;
@@ -39,13 +40,12 @@ public class Secret {
      * Release the secret handle. The underlying secret continues to exist.
      *
      * @throws LibvirtException
-     * @return 0 on success, or -1 on error.
+     * @return <em>ignore</em> (always 0)
      */
     public int free() throws LibvirtException {
         int success = 0;
         if (VSP != null) {
-            success = libvirt.virSecretFree(VSP);
-            processError();
+            success = processError(libvirt.virSecretFree(VSP));
             VSP = null;
         }
 
@@ -61,9 +61,7 @@ public class Secret {
      * @throws LibvirtException
      */
     public String getUsageID() throws LibvirtException {
-        String returnValue = libvirt.virSecretGetUsageID(VSP);
-        processError();
-        return returnValue;
+        return processError(libvirt.virSecretGetUsageID(VSP));
     }
 
     /**
@@ -75,13 +73,8 @@ public class Secret {
      */
     public int[] getUUID() throws LibvirtException {
         byte[] bytes = new byte[Libvirt.VIR_UUID_BUFLEN];
-        int success = libvirt.virSecretGetUUID(VSP, bytes);
-        processError();
-        int[] returnValue = new int[0];
-        if (success == 0) {
-            returnValue = Connect.convertUUIDBytes(bytes);
-        }
-        return returnValue;
+        processError(libvirt.virSecretGetUUID(VSP, bytes));
+        return Connect.convertUUIDBytes(bytes);
     }
 
     /**
@@ -93,13 +86,8 @@ public class Secret {
      */
     public String getUUIDString() throws LibvirtException {
         byte[] bytes = new byte[Libvirt.VIR_UUID_STRING_BUFLEN];
-        int success = libvirt.virSecretGetUUIDString(VSP, bytes);
-        processError();
-        String returnValue = null;
-        if (success == 0) {
-            returnValue = Native.toString(bytes);
-        }
-        return returnValue;
+        processError(libvirt.virSecretGetUUIDString(VSP, bytes));
+        return Native.toString(bytes);
     }
 
     /**
@@ -121,8 +109,7 @@ public class Secret {
      */
     public byte[] getByteValue() throws LibvirtException {
         SizeTByReference value_size = new SizeTByReference();
-        Pointer value = libvirt.virSecretGetValue(VSP, value_size, 0);
-        processError();
+        Pointer value = processError(libvirt.virSecretGetValue(VSP, value_size, 0));
         ByteBuffer bb = value.getByteBuffer(0, value_size.getValue());
         byte[] returnValue = new byte[bb.remaining()];
         bb.get(returnValue);
@@ -135,49 +122,33 @@ public class Secret {
      * @return the XML document
      */
     public String getXMLDesc() throws LibvirtException {
-        String returnValue = libvirt.virSecretGetXMLDesc(VSP, 0);
-        processError();
-        return returnValue;
-    }
-
-    /**
-     * Error handling logic to throw errors. Must be called after every libvirt
-     * call.
-     */
-    protected void processError() throws LibvirtException {
-        virConnect.processError();
+        return processError(libvirt.virSecretGetXMLDesc(VSP, 0));
     }
 
     /**
      * Sets the value of the secret
      *
-     * @return 0 on success, -1 on failure.
+     * @return <em>ignore</em> (always 0)
      */
     public int setValue(String value) throws LibvirtException {
-        int returnValue = libvirt.virSecretSetValue(VSP, value, new SizeT(value.length()), 0);
-        processError();
-        return returnValue;
+        return processError(libvirt.virSecretSetValue(VSP, value, new SizeT(value.length()), 0));
     }
 
     /**
      * Sets the value of the secret
      *
-     * @return 0 on success, -1 on failure.
+     * @return <em>ignore</em> (always 0)
      */
     public int setValue(byte[] value) throws LibvirtException {
-        int returnValue = libvirt.virSecretSetValue(VSP, value, new SizeT(value.length), 0);
-        processError();
-        return returnValue;
+        return processError(libvirt.virSecretSetValue(VSP, value, new SizeT(value.length), 0));
     }
 
     /**
      * Undefines, but does not free, the Secret.
      *
-     * @return 0 on success, -1 on failure.
+     * @return <em>ignore</em> (always 0)
      */
     public int undefine() throws LibvirtException {
-        int returnValue = libvirt.virSecretUndefine(VSP);
-        processError();
-        return returnValue;
+        return processError(libvirt.virSecretUndefine(VSP));
     }
 }
