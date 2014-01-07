@@ -438,9 +438,9 @@ public interface Libvirt extends Library {
     int virStreamFinish(StreamPointer virStreamPtr) ;
     int virStreamFree(StreamPointer virStreamPtr) ;
     StreamPointer virStreamNew(ConnectionPointer virConnectPtr, int flags) ;
-    int virStreamSend(StreamPointer virStreamPtr, String data, SizeT size);
+    int virStreamSend(StreamPointer virStreamPtr, ByteBuffer data, SizeT size);
     int virStreamSendAll(StreamPointer virStreamPtr, Libvirt.VirStreamSourceFunc handler, Pointer opaque);
-    int virStreamRecv(StreamPointer virStreamPtr, byte[] data, SizeT length);
+    int virStreamRecv(StreamPointer virStreamPtr, ByteBuffer data, SizeT length);
     int virStreamRecvAll(StreamPointer virStreamPtr, Libvirt.VirStreamSinkFunc handler, Pointer opaque);
 
     //DomainSnapshot Methods
