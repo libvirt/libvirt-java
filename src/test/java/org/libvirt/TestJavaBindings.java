@@ -2,6 +2,9 @@ package org.libvirt;
 
 import org.libvirt.event.*;
 
+import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.channels.ClosedChannelException;
 import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.List;
@@ -304,6 +307,47 @@ public final class TestJavaBindings extends TestCase {
         } finally {
             conn.removeLifecycleListener(listener);
             Library.stopEventLoop();
+        }
+    }
+
+    public void testDomainScreenshot() throws Exception {
+        long version = conn.getLibVirVersion();
+
+        // virDomainScreenshot works since version 1.0.5 on test://
+        // connections
+        if (version < 1000005) {
+            System.err.format("testDomainScreenshot skipped (libvirt version %d.%d.%d < 1.0.5)\n",
+                              version / 1000000, version / 1000 % 1000, version % 1000);
+            return;
+        }
+
+        Stream str = this.conn.streamNew(0);
+        Domain dom = this.conn.domainLookupByName("test");
+
+        assertFalse("Domain \"test\" not found", dom == null);
+
+        String mimetype = dom.screenshot(str, 0);
+
+        ByteBuffer bb = ByteBuffer.allocateDirect(8192);
+
+        while (str.read(bb) != -1) // consume data
+            bb.clear();
+
+        // ensure that read() repeatedly returns -1 after EOF
+
+        assertEquals("Stream is at EOF (1)", -1, str.read(bb));
+        assertEquals("Stream is at EOF (2)", -1, str.read(bb));
+        assertEquals("Stream is at EOF (3)", -1, str.read(bb));
+
+        // ensure that a ClosedChannelException gets thrown when
+        // trying to read() after closing the stream
+
+        str.close();
+
+        try {
+            str.read(bb);
+            fail("ClosedChannelException expected calling read() on a closed stream");
+        } catch (ClosedChannelException expected) {
         }
     }
 }
