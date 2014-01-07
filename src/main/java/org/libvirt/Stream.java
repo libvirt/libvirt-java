@@ -175,6 +175,10 @@ public class Stream implements ByteChannel {
         return success;
     }
 
+    StreamPointer getVSP() {
+        return VSP;
+    }
+
     /**
      * Receives data from the stream into the buffer provided.
      *

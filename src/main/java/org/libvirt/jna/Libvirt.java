@@ -303,6 +303,7 @@ public interface Libvirt extends Library {
     int virDomainResume(DomainPointer virDomainPtr);
     int virDomainSave(DomainPointer virDomainPtr, String to);
     int virDomainSendKey(DomainPointer virDomainPtr, int codeset, int holdtime, int[] keycodes, int nkeycodes, int flags);
+    Pointer virDomainScreenshot(DomainPointer virDomainPtr, StreamPointer virStreamPtr, int screen, int flags);
     int virDomainSetAutostart(DomainPointer virDomainPtr, int autoStart);
     int virDomainSetMaxMemory(DomainPointer virDomainPtr, NativeLong maxMemory);
     int virDomainSetMemory(DomainPointer virDomainPtr, NativeLong maxMemory);

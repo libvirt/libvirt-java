@@ -1289,6 +1289,16 @@ public class Domain {
         processError(libvirt.virDomainSave(VDP, to));
     }
 
+    public String screenshot(Stream stream, int screen) throws LibvirtException {
+        Pointer ptr = processError(libvirt.virDomainScreenshot(this.VDP, stream.getVSP(), screen, 0));
+        stream.markReadable();
+        try {
+            return Library.getString(ptr);
+        } finally {
+            Library.free(ptr);
+        }
+    }
+
     /**
      * Configures the network to be automatically started when the host machine
      * boots.
