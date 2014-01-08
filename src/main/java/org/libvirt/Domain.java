@@ -370,7 +370,7 @@ public class Domain {
     }
 
     /**
-     * Provides a boolean value indicating whether the network is configured to
+     * Provides a boolean value indicating whether the domain is configured to
      * be automatically started when the host machine boots.
      *
      * @return the result

@@ -40,8 +40,13 @@ public class Interface {
     }
 
     /**
-     * Create and start a defined network. If the call succeed the network moves
-     * from the defined to the running networks pools.
+     * Activate an interface (i.e. call "ifup").
+     * <p>
+     * If there was an open network config transaction at the time
+     * this interface was defined (that is, if
+     * virInterfaceChangeBegin() had been called), the interface will
+     * be brought back down (and then undefined) if
+     * virInterfaceChangeRollback() is called.
      *
      * @throws LibvirtException
      */
@@ -52,8 +57,17 @@ public class Interface {
     }
 
     /**
-     * Destroy the network object. The running instance is shutdown if not down
-     * already and all resources used by it are given back to the hypervisor.
+     * Deactivate an interface (i.e. call "ifdown").
+     * <p>
+     * This does not remove the interface from the config, and does
+     * not free the associated virInterfacePtr object.
+     * <p>
+     * If there is an open network config transaction at the time this
+     * interface is destroyed (that is, if virInterfaceChangeBegin()
+     * had been called), and if the interface is later undefined and
+     * then virInterfaceChangeRollback() is called, the restoral of
+     * the interface definition will also bring the interface back
+     * up.
      *
      * @throws LibvirtException
      */

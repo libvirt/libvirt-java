@@ -100,10 +100,10 @@ public class Stream {
     }
 
     /**
-     * Receieves data from teh stream into the buffer provided.
+     * Receives data from the stream into the buffer provided.
      *
      * @param data
-     *            the put the sata into
+     *            buffer to put the data into
      * @return the number of bytes read, -1 on error, -2 if the buffer is empty
      * @throws LibvirtException
      */

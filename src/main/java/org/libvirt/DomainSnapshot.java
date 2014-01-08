@@ -27,7 +27,7 @@ public class DomainSnapshot {
      *      href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainSnapshotDelete">Libvirt
      *      Documentation</a>
      * @param flags
-     *            controls teh deletion
+     *            controls the deletion
      * @return 0 if the selected snapshot(s) were successfully deleted, -1 on error.
      * @throws LibvirtException
      */

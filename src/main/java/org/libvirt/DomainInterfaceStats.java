@@ -3,7 +3,7 @@ package org.libvirt;
 import org.libvirt.jna.virDomainInterfaceStats;
 
 /**
- * The Domain.interfaceStats method returns th network counters in this object
+ * The Domain.interfaceStats method returns the network counters in this object.
  *
  * @author stoty
  *
