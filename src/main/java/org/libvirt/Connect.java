@@ -15,7 +15,10 @@ import org.libvirt.jna.StorageVolPointer;
 import org.libvirt.jna.StreamPointer;
 import org.libvirt.jna.virConnectAuth;
 import org.libvirt.jna.virNodeInfo;
+
 import static org.libvirt.Library.libvirt;
+import static org.libvirt.ErrorHandler.processError;
+import static org.libvirt.ErrorHandler.processErrorIfZero;
 
 import com.sun.jna.Memory;
 import com.sun.jna.NativeLong;
@@ -79,7 +82,6 @@ public class Connect {
      */
     public static void setErrorCallback(Libvirt.VirErrorCallback callback) throws LibvirtException {
         Libvirt.INSTANCE.virSetErrorFunc(null, callback);
-        ErrorHandler.processError(Libvirt.INSTANCE);
     }
 
     /**
@@ -119,7 +121,6 @@ public class Connect {
         VCP = libvirt.virConnectOpen(uri);
         // Check for an error
         processError(VCP);
-        ErrorHandler.processError(Libvirt.INSTANCE);
     }
 
     /**
@@ -140,7 +141,6 @@ public class Connect {
         }
         // Check for an error
         processError(VCP);
-        ErrorHandler.processError(Libvirt.INSTANCE);
     }
 
     /**
@@ -173,7 +173,6 @@ public class Connect {
         VCP = libvirt.virConnectOpenAuth(uri, vAuth, flags);
         // Check for an error
         processError(VCP);
-        ErrorHandler.processError(Libvirt.INSTANCE);
     }
 
     /**
@@ -220,8 +219,7 @@ public class Connect {
      * @throws LibvirtException
      */
     public CPUCompareResult compareCPU(String xmlDesc) throws LibvirtException {
-        int rawResult = libvirt.virConnectCompareCPU(VCP, xmlDesc, 0);
-        processError();
+        int rawResult = processError(libvirt.virConnectCompareCPU(VCP, xmlDesc, 0));
         return CPUCompareResult.get(rawResult);
     }
 
@@ -308,13 +306,11 @@ public class Connect {
      *      Documentation</a>
      * @param callbackID
      *            the callback to deregister
-     * @return 0 on success, -1 on failure
+     * @return <em>ignore</em> (always 0)
      * @throws LibvirtException
      */
     public int domainEventDeregisterAny(int callbackID) throws LibvirtException {
-        int returnValue = libvirt.virConnectDomainEventDeregisterAny(VCP, callbackID);
-        processError();
-        return returnValue;
+        return processError(libvirt.virConnectDomainEventDeregisterAny(VCP, callbackID));
     }
 
     /**
@@ -496,10 +492,7 @@ public class Connect {
      * Returns the free memory for the connection
      */
     public long getFreeMemory() throws LibvirtException {
-        long returnValue = 0;
-        returnValue = libvirt.virNodeGetFreeMemory(VCP);
-        if (returnValue == 0) processError();
-        return returnValue;
+        return processErrorIfZero(libvirt.virNodeGetFreeMemory(VCP));
     }
 
     /**
@@ -639,13 +632,11 @@ public class Connect {
      * @see <a
      *      href="http://www.libvirt.org/html/libvirt-libvirt.html#virConnectIsEncrypted">Libvirt
      *      Documentation</a>
-     * @return 1 if encrypted, 0 if not encrypted, -1 on error
+     * @return 1 if encrypted, 0 if not encrypted
      * @throws LibvirtException
      */
     public int isEncrypted() throws LibvirtException {
-        int returnValue = libvirt.virConnectIsEncrypted(VCP);
-        processError();
-        return returnValue;
+        return processError(libvirt.virConnectIsEncrypted(VCP));
     }
 
     /**
@@ -654,13 +645,11 @@ public class Connect {
      * @see <a
      *      href="http://www.libvirt.org/html/libvirt-libvirt.html#virConnectIsSecure">Libvirt
      *      Documentation</a>
-     * @return 1 if secure, 0 if not secure, -1 on error
+     * @return 1 if secure, 0 if not secure
      * @throws LibvirtException
      */
     public int isSecure() throws LibvirtException {
-        int returnValue = libvirt.virConnectIsSecure(VCP);
-        processError();
-        return returnValue;
+        return processError(libvirt.virConnectIsSecure(VCP));
     }
 
     /**
@@ -1141,41 +1130,6 @@ public class Connect {
     }
 
     /**
-     * call the error handling logic. Should be called after every libvirt call
-     *
-     * @throws LibvirtException
-     */
-    protected void processError() throws LibvirtException {
-        ErrorHandler.processError(libvirt);
-    }
-
-    /**
-     * Calls {@link #processError()} when the given libvirt return code
-     * indicates an error.
-     *
-     * @param  ret libvirt return code, indicating error if negative.
-     * @return {@code ret}
-     * @throws LibvirtException
-     */
-    protected final int processError(int ret) throws LibvirtException {
-        if (ret < 0) processError();
-        return ret;
-    }
-
-    /**
-     * Calls {@link #processError()} if {@code arg} is null.
-     *
-     * @param  arg  An arbitrary object returned by libvirt.
-     * @return {@code arg}
-     * @throws LibvirtException
-     */
-    protected final <T> T processError(T arg) throws LibvirtException {
-        if (arg == null) processError();
-        return arg;
-    }
-
-
-    /**
      * Restores a domain saved to disk by Domain.save().
      *
      * @param from
@@ -1246,7 +1200,6 @@ public class Connect {
 
     public void setConnectionErrorCallback(Libvirt.VirErrorCallback callback) throws LibvirtException {
         libvirt.virConnSetErrorFunc(VCP, null, callback);
-        processError();
     }
 
     /**
