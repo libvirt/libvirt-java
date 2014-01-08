@@ -1189,7 +1189,7 @@ public class Domain {
      * This is just a convenience method, it has the same effect
      * as calling {@code snapshotCreateXML(xmlDesc, 0);}.
      *
-     * @see #snapshotCreateXML(int)
+     * @see #snapshotCreateXML(String, int)
      * @see <a
      *      href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainSnapshotCreateXML">Libvirt
      *      Documentation</a>
