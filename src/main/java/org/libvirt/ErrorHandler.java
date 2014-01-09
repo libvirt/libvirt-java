@@ -16,18 +16,6 @@ import com.sun.jna.PointerType;
  */
 public class ErrorHandler {
 
-    /**
-     * Look for the latest error from libvirt not tied to a connection
-     *
-     * @param libvirt
-     *            the active connection
-     * @throws LibvirtException
-     */
-    @Deprecated
-    static void processError(Libvirt libvirt) throws LibvirtException {
-        processError();
-    }
-
     private static final void processError() throws LibvirtException {
         virError vError = libvirt.virGetLastError();
         if (vError != null) {
