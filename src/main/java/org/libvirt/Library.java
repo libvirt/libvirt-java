@@ -1,6 +1,7 @@
 package org.libvirt;
 
 import org.libvirt.jna.Libvirt;
+import static org.libvirt.ErrorHandler.processError;
 
 import com.sun.jna.Native;
 import com.sun.jna.Pointer;
@@ -23,10 +24,9 @@ final class Library {
 
     // Load the native part
     static {
-        Libvirt.INSTANCE.virInitialize();
         libvirt = Libvirt.INSTANCE;
         try {
-            ErrorHandler.processError(Libvirt.INSTANCE);
+            processError(libvirt.virInitialize());
         } catch (Exception e) {
             e.printStackTrace();
         }
