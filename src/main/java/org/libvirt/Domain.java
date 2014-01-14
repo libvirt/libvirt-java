@@ -205,6 +205,20 @@ public class Domain {
     }
 
     /**
+     * Constructs a new Domain object increasing the reference count
+     * on the DomainPointer.
+     * <p>
+     * This factory method is mostly useful with callback functions,
+     * since the virDomainPtr passed is only valid for the duration of
+     * execution of the callback.
+     */
+    static Domain constructIncRef(Connect virConnect, DomainPointer VDP) throws LibvirtException {
+        processError(libvirt.virDomainRef(VDP));
+
+        return new Domain(virConnect, VDP);
+    }
+
+    /**
      * Requests that the current background job be aborted at the soonest
      * opportunity. This will block until the job has either completed, or
      * aborted.
