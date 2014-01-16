@@ -64,6 +64,13 @@ public interface Libvirt extends Library {
     }
 
     /**
+     * Callback interface for connection closed events.
+     */
+    interface VirConnectCloseFunc extends Callback {
+        void callback(ConnectionPointer VCP, int reason, Pointer opaque);
+    }
+
+    /**
      * Domain Event Callbacks
      */
 
@@ -160,6 +167,10 @@ public interface Libvirt extends Library {
 
     // Register Domain Event Callbacks
     int virConnectDomainEventRegisterAny(ConnectionPointer virConnectPtr, DomainPointer virDomainPtr, int eventID, VirDomainEventCallback cb, Pointer opaque, Libvirt.VirFreeCallback freecb);
+
+    int virConnectRegisterCloseCallback(ConnectionPointer virConnectPtr, VirConnectCloseFunc cb,
+                                        Pointer opaque, Pointer freeOpaque);
+    int virConnectUnregisterCloseCallback(ConnectionPointer virConnectPtr, VirConnectCloseFunc cb);
 
     int virConnectDomainEventDeregisterAny(ConnectionPointer virConnectPtr, int callbackID) ;
     void virConnSetErrorFunc(ConnectionPointer virConnectPtr, Pointer userData, VirErrorCallback callback);

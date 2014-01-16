@@ -59,6 +59,22 @@ public class Connect {
         return new HashMap[size];
     }
 
+    private class CloseFunc implements Libvirt.VirConnectCloseFunc {
+        final ConnectionCloseListener listener;
+
+        CloseFunc(ConnectionCloseListener l) {
+            this.listener = l;
+        }
+
+        @Override
+        public void callback(ConnectionPointer VCP, int reason, Pointer opaque) {
+            this.listener.onClose(Connect.this,
+                                  getConstant(ConnectionCloseReason.class, reason));
+        }
+    }
+
+    private CloseFunc registeredCloseFunc = null;
+
     /**
      * Event IDs.
      */
@@ -284,6 +300,11 @@ public class Connect {
         int success = 0;
         if (VCP != null) {
             success = libvirt.virConnectClose(VCP);
+
+            // if the connection has been closed (i.e. the reference count is
+            // down to zero), forget about the registered close function
+            if (success == 0) registeredCloseFunc = null;
+
             // If leave an invalid pointer dangling around JVM crashes and burns
             // if someone tries to call a method on us
             // We rely on the underlying libvirt error handling to detect that
@@ -291,6 +312,42 @@ public class Connect {
             VCP = null;
         }
         return processError(success);
+    }
+
+    /**
+     * Register the specified connection close listener to receive notifications
+     * when this connection is closed.
+     * <p>
+     * <strong>Note:</strong> There can only be at most one registered listener
+     *                        at a time.
+     * @param   l  the connection close listener
+     * @throws  LibvirtException on failure
+     * @see #unregisterCloseListener
+     */
+    public void registerCloseListener(final ConnectionCloseListener l) throws LibvirtException {
+        CloseFunc cf = new CloseFunc(l);
+
+        processError(libvirt.virConnectRegisterCloseCallback(this.VCP,
+                                                             cf,
+                                                             null,
+                                                             null));
+        this.registeredCloseFunc = cf;
+    }
+
+    /**
+     * Unregister the previously registered close listener.
+     *
+     * When there currently is no registered close listener, this method
+     * does nothing.
+     *
+     * @see #registerCloseListener
+     */
+    public void unregisterCloseListener() throws LibvirtException {
+        if (this.registeredCloseFunc != null) {
+            processError(libvirt.virConnectUnregisterCloseCallback(this.VCP,
+                                                                   this.registeredCloseFunc));
+            this.registeredCloseFunc = null;
+        }
     }
 
     /**
