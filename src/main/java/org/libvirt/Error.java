@@ -213,9 +213,9 @@ public class Error implements Serializable {
     private NetworkPointer VNP; /* Deprecated */
 
     public Error(virError vError) {
-        code = code.wrap(vError.code);
-        domain = domain.wrap(vError.domain);
-        level = level.wrap(vError.level);
+        code = ErrorNumber.wrap(vError.code);
+        domain = ErrorDomain.wrap(vError.domain);
+        level = ErrorLevel.wrap(vError.level);
         message = vError.message;
         str1 = vError.str1;
         str2 = vError.str2;
