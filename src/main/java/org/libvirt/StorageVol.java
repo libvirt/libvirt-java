@@ -181,7 +181,13 @@ public class StorageVol {
      * @throws LibvirtException
      */
     public String getXMLDesc(int flags) throws LibvirtException {
-        return processError(libvirt.virStorageVolGetXMLDesc(VSVP, flags));
+        Pointer p = processError(libvirt.virStorageVolGetXMLDesc(VSVP, flags));
+
+        try {
+            return Library.getString(p);
+        } finally {
+            Library.free(p);
+        }
     }
 
     /**
