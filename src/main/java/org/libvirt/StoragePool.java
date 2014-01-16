@@ -8,6 +8,7 @@ import static org.libvirt.Library.libvirt;
 import static org.libvirt.ErrorHandler.processError;
 
 import com.sun.jna.Native;
+import com.sun.jna.Pointer;
 import com.sun.jna.ptr.IntByReference;
 
 /**
@@ -245,9 +246,15 @@ public class StoragePool {
      */
     public String[] listVolumes() throws LibvirtException {
         int num = numOfVolumes();
-        String[] returnValue = new String[num];
-        processError(libvirt.virStoragePoolListVolumes(VSPP, returnValue, num));
-        return returnValue;
+        if (num > 0) {
+            Pointer[] ptrs = new Pointer[num];
+
+            int got = processError(libvirt.virStoragePoolListVolumes(VSPP, ptrs, num));
+
+            return Library.toStringArray(ptrs, got);
+        } else {
+            return Library.NO_STRINGS;
+        }
     }
 
     /**
