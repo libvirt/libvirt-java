@@ -4,6 +4,8 @@ import org.libvirt.jna.DomainSnapshotPointer;
 import static org.libvirt.Library.libvirt;
 import static org.libvirt.ErrorHandler.processError;
 
+import com.sun.jna.Pointer;
+
 public class DomainSnapshot {
 
     /**
@@ -71,6 +73,12 @@ public class DomainSnapshot {
      * @return the XML document
      */
     public String getXMLDesc() throws LibvirtException {
-        return processError(libvirt.virDomainSnapshotGetXMLDesc(VDSP, 0));
+        Pointer p = processError(libvirt.virDomainSnapshotGetXMLDesc(VDSP, 0));
+
+        try {
+            return Library.getString(p);
+        } finally {
+            Library.free(p);
+        }
     }
 }

@@ -378,7 +378,7 @@ public interface Libvirt extends Library {
     DomainSnapshotPointer virDomainSnapshotCreateXML(DomainPointer virDomainPtr, String xmlDesc, int flags);
     DomainSnapshotPointer virDomainSnapshotCurrent(DomainPointer virDomainPtr, int flags);
     int virDomainSnapshotDelete(DomainSnapshotPointer virDomainSnapshotPtr, int flags);
-    String virDomainSnapshotGetXMLDesc(DomainSnapshotPointer virDomainSnapshotPtr, int flags);
+    Pointer virDomainSnapshotGetXMLDesc(DomainSnapshotPointer virDomainSnapshotPtr, int flags);
     int virDomainSnapshotFree(DomainSnapshotPointer virDomainSnapshotPtr);
     int virDomainSnapshotListNames(DomainPointer virDomainPtr, Pointer[] names, int nameslen, int flags);
     DomainSnapshotPointer virDomainSnapshotLookupByName(DomainPointer virDomainPtr, String name, int flags);
