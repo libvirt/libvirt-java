@@ -482,18 +482,25 @@ public class Domain {
      */
     public SchedParameter[] getSchedulerParameters() throws LibvirtException {
         IntByReference nParams = new IntByReference();
-        SchedParameter[] returnValue = new SchedParameter[0];
-        Pointer pScheduler = processError(libvirt.virDomainGetSchedulerType(VDP, nParams));
-        String scheduler = Library.getString(pScheduler);
-        Library.free(pScheduler);
-        virSchedParameter[] nativeParams = new virSchedParameter[nParams.getValue()];
-        returnValue = new SchedParameter[nParams.getValue()];
-        processError(libvirt.virDomainGetSchedulerParameters(VDP, nativeParams, nParams));
-        for (int x = 0; x < nParams.getValue(); x++) {
-            returnValue[x] = SchedParameter.create(nativeParams[x]);
-        }
+        Library.free(processError(libvirt.virDomainGetSchedulerType(VDP, nParams)));
 
-        return returnValue;
+        int n = nParams.getValue();
+
+        if (n > 0) {
+            virSchedParameter[] nativeParams = new virSchedParameter[n];
+
+            processError(libvirt.virDomainGetSchedulerParameters(VDP, nativeParams, nParams));
+            n = nParams.getValue();
+
+            SchedParameter[] returnValue = new SchedParameter[n];
+
+            for (int x = 0; x < n; x++) {
+                returnValue[x] = SchedParameter.create(nativeParams[x]);
+            }
+            return returnValue;
+        } else {
+            return new SchedParameter[] {};
+        }
     }
 
     // getSchedulerType
@@ -506,13 +513,13 @@ public class Domain {
      * @return the type of the scheduler
      * @throws LibvirtException
      */
-    public String[] getSchedulerType() throws LibvirtException {
-        IntByReference nParams = new IntByReference();
-        Pointer pScheduler = processError(libvirt.virDomainGetSchedulerType(VDP, nParams));
-        String[] array = new String[1];
-        array[0] = Library.getString(pScheduler);
-        Library.free(pScheduler);
-        return array;
+    public String getSchedulerType() throws LibvirtException {
+        Pointer pScheduler = processError(libvirt.virDomainGetSchedulerType(VDP, null));
+        try {
+            return Library.getString(pScheduler);
+        } finally {
+            Library.free(pScheduler);
+        }
     }
 
     /**
