@@ -17,11 +17,11 @@ public class virStoragePoolInfo extends Structure {
     public long available; // this is a long long in the code, so a long mapping
     // is correct
 
-    private static final List fields = Arrays.asList(
+    private static final List<String> fields = Arrays.asList(
             "state", "capacity", "allocation", "available");
 
     @Override
-    protected List getFieldOrder() {
+    protected List<String> getFieldOrder() {
         return fields;
     }
 }

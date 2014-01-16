@@ -20,11 +20,11 @@ public class virDomainBlockStats extends Structure {
     public long errs; // this is a long long in the code, so a long mapping is
     // correct
 
-    private static final List fields = Arrays.asList(
+    private static final List<String> fields = Arrays.asList(
             "rd_req", "rd_bytes", "wr_req", "wr_bytes", "errs");
 
     @Override
-    protected List getFieldOrder() {
+    protected List<String> getFieldOrder() {
         return fields;
     }
 }

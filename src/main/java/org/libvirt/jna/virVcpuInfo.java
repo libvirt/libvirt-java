@@ -15,11 +15,11 @@ public class virVcpuInfo extends Structure {
     // is correct
     public int cpu;
 
-    private static final List fields = Arrays.asList(
+    private static final List<String> fields = Arrays.asList(
             "number", "state", "cpuTime", "cpu");
 
     @Override
-    protected List getFieldOrder() {
+    protected List<String> getFieldOrder() {
         return fields;
     }
 }

@@ -15,11 +15,11 @@ public class virConnectAuth extends Structure {
     public Libvirt.VirConnectAuthCallback cb;
     public Pointer cbdata;
 
-    private static final List fields = Arrays.asList(
+    private static final List<String> fields = Arrays.asList(
             "credtype", "ncredtype", "cb", "cbdata");
 
     @Override
-    protected List getFieldOrder() {
+    protected List<String> getFieldOrder() {
         return fields;
     }
 }

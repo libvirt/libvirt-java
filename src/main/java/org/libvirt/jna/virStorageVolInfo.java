@@ -15,11 +15,11 @@ public class virStorageVolInfo extends Structure {
     public long allocation; // this is a long long in the code, so a long
     // mapping is correct
 
-    private static final List fields = Arrays.asList(
+    private static final List<String> fields = Arrays.asList(
             "type", "capacity", "allocation");
 
     @Override
-    protected List getFieldOrder() {
+    protected List<String> getFieldOrder() {
         return fields;
     }
 }

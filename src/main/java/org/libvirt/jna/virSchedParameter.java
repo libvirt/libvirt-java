@@ -13,11 +13,11 @@ public class virSchedParameter extends Structure {
     public int type;
     public virSchedParameterValue value;
 
-    private static final List fields = Arrays.asList(
+    private static final List<String> fields = Arrays.asList(
             "field", "type", "value");
 
     @Override
-    protected List getFieldOrder() {
+    protected List<String> getFieldOrder() {
         return fields;
     }
 }

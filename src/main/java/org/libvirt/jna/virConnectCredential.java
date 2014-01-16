@@ -17,12 +17,12 @@ public class virConnectCredential extends Structure implements Structure.ByRefer
     public String result;
     public int resultlen;
 
-    private static final List fields = Arrays.asList(
+    private static final List<String> fields = Arrays.asList(
             "type", "prompt", "challenge", "defresult",
             "result", "resultlen");
 
     @Override
-    protected List getFieldOrder() {
+    protected List<String> getFieldOrder() {
         return fields;
     }
 }

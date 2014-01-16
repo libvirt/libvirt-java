@@ -19,13 +19,13 @@ public class virDomainJobInfo extends Structure {
     public long fileProcessed;
     public long fileRemaining;
 
-    private static final List fields = Arrays.asList(
+    private static final List<String> fields = Arrays.asList(
             "type", "timeElapsed", "timeRemaining", "dataTotal",
             "dataProcessed", "dataRemaining", "memTotal", "memProcessed",
             "memRemaining", "fileTotal", "fileProcessed", "fileRemaining");
 
     @Override
-    protected List getFieldOrder() {
+    protected List<String> getFieldOrder() {
         return fields;
     }
 }

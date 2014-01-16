@@ -22,12 +22,12 @@ public class virError extends Structure {
     public int int2;
     public NetworkPointer net;
 
-    private static final List fields = Arrays.asList(
+    private static final List<String> fields = Arrays.asList(
             "code", "domain", "message", "level", "conn", "dom",
             "str1", "str2", "str3", "int1", "int2", "net");
 
     @Override
-    protected List getFieldOrder() {
+    protected List<String> getFieldOrder() {
         return fields;
     }
 }

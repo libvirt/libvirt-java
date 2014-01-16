@@ -26,12 +26,12 @@ public class virDomainInterfaceStats extends Structure {
     public long tx_drop; // this is a long long in the code, so a long mapping
     // is correct
 
-    private static final List fields = Arrays.asList(
+    private static final List<String> fields = Arrays.asList(
             "rx_bytes", "rx_packets", "rx_errs", "rx_drop",
             "tx_bytes", "tx_packets", "tx_errs", "tx_drop");
 
     @Override
-    protected List getFieldOrder() {
+    protected List<String> getFieldOrder() {
         return fields;
     }
 }
