@@ -89,6 +89,45 @@ public class Connect {
      */
     protected ConnectionPointer VCP;
 
+    /* (non-Javadoc)
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        try {
+            result = prime * result + ((VCP == null) ? 0 : this.getURI().hashCode());
+        } catch (LibvirtException e) {
+            throw new RuntimeException("libvirt error testing connection equality", e);
+        }
+        return result;
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (!(obj instanceof Connect))
+            return false;
+        Connect other = (Connect) obj;
+        if (VCP == null)
+            return (other.VCP == null);
+        else if (VCP.equals(other.VCP))
+            return true;
+
+        try {
+            return getURI().equals(other.getURI());
+        } catch (LibvirtException e) {
+            throw new RuntimeException("libvirt error testing connect equality", e);
+        }
+    }
+
     /**
      * Protected constructor to return a Connection with ConnectionPointer
      */

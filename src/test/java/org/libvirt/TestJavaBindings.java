@@ -132,6 +132,7 @@ public final class TestJavaBindings extends TestCase {
                 + "  <uuid>004b96e1-2d78-c30f-5aa5-f03c87d21e67</uuid>" + "  <memory>8388608</memory>"
                 + "  <vcpu>2</vcpu>" + "  <os><type arch='i686'>hvm</type></os>" + "  <on_reboot>restart</on_reboot>"
                 + "  <on_poweroff>destroy</on_poweroff>" + "  <on_crash>restart</on_crash>" + "</domain>", 0);
+        UUID dom2UUID = UUID.fromString("004b96e1-2d78-c30f-5aa5-f03c87d21e67");
 
         assertEquals("Number of domains", 2, conn.numOfDomains());
         assertEquals("Number of listed domains", 2, conn.listDomains().length);
@@ -145,6 +146,9 @@ public final class TestJavaBindings extends TestCase {
         this.validateDomainData(conn.domainLookupByUUID(UUIDArray));
         this.validateDomainData(conn.domainLookupByUUIDString("004b96e1-2d78-c30f-5aa5-f03c87d21e67"));
         this.validateDomainData(conn.domainLookupByUUID(UUID.fromString("004b96e1-2d78-c30f-5aa5-f03c87d21e67")));
+        assertEquals("Domain is not equal to Domain retrieved by lookup",
+                     dom2,
+                     conn.domainLookupByUUID(dom2.getUUID()));
     }
 
     private void validateDomainData(Domain dom) throws Exception {

@@ -21,6 +21,8 @@ import com.sun.jna.NativeLong;
 import com.sun.jna.Pointer;
 import com.sun.jna.ptr.IntByReference;
 
+import java.util.Arrays;
+
 /**
  * A virtual machine defined within libvirt.
  */
@@ -135,10 +137,56 @@ public class Domain {
      */
     DomainPointer VDP;
 
+    /* (non-Javadoc)
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result
+            + ((virConnect == null) ? 0 : virConnect.hashCode());
+        try {
+            result = prime * result + ((VDP == null) ? 0 : Arrays.hashCode(this.getUUID()));
+        } catch (LibvirtException e) {
+            throw new RuntimeException("libvirt error testing domain equality", e);
+        }
+        return result;
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (!(obj instanceof Domain))
+            return false;
+        Domain other = (Domain) obj;
+
+        // return false when this domain belongs to
+        // a different hypervisor than the other
+        if (!this.virConnect.equals(other.virConnect))
+            return false;
+
+        if (VDP == null) return (other.VDP == null);
+
+        if (VDP.equals(other.VDP)) return true;
+
+        try {
+            return Arrays.equals(getUUID(), other.getUUID());
+        } catch (LibvirtException e) {
+            throw new RuntimeException("libvirt error testing domain equality", e);
+        }
+    }
+
     /**
      * The Connect Object that represents the Hypervisor of this Domain
      */
-    private Connect virConnect;
+    private final Connect virConnect;
 
     /**
      * Constructs a Domain object from a known native DomainPointer, and a
@@ -150,6 +198,8 @@ public class Domain {
      *            the native virDomainPtr
      */
     Domain(Connect virConnect, DomainPointer VDP) {
+        assert virConnect != null;
+
         this.virConnect = virConnect;
         this.VDP = VDP;
     }
