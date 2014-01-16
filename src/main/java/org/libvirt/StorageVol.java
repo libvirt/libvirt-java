@@ -6,6 +6,8 @@ import org.libvirt.jna.virStorageVolInfo;
 import static org.libvirt.Library.libvirt;
 import static org.libvirt.ErrorHandler.processError;
 
+import com.sun.jna.Pointer;
+
 /**
  * An acutal storage bucket.
  */
@@ -161,7 +163,13 @@ public class StorageVol {
      * @throws LibvirtException
      */
     public String getPath() throws LibvirtException {
-        return processError(libvirt.virStorageVolGetPath(VSVP));
+        Pointer p = processError(libvirt.virStorageVolGetPath(VSVP));
+
+        try {
+            return Library.getString(p);
+        } finally {
+            Library.free(p);
+        }
     }
 
     /**
