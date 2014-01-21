@@ -803,6 +803,14 @@ public class Domain {
         return processError(libvirt.virDomainIsPersistent(VDP));
     }
 
+
+    /**
+     * Returns {@code true} if, and only if, this domain has been updated.
+     */
+    public boolean isUpdated() throws LibvirtException {
+        return processError(libvirt.virDomainIsUpdated(this.VDP)) == 1;
+    }
+
     /**
      * suspend a domain and save its memory contents to a file on disk.
      *

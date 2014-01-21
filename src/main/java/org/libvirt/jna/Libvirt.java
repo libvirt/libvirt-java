@@ -274,6 +274,7 @@ public interface Libvirt extends Library {
     int virDomainInterfaceStats(DomainPointer virDomainPtr, String path, virDomainInterfaceStats stats, SizeT size);
     int virDomainIsActive(DomainPointer virDomainPtr);
     int virDomainIsPersistent(DomainPointer virDomainPtr);
+    int virDomainIsUpdated(DomainPointer virDomainPtr);
     DomainPointer virDomainLookupByID(ConnectionPointer virConnectPtr, int id);
     DomainPointer virDomainLookupByName(ConnectionPointer virConnectPtr, String name);
     DomainPointer virDomainLookupByUUID(ConnectionPointer virConnectPtr, byte[] uuidBytes);
