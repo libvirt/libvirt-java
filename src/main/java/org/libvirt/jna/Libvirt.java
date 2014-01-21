@@ -1,5 +1,7 @@
 package org.libvirt.jna;
 
+import java.nio.ByteBuffer;
+
 import com.sun.jna.Callback;
 import com.sun.jna.Library;
 import com.sun.jna.Native;
@@ -241,6 +243,8 @@ public interface Libvirt extends Library {
     int virDomainAbortJob(DomainPointer virDomainPtr);
     int virDomainAttachDevice(DomainPointer virDomainPtr, String deviceXML);
     int virDomainAttachDeviceFlags(DomainPointer virDomainPtr, String deviceXML, int flags);
+    int virDomainBlockPeek(DomainPointer virDomainPtr, String disk, long offset, SizeT size,
+                           ByteBuffer buffer, int flags);
     int virDomainBlockStats(DomainPointer virDomainPtr, String path, virDomainBlockStats stats, SizeT size);
     int virDomainBlockResize(DomainPointer virDomainPtr, String disk, long size, int flags);
     int virDomainCoreDump(DomainPointer virDomainPtr, String to, int flags);

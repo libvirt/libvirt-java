@@ -1,5 +1,7 @@
 package org.libvirt;
 
+import java.nio.ByteBuffer;
+
 import org.libvirt.event.IOErrorListener;
 import org.libvirt.jna.DomainPointer;
 import org.libvirt.jna.DomainSnapshotPointer;
@@ -281,6 +283,57 @@ public class Domain {
         virDomainBlockInfo info = new virDomainBlockInfo();
         processError(libvirt.virDomainGetBlockInfo(VDP, path, info, 0));
         return new DomainBlockInfo(info);
+    }
+
+    /**
+     * Read the contents of a domain's disk device.
+     * <p>
+     * Typical uses for this are to determine if the domain has
+     * written a Master Boot Record (indicating that the domain has
+     * completed installation), or to try to work out the state of the
+     * domain's filesystems.
+     * <p>
+     * (Note that in the local case you might try to open the block
+     * device or file directly, but that won't work in the remote
+     * case, nor if you don't have sufficient permission. Hence the
+     * need for this call).
+     * <p>
+     * The disk parameter can either be an unambiguous source name of
+     * the block device (the {@code <source file='...'/>} sub-element,
+     * such as "/path/to/image"), or <em>(since 0.9.5)</em> the device
+     * target shorthand (the {@code <target dev='...'/>} sub-element,
+     * such as "xvda").
+     * <p>
+     * Valid names can be found by calling {@link #getXMLDesc} and
+     * inspecting elements within {@code //domain/devices/disk}.
+     * <p>
+     * This method always reads the number of bytes remaining in the
+     * buffer, that is, {@code buffer.remaining()} at the moment this
+     * method is invoked. Upon return the buffer's position will be
+     * equal to the limit, the limit itself will not have changed.
+     *
+     * @param  disk    the path to the block device, or device shorthand
+     * @param  offset  the offset within block device
+     * @param  buffer  the buffer receiving the data
+     */
+    public void blockPeek(String disk, long offset, ByteBuffer buffer) throws LibvirtException {
+        SizeT size = new SizeT();
+
+        // older libvirt has a limitation on the size of data
+        // transferred per request in the remote driver. So, split
+        // larger requests into 64K blocks.
+
+        do {
+            final int req = Math.min(65536, buffer.remaining());
+
+            size.setValue(req);
+
+            processError(libvirt.virDomainBlockPeek(this.VDP, disk, offset, size, buffer, 0));
+
+            buffer.position(buffer.position() + req);
+        } while (buffer.hasRemaining());
+
+        assert buffer.position() == buffer.limit();
     }
 
     /**
