@@ -830,6 +830,46 @@ public class Domain {
     }
 
     /**
+     * Read the contents of a domain's memory.
+     * <p>
+     * If mode is MemoryAddressMode.VIRTUAL the 'start' parameter is
+     * interpreted as virtual memory address for whichever task
+     * happens to be running on the domain at the moment. Although
+     * this sounds haphazard it is in fact what you want in order to
+     * read Linux kernel state, because it ensures that pointers in
+     * the kernel image can be interpreted coherently.
+     * <p>
+     * This method always reads the number of bytes remaining in the
+     * buffer, that is, {@code buffer.remaining()} at the moment this
+     * method is invoked. Upon return the buffer's position will be
+     * equal to the limit, the limit itself will not have changed.
+     *
+     * @param start  the start address of the memory to peek
+     * @param mode   the mode which determines whether the given addresses
+     *               are interpreted as virtual or physical addresses
+     */
+    public void memoryPeek(long start, ByteBuffer buffer, MemoryAddressMode mode) throws LibvirtException
+    {
+        SizeT size = new SizeT();
+
+        // older libvirt has a limitation on the size of data
+        // transferred per request in the remote driver. So, split
+        // larger requests into 64K blocks.
+
+        do {
+            final int req = Math.min(65536, buffer.remaining());
+
+            size.setValue(req);
+
+            processError(libvirt.virDomainMemoryPeek(this.VDP, start, size, buffer, mode.getValue()));
+
+            buffer.position(buffer.position() + req);
+        } while (buffer.hasRemaining());
+
+        assert buffer.position() == buffer.limit();
+    }
+
+    /**
      * This function provides memory statistics for the domain.
      *
      * @param number

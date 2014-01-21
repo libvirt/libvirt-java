@@ -21,10 +21,6 @@ import com.sun.jna.ptr.LongByReference;
  * virConnCopyLastError
  * virFreeError
  *
- * LIBVIRT_0.4.2
- * virDomainBlockPeek
- * virDomainMemoryPeek
- *
  * LIBVIRT_0_5.0
  * virEventRegisterImpl
  * virConnectDomainEventRegister
@@ -284,6 +280,7 @@ public interface Libvirt extends Library {
     DomainPointer virDomainLookupByUUIDString(ConnectionPointer virConnectPtr, String uuidstr);
     int virDomainManagedSave(DomainPointer virDomainPtr, int flags);
     int virDomainManagedSaveRemove(DomainPointer virDomainPtr, int flags);
+    int virDomainMemoryPeek(DomainPointer virDomainPtr, long start, SizeT size, ByteBuffer buffer, int flags);
     DomainPointer virDomainMigrate(DomainPointer virDomainPtr, ConnectionPointer virConnectPtr,
             NativeLong flags, String dname, String uri, NativeLong bandwidth);
     DomainPointer virDomainMigrate2(DomainPointer virDomainPtr, ConnectionPointer virConnectPtr,
