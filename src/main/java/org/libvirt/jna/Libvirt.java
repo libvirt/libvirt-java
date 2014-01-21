@@ -414,6 +414,7 @@ public interface Libvirt extends Library {
     int virSecretGetUUID(SecretPointer virSecretPtr, byte[] uuidString);
     int virSecretGetUUIDString(SecretPointer virSecretPtr, byte[] uuidString);
     String virSecretGetUsageID(SecretPointer virSecretPtr);
+    int virSecretGetUsageType(SecretPointer virSecretPtr);
     Pointer virSecretGetValue(SecretPointer virSecretPtr, SizeTByReference value_size, int flags);
     String virSecretGetXMLDesc(SecretPointer virSecretPtr, int flags);
     SecretPointer virSecretLookupByUsage(ConnectionPointer virConnectPtr, int usageType, String usageID);

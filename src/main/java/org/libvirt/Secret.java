@@ -64,6 +64,11 @@ public class Secret {
         return processError(libvirt.virSecretGetUsageID(VSP));
     }
 
+    public SecretUsageType getUsageType() throws LibvirtException {
+        final int ret = processError(libvirt.virSecretGetUsageType(this.VSP));
+        return Library.getConstant(SecretUsageType.class, ret);
+    }
+
     /**
      * Get the UUID for this secret.
      *
