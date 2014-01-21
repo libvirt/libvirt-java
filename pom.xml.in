@@ -27,7 +27,7 @@
           <groupId>net.java.dev.jna</groupId>
           <artifactId>jna</artifactId>
           <scope>provided</scope>
-          <version>3.5.0</version>
+          <version>[3.4.1,4.0.0]</version>
         </dependency>
     </dependencies>
 
