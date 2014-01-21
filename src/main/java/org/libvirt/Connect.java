@@ -985,6 +985,27 @@ public class Connect {
     }
 
     /**
+     * Returns the XML description of the sysinfo details for the host
+     * on which the hypervisor is running.
+     * <p>
+     * This information is generally available only for hypervisors
+     * running with root privileges.
+     *
+     * @return sysinfo details in the same format as the {@code
+     *         <sysinfo>} element of a domain XML.
+     * @since 1.5.2
+     */
+    public String getSysinfo() throws LibvirtException {
+        Pointer p = processError(libvirt.virConnectGetSysinfo(this.VCP, 0));
+
+        try {
+            return Library.getString(p);
+        } finally {
+            Library.free(p);
+        }
+    }
+
+    /**
      * Gets the name of the Hypervisor software used.
      *
      * @return the name

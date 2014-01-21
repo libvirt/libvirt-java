@@ -182,6 +182,7 @@ public interface Libvirt extends Library {
     Pointer virConnectGetHostname(ConnectionPointer virConnectPtr);
     int virConnectGetLibVersion(ConnectionPointer virConnectPtr, LongByReference libVer);
     int virConnectGetMaxVcpus(ConnectionPointer virConnectPtr, String type);
+    Pointer virConnectGetSysinfo(ConnectionPointer virConnectPtr, int flags);
     String virConnectGetType(ConnectionPointer virConnectPtr);
     String virConnectGetURI(ConnectionPointer virConnectPtr);
     int virConnectGetVersion(ConnectionPointer virConnectPtr, LongByReference hvVer);
