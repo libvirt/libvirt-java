@@ -1356,6 +1356,18 @@ public class Domain {
     }
 
     /**
+     * Send key(s) to the guest.
+     *
+     * @param  codeset  the set of keycodes
+     * @param  holdtime the duration that the keys will be held (in milliseconds)
+     * @param  keys     the key codes to be send
+     */
+    public void sendKey(KeycodeSet codeset, int holdtime, int... keys) throws LibvirtException {
+        processError(libvirt.virDomainSendKey(this.VDP, codeset.ordinal(),
+                                              holdtime, keys, keys.length, 0));
+    }
+
+    /**
      * Shuts down this domain, the domain object is still usable there after but
      * the domain OS is being stopped. Note that the guest OS may ignore the
      * request. TODO: should we add an option for reboot, knowing it may not be
