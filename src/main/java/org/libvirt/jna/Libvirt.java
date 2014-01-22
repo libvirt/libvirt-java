@@ -293,6 +293,8 @@ public interface Libvirt extends Library {
             String dxml, NativeLong flags, String dname, NativeLong bandwidth);
     int virDomainMemoryStats(DomainPointer virDomainPtr, virDomainMemoryStats[] stats, int nr_stats, int flags);
     int virDomainPinVcpu(DomainPointer virDomainPtr, int vcpu, byte[] cpumap, int maplen);
+    int virDomainPMSuspendForDuration(DomainPointer virDomainPtr, int target, long duration, int flags);
+    int virDomainPMWakeup(DomainPointer virDomainPtr, int flags);
     int virDomainReboot(DomainPointer virDomainPtr, int flags);
     int virDomainRef(DomainPointer virDomainPtr);
     int virDomainReset(DomainPointer virDomainPtr, int flags);

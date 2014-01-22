@@ -1,6 +1,7 @@
 package org.libvirt;
 
 import java.nio.ByteBuffer;
+import java.util.concurrent.TimeUnit;
 
 import org.libvirt.event.IOErrorListener;
 import org.libvirt.jna.DomainPointer;
@@ -1092,6 +1093,32 @@ public class Domain {
      */
     public int migrateToURI(String uri, long flags, String dname, long bandwidth) throws LibvirtException {
         return processError(libvirt.virDomainMigrateToURI(VDP, uri, new NativeLong(flags), dname, new NativeLong(bandwidth)));
+    }
+
+    /**
+     * Enter the given power management suspension target level.
+     */
+    public void PMsuspend(SuspendTarget target) throws LibvirtException {
+        PMsuspendFor(target, 0, TimeUnit.SECONDS);
+    }
+
+    /**
+     * Enter the given power management suspension target level for the given duration.
+     */
+    public void PMsuspendFor(SuspendTarget target, long duration, TimeUnit unit) throws LibvirtException {
+        processError(libvirt.virDomainPMSuspendForDuration(this.VDP, target.ordinal(), unit.toSeconds(duration), 0));
+    }
+
+    /**
+     * Immediately wake up a guest using power management.
+     * <p>
+     * Injects a <em>wakeup<em> into the guest that previously used
+     * {@link #PMsuspend} or {@link #PMsuspendFor}, rather than
+     * waiting for the previously requested duration (if any) to
+     * elapse.
+     */
+    public void PMwakeup() throws LibvirtException {
+        processError(libvirt.virDomainPMWakeup(this.VDP, 0));
     }
 
     /**
