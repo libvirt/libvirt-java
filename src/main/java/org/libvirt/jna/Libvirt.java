@@ -295,6 +295,7 @@ public interface Libvirt extends Library {
     int virDomainPinVcpu(DomainPointer virDomainPtr, int vcpu, byte[] cpumap, int maplen);
     int virDomainReboot(DomainPointer virDomainPtr, int flags);
     int virDomainRef(DomainPointer virDomainPtr);
+    int virDomainReset(DomainPointer virDomainPtr, int flags);
     int virDomainRestore(ConnectionPointer virConnectPtr, String from);
     int virDomainRevertToSnapshot(DomainSnapshotPointer virDomainSnapshotPtr, int flags);
     int virDomainResume(DomainPointer virDomainPtr);
