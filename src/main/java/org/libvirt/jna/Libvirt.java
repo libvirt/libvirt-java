@@ -4,6 +4,7 @@ import com.sun.jna.Callback;
 import com.sun.jna.Library;
 import com.sun.jna.Native;
 import com.sun.jna.NativeLong;
+import com.sun.jna.Platform;
 import com.sun.jna.Pointer;
 import com.sun.jna.ptr.IntByReference;
 import com.sun.jna.ptr.LongByReference;
@@ -96,7 +97,7 @@ public interface Libvirt extends Library {
         void eventCallback(ConnectionPointer virConnectPtr, DomainPointer virDomainPointer, Pointer opaque) ;
     }
 
-    Libvirt INSTANCE = (Libvirt) Native.loadLibrary("virt", Libvirt.class);
+    Libvirt INSTANCE = (Libvirt) Native.loadLibrary(Platform.isWindows() ? "virt-0" : "virt", Libvirt.class);
 
     // Constants we need
     public static int VIR_UUID_BUFLEN = 16;
