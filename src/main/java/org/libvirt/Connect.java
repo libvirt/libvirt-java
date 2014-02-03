@@ -1,5 +1,6 @@
 package org.libvirt;
 
+import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -24,6 +25,7 @@ import static org.libvirt.Library.libvirt;
 import static org.libvirt.Library.getConstant;
 import static org.libvirt.ErrorHandler.processError;
 import static org.libvirt.ErrorHandler.processErrorIfZero;
+import static org.libvirt.BitFlagsHelper.OR;
 
 import com.sun.jna.Memory;
 import com.sun.jna.NativeLong;
@@ -93,6 +95,24 @@ public class Connect {
         static final int PMWAKEUP = 11;
         static final int PMSUSPEND = 12;
         static final int LAST = 13;
+    }
+
+    public enum OpenFlags implements BitFlags {
+        /** Open a connection in read-only mode */
+        READONLY(1),
+
+        /** Don't try to resolve URI aliases */
+        NO_ALIASES(2);
+
+        OpenFlags(int v) {
+            this.value = v;
+        }
+
+        @Override
+        public int getBit() {
+            return value;
+        }
+        private final int value;
     }
 
     /**
@@ -219,9 +239,20 @@ public class Connect {
      * @see <a href="http://libvirt.org/uri.html">The URI documentation</a>
      */
     public Connect(String uri) throws LibvirtException {
-        VCP = libvirt.virConnectOpen(uri);
-        // Check for an error
-        processError(VCP);
+        this(uri, null, 0);
+    }
+
+
+    /**
+     * Constructs a read-write Connect object from the supplied URI.
+     *
+     * @param uri
+     *            The connection URI
+     * @throws LibvirtException
+     * @see <a href="http://libvirt.org/uri.html">The URI documentation</a>
+     */
+    public Connect(URI uri, OpenFlags... flags) throws LibvirtException {
+        this(uri, null, flags);
     }
 
     /**
@@ -235,11 +266,41 @@ public class Connect {
      * @see <a href="http://libvirt.org/uri.html">The URI documentation</a>
      */
     public Connect(String uri, boolean readOnly) throws LibvirtException {
-        if (readOnly) {
-            VCP = libvirt.virConnectOpenReadOnly(uri);
-        } else {
-            VCP = libvirt.virConnectOpen(uri);
+        this(uri, null, readOnly ? OpenFlags.READONLY.getBit() : 0);
+    }
+
+    /**
+     * Constructs a Connect object from the supplied URI, using the supplied
+     * authentication callback
+     *
+     * @param uri
+     *            The connection URI
+     * @param auth
+     *            a ConnectAuth object
+     * @param flags
+     * @throws LibvirtException
+     * @see <a href="http://libvirt.org/uri.html">The URI documentation</a>
+     */
+    public Connect(String uri, ConnectAuth auth, int flags) throws LibvirtException {
+        virConnectAuth vAuth = null;
+
+        if (auth != null) {
+            vAuth = new virConnectAuth();
+            vAuth.cb = auth;
+            vAuth.cbdata = null;
+            vAuth.ncredtype = auth.credType.length;
+            int[] authInts = new int[vAuth.ncredtype];
+
+            for (int x = 0; x < vAuth.ncredtype; x++) {
+                authInts[x] = auth.credType[x].mapToInt();
+            }
+
+            Memory mem = new Memory(4 * vAuth.ncredtype);
+            mem.write(0, authInts, 0, vAuth.ncredtype);
+            vAuth.credtype = mem.share(0);
         }
+
+        VCP = libvirt.virConnectOpenAuth(uri, vAuth, flags);
         // Check for an error
         processError(VCP);
     }
@@ -256,24 +317,23 @@ public class Connect {
      * @throws LibvirtException
      * @see <a href="http://libvirt.org/uri.html">The URI documentation</a>
      */
-    public Connect(String uri, ConnectAuth auth, int flags) throws LibvirtException {
-        virConnectAuth vAuth = new virConnectAuth();
-        vAuth.cb = auth;
-        vAuth.cbdata = null;
-        vAuth.ncredtype = auth.credType.length;
-        int[] authInts = new int[vAuth.ncredtype];
+    public Connect(URI uri, ConnectAuth auth, OpenFlags... flags) throws LibvirtException {
+        this(uri.toString(), auth, OR(flags));
+    }
 
-        for (int x = 0; x < vAuth.ncredtype; x++) {
-            authInts[x] = auth.credType[x].mapToInt();
-        }
-
-        Memory mem = new Memory(4 * vAuth.ncredtype);
-        mem.write(0, authInts, 0, vAuth.ncredtype);
-        vAuth.credtype = mem.share(0);
-
-        VCP = libvirt.virConnectOpenAuth(uri, vAuth, flags);
-        // Check for an error
-        processError(VCP);
+    /**
+     * Constructs a Connect object from the supplied URI, using the supplied
+     * authentication callback
+     *
+     * @param uri
+     *            The connection URI
+     * @param auth
+     *            a ConnectAuth object
+     * @throws LibvirtException
+     * @see <a href="http://libvirt.org/uri.html">The URI documentation</a>
+     */
+    public Connect(URI uri, ConnectAuth auth) throws LibvirtException {
+        this(uri.toString(), auth, 0);
     }
 
     /**
