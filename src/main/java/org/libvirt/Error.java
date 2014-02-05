@@ -228,9 +228,9 @@ public class Error implements Serializable {
     }
 
     /**
-     * Gets he error code
+     * Gets the error code
      *
-     * @return a VirErroNumber
+     * @return a VirErrorNumber
      */
     public ErrorNumber getCode() {
         return code;
@@ -294,7 +294,7 @@ public class Error implements Serializable {
     }
 
     /**
-     * Returns human-readable informative error messag
+     * Returns a human-readable informative error message
      *
      * @return error message
      */
