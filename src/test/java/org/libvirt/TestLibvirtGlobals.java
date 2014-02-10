@@ -18,4 +18,8 @@ public class TestLibvirtGlobals extends TestCase {
         }
         assertTrue("We should have caught an error", cb.error);
     }
+
+    public void testLibrary() throws Exception {
+        assertTrue("Library.getVersion() > 6000", Library.getVersion() > 6000);
+    }
 }

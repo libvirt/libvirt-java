@@ -1023,11 +1023,12 @@ public class Connect {
      *
      * @return major * 1,000,000 + minor * 1,000 + release
      * @throws LibvirtException
+     * @deprecated use {@link Library#getVersion} instead
      */
+    @Deprecated
     public long getLibVirVersion() throws LibvirtException {
         LongByReference libVer = new LongByReference();
-        LongByReference typeVer = new LongByReference();
-        processError(libvirt.virGetVersion(libVer, null, typeVer));
+        processError(libvirt.virGetVersion(libVer, null, null));
         return libVer.getValue();
     }
 

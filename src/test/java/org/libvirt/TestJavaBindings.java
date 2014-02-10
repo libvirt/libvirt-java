@@ -56,7 +56,6 @@ public final class TestJavaBindings extends TestCase {
         assertEquals("conn.getMaxVcpus(xen)", 32, conn.getMaxVcpus("xen"));
         assertNotNull("conn.getHostName()", conn.getHostName());
         assertNotNull("conn.getCapabilities()", conn.getCapabilities());
-        assertTrue("conn.getLibVirVersion()", conn.getLibVirVersion() > 6000);
         assertTrue("conn.connectionVersion()", Connect.connectionVersion(conn) > 6000);        
         assertEquals("conn.getVersion()", 2, conn.getVersion());
         assertTrue("conn.isAlive", conn.isAlive());
@@ -311,7 +310,7 @@ public final class TestJavaBindings extends TestCase {
     }
 
     public void testDomainScreenshot() throws Exception {
-        long version = conn.getLibVirVersion();
+        long version = Library.getVersion();
 
         // virDomainScreenshot works since version 1.0.5 on test://
         // connections
