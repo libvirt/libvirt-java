@@ -56,7 +56,7 @@ public final class TestJavaBindings extends TestCase {
         assertEquals("conn.getMaxVcpus(xen)", 32, conn.getMaxVcpus("xen"));
         assertNotNull("conn.getHostName()", conn.getHostName());
         assertNotNull("conn.getCapabilities()", conn.getCapabilities());
-        assertTrue("conn.connectionVersion()", Connect.connectionVersion(conn) > 6000);        
+        assertTrue("conn.getLibVersion() > 6000", conn.getLibVersion() > 6000);
         assertEquals("conn.getVersion()", 2, conn.getVersion());
         assertTrue("conn.isAlive", conn.isAlive());
         assertTrue("conn.isEncrypted", conn.isEncrypted() == 0);

@@ -125,7 +125,9 @@ public class Connect {
      *            the connection to use.
      * @return -1 in case of failure, versions have the format major * 1,000,000
      *         + minor * 1,000 + release.
+     * @deprecated Use {@link #getLibVersion} instead.
      */
+    @Deprecated
     public static long connectionVersion(Connect conn) {
         LongByReference libVer = new LongByReference();
         int result = Libvirt.INSTANCE.virConnectGetLibVersion(conn.VCP, libVer);
@@ -154,6 +156,22 @@ public class Connect {
             bytes[x] = (byte) UUID[x];
         }
         return bytes;
+    }
+
+    /**
+     * Get the libvirt library version of this connection.
+     *
+     * @see <a
+     *      href="http://www.libvirt.org/html/libvirt-libvirt.html#virConnectGetLibVersion">Libvirt
+     *      Documentation</a>
+     * @return The version of libvirt used by the daemon running on
+     *         the connected host in the format {@code major *
+     *         1,000,000 + minor * 1,000 + release}.
+     */
+    public long getLibVersion() throws LibvirtException {
+        LongByReference libVer = new LongByReference();
+        processError(libvirt.virConnectGetLibVersion(this.VCP, libVer));
+        return libVer.getValue();
     }
 
     /**
