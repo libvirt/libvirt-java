@@ -27,6 +27,7 @@ public final class TestJavaBindings extends TestCase {
 
         try {
             conn.domainDefineXML("fail, miserably");
+            fail("LibvirtException expected");
         } catch (LibvirtException e) {} // ignore
 
         assertTrue("Error callback was not called", cb.error);
@@ -87,6 +88,7 @@ public final class TestJavaBindings extends TestCase {
         // this should throw an exception
         try {
             network1.create();
+            fail("LibvirtException expected");
         } catch (LibvirtException e) {
             // eat it
         }
