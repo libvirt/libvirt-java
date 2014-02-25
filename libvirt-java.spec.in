@@ -12,7 +12,11 @@ BuildRoot:  %{_tmppath}/%{name}-%{version}-%{release}-root
 
 Requires:   jna
 Requires:   libvirt-client >= @libvirt.required@
+%if 0%{?fedora} >= 21
+Requires:   java-headless >= @java.required@
+%else
 Requires:   java >= @java.required@
+%endif
 Requires:   jpackage-utils
 BuildRequires:  ant
 BuildRequires:  jna
