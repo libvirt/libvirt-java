@@ -1,6 +1,7 @@
 package org.libvirt;
 
 import org.libvirt.jna.Libvirt;
+import org.libvirt.jna.Libvirt.VirEventTimeoutCallback;
 import static org.libvirt.ErrorHandler.processError;
 
 import com.sun.jna.Native;
@@ -21,6 +22,13 @@ import java.util.concurrent.atomic.AtomicInteger;
 final class Library {
     private static AtomicBoolean runLoop = new AtomicBoolean();
     private static AtomicInteger timerID = new AtomicInteger(-1);
+    private static VirEventTimeoutCallback timer = new VirEventTimeoutCallback() {
+            @Override
+            public void tick(int id, Pointer p) {
+                // disable myself again right after being triggered
+                libvirt.virEventUpdateTimeout(id, -1);
+            }
+        };
 
     final static Libvirt libvirt;
 
@@ -116,17 +124,11 @@ final class Library {
 
             // add a disabled timer which is used later to break out
             // of the event loop
-            int timer = processError(libvirt.virEventAddTimeout(-1, new org.libvirt.jna.Libvirt.VirEventTimeoutCallback() {
-                    @Override
-                    public void tick(int id, Pointer p) {
-                        // disable myself right after being triggered
-                        libvirt.virEventUpdateTimeout(id, -1);
-                    }
-                },
-                null, null));
+            int id = processError(libvirt.virEventAddTimeout(-1, timer, null, null));
 
-            if (!timerID.compareAndSet(-1, timer)) {
-                libvirt.virEventRemoveTimeout(timer);
+            // remove this timer when there already is another one
+            if (!timerID.compareAndSet(-1, id)) {
+                libvirt.virEventRemoveTimeout(id);
             }
         }
     }
