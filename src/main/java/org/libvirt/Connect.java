@@ -1021,13 +1021,18 @@ public class Connect {
 
     /**
      * Returns the version of the hypervisor against which the library was
-     * compiled. The type parameter specified which hypervisor's version is
-     * returned
+     * compiled.
      *
-     * @param type
+     * Since libvirt 0.9.3 this simply returns the same version number
+     * as {@link Library#getVersion}.
+     * @param type The type of connection/driver to look at. See
+     *             {@link #getType()}. May be {@code null}.
      * @return major * 1,000,000 + minor * 1,000 + release
      * @throws LibvirtException
+     * @deprecated To get the version of the running hypervisor use
+     *             {@link #getVersion()} instead.
      */
+    @Deprecated
     public long getHypervisorVersion(String type) throws LibvirtException {
         LongByReference libVer = new LongByReference();
         LongByReference typeVer = new LongByReference();
