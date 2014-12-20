@@ -637,6 +637,24 @@ public class Domain {
     }
 
     /**
+     * Get the security label of an active domain.
+     *
+     * @return the SecurityLabel or {@code null} if the domain is not
+     *         running under a security model
+     * @throws LibvirtException
+     */
+    public SecurityLabel getSecurityLabel() throws LibvirtException {
+        Libvirt.SecurityLabel seclabel = new Libvirt.SecurityLabel();
+
+        processError(libvirt.virDomainGetSecurityLabel(this.VDP, seclabel));
+
+        if (seclabel.label[0] == 0)
+            return null;
+        else
+            return new SecurityLabel(seclabel);
+    }
+
+    /**
      * Get the UUID for this domain.
      *
      * @return the UUID as an unpacked int array

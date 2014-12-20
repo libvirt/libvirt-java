@@ -8,8 +8,12 @@ import com.sun.jna.Native;
 import com.sun.jna.NativeLong;
 import com.sun.jna.Platform;
 import com.sun.jna.Pointer;
+import com.sun.jna.Structure;
 import com.sun.jna.ptr.IntByReference;
 import com.sun.jna.ptr.LongByReference;
+
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * The libvirt interface which is exposed via JNA. The complete API is
@@ -36,7 +40,6 @@ import com.sun.jna.ptr.LongByReference;
  * LIBVIRT_0.6.1
  * virFreeError
  * virSaveLastError
- * virDomainGetSecurityLabel;
  * virNodeGetSecurityModel;
  *
  * LIBVIRT_0.6.4
@@ -152,6 +155,24 @@ public interface Libvirt extends Library {
     // Connection Functions
     CString virConnectBaselineCPU(ConnectionPointer virConnectPtr, String[] xmlCPUs, int ncpus, int flags);
 
+    ///
+    /// Structure definitions
+    ///
+
+    static class SecurityLabel extends Structure {
+        private static final int VIR_SECURITY_LABEL_BUFLEN = 4096 + 1;
+        private static final List<String> fields = Arrays.asList("label", "enforcing");
+
+        public byte label[] = new byte[VIR_SECURITY_LABEL_BUFLEN];
+        public int enforcing;
+
+        @Override
+        protected List<String> getFieldOrder() {
+            return fields;
+        }
+    };
+
+
     /**
      * @deprecated as of libvirt 0.6.0, all errors reported in the
      * per-connection object are also duplicated in the global error
@@ -265,6 +286,7 @@ public interface Libvirt extends Library {
     int virDomainGetSchedulerParameters(DomainPointer virDomainPtr, virSchedParameter[] params,
             IntByReference nparams);
     CString virDomainGetSchedulerType(DomainPointer virDomainPtr, IntByReference nparams);
+    int virDomainGetSecurityLabel(DomainPointer virDomainPtr, SecurityLabel seclabel);
     int virDomainGetUUID(DomainPointer virDomainPtr, byte[] uuidString);
     int virDomainGetUUIDString(DomainPointer virDomainPtr, byte[] uuidString);
     int virDomainGetVcpus(DomainPointer virDomainPtr, virVcpuInfo[] info, int maxInfo, byte[] cpumaps, int maplen);
