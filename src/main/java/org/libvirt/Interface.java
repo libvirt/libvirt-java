@@ -52,7 +52,7 @@ public class Interface {
      * @throws LibvirtException
      */
     public int create() throws LibvirtException {
-        return processError(libvirt.virInterfaceCreate(VIP));
+        return processError(libvirt.virInterfaceCreate(VIP, 0));
     }
 
     /**
@@ -71,7 +71,7 @@ public class Interface {
      * @throws LibvirtException
      */
     public int destroy() throws LibvirtException {
-        return processError(libvirt.virInterfaceDestroy(VIP));
+        return processError(libvirt.virInterfaceDestroy(VIP, 0));
     }
 
     @Override

@@ -350,7 +350,7 @@ public interface Libvirt extends Library {
     String virNodeDeviceGetParent(DevicePointer virDevicePointer);
     int virNodeDeviceNumOfCaps(DevicePointer virDevicePointer);
     int virNodeDeviceListCaps(DevicePointer virDevicePointer, Pointer[] names, int maxNames);
-    String virNodeDeviceGetXMLDesc(DevicePointer virDevicePointer);
+    String virNodeDeviceGetXMLDesc(DevicePointer virDevicePointer, int flags);
     int virNodeDeviceFree(DevicePointer virDevicePointer);
     int virNodeDeviceDettach(DevicePointer virDevicePointer);
     int virNodeDeviceReAttach(DevicePointer virDevicePointer);
@@ -402,9 +402,9 @@ public interface Libvirt extends Library {
     int virStorageVolResize(StorageVolPointer storageVolPtr, long capacity, int flags);
 
     // Interface Methods
-    int virInterfaceCreate(InterfacePointer virDevicePointer);
+    int virInterfaceCreate(InterfacePointer virDevicePointer, int flags);
     InterfacePointer virInterfaceDefineXML(ConnectionPointer virConnectPtr, String xml, int flags);
-    int virInterfaceDestroy(InterfacePointer virDevicePointer);
+    int virInterfaceDestroy(InterfacePointer virDevicePointer, int flags);
     int virInterfaceFree(InterfacePointer virDevicePointer);
     String virInterfaceGetName(InterfacePointer virInterfacePtr);
     String virInterfaceGetMACString(InterfacePointer virInterfacePtr);

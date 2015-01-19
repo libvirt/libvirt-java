@@ -118,7 +118,7 @@ public class Device {
      * @throws LibvirtException
      */
     public String getXMLDescription() throws LibvirtException {
-        return processError(libvirt.virNodeDeviceGetXMLDesc(VDP));
+        return processError(libvirt.virNodeDeviceGetXMLDesc(VDP, 0));
     }
 
     /**
