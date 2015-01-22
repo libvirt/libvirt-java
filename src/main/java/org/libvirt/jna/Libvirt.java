@@ -217,7 +217,7 @@ public interface Libvirt extends Library {
      */
     @Deprecated
     virError virConnGetLastError(ConnectionPointer virConnectPtr);
-    int virConnResetLastError(ConnectionPointer virConnectPtr);
+    void virConnResetLastError(ConnectionPointer virConnectPtr);
     String virConnectDomainXMLFromNative(ConnectionPointer virConnectPtr, String nativeFormat,
             String nativeConfig, int flags);
     String virConnectDomainXMLToNative(ConnectionPointer virConnectPtr, String nativeFormat, String domainXML,
@@ -469,5 +469,5 @@ public interface Libvirt extends Library {
     // Event functions
     int virEventAddTimeout(int milliSeconds, VirEventTimeoutCallback cb, Pointer opaque, Pointer ff);
     int virEventRemoveTimeout(int timer);
-    int virEventUpdateTimeout(int timer, int timeout);
+    void virEventUpdateTimeout(int timer, int timeout);
 }
