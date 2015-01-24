@@ -90,7 +90,7 @@ public class NetworkFilter {
      * @return the XML document
      */
     public String getXMLDesc() throws LibvirtException {
-        return processError(libvirt.virNWFilterGetXMLDesc(NFP, 0));
+        return processError(libvirt.virNWFilterGetXMLDesc(NFP, 0)).toString();
     }
 
     /**

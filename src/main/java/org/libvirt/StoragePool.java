@@ -207,7 +207,7 @@ public class StoragePool {
      * @return a XML document -java @throws LibvirtException
      */
     public String getXMLDesc(int flags) throws LibvirtException {
-        return processError(libvirt.virStoragePoolGetXMLDesc(VSPP, flags));
+        return processError(libvirt.virStoragePoolGetXMLDesc(VSPP, flags)).toString();
     }
 
     /**

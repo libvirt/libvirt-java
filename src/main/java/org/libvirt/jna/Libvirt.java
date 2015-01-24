@@ -150,7 +150,7 @@ public interface Libvirt extends Library {
     public static int VIR_DOMAIN_SCHED_FIELD_LENGTH = 80;
 
     // Connection Functions
-    String virConnectBaselineCPU(ConnectionPointer virConnectPtr, String[] xmlCPUs, int ncpus, int flags);
+    CString virConnectBaselineCPU(ConnectionPointer virConnectPtr, String[] xmlCPUs, int ncpus, int flags);
 
     /**
      * @deprecated as of libvirt 0.6.0, all errors reported in the
@@ -175,14 +175,14 @@ public interface Libvirt extends Library {
     int virConnectIsAlive(ConnectionPointer virConnectPtr);
     int virConnectIsEncrypted(ConnectionPointer virConnectPtr) ;
     int virConnectIsSecure(ConnectionPointer virConnectPtr) ;
-    String virConnectFindStoragePoolSources(ConnectionPointer virConnectPtr, String type, String srcSpec, int flags);
+    CString virConnectFindStoragePoolSources(ConnectionPointer virConnectPtr, String type, String srcSpec, int flags);
     Pointer virConnectGetCapabilities(ConnectionPointer virConnectPtr);
     Pointer virConnectGetHostname(ConnectionPointer virConnectPtr);
     int virConnectGetLibVersion(ConnectionPointer virConnectPtr, LongByReference libVer);
     int virConnectGetMaxVcpus(ConnectionPointer virConnectPtr, String type);
     Pointer virConnectGetSysinfo(ConnectionPointer virConnectPtr, int flags);
     String virConnectGetType(ConnectionPointer virConnectPtr);
-    String virConnectGetURI(ConnectionPointer virConnectPtr);
+    CString virConnectGetURI(ConnectionPointer virConnectPtr);
     int virConnectGetVersion(ConnectionPointer virConnectPtr, LongByReference hvVer);
     int virConnectListDefinedDomains(ConnectionPointer virConnectPtr, Pointer[] name, int maxnames);
     int virConnectListDefinedNetworks(ConnectionPointer virConnectPtr, Pointer[] name, int maxnames);
@@ -218,9 +218,9 @@ public interface Libvirt extends Library {
     @Deprecated
     virError virConnGetLastError(ConnectionPointer virConnectPtr);
     void virConnResetLastError(ConnectionPointer virConnectPtr);
-    String virConnectDomainXMLFromNative(ConnectionPointer virConnectPtr, String nativeFormat,
+    CString virConnectDomainXMLFromNative(ConnectionPointer virConnectPtr, String nativeFormat,
             String nativeConfig, int flags);
-    String virConnectDomainXMLToNative(ConnectionPointer virConnectPtr, String nativeFormat, String domainXML,
+    CString virConnectDomainXMLToNative(ConnectionPointer virConnectPtr, String nativeFormat, String domainXML,
             int flags);
 
     // Global functions
@@ -350,7 +350,7 @@ public interface Libvirt extends Library {
     String virNodeDeviceGetParent(DevicePointer virDevicePointer);
     int virNodeDeviceNumOfCaps(DevicePointer virDevicePointer);
     int virNodeDeviceListCaps(DevicePointer virDevicePointer, Pointer[] names, int maxNames);
-    String virNodeDeviceGetXMLDesc(DevicePointer virDevicePointer, int flags);
+    CString virNodeDeviceGetXMLDesc(DevicePointer virDevicePointer, int flags);
     int virNodeDeviceFree(DevicePointer virDevicePointer);
     int virNodeDeviceDettach(DevicePointer virDevicePointer);
     int virNodeDeviceReAttach(DevicePointer virDevicePointer);
@@ -371,7 +371,7 @@ public interface Libvirt extends Library {
     String virStoragePoolGetName(StoragePoolPointer storagePoolPtr);
     int virStoragePoolGetUUID(StoragePoolPointer storagePoolPtr, byte[] uuidString);
     int virStoragePoolGetUUIDString(StoragePoolPointer storagePoolPtr, byte[] uuidString);
-    String virStoragePoolGetXMLDesc(StoragePoolPointer storagePoolPtr, int flags);
+    CString virStoragePoolGetXMLDesc(StoragePoolPointer storagePoolPtr, int flags);
     int virStoragePoolListVolumes(StoragePoolPointer storagePoolPtr, Pointer[] names, int maxnames);
     int virStoragePoolIsActive(StoragePoolPointer storagePoolPtr);
     int virStoragePoolIsPersistent(StoragePoolPointer storagePoolPtr);
@@ -422,7 +422,7 @@ public interface Libvirt extends Library {
     String virSecretGetUsageID(SecretPointer virSecretPtr);
     int virSecretGetUsageType(SecretPointer virSecretPtr);
     Pointer virSecretGetValue(SecretPointer virSecretPtr, SizeTByReference value_size, int flags);
-    String virSecretGetXMLDesc(SecretPointer virSecretPtr, int flags);
+    CString virSecretGetXMLDesc(SecretPointer virSecretPtr, int flags);
     SecretPointer virSecretLookupByUsage(ConnectionPointer virConnectPtr, int usageType, String usageID);
     SecretPointer virSecretLookupByUUID(ConnectionPointer virConnectPtr, byte[] uuidBytes);
     SecretPointer virSecretLookupByUUIDString(ConnectionPointer virConnectPtr, String uuidstr);
@@ -455,7 +455,7 @@ public interface Libvirt extends Library {
     int virDomainSnapshotNum(DomainPointer virDomainPtr, int flags);
 
     // Network Filter Methods
-    String virNWFilterGetXMLDesc(NetworkFilterPointer virNWFilterPtr, int flags);
+    CString virNWFilterGetXMLDesc(NetworkFilterPointer virNWFilterPtr, int flags);
     NetworkFilterPointer virNWFilterDefineXML(ConnectionPointer virConnectPtr, String xml);
     int virNWFilterFree(NetworkFilterPointer virNWFilterPtr);
     NetworkFilterPointer virNWFilterLookupByName(ConnectionPointer virConnectPtr, String name);

@@ -7,6 +7,7 @@ import java.util.UUID;
 
 import org.libvirt.event.*;
 import org.libvirt.jna.ConnectionPointer;
+import org.libvirt.jna.CString;
 import org.libvirt.jna.DevicePointer;
 import org.libvirt.jna.DomainPointer;
 import org.libvirt.jna.InterfacePointer;
@@ -364,7 +365,8 @@ public class Connect {
      * @throws LibvirtException
      */
     public String baselineCPU(String[] xmlCPUs) throws LibvirtException {
-        return processError(libvirt.virConnectBaselineCPU(VCP, xmlCPUs, xmlCPUs.length, 0));
+        CString result = libvirt.virConnectBaselineCPU(VCP, xmlCPUs, xmlCPUs.length, 0);
+        return processError(result).toString();
     }
 
     /**
@@ -920,7 +922,8 @@ public class Connect {
      * @throws LibvirtException
      */
     public String domainXMLFromNative(String nativeFormat, String nativeConfig, int flags) throws LibvirtException {
-        return processError(libvirt.virConnectDomainXMLFromNative(VCP, nativeFormat, nativeConfig, 0));
+        CString result = libvirt.virConnectDomainXMLFromNative(VCP, nativeFormat, nativeConfig, 0);
+        return processError(result).toString();
     }
 
     /**
@@ -932,8 +935,8 @@ public class Connect {
      * @throws LibvirtException
      */
     public String domainXMLToNative(String nativeFormat, String domainXML, int flags) throws LibvirtException {
-        String returnValue = libvirt.virConnectDomainXMLToNative(VCP, nativeFormat, domainXML, 0);
-        return processError(returnValue);
+        CString returnValue = libvirt.virConnectDomainXMLToNative(VCP, nativeFormat, domainXML, 0);
+        return processError(returnValue).toString();
     }
 
     @Override
@@ -962,8 +965,8 @@ public class Connect {
      * @throws LibvirtException
      */
     public String findStoragePoolSources(String type, String srcSpecs, int flags) throws LibvirtException {
-        String returnValue = libvirt.virConnectFindStoragePoolSources(VCP, type, srcSpecs, flags);
-        return processError(returnValue);
+        CString returnValue = libvirt.virConnectFindStoragePoolSources(VCP, type, srcSpecs, flags);
+        return processError(returnValue).toString();
     }
 
     /**
@@ -1109,7 +1112,7 @@ public class Connect {
      * @throws LibvirtException
      */
     public String getURI() throws LibvirtException {
-        return processError(libvirt.virConnectGetURI(VCP));
+        return processError(libvirt.virConnectGetURI(VCP)).toString();
     }
 
     /**

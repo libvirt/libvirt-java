@@ -127,7 +127,7 @@ public class Secret {
      * @return the XML document
      */
     public String getXMLDesc() throws LibvirtException {
-        return processError(libvirt.virSecretGetXMLDesc(VSP, 0));
+        return processError(libvirt.virSecretGetXMLDesc(VSP, 0)).toString();
     }
 
     /**
