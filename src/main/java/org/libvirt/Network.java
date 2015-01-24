@@ -103,12 +103,7 @@ public class Network {
      * @throws LibvirtException
      */
     public String getBridgeName() throws LibvirtException {
-        final Pointer ptr = processError(libvirt.virNetworkGetBridgeName(VNP));
-        try {
-            return Library.getString(ptr);
-        } finally {
-            Library.free(ptr);
-        }
+        return processError(libvirt.virNetworkGetBridgeName(VNP)).toString();
     }
 
     /**
@@ -167,12 +162,7 @@ public class Network {
      * @throws LibvirtException
      */
     public String getXMLDesc(int flags) throws LibvirtException {
-        Pointer ptr = processError(libvirt.virNetworkGetXMLDesc(VNP, flags));
-        try {
-            return Library.getString(ptr);
-        } finally {
-            Library.free(ptr);
-        }
+        return processError(libvirt.virNetworkGetXMLDesc(VNP, flags)).toString();
     }
 
     /**

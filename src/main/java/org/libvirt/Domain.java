@@ -4,6 +4,7 @@ import java.nio.ByteBuffer;
 import java.util.concurrent.TimeUnit;
 
 import org.libvirt.event.IOErrorListener;
+import org.libvirt.jna.CString;
 import org.libvirt.jna.DomainPointer;
 import org.libvirt.jna.DomainSnapshotPointer;
 import org.libvirt.jna.Libvirt;
@@ -589,12 +590,7 @@ public class Domain {
      * @throws LibvirtException
      */
     public String getOSType() throws LibvirtException {
-        Pointer ptr = processError(libvirt.virDomainGetOSType(VDP));
-        try {
-            return Library.getString(ptr);
-        } finally {
-            Library.free(ptr);
-        }
+        return processError(libvirt.virDomainGetOSType(VDP)).toString();
     }
 
     /**
@@ -605,7 +601,7 @@ public class Domain {
      */
     public SchedParameter[] getSchedulerParameters() throws LibvirtException {
         IntByReference nParams = new IntByReference();
-        Library.free(processError(libvirt.virDomainGetSchedulerType(VDP, nParams)));
+        processError(libvirt.virDomainGetSchedulerType(VDP, nParams));
 
         int n = nParams.getValue();
 
@@ -637,12 +633,7 @@ public class Domain {
      * @throws LibvirtException
      */
     public String getSchedulerType() throws LibvirtException {
-        Pointer pScheduler = processError(libvirt.virDomainGetSchedulerType(VDP, null));
-        try {
-            return Library.getString(pScheduler);
-        } finally {
-            Library.free(pScheduler);
-        }
+        return processError(libvirt.virDomainGetSchedulerType(VDP, null)).toString();
     }
 
     /**
@@ -725,12 +716,7 @@ public class Domain {
      *      Description format </a>
      */
     public String getXMLDesc(int flags) throws LibvirtException {
-        Pointer ptr = processError(libvirt.virDomainGetXMLDesc(VDP, flags));
-        try {
-            return Library.getString(ptr);
-        } finally {
-            Library.free(ptr);
-        }
+        return processError(libvirt.virDomainGetXMLDesc(VDP, flags)).toString();
     }
 
     /**
@@ -1290,13 +1276,10 @@ public class Domain {
     }
 
     public String screenshot(Stream stream, int screen) throws LibvirtException {
-        Pointer ptr = processError(libvirt.virDomainScreenshot(this.VDP, stream.getVSP(), screen, 0));
+        CString mimeType = libvirt.virDomainScreenshot(this.VDP, stream.getVSP(), screen, 0);
+        processError(mimeType);
         stream.markReadable();
-        try {
-            return Library.getString(ptr);
-        } finally {
-            Library.free(ptr);
-        }
+        return mimeType.toString();
     }
 
     /**

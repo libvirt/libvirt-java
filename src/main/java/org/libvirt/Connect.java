@@ -978,12 +978,7 @@ public class Connect {
      *      description</a>
      */
     public String getCapabilities() throws LibvirtException {
-        Pointer ptr = processError(libvirt.virConnectGetCapabilities(VCP));
-        try {
-            return Library.getString(ptr);
-        } finally {
-            Library.free(ptr);
-        }
+        return processError(libvirt.virConnectGetCapabilities(VCP)).toString();
     }
 
     /**
@@ -1014,12 +1009,7 @@ public class Connect {
      * @throws LibvirtException
      */
     public String getHostName() throws LibvirtException {
-        Pointer ptr = processError(libvirt.virConnectGetHostname(VCP));
-        try {
-            return Library.getString(ptr);
-        } finally {
-            Library.free(ptr);
-        }
+        return processError(libvirt.virConnectGetHostname(VCP)).toString();
     }
 
     /**
@@ -1083,13 +1073,7 @@ public class Connect {
      * @since 1.5.2
      */
     public String getSysinfo() throws LibvirtException {
-        Pointer p = processError(libvirt.virConnectGetSysinfo(this.VCP, 0));
-
-        try {
-            return Library.getString(p);
-        } finally {
-            Library.free(p);
-        }
+        return processError(libvirt.virConnectGetSysinfo(this.VCP, 0)).toString();
     }
 
     /**

@@ -120,12 +120,7 @@ public class Interface {
      * @throws LibvirtException
      */
     public String getXMLDescription(int flags) throws LibvirtException {
-        Pointer xml = processError(libvirt.virInterfaceGetXMLDesc(VIP, flags));
-        try {
-            return Library.getString(xml);
-        } finally {
-            Library.free(xml);
-        }
+        return processError(libvirt.virInterfaceGetXMLDesc(VIP, flags)).toString();
     }
 
     /**

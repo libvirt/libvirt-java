@@ -176,11 +176,11 @@ public interface Libvirt extends Library {
     int virConnectIsEncrypted(ConnectionPointer virConnectPtr) ;
     int virConnectIsSecure(ConnectionPointer virConnectPtr) ;
     CString virConnectFindStoragePoolSources(ConnectionPointer virConnectPtr, String type, String srcSpec, int flags);
-    Pointer virConnectGetCapabilities(ConnectionPointer virConnectPtr);
-    Pointer virConnectGetHostname(ConnectionPointer virConnectPtr);
+    CString virConnectGetCapabilities(ConnectionPointer virConnectPtr);
+    CString virConnectGetHostname(ConnectionPointer virConnectPtr);
     int virConnectGetLibVersion(ConnectionPointer virConnectPtr, LongByReference libVer);
     int virConnectGetMaxVcpus(ConnectionPointer virConnectPtr, String type);
-    Pointer virConnectGetSysinfo(ConnectionPointer virConnectPtr, int flags);
+    CString virConnectGetSysinfo(ConnectionPointer virConnectPtr, int flags);
     String virConnectGetType(ConnectionPointer virConnectPtr);
     CString virConnectGetURI(ConnectionPointer virConnectPtr);
     int virConnectGetVersion(ConnectionPointer virConnectPtr, LongByReference hvVer);
@@ -261,14 +261,14 @@ public interface Libvirt extends Library {
     NativeLong virDomainGetMaxMemory(DomainPointer virDomainPtr);
     int virDomainGetMaxVcpus(DomainPointer virDomainPtr);
     String virDomainGetName(DomainPointer virDomainPtr);
-    Pointer virDomainGetOSType(DomainPointer virDomainPtr);
+    CString virDomainGetOSType(DomainPointer virDomainPtr);
     int virDomainGetSchedulerParameters(DomainPointer virDomainPtr, virSchedParameter[] params,
             IntByReference nparams);
-    Pointer virDomainGetSchedulerType(DomainPointer virDomainPtr, IntByReference nparams);
+    CString virDomainGetSchedulerType(DomainPointer virDomainPtr, IntByReference nparams);
     int virDomainGetUUID(DomainPointer virDomainPtr, byte[] uuidString);
     int virDomainGetUUIDString(DomainPointer virDomainPtr, byte[] uuidString);
     int virDomainGetVcpus(DomainPointer virDomainPtr, virVcpuInfo[] info, int maxInfo, byte[] cpumaps, int maplen);
-    Pointer virDomainGetXMLDesc(DomainPointer virDomainPtr, int flags);
+    CString virDomainGetXMLDesc(DomainPointer virDomainPtr, int flags);
     int virDomainHasCurrentSnapshot(DomainPointer virDomainPtr, int flags);
     int virDomainHasManagedSaveImage(DomainPointer virDomainPtr, int flags);
     int virDomainInterfaceStats(DomainPointer virDomainPtr, String path, virDomainInterfaceStats stats, SizeT size);
@@ -303,7 +303,7 @@ public interface Libvirt extends Library {
     int virDomainResume(DomainPointer virDomainPtr);
     int virDomainSave(DomainPointer virDomainPtr, String to);
     int virDomainSendKey(DomainPointer virDomainPtr, int codeset, int holdtime, int[] keycodes, int nkeycodes, int flags);
-    Pointer virDomainScreenshot(DomainPointer virDomainPtr, StreamPointer virStreamPtr, int screen, int flags);
+    CString virDomainScreenshot(DomainPointer virDomainPtr, StreamPointer virStreamPtr, int screen, int flags);
     int virDomainSetAutostart(DomainPointer virDomainPtr, int autoStart);
     int virDomainSetMaxMemory(DomainPointer virDomainPtr, NativeLong maxMemory);
     int virDomainSetMemory(DomainPointer virDomainPtr, NativeLong maxMemory);
@@ -322,11 +322,11 @@ public interface Libvirt extends Library {
     int virNetworkDestroy(NetworkPointer virConnectPtr);
     int virNetworkFree(NetworkPointer virConnectPtr);
     int virNetworkGetAutostart(NetworkPointer virNetworkPtr, IntByReference value);
-    Pointer virNetworkGetBridgeName(NetworkPointer virNetworkPtr);
+    CString virNetworkGetBridgeName(NetworkPointer virNetworkPtr);
     String virNetworkGetName(NetworkPointer virNetworkPtr);
     int virNetworkGetUUID(NetworkPointer virNetworkPtr, byte[] uuidString);
     int virNetworkGetUUIDString(NetworkPointer virNetworkPtr, byte[] uuidString);
-    Pointer virNetworkGetXMLDesc(NetworkPointer virNetworkPtr, int flags);
+    CString virNetworkGetXMLDesc(NetworkPointer virNetworkPtr, int flags);
     int virNetworkIsActive(NetworkPointer virNetworkPtr);
     int virNetworkIsPersistent(NetworkPointer virNetworkPtr);
     NetworkPointer virNetworkLookupByName(ConnectionPointer virConnectPtr, String name);
@@ -393,8 +393,8 @@ public interface Libvirt extends Library {
     int virStorageVolGetInfo(StorageVolPointer storageVolPtr, virStorageVolInfo info);
     String virStorageVolGetKey(StorageVolPointer storageVolPtr);
     String virStorageVolGetName(StorageVolPointer storageVolPtr);
-    Pointer virStorageVolGetPath(StorageVolPointer storageVolPtr);
-    Pointer virStorageVolGetXMLDesc(StorageVolPointer storageVolPtr, int flags);
+    CString virStorageVolGetPath(StorageVolPointer storageVolPtr);
+    CString virStorageVolGetXMLDesc(StorageVolPointer storageVolPtr, int flags);
     StorageVolPointer virStorageVolLookupByKey(ConnectionPointer virConnectPtr, String name);
     StorageVolPointer virStorageVolLookupByName(StoragePoolPointer storagePoolPtr, String name);
     StorageVolPointer virStorageVolLookupByPath(ConnectionPointer virConnectPtr, String path);
@@ -408,7 +408,7 @@ public interface Libvirt extends Library {
     int virInterfaceFree(InterfacePointer virDevicePointer);
     String virInterfaceGetName(InterfacePointer virInterfacePtr);
     String virInterfaceGetMACString(InterfacePointer virInterfacePtr);
-    Pointer virInterfaceGetXMLDesc(InterfacePointer virInterfacePtr, int flags);
+    CString virInterfaceGetXMLDesc(InterfacePointer virInterfacePtr, int flags);
     int virInterfaceIsActive(InterfacePointer virDevicePointer);
     InterfacePointer virInterfaceLookupByMACString(ConnectionPointer virConnectPtr, String mac);
     InterfacePointer virInterfaceLookupByName(ConnectionPointer virConnectPtr, String name);
@@ -448,7 +448,7 @@ public interface Libvirt extends Library {
     DomainSnapshotPointer virDomainSnapshotCreateXML(DomainPointer virDomainPtr, String xmlDesc, int flags);
     DomainSnapshotPointer virDomainSnapshotCurrent(DomainPointer virDomainPtr, int flags);
     int virDomainSnapshotDelete(DomainSnapshotPointer virDomainSnapshotPtr, int flags);
-    Pointer virDomainSnapshotGetXMLDesc(DomainSnapshotPointer virDomainSnapshotPtr, int flags);
+    CString virDomainSnapshotGetXMLDesc(DomainSnapshotPointer virDomainSnapshotPtr, int flags);
     int virDomainSnapshotFree(DomainSnapshotPointer virDomainSnapshotPtr);
     int virDomainSnapshotListNames(DomainPointer virDomainPtr, Pointer[] names, int nameslen, int flags);
     DomainSnapshotPointer virDomainSnapshotLookupByName(DomainPointer virDomainPtr, String name, int flags);

@@ -163,13 +163,7 @@ public class StorageVol {
      * @throws LibvirtException
      */
     public String getPath() throws LibvirtException {
-        Pointer p = processError(libvirt.virStorageVolGetPath(VSVP));
-
-        try {
-            return Library.getString(p);
-        } finally {
-            Library.free(p);
-        }
+        return processError(libvirt.virStorageVolGetPath(VSVP)).toString();
     }
 
     /**
@@ -181,13 +175,7 @@ public class StorageVol {
      * @throws LibvirtException
      */
     public String getXMLDesc(int flags) throws LibvirtException {
-        Pointer p = processError(libvirt.virStorageVolGetXMLDesc(VSVP, flags));
-
-        try {
-            return Library.getString(p);
-        } finally {
-            Library.free(p);
-        }
+        return processError(libvirt.virStorageVolGetXMLDesc(VSVP, flags)).toString();
     }
 
     /**

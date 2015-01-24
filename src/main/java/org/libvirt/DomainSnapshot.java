@@ -73,12 +73,6 @@ public class DomainSnapshot {
      * @return the XML document
      */
     public String getXMLDesc() throws LibvirtException {
-        Pointer p = processError(libvirt.virDomainSnapshotGetXMLDesc(VDSP, 0));
-
-        try {
-            return Library.getString(p);
-        } finally {
-            Library.free(p);
-        }
+        return processError(libvirt.virDomainSnapshotGetXMLDesc(VDSP, 0)).toString();
     }
 }
