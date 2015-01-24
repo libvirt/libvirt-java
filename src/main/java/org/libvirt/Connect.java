@@ -1062,6 +1062,21 @@ public class Connect {
     }
 
     /**
+     * Returns the security model of the connected node.
+     */
+    public SecurityModel getSecurityModel() throws LibvirtException {
+        Libvirt.SecurityModel secmodel = new Libvirt.SecurityModel();
+
+        processError(libvirt.virNodeGetSecurityModel(this.VCP, secmodel));
+
+        if (secmodel.model[0] == 0)
+            return null;
+        else
+            return new SecurityModel(secmodel);
+
+    }
+
+    /**
      * Returns the XML description of the sysinfo details for the host
      * on which the hypervisor is running.
      * <p>

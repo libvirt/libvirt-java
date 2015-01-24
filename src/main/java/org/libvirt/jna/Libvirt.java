@@ -40,7 +40,6 @@ import java.util.List;
  * LIBVIRT_0.6.1
  * virFreeError
  * virSaveLastError
- * virNodeGetSecurityModel;
  *
  * LIBVIRT_0.6.4
  * virInterfaceRef
@@ -172,6 +171,20 @@ public interface Libvirt extends Library {
         }
     };
 
+    static class SecurityModel extends Structure {
+        private static final int VIR_SECURITY_MODEL_BUFLEN = 256 + 1;
+        private static final int VIR_SECURITY_DOI_BUFLEN = 256 + 1;
+
+        private static final List<String> fields = Arrays.asList("model", "doi");
+
+        public byte model[] = new byte[VIR_SECURITY_MODEL_BUFLEN];
+        public byte doi[] = new byte[VIR_SECURITY_DOI_BUFLEN];
+
+        @Override
+        protected List<String> getFieldOrder() {
+            return fields;
+        }
+    }
 
     /**
      * @deprecated as of libvirt 0.6.0, all errors reported in the
@@ -362,6 +375,7 @@ public interface Libvirt extends Library {
     int virNodeGetCellsFreeMemory(ConnectionPointer virConnectPtr, LongByReference freeMems, int startCell,
             int maxCells);
     long virNodeGetFreeMemory(ConnectionPointer virConnectPtr);
+    int virNodeGetSecurityModel(ConnectionPointer virConnectPtr, SecurityModel secmodel);
 
     // Node/Device functions
     int virNodeNumOfDevices(ConnectionPointer virConnectPtr, String capabilityName, int flags);
