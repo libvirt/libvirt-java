@@ -1437,10 +1437,10 @@ public class Domain {
     public String[] snapshotListNames(int flags) throws LibvirtException {
         int num = snapshotNum();
         if (num > 0) {
-            Pointer[] ptrs = new Pointer[num];
-            int got = processError(libvirt.virDomainSnapshotListNames(VDP, ptrs, num, flags));
+            CString[] names = new CString[num];
+            int got = processError(libvirt.virDomainSnapshotListNames(VDP, names, num, flags));
 
-            return Library.toStringArray(ptrs, got);
+            return Library.toStringArray(names, got);
         } else {
             return Library.NO_STRINGS;
         }

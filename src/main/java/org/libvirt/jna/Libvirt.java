@@ -184,16 +184,16 @@ public interface Libvirt extends Library {
     String virConnectGetType(ConnectionPointer virConnectPtr);
     CString virConnectGetURI(ConnectionPointer virConnectPtr);
     int virConnectGetVersion(ConnectionPointer virConnectPtr, LongByReference hvVer);
-    int virConnectListDefinedDomains(ConnectionPointer virConnectPtr, Pointer[] name, int maxnames);
-    int virConnectListDefinedNetworks(ConnectionPointer virConnectPtr, Pointer[] name, int maxnames);
-    int virConnectListDefinedStoragePools(ConnectionPointer virConnectPtr, Pointer[] names, int maxnames);
-    int virConnectListDefinedInterfaces(ConnectionPointer virConnectPtr, Pointer[] name, int maxNames);
+    int virConnectListDefinedDomains(ConnectionPointer virConnectPtr, CString[] name, int maxnames);
+    int virConnectListDefinedNetworks(ConnectionPointer virConnectPtr, CString[] name, int maxnames);
+    int virConnectListDefinedStoragePools(ConnectionPointer virConnectPtr, CString[] names, int maxnames);
+    int virConnectListDefinedInterfaces(ConnectionPointer virConnectPtr, CString[] name, int maxNames);
     int virConnectListDomains(ConnectionPointer virConnectPtr, int[] ids, int maxnames);
-    int virConnectListInterfaces(ConnectionPointer virConnectPtr, Pointer[] name, int maxNames);
-    int virConnectListNetworks(ConnectionPointer virConnectPtr, Pointer[] name, int maxnames);
-    int virConnectListNWFilters(ConnectionPointer virConnectPtr, Pointer[] name, int maxnames);
-    int virConnectListSecrets(ConnectionPointer virConnectPtr, Pointer[] uids, int maxUids);
-    int virConnectListStoragePools(ConnectionPointer virConnectPtr, Pointer[] names, int maxnames);
+    int virConnectListInterfaces(ConnectionPointer virConnectPtr, CString[] name, int maxNames);
+    int virConnectListNetworks(ConnectionPointer virConnectPtr, CString[] name, int maxnames);
+    int virConnectListNWFilters(ConnectionPointer virConnectPtr, CString[] name, int maxnames);
+    int virConnectListSecrets(ConnectionPointer virConnectPtr, CString[] uids, int maxUids);
+    int virConnectListStoragePools(ConnectionPointer virConnectPtr, CString[] names, int maxnames);
     int virConnectNumOfDefinedDomains(ConnectionPointer virConnectPtr);
     int virConnectNumOfDefinedNetworks(ConnectionPointer virConnectPtr);
     int virConnectNumOfDefinedInterfaces(ConnectionPointer virConnectPtr);
@@ -343,13 +343,13 @@ public interface Libvirt extends Library {
 
     // Node/Device functions
     int virNodeNumOfDevices(ConnectionPointer virConnectPtr, String capabilityName, int flags);
-    int virNodeListDevices(ConnectionPointer virConnectPtr, String capabilityName, Pointer[] names, int maxnames,
+    int virNodeListDevices(ConnectionPointer virConnectPtr, String capabilityName, CString[] names, int maxnames,
             int flags);
     DevicePointer virNodeDeviceLookupByName(ConnectionPointer virConnectPtr, String name);
     String virNodeDeviceGetName(DevicePointer virDevicePointer);
     String virNodeDeviceGetParent(DevicePointer virDevicePointer);
     int virNodeDeviceNumOfCaps(DevicePointer virDevicePointer);
-    int virNodeDeviceListCaps(DevicePointer virDevicePointer, Pointer[] names, int maxNames);
+    int virNodeDeviceListCaps(DevicePointer virDevicePointer, CString[] names, int maxNames);
     CString virNodeDeviceGetXMLDesc(DevicePointer virDevicePointer, int flags);
     int virNodeDeviceFree(DevicePointer virDevicePointer);
     int virNodeDeviceDettach(DevicePointer virDevicePointer);
@@ -372,7 +372,7 @@ public interface Libvirt extends Library {
     int virStoragePoolGetUUID(StoragePoolPointer storagePoolPtr, byte[] uuidString);
     int virStoragePoolGetUUIDString(StoragePoolPointer storagePoolPtr, byte[] uuidString);
     CString virStoragePoolGetXMLDesc(StoragePoolPointer storagePoolPtr, int flags);
-    int virStoragePoolListVolumes(StoragePoolPointer storagePoolPtr, Pointer[] names, int maxnames);
+    int virStoragePoolListVolumes(StoragePoolPointer storagePoolPtr, CString[] names, int maxnames);
     int virStoragePoolIsActive(StoragePoolPointer storagePoolPtr);
     int virStoragePoolIsPersistent(StoragePoolPointer storagePoolPtr);
     StoragePoolPointer virStoragePoolLookupByName(ConnectionPointer virConnectPtr, String name);
@@ -450,7 +450,7 @@ public interface Libvirt extends Library {
     int virDomainSnapshotDelete(DomainSnapshotPointer virDomainSnapshotPtr, int flags);
     CString virDomainSnapshotGetXMLDesc(DomainSnapshotPointer virDomainSnapshotPtr, int flags);
     int virDomainSnapshotFree(DomainSnapshotPointer virDomainSnapshotPtr);
-    int virDomainSnapshotListNames(DomainPointer virDomainPtr, Pointer[] names, int nameslen, int flags);
+    int virDomainSnapshotListNames(DomainPointer virDomainPtr, CString[] names, int nameslen, int flags);
     DomainSnapshotPointer virDomainSnapshotLookupByName(DomainPointer virDomainPtr, String name, int flags);
     int virDomainSnapshotNum(DomainPointer virDomainPtr, int flags);
 

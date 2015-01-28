@@ -2,6 +2,7 @@ package org.libvirt;
 
 import org.libvirt.jna.Libvirt;
 import org.libvirt.jna.Libvirt.VirEventTimeoutCallback;
+import org.libvirt.jna.CString;
 import static org.libvirt.ErrorHandler.processError;
 
 import com.sun.jna.Native;
@@ -71,46 +72,25 @@ public final class Library {
     }
 
     /**
-     * Convert the data pointed to by {@code ptr} to a String.
-     */
-    static String getString(Pointer ptr) {
-        final long len = ptr.indexOf(0, (byte)0);
-        assert (len != -1): "C-Strings must be \\0 terminated.";
-
-        final byte[] data = ptr.getByteArray(0, (int)len);
-        try {
-            return new String(data, "utf-8");
-        } catch (java.io.UnsupportedEncodingException e) {
-            throw new RuntimeException("Libvirt problem: UTF-8 decoding error.", e);
-        }
-    }
-
-    /**
-     * Calls {@link #toStringArray(Pointer[], int)}.
-     */
-    static String[] toStringArray(Pointer[] ptrArr) {
-        return toStringArray(ptrArr, ptrArr.length);
-    }
-
-    /**
-     * Convert the given array of native pointers to "char" in
-     * UTF-8 encoding to an array of Strings.
+     * Convert the given array of UTF-8 encoded C-Strings to an array
+     * of Strings.
      *
      * \note The memory used by the elements of the original array
-     *       is freed and ptrArr is modified.
+     *       is freed.
      */
-    static String[] toStringArray(Pointer[] ptrArr, final int size) {
+    static String[] toStringArray(CString[] cstrarr, final int size) {
+        int i = 0;
         try {
             final String[] result = new String[size];
-            for (int i = 0; i < size; ++i) {
-                result[i] = Library.getString(ptrArr[i]);
+            for (; i < size; ++i) {
+                result[i] = cstrarr[i].toString();
             }
             return result;
-        } finally {
-            for (int i = 0; i < size; ++i) {
-                Library.free(ptrArr[i]);
-                ptrArr[i] = null;
+        } catch (Exception e) {
+            for (; i < size; ++i) {
+                if (cstrarr[i] != null) cstrarr[i].free();
             }
+            throw e;
         }
     }
 

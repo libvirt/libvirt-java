@@ -1,5 +1,6 @@
 package org.libvirt;
 
+import org.libvirt.jna.CString;
 import org.libvirt.jna.DevicePointer;
 import static org.libvirt.Library.libvirt;
 import static org.libvirt.ErrorHandler.processError;
@@ -130,10 +131,10 @@ public class Device {
         int maxCaps = getNumberOfCapabilities();
 
         if (maxCaps > 0) {
-            Pointer[] ptrs = new Pointer[maxCaps];
-            int got = processError(libvirt.virNodeDeviceListCaps(VDP, ptrs, maxCaps));
+            CString[] strings = new CString[maxCaps];
+            int got = processError(libvirt.virNodeDeviceListCaps(VDP, strings, maxCaps));
 
-            return Library.toStringArray(ptrs, got);
+            return Library.toStringArray(strings, got);
         } else {
             return Library.NO_STRINGS;
         }

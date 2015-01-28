@@ -1,5 +1,6 @@
 package org.libvirt;
 
+import org.libvirt.jna.CString;
 import org.libvirt.jna.Libvirt;
 import org.libvirt.jna.StoragePoolPointer;
 import org.libvirt.jna.StorageVolPointer;
@@ -247,11 +248,11 @@ public class StoragePool {
     public String[] listVolumes() throws LibvirtException {
         int num = numOfVolumes();
         if (num > 0) {
-            Pointer[] ptrs = new Pointer[num];
+            CString[] names = new CString[num];
 
-            int got = processError(libvirt.virStoragePoolListVolumes(VSPP, ptrs, num));
+            int got = processError(libvirt.virStoragePoolListVolumes(VSPP, names, num));
 
-            return Library.toStringArray(ptrs, got);
+            return Library.toStringArray(names, got);
         } else {
             return Library.NO_STRINGS;
         }
