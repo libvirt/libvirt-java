@@ -86,7 +86,7 @@ public final class Library {
                 result[i] = cstrarr[i].toString();
             }
             return result;
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
             for (; i < size; ++i) {
                 if (cstrarr[i] != null) cstrarr[i].free();
             }
