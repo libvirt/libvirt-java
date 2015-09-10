@@ -46,13 +46,6 @@ public enum DomainEventType {
         details = d;
     }
 
-    @SuppressWarnings("unchecked")
-    <T extends Enum<T>> T obtain(final int detail) {
-        return (T)safeAt(detail);
-    }
-
-    // this method is only necessary for OpenJDK 6 which does not
-    // compile calls to `obtain(d)` in some circumstances
     Object safeAt(final int detail) {
         final int index = Math.min(this.details.length - 1, detail);
         return this.details[index];

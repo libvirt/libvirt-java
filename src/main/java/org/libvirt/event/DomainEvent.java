@@ -60,7 +60,9 @@ public final class DomainEvent {
      *         {@link DomainEventDetail} interface
      */
     public <T extends Enum<T> & DomainEventDetail> T getDetail() {
-        return this.type.obtain(this.detail);
+        @SuppressWarnings("unchecked") T detail = (T)this.type.safeAt(this.detail);
+
+        return detail;
     }
 
     @Override
