@@ -1,7 +1,7 @@
 package org.libvirt;
 
 import com.sun.jna.Pointer;
-import org.libvirt.jna.Libvirt;
+import org.libvirt.jna.callbacks.VirConnectAuthCallback;
 import org.libvirt.jna.virConnectCredential;
 
 /**
@@ -9,9 +9,8 @@ import org.libvirt.jna.virConnectCredential;
  * should just add any extra data to the child class's instance.
  *
  * @author stoty
- *
  */
-public abstract class ConnectAuth implements Libvirt.VirConnectAuthCallback {
+public abstract class ConnectAuth implements VirConnectAuthCallback {
     public class Credential {
 
         /**
@@ -79,12 +78,10 @@ public abstract class ConnectAuth implements Libvirt.VirConnectAuthCallback {
             this.challenge = challenge;
             this.defresult = defresult;
         }
-
     }
 
     /**
      * @author stoty
-     *
      */
     public static enum CredentialType {
 
@@ -190,10 +187,8 @@ public abstract class ConnectAuth implements Libvirt.VirConnectAuthCallback {
     /**
      * The callback function that fills the credentials in
      *
-     * @param cred
-     *            the array of credentials passed by libvirt
+     * @param cred the array of credentials passed by libvirt
      * @return 0 if the defresult field contains a vailde response, -1 otherwise
      */
     public abstract int callback(Credential[] cred);
-
 }
