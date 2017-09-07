@@ -51,7 +51,7 @@ public final class TestJavaBindings extends TestCase {
     }
 
     public void testConnection() throws Exception {
-        assertEquals("conn.getType()", "Test", conn.getType());
+        assertEquals("conn.getType()", "TEST", conn.getType());
         assertEquals("conn.getURI()", "test:///default", conn.getURI());
         assertEquals("conn.getMaxVcpus(xen)", 32, conn.getMaxVcpus("xen"));
         assertNotNull("conn.getHostName()", conn.getHostName());
