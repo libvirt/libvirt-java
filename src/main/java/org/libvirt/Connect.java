@@ -41,6 +41,12 @@ import org.libvirt.jna.StoragePoolPointer;
 import org.libvirt.jna.StorageVolPointer;
 import org.libvirt.jna.StreamPointer;
 import org.libvirt.jna.callbacks.VirConnectCloseFunc;
+import org.libvirt.jna.callbacks.VirConnectDomainEventCallback;
+import org.libvirt.jna.callbacks.VirConnectDomainEventGenericCallback;
+import org.libvirt.jna.callbacks.VirConnectDomainEventIOErrorCallback;
+import org.libvirt.jna.callbacks.VirConnectDomainEventPMChangeCallback;
+import org.libvirt.jna.callbacks.VirDomainEventCallback;
+import org.libvirt.jna.callbacks.VirErrorCallback;
 import org.libvirt.jna.virConnectAuth;
 import org.libvirt.jna.virNodeInfo;
 
@@ -60,9 +66,9 @@ public class Connect {
 
         // We need to keep a reference to the callback to prevent it from being GCed
         @SuppressWarnings("unused")
-        public final Libvirt.VirDomainEventCallback callback;
+        public final VirDomainEventCallback callback;
 
-        public RegisteredEventListener(Libvirt.VirDomainEventCallback callback, int callbackId) {
+        public RegisteredEventListener(VirDomainEventCallback callback, int callbackId) {
             this.callback = callback;
             this.callbackId = callbackId;
         }
@@ -195,7 +201,7 @@ public class Connect {
      *
      * @param callback a Class to perform the callback
      */
-    public static void setErrorCallback(Libvirt.VirErrorCallback callback) throws LibvirtException {
+    public static void setErrorCallback(VirErrorCallback callback) throws LibvirtException {
         Libvirt.INSTANCE.virSetErrorFunc(null, callback);
     }
 
@@ -553,7 +559,7 @@ public class Connect {
         }
     }
 
-    private void domainEventRegister(Domain domain, int eventID, Libvirt.VirDomainEventCallback cb, EventListener l)
+    private void domainEventRegister(Domain domain, int eventID, VirDomainEventCallback cb, EventListener l)
             throws LibvirtException {
         Map<EventListener, RegisteredEventListener> handlers = eventListeners[eventID];
 
@@ -577,7 +583,7 @@ public class Connect {
             throw new IllegalArgumentException("IOError callback cannot be null");
         }
 
-        Libvirt.VirConnectDomainEventIOErrorCallback virCB = new Libvirt.VirConnectDomainEventIOErrorCallback() {
+        VirConnectDomainEventIOErrorCallback virCB = new VirConnectDomainEventIOErrorCallback() {
             @Override
             public void eventCallback(ConnectionPointer virConnectPtr, DomainPointer virDomainPointer,
                                       String srcPath,
@@ -620,7 +626,7 @@ public class Connect {
             throw new IllegalArgumentException("RebootCallback cannot be null");
         }
 
-        Libvirt.VirConnectDomainEventGenericCallback virCB = new Libvirt.VirConnectDomainEventGenericCallback() {
+        VirConnectDomainEventGenericCallback virCB = new VirConnectDomainEventGenericCallback() {
             @Override
             public void eventCallback(ConnectionPointer virConnectPtr,
                                       DomainPointer virDomainPointer,
@@ -644,7 +650,7 @@ public class Connect {
             throw new IllegalArgumentException("LifecycleCallback cannot be null");
         }
 
-        Libvirt.VirConnectDomainEventCallback virCB = new Libvirt.VirConnectDomainEventCallback() {
+        VirConnectDomainEventCallback virCB = new VirConnectDomainEventCallback() {
             @Override
             public int eventCallback(ConnectionPointer virConnectPtr, DomainPointer virDomainPointer,
                                      final int eventCode,
@@ -694,8 +700,8 @@ public class Connect {
             throw new IllegalArgumentException("PMWakeupCallback cannot be null");
         }
 
-        Libvirt.VirDomainEventCallback virCB =
-                new Libvirt.VirConnectDomainEventPMChangeCallback() {
+        VirDomainEventCallback virCB =
+                new VirConnectDomainEventPMChangeCallback() {
                     @Override
                     public void eventCallback(ConnectionPointer virConnectPtr, DomainPointer virDomainPointer,
                                               int reason, Pointer opaque) {
@@ -718,8 +724,8 @@ public class Connect {
             throw new IllegalArgumentException("PMSuspendCallback cannot be null");
         }
 
-        Libvirt.VirDomainEventCallback virCB =
-                new Libvirt.VirConnectDomainEventPMChangeCallback() {
+        VirDomainEventCallback virCB =
+                new VirConnectDomainEventPMChangeCallback() {
                     @Override
                     public void eventCallback(ConnectionPointer virConnectPtr, DomainPointer virDomainPointer,
                                               int reason, Pointer opaque) {
@@ -1708,7 +1714,7 @@ public class Connect {
         return new Secret(this, ptr);
     }
 
-    public void setConnectionErrorCallback(Libvirt.VirErrorCallback callback) throws LibvirtException {
+    public void setConnectionErrorCallback(VirErrorCallback callback) throws LibvirtException {
         libvirt.virConnSetErrorFunc(VCP, null, callback);
     }
 

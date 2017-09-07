@@ -4,7 +4,6 @@ import java.nio.ByteBuffer;
 import java.util.Arrays;
 import java.util.List;
 
-import com.sun.jna.Callback;
 import com.sun.jna.Library;
 import com.sun.jna.Native;
 import com.sun.jna.NativeLong;
@@ -14,83 +13,19 @@ import com.sun.jna.Structure;
 import com.sun.jna.ptr.IntByReference;
 import com.sun.jna.ptr.LongByReference;
 import org.libvirt.jna.callbacks.VirConnectCloseFunc;
+import org.libvirt.jna.callbacks.VirDomainEventCallback;
+import org.libvirt.jna.callbacks.VirErrorCallback;
+import org.libvirt.jna.callbacks.VirEventTimeoutCallback;
+import org.libvirt.jna.callbacks.VirFreeCallback;
+import org.libvirt.jna.callbacks.VirStreamEventCallback;
+import org.libvirt.jna.callbacks.VirStreamSinkFunc;
+import org.libvirt.jna.callbacks.VirStreamSourceFunc;
 
 /**
  * The libvirt interface which is exposed via JNA. The complete API is
  * documented at http://www.libvirt.org/html/libvirt-libvirt.html.
  */
 public interface Libvirt extends Library {
-
-    /**
-     * Common Event Callback super interface.
-     * <p>
-     * All domain event callbacks extend this interface.
-     *
-     * @see #virConnectDomainEventRegisterAny
-     */
-    interface VirDomainEventCallback extends Callback {
-    }
-
-    interface VirConnectDomainEventIOErrorCallback extends VirDomainEventCallback {
-        void eventCallback(ConnectionPointer virConnectPtr, DomainPointer virDomainPointer,
-                           String srcPath,
-                           String devAlias,
-                           int action,
-                           Pointer opaque);
-    }
-
-    interface VirConnectDomainEventGenericCallback extends VirDomainEventCallback {
-        void eventCallback(ConnectionPointer virConnectPtr, DomainPointer virDomainPointer, Pointer opaque);
-    }
-
-    interface VirConnectDomainEventCallback extends VirDomainEventCallback {
-        int eventCallback(ConnectionPointer virConnectPtr, DomainPointer virDomainPointer,
-                          int event,
-                          int detail,
-                          Pointer opaque);
-    }
-
-    // PMWakeup and PMSuspend have the same callback interface.
-    interface VirConnectDomainEventPMChangeCallback extends VirDomainEventCallback {
-        void eventCallback(ConnectionPointer virConnectPtr, DomainPointer virDomainPointer,
-                           int reason, Pointer opaque);
-    }
-
-    /**
-     * Error callback
-     */
-    interface VirErrorCallback extends Callback {
-        void errorCallback(Pointer userData, virError error);
-    }
-
-    /**
-     * Stream callbacks
-     */
-    interface VirStreamSinkFunc extends Callback {
-        int sinkCallback(StreamPointer virStreamPtr, String data, NativeLong nbytes, Pointer opaque);
-    }
-
-    interface VirStreamSourceFunc extends Callback {
-        int sourceCallback(StreamPointer virStreamPtr, String data, NativeLong nbytes, Pointer opaque);
-    }
-
-    interface VirStreamEventCallback extends Callback {
-        void eventCallback(StreamPointer virStreamPointer, int events, Pointer opaque);
-    }
-
-    /**
-     * Generic Callbacks
-     */
-    interface VirFreeCallback extends Callback {
-        void freeCallback(Pointer opaque);
-    }
-
-    /*
-     * Timeout Callback
-     */
-    interface VirEventTimeoutCallback extends Callback {
-        void tick(int timerID, Pointer opaque);
-    }
 
     ///
     /// Structure definitions
@@ -217,7 +152,7 @@ public interface Libvirt extends Library {
 
     int virConnectDomainEventDeregisterAny(ConnectionPointer virConnectPtr, int callbackID);
 
-    int virConnectDomainEventRegisterAny(ConnectionPointer virConnectPtr, DomainPointer virDomainPtr, int eventID, VirDomainEventCallback cb, Pointer opaque, Libvirt.VirFreeCallback freecb);
+    int virConnectDomainEventRegisterAny(ConnectionPointer virConnectPtr, DomainPointer virDomainPtr, int eventID, VirDomainEventCallback cb, Pointer opaque, VirFreeCallback freecb);
 
     int virConnectGetLibVersion(ConnectionPointer virConnectPtr, LongByReference libVer);
 
@@ -535,7 +470,7 @@ public interface Libvirt extends Library {
 
     int virStreamAbort(StreamPointer virStreamPtr);
 
-    int virStreamEventAddCallback(StreamPointer virStreamPtr, int events, Libvirt.VirStreamEventCallback cb, Pointer opaque, Libvirt.VirFreeCallback ff);
+    int virStreamEventAddCallback(StreamPointer virStreamPtr, int events, VirStreamEventCallback cb, Pointer opaque, VirFreeCallback ff);
 
     int virStreamEventRemoveCallback(StreamPointer virStreamPtr);
 
@@ -547,11 +482,11 @@ public interface Libvirt extends Library {
 
     int virStreamRecv(StreamPointer virStreamPtr, ByteBuffer data, SizeT length);
 
-    int virStreamRecvAll(StreamPointer virStreamPtr, Libvirt.VirStreamSinkFunc handler, Pointer opaque);
+    int virStreamRecvAll(StreamPointer virStreamPtr, VirStreamSinkFunc handler, Pointer opaque);
 
     int virStreamSend(StreamPointer virStreamPtr, ByteBuffer data, SizeT size);
 
-    int virStreamSendAll(StreamPointer virStreamPtr, Libvirt.VirStreamSourceFunc handler, Pointer opaque);
+    int virStreamSendAll(StreamPointer virStreamPtr, VirStreamSourceFunc handler, Pointer opaque);
 
     InterfacePointer virInterfaceDefineXML(ConnectionPointer virConnectPtr, String xml, int flags);
 
