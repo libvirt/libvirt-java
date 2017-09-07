@@ -1,7 +1,9 @@
 package org.libvirt;
 
-import java.io.IOException;
+import static org.libvirt.ErrorHandler.processError;
+import static org.libvirt.Library.libvirt;
 
+import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.ByteChannel;
 import java.nio.channels.ClosedChannelException;
@@ -11,8 +13,6 @@ import java.nio.channels.NonWritableChannelException;
 import org.libvirt.jna.Libvirt;
 import org.libvirt.jna.SizeT;
 import org.libvirt.jna.StreamPointer;
-import static org.libvirt.Library.libvirt;
-import static org.libvirt.ErrorHandler.processError;
 
 /**
  * The Stream class is used to transfer data between a libvirt daemon

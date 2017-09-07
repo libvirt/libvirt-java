@@ -1,9 +1,21 @@
 package org.libvirt;
 
+import static org.libvirt.ErrorHandler.processError;
+import static org.libvirt.ErrorHandler.processErrorIfZero;
+import static org.libvirt.Library.libvirt;
+
 import java.nio.ByteBuffer;
+import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 
+import com.sun.jna.Native;
+import com.sun.jna.NativeLong;
+import com.sun.jna.ptr.IntByReference;
 import org.libvirt.event.IOErrorListener;
+import org.libvirt.event.LifecycleListener;
+import org.libvirt.event.PMSuspendListener;
+import org.libvirt.event.PMWakeupListener;
+import org.libvirt.event.RebootListener;
 import org.libvirt.jna.CString;
 import org.libvirt.jna.DomainPointer;
 import org.libvirt.jna.DomainSnapshotPointer;
@@ -17,20 +29,6 @@ import org.libvirt.jna.virDomainJobInfo;
 import org.libvirt.jna.virDomainMemoryStats;
 import org.libvirt.jna.virSchedParameter;
 import org.libvirt.jna.virVcpuInfo;
-import org.libvirt.event.RebootListener;
-import org.libvirt.event.LifecycleListener;
-import org.libvirt.event.PMWakeupListener;
-import org.libvirt.event.PMSuspendListener;
-import static org.libvirt.Library.libvirt;
-import static org.libvirt.ErrorHandler.processError;
-import static org.libvirt.ErrorHandler.processErrorIfZero;
-
-import com.sun.jna.Native;
-import com.sun.jna.NativeLong;
-import com.sun.jna.Pointer;
-import com.sun.jna.ptr.IntByReference;
-
-import java.util.Arrays;
 
 /**
  * A virtual machine defined within libvirt.

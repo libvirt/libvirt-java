@@ -1,13 +1,35 @@
 package org.libvirt;
 
+import static org.libvirt.BitFlagsHelper.OR;
+import static org.libvirt.ErrorHandler.processError;
+import static org.libvirt.ErrorHandler.processErrorIfZero;
+import static org.libvirt.Library.getConstant;
+import static org.libvirt.Library.libvirt;
+
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-import org.libvirt.event.*;
-import org.libvirt.jna.ConnectionPointer;
+import com.sun.jna.Memory;
+import com.sun.jna.NativeLong;
+import com.sun.jna.Pointer;
+import com.sun.jna.ptr.LongByReference;
+import org.libvirt.event.ConnectionCloseListener;
+import org.libvirt.event.ConnectionCloseReason;
+import org.libvirt.event.DomainEvent;
+import org.libvirt.event.DomainEventType;
+import org.libvirt.event.EventListener;
+import org.libvirt.event.IOErrorAction;
+import org.libvirt.event.IOErrorListener;
+import org.libvirt.event.LifecycleListener;
+import org.libvirt.event.PMSuspendListener;
+import org.libvirt.event.PMSuspendReason;
+import org.libvirt.event.PMWakeupListener;
+import org.libvirt.event.PMWakeupReason;
+import org.libvirt.event.RebootListener;
 import org.libvirt.jna.CString;
+import org.libvirt.jna.ConnectionPointer;
 import org.libvirt.jna.DevicePointer;
 import org.libvirt.jna.DomainPointer;
 import org.libvirt.jna.InterfacePointer;
@@ -20,18 +42,6 @@ import org.libvirt.jna.StorageVolPointer;
 import org.libvirt.jna.StreamPointer;
 import org.libvirt.jna.virConnectAuth;
 import org.libvirt.jna.virNodeInfo;
-import org.libvirt.event.*;
-
-import static org.libvirt.Library.libvirt;
-import static org.libvirt.Library.getConstant;
-import static org.libvirt.ErrorHandler.processError;
-import static org.libvirt.ErrorHandler.processErrorIfZero;
-import static org.libvirt.BitFlagsHelper.OR;
-
-import com.sun.jna.Memory;
-import com.sun.jna.NativeLong;
-import com.sun.jna.Pointer;
-import com.sun.jna.ptr.LongByReference;
 
 /**
  * The Connect object represents a connection to a local or remote

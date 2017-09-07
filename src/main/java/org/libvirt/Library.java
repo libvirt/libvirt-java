@@ -1,17 +1,16 @@
 package org.libvirt;
 
-import org.libvirt.jna.Libvirt;
-import org.libvirt.jna.Libvirt.VirEventTimeoutCallback;
-import org.libvirt.jna.CString;
 import static org.libvirt.ErrorHandler.processError;
+
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import com.sun.jna.Native;
 import com.sun.jna.Pointer;
 import com.sun.jna.ptr.LongByReference;
-import com.sun.jna.ptr.PointerByReference;
-
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
+import org.libvirt.jna.CString;
+import org.libvirt.jna.Libvirt;
+import org.libvirt.jna.Libvirt.VirEventTimeoutCallback;
 
 /**
  * This class represents an instance of the JNA mapped libvirt

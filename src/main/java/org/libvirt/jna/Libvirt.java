@@ -1,6 +1,8 @@
 package org.libvirt.jna;
 
 import java.nio.ByteBuffer;
+import java.util.Arrays;
+import java.util.List;
 
 import com.sun.jna.Callback;
 import com.sun.jna.Library;
@@ -11,9 +13,6 @@ import com.sun.jna.Pointer;
 import com.sun.jna.Structure;
 import com.sun.jna.ptr.IntByReference;
 import com.sun.jna.ptr.LongByReference;
-
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * The libvirt interface which is exposed via JNA. The complete API is

@@ -1,11 +1,11 @@
 package org.libvirt;
 
-import org.libvirt.jna.Libvirt;
-import org.libvirt.jna.NetworkFilterPointer;
-import static org.libvirt.Library.libvirt;
 import static org.libvirt.ErrorHandler.processError;
+import static org.libvirt.Library.libvirt;
 
 import com.sun.jna.Native;
+import org.libvirt.jna.Libvirt;
+import org.libvirt.jna.NetworkFilterPointer;
 
 public class NetworkFilter {
     /**

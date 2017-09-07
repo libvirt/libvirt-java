@@ -1,9 +1,8 @@
 package org.libvirt;
 
+import com.sun.jna.Pointer;
 import org.libvirt.jna.Libvirt;
 import org.libvirt.jna.virConnectCredential;
-
-import com.sun.jna.Pointer;
 
 /**
  * We diverge from the C implementation There is no explicit cbdata field, you

@@ -1,13 +1,12 @@
 package org.libvirt;
 
-import org.libvirt.jna.Libvirt;
-import org.libvirt.jna.NetworkPointer;
-import static org.libvirt.Library.libvirt;
 import static org.libvirt.ErrorHandler.processError;
+import static org.libvirt.Library.libvirt;
 
 import com.sun.jna.Native;
-import com.sun.jna.Pointer;
 import com.sun.jna.ptr.IntByReference;
+import org.libvirt.jna.Libvirt;
+import org.libvirt.jna.NetworkPointer;
 
 /**
  * A network object defined by libvirt.

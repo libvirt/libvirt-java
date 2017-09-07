@@ -2,11 +2,10 @@ package org.libvirt;
 
 import java.util.Arrays;
 
+import com.sun.jna.Native;
 import org.libvirt.jna.Libvirt;
 import org.libvirt.jna.virSchedParameter;
 import org.libvirt.jna.virSchedParameterValue;
-
-import com.sun.jna.Native;
 
 /**
  * The abstract parent of the actual Schedparameter classes

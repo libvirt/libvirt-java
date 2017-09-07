@@ -1,7 +1,7 @@
 package org.libvirt;
 
-import org.libvirt.jna.Libvirt;
 import com.sun.jna.Native;
+import org.libvirt.jna.Libvirt;
 
 /**
  * A security model used for mandatory access control.
