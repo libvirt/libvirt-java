@@ -1062,7 +1062,7 @@ public class Connect {
      * Returns the security model of the connected node.
      */
     public SecurityModel getSecurityModel() throws LibvirtException {
-        Libvirt.SecurityModel secmodel = new Libvirt.SecurityModel();
+        org.libvirt.jna.types.SecurityModel secmodel = new org.libvirt.jna.types.SecurityModel();
 
         processError(libvirt.virNodeGetSecurityModel(this.VCP, secmodel));
 

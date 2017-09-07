@@ -1,15 +1,12 @@
 package org.libvirt.jna;
 
 import java.nio.ByteBuffer;
-import java.util.Arrays;
-import java.util.List;
 
 import com.sun.jna.Library;
 import com.sun.jna.Native;
 import com.sun.jna.NativeLong;
 import com.sun.jna.Platform;
 import com.sun.jna.Pointer;
-import com.sun.jna.Structure;
 import com.sun.jna.ptr.IntByReference;
 import com.sun.jna.ptr.LongByReference;
 import org.libvirt.jna.callbacks.VirConnectCloseFunc;
@@ -20,6 +17,8 @@ import org.libvirt.jna.callbacks.VirFreeCallback;
 import org.libvirt.jna.callbacks.VirStreamEventCallback;
 import org.libvirt.jna.callbacks.VirStreamSinkFunc;
 import org.libvirt.jna.callbacks.VirStreamSourceFunc;
+import org.libvirt.jna.types.SecurityLabel;
+import org.libvirt.jna.types.SecurityModel;
 
 /**
  * The libvirt interface which is exposed via JNA. The complete API is
@@ -27,46 +26,12 @@ import org.libvirt.jna.callbacks.VirStreamSourceFunc;
  */
 public interface Libvirt extends Library {
 
-    ///
-    /// Structure definitions
-    ///
-
-    static class SecurityLabel extends Structure {
-        private static final int VIR_SECURITY_LABEL_BUFLEN = 4096 + 1;
-        private static final List<String> fields = Arrays.asList("label", "enforcing");
-
-        public byte label[] = new byte[VIR_SECURITY_LABEL_BUFLEN];
-        public int enforcing;
-
-        @Override
-        protected List<String> getFieldOrder() {
-            return fields;
-        }
-    }
-
-    ;
-
-    static class SecurityModel extends Structure {
-        private static final int VIR_SECURITY_MODEL_BUFLEN = 256 + 1;
-        private static final int VIR_SECURITY_DOI_BUFLEN = 256 + 1;
-
-        private static final List<String> fields = Arrays.asList("model", "doi");
-
-        public byte model[] = new byte[VIR_SECURITY_MODEL_BUFLEN];
-        public byte doi[] = new byte[VIR_SECURITY_DOI_BUFLEN];
-
-        @Override
-        protected List<String> getFieldOrder() {
-            return fields;
-        }
-    }
-
     Libvirt INSTANCE = (Libvirt) Native.loadLibrary(Platform.isWindows() ? "virt-0" : "virt", Libvirt.class);
 
     // Constants we need
-    public static int VIR_UUID_BUFLEN = 16;
-    public static int VIR_UUID_STRING_BUFLEN = (36 + 1);
-    public static int VIR_DOMAIN_SCHED_FIELD_LENGTH = 80;
+    int VIR_UUID_BUFLEN = 16;
+    int VIR_UUID_STRING_BUFLEN = (36 + 1);
+    int VIR_DOMAIN_SCHED_FIELD_LENGTH = 80;
 
     ConnectionPointer virConnectOpen(String name);
 

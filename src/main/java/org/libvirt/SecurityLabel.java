@@ -1,7 +1,6 @@
 package org.libvirt;
 
 import com.sun.jna.Native;
-import org.libvirt.jna.Libvirt;
 
 /**
  * Represents a security label used for mandatory access control.
@@ -13,7 +12,7 @@ public final class SecurityLabel {
     private boolean enforced;
     private static byte NUL = 0;
 
-    SecurityLabel(Libvirt.SecurityLabel seclabel) {
+    SecurityLabel(org.libvirt.jna.types.SecurityLabel seclabel) {
         label = Native.toString(seclabel.label, "UTF-8");
         enforced = seclabel.enforcing == 1;
     }
@@ -39,11 +38,11 @@ public final class SecurityLabel {
     @Override
     public String toString() {
         return new StringBuilder()
-            .append("(label=")
-            .append(label)
-            .append(", enforced=")
-            .append(enforced)
-            .append(")")
-            .toString();
+                .append("(label=")
+                .append(label)
+                .append(", enforced=")
+                .append(enforced)
+                .append(")")
+                .toString();
     }
 }

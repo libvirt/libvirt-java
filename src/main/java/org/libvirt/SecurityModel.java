@@ -1,7 +1,6 @@
 package org.libvirt;
 
 import com.sun.jna.Native;
-import org.libvirt.jna.Libvirt;
 
 /**
  * A security model used for mandatory access control.
@@ -12,7 +11,7 @@ public final class SecurityModel {
     private String model;
     private String doi;
 
-    SecurityModel(Libvirt.SecurityModel secmodel) {
+    SecurityModel(org.libvirt.jna.types.SecurityModel secmodel) {
         model = Native.toString(secmodel.model, "UTF-8");
         doi = Native.toString(secmodel.doi, "UTF-8");
     }
