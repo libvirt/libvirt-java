@@ -1,5 +1,3 @@
-package org.libvirt.jna;
-
 import com.sun.jna.PointerType;
 
 /**

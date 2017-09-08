@@ -1,8 +1,7 @@
 package org.libvirt;
 
-import org.libvirt.jna.virNodeInfo;
-
 import com.sun.jna.Native;
+import org.libvirt.jna.virNodeInfo;
 
 /**
  * Node data from libvirt.

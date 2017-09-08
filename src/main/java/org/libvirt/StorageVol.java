@@ -1,12 +1,11 @@
 package org.libvirt;
 
+import static org.libvirt.ErrorHandler.processError;
+import static org.libvirt.Library.libvirt;
+
 import org.libvirt.jna.StoragePoolPointer;
 import org.libvirt.jna.StorageVolPointer;
 import org.libvirt.jna.virStorageVolInfo;
-import static org.libvirt.Library.libvirt;
-import static org.libvirt.ErrorHandler.processError;
-
-import com.sun.jna.Pointer;
 
 /**
  * An acutal storage bucket.

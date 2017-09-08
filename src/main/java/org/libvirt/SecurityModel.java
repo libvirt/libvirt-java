@@ -1,6 +1,5 @@
 package org.libvirt;
 
-import org.libvirt.jna.Libvirt;
 import com.sun.jna.Native;
 
 /**
@@ -12,7 +11,7 @@ public final class SecurityModel {
     private String model;
     private String doi;
 
-    SecurityModel(Libvirt.SecurityModel secmodel) {
+    SecurityModel(org.libvirt.jna.types.SecurityModel secmodel) {
         model = Native.toString(secmodel.model, "UTF-8");
         doi = Native.toString(secmodel.doi, "UTF-8");
     }

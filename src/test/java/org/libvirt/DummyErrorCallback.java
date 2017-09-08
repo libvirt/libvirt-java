@@ -1,8 +1,7 @@
 package org.libvirt;
 
-import org.libvirt.jna.virError;
-
 import com.sun.jna.Pointer;
+import org.libvirt.jna.virError;
 
 public class DummyErrorCallback extends ErrorCallback {
     public boolean error = false;

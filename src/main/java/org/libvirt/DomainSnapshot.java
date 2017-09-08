@@ -1,10 +1,9 @@
 package org.libvirt;
 
-import org.libvirt.jna.DomainSnapshotPointer;
-import static org.libvirt.Library.libvirt;
 import static org.libvirt.ErrorHandler.processError;
+import static org.libvirt.Library.libvirt;
 
-import com.sun.jna.Pointer;
+import org.libvirt.jna.DomainSnapshotPointer;
 
 public class DomainSnapshot {
 
