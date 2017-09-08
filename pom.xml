@@ -8,7 +8,7 @@
     <groupId>org.libvirt</groupId>
     <artifactId>libvirt</artifactId>
     <packaging>jar</packaging>
-    <version>0.5.2</version>
+    <version>1.0.0-SNAPSHOT</version>
 
     <name>libvirt java bindings</name>
     <description>Java API for the libvirt C library</description>
@@ -22,8 +22,23 @@
     </licenses>
 
     <scm>
-        <url>http://www.libvirt.org/git/?p=libvirt-java.git;a=summary</url>
+        <connection>scm:git:git@github.com:MissionCriticalCloud/libvirt-java.git</connection>
+        <developerConnection>scm:git:git@github.com:MissionCriticalCloud/libvirt-java.git</developerConnection>
+        <tag>HEAD</tag>
     </scm>
+
+    <distributionManagement>
+        <repository>
+            <id>beta-nexus</id>
+            <name>MCC Nexus</name>
+            <url>https://beta-nexus.mcc.schubergphilis.com/content/repositories/releases/</url>
+        </repository>
+        <snapshotRepository>
+            <id>beta-nexus</id>
+            <name>MCC Nexus</name>
+            <url>https://beta-nexus.mcc.schubergphilis.com/content/repositories/snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
