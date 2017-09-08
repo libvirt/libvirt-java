@@ -1,16 +1,15 @@
 package org.libvirt;
 
+import static org.libvirt.ErrorHandler.processError;
+import static org.libvirt.Library.libvirt;
+
+import com.sun.jna.Native;
+import com.sun.jna.ptr.IntByReference;
 import org.libvirt.jna.CString;
 import org.libvirt.jna.Libvirt;
 import org.libvirt.jna.StoragePoolPointer;
 import org.libvirt.jna.StorageVolPointer;
 import org.libvirt.jna.virStoragePoolInfo;
-import static org.libvirt.Library.libvirt;
-import static org.libvirt.ErrorHandler.processError;
-
-import com.sun.jna.Native;
-import com.sun.jna.Pointer;
-import com.sun.jna.ptr.IntByReference;
 
 /**
  * A collection of storage

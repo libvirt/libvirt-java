@@ -1,18 +1,20 @@
 package org.libvirt;
 
-import java.io.IOException;
+import static org.libvirt.ErrorHandler.processError;
+import static org.libvirt.Library.libvirt;
 
+import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.ByteChannel;
 import java.nio.channels.ClosedChannelException;
 import java.nio.channels.NonReadableChannelException;
 import java.nio.channels.NonWritableChannelException;
 
-import org.libvirt.jna.Libvirt;
 import org.libvirt.jna.SizeT;
 import org.libvirt.jna.StreamPointer;
-import static org.libvirt.Library.libvirt;
-import static org.libvirt.ErrorHandler.processError;
+import org.libvirt.jna.callbacks.VirStreamEventCallback;
+import org.libvirt.jna.callbacks.VirStreamSinkFunc;
+import org.libvirt.jna.callbacks.VirStreamSourceFunc;
 
 /**
  * The Stream class is used to transfer data between a libvirt daemon
@@ -21,7 +23,7 @@ import static org.libvirt.ErrorHandler.processError;
  * It implements the ByteChannel interface.
  * <p>
  * Basic usage:
- *
+ * <p>
  * <pre>
  * {@code
  * ByteBuffer buf = ByteBuffer.allocate(1024);
@@ -37,8 +39,8 @@ import static org.libvirt.ErrorHandler.processError;
  * <p>
  * If you want to use this class as an InputStream or OutputStream,
  * convert it using the {@link java.nio.channels.Channels#newInputStream
- *  Channels.newInputStream} and {@link java.nio.channels.Channels#newOutputStream
- *  Channels.newOutputStream} respectively.
+ * Channels.newInputStream} and {@link java.nio.channels.Channels#newOutputStream
+ * Channels.newOutputStream} respectively.
  */
 public class Stream implements ByteChannel {
 
@@ -54,11 +56,11 @@ public class Stream implements ByteChannel {
      */
     private Connect virConnect;
 
-    private final static int CLOSED   =  0;
-    private final static int READABLE =  1;
-    private final static int WRITABLE =  2;
-    private final static int OPEN     = READABLE | WRITABLE;
-    private final static int EOF      =  4;
+    private final static int CLOSED = 0;
+    private final static int READABLE = 1;
+    private final static int WRITABLE = 2;
+    private final static int OPEN = READABLE | WRITABLE;
+    private final static int EOF = 4;
 
     /* The status of the stream. A stream starts its live in the
      * "CLOSED" state.
@@ -76,14 +78,14 @@ public class Stream implements ByteChannel {
 
     void markReadable() {
         assert !isWritable()
-            : "A Stream cannot be readable and writable at the same time";
+                : "A Stream cannot be readable and writable at the same time";
 
         state |= READABLE;
     }
 
     void markWritable() {
         assert !isReadable()
-            : "A Stream cannot be readable and writable at the same time";
+                : "A Stream cannot be readable and writable at the same time";
 
         state |= WRITABLE;
     }
@@ -125,17 +127,15 @@ public class Stream implements ByteChannel {
      * Register a callback to be notified when a stream becomes writable, or
      * readable.
      *
-     * @see <a
-     *      href="http://www.libvirt.org/html/libvirt-libvirt.html#virStreamEventAddCallback">Libvirt
-     *      Docs</a>
-     * @param events
-     *            the events to monitor
-     * @param cb
-     *            the callback method
+     * @param events the events to monitor
+     * @param cb     the callback method
      * @return <em>ignore</em> (always 0)
      * @throws LibvirtException
+     * @see <a
+     * href="http://www.libvirt.org/html/libvirt-libvirt.html#virStreamEventAddCallback">Libvirt
+     * Docs</a>
      */
-    public int addCallback(int events, Libvirt.VirStreamEventCallback cb) throws LibvirtException {
+    public int addCallback(int events, VirStreamEventCallback cb) throws LibvirtException {
         return processError(libvirt.virStreamEventAddCallback(VSP, events, cb, null, null));
     }
 
@@ -182,8 +182,7 @@ public class Stream implements ByteChannel {
     /**
      * Receives data from the stream into the buffer provided.
      *
-     * @param data
-     *            buffer to put the data into
+     * @param data buffer to put the data into
      * @return the number of bytes read, -1 on error, -2 if the buffer is empty
      * @throws LibvirtException
      */
@@ -199,23 +198,29 @@ public class Stream implements ByteChannel {
 
     @Override
     public int read(ByteBuffer buffer) throws IOException {
-        if (!isOpen()) throw new ClosedChannelException();
-        if (!isReadable()) throw new NonReadableChannelException();
-        if (isEOF()) return -1;
+        if (!isOpen()) {
+            throw new ClosedChannelException();
+        }
+        if (!isReadable()) {
+            throw new NonReadableChannelException();
+        }
+        if (isEOF()) {
+            return -1;
+        }
 
         try {
             int ret = receive(buffer);
 
             switch (ret) {
-            case 0:
-                finish();
-                return -1;
+                case 0:
+                    finish();
+                    return -1;
 
-            case -2:
-                throw new UnsupportedOperationException("non-blocking I/O stream not yet supported");
+                case -2:
+                    throw new UnsupportedOperationException("non-blocking I/O stream not yet supported");
 
-            default:
-                return ret;
+                default:
+                    return ret;
             }
         } catch (LibvirtException e) {
             throw new IOException("could not read from stream", e);
@@ -224,8 +229,12 @@ public class Stream implements ByteChannel {
 
     @Override
     public int write(ByteBuffer buffer) throws IOException {
-        if (!isOpen()) throw new ClosedChannelException();
-        if (!isWritable()) throw new NonWritableChannelException();
+        if (!isOpen()) {
+            throw new ClosedChannelException();
+        }
+        if (!isWritable()) {
+            throw new NonWritableChannelException();
+        }
 
         int pos = buffer.position();
 
@@ -233,8 +242,9 @@ public class Stream implements ByteChannel {
             while (buffer.hasRemaining()) {
                 int ret = send(buffer);
 
-                if (ret == -2)
+                if (ret == -2) {
                     throw new UnsupportedOperationException("non-blocking I/O stream not yet supported");
+                }
             }
             return buffer.position() - pos;
         } catch (LibvirtException e) {
@@ -244,8 +254,11 @@ public class Stream implements ByteChannel {
 
     protected void closeStream() throws LibvirtException {
         if (isOpen() && !isEOF()) {
-            if (isWritable()) finish();
-            else if (isReadable()) abort();
+            if (isWritable()) {
+                finish();
+            } else if (isReadable()) {
+                abort();
+            }
         }
         this.state = CLOSED;
     }
@@ -267,22 +280,21 @@ public class Stream implements ByteChannel {
     /**
      * Batch receive method
      *
-     * @see <a href="http://www.libvirt.org/html/libvirt-libvirt.html#virStreamRecvAll">virStreamRecvAll</a>
-     * @param handler
-     *            the callback handler
+     * @param handler the callback handler
      * @return <em>ignore</em> (always 0)
      * @throws LibvirtException
+     * @see <a href="http://www.libvirt.org/html/libvirt-libvirt.html#virStreamRecvAll">virStreamRecvAll</a>
      */
-    public int receiveAll(Libvirt.VirStreamSinkFunc handler) throws LibvirtException {
+    public int receiveAll(VirStreamSinkFunc handler) throws LibvirtException {
         return processError(libvirt.virStreamRecvAll(VSP, handler, null));
     }
 
     /**
      * Remove an event callback from the stream
      *
-     * @see <a href="http://www.libvirt.org/html/libvirt-libvirt.html#virStreamEventRemoveCallback">Libvirt Docs</a>
      * @return <em>ignore</em> (always 0)
      * @throws LibvirtException
+     * @see <a href="http://www.libvirt.org/html/libvirt-libvirt.html#virStreamEventRemoveCallback">Libvirt Docs</a>
      */
     public int removeCallback() throws LibvirtException {
         return processError(libvirt.virStreamEventRemoveCallback(VSP));
@@ -291,10 +303,9 @@ public class Stream implements ByteChannel {
     /**
      * Write a series of bytes to the stream.
      *
-     * @param data
-     *            the data to write
+     * @param data the data to write
      * @return the number of bytes written, -1 on error, -2 if the buffer is
-     *         full
+     * full
      * @throws LibvirtException
      */
     public int send(byte[] data) throws LibvirtException {
@@ -311,26 +322,24 @@ public class Stream implements ByteChannel {
     /**
      * Batch send method
      *
-     * @see <a
-     *      href="http://www.libvirt.org/html/libvirt-libvirt.html#virStreamSendAll">Libvirt
-     *      Documentation</a>
-     * @param handler
-     *            the callback handler
+     * @param handler the callback handler
      * @return <em>ignore</em> (always 0)
      * @throws LibvirtException
+     * @see <a
+     * href="http://www.libvirt.org/html/libvirt-libvirt.html#virStreamSendAll">Libvirt
+     * Documentation</a>
      */
-    public int sendAll(Libvirt.VirStreamSourceFunc handler) throws LibvirtException {
+    public int sendAll(VirStreamSourceFunc handler) throws LibvirtException {
         return processError(libvirt.virStreamSendAll(VSP, handler, null));
     }
 
     /**
      * Changes the set of events to monitor for a stream.
      *
-     * @see <a href="http://www.libvirt.org/html/libvirt-libvirt.html#virStreamEventUpdateCallback">Libvirt Docs</a>
-     * @param events
-     *            the events to monitor
+     * @param events the events to monitor
      * @return <em>ignore</em> (always 0)
      * @throws LibvirtException
+     * @see <a href="http://www.libvirt.org/html/libvirt-libvirt.html#virStreamEventUpdateCallback">Libvirt Docs</a>
      */
     public int updateCallback(int events) throws LibvirtException {
         return processError(libvirt.virStreamEventUpdateCallback(VSP, events));

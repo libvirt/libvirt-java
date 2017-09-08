@@ -1,24 +1,23 @@
 package org.libvirt;
 
-import org.libvirt.jna.Libvirt;
-import org.libvirt.jna.Libvirt.VirEventTimeoutCallback;
-import org.libvirt.jna.CString;
 import static org.libvirt.ErrorHandler.processError;
-
-import com.sun.jna.Native;
-import com.sun.jna.Pointer;
-import com.sun.jna.ptr.LongByReference;
-import com.sun.jna.ptr.PointerByReference;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import com.sun.jna.Native;
+import com.sun.jna.Pointer;
+import com.sun.jna.ptr.LongByReference;
+import org.libvirt.jna.CString;
+import org.libvirt.jna.Libvirt;
+import org.libvirt.jna.callbacks.VirEventTimeoutCallback;
+
 /**
  * This class represents an instance of the JNA mapped libvirt
  * library.
- *
+ * <p>
  * The library will get loaded when first accessing this class.
- *
+ * <p>
  * Additionally, this class contains internal methods to ease
  * implementing the public API.
  */
@@ -26,12 +25,12 @@ public final class Library {
     private static AtomicBoolean runLoop = new AtomicBoolean();
     private static AtomicInteger timerID = new AtomicInteger(-1);
     private static VirEventTimeoutCallback timer = new VirEventTimeoutCallback() {
-            @Override
-            public void tick(int id, Pointer p) {
-                // disable myself again right after being triggered
-                libvirt.virEventUpdateTimeout(id, -1);
-            }
-        };
+        @Override
+        public void tick(int id, Pointer p) {
+            // disable myself again right after being triggered
+            libvirt.virEventUpdateTimeout(id, -1);
+        }
+    };
 
     final static Libvirt libvirt;
 
@@ -49,7 +48,8 @@ public final class Library {
         }
     }
 
-    private Library() {}
+    private Library() {
+    }
 
     /**
      * Returns the version of the native libvirt library.
@@ -74,9 +74,9 @@ public final class Library {
     /**
      * Convert the given array of UTF-8 encoded C-Strings to an array
      * of Strings.
-     *
+     * <p>
      * \note The memory used by the elements of the original array
-     *       is freed.
+     * is freed.
      */
     static String[] toStringArray(CString[] cstrarr, final int size) {
         int i = 0;
@@ -88,7 +88,9 @@ public final class Library {
             return result;
         } catch (RuntimeException e) {
             for (; i < size; ++i) {
-                if (cstrarr[i] != null) cstrarr[i].free();
+                if (cstrarr[i] != null) {
+                    cstrarr[i].free();
+                }
             }
             throw e;
         }
@@ -96,7 +98,7 @@ public final class Library {
 
     /**
      * Initialize the event loop.
-     *
+     * <p>
      * Registers a default event loop implementation based on the
      * poll() system call.
      * <p>
@@ -105,10 +107,9 @@ public final class Library {
      * in another thread.
      * <p>
      * Note: You must call this function <em>before</em> connecting to
-     *       the hypervisor.
+     * the hypervisor.
      *
      * @throws LibvirtException on failure
-     *
      * @see #processEvent
      * @see #runLoop
      */
@@ -140,7 +141,6 @@ public final class Library {
      * unexpectedly as a result of keepalive timeout.
      *
      * @throws LibvirtException on failure
-     *
      * @see #initEventLoop()
      */
     public static void processEvent() throws LibvirtException {
@@ -149,7 +149,7 @@ public final class Library {
 
     /**
      * Runs the event loop.
-     *
+     * <p>
      * This method blocks until {@link #stopEventLoop} is called or an
      * exception is thrown.
      * <p>
@@ -164,14 +164,15 @@ public final class Library {
         runLoop.set(true);
         do {
             processEvent();
-            if (Thread.interrupted())
+            if (Thread.interrupted()) {
                 throw new InterruptedException();
+            }
         } while (runLoop.get());
     }
 
     /**
      * Stops the event loop.
-     *
+     * <p>
      * This methods stops an event loop when an event loop is
      * currently running, otherwise it does nothing.
      *
@@ -181,8 +182,9 @@ public final class Library {
         if (runLoop.getAndSet(false)) {
             // fire the timer immediately
             int timer = timerID.get();
-            if (timer >= 0)
+            if (timer >= 0) {
                 libvirt.virEventUpdateTimeout(timer, 0);
+            }
         }
     }
 
@@ -190,14 +192,14 @@ public final class Library {
      * Look up a constant of an enum by its ordinal number.
      *
      * @return the corresponding enum constant when such a constant exists,
-     *         otherwise the element which has the biggest ordinal number
-     *         assigned.
-     *
+     * otherwise the element which has the biggest ordinal number
+     * assigned.
      * @throws IllegalArgumentException if {@code ordinal} is negative
      */
     static <T extends Enum<T>> T getConstant(final Class<T> c, final int ordinal) {
-        if (ordinal < 0)
+        if (ordinal < 0) {
             throw new IllegalArgumentException("ordinal must be >= 0");
+        }
 
         T[] a = c.getEnumConstants();
 

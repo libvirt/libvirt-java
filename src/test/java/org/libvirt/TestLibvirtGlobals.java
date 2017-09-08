@@ -1,7 +1,5 @@
 package org.libvirt;
 
-import java.util.UUID;
-
 import junit.framework.TestCase;
 
 /**

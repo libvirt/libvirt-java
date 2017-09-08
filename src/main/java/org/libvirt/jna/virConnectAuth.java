@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.sun.jna.Pointer;
 import com.sun.jna.Structure;
+import org.libvirt.jna.callbacks.VirConnectAuthCallback;
 
 /**
  * JNA mapping for the virConnectAuth structure
@@ -12,7 +13,7 @@ import com.sun.jna.Structure;
 public class virConnectAuth extends Structure {
     public Pointer credtype;
     public int ncredtype;
-    public Libvirt.VirConnectAuthCallback cb;
+    public VirConnectAuthCallback cb;
     public Pointer cbdata;
 
     private static final List<String> fields = Arrays.asList(

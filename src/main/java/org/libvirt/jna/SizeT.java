@@ -1,7 +1,7 @@
 package org.libvirt.jna;
 
-import com.sun.jna.Native;
 import com.sun.jna.IntegerType;
+import com.sun.jna.Native;
 
 /**
  * Represents the native {@code size_t} data type.

@@ -1,16 +1,16 @@
 package org.libvirt;
 
-import org.libvirt.event.*;
-
-import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.ClosedChannelException;
-import java.util.Arrays;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
 import junit.framework.TestCase;
+import org.libvirt.event.DomainEvent;
+import org.libvirt.event.DomainEventType;
+import org.libvirt.event.LifecycleListener;
 
 public final class TestJavaBindings extends TestCase {
     final int UUIDArray[] = { Integer.decode("0x00"), Integer.decode("0x4b"), Integer.decode("0x96"), Integer.decode("0xe1"),
@@ -51,7 +51,7 @@ public final class TestJavaBindings extends TestCase {
     }
 
     public void testConnection() throws Exception {
-        assertEquals("conn.getType()", "Test", conn.getType());
+        assertEquals("conn.getType()", "TEST", conn.getType());
         assertEquals("conn.getURI()", "test:///default", conn.getURI());
         assertEquals("conn.getMaxVcpus(xen)", 32, conn.getMaxVcpus("xen"));
         assertNotNull("conn.getHostName()", conn.getHostName());

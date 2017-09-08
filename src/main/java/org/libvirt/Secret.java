@@ -1,15 +1,16 @@
 package org.libvirt;
 
+import static org.libvirt.ErrorHandler.processError;
+import static org.libvirt.Library.libvirt;
+
+import java.nio.ByteBuffer;
+
+import com.sun.jna.Native;
+import com.sun.jna.Pointer;
 import org.libvirt.jna.Libvirt;
 import org.libvirt.jna.SecretPointer;
 import org.libvirt.jna.SizeT;
 import org.libvirt.jna.SizeTByReference;
-import static org.libvirt.Library.libvirt;
-import static org.libvirt.ErrorHandler.processError;
-
-import com.sun.jna.Native;
-import com.sun.jna.Pointer;
-import java.nio.ByteBuffer;
 
 /**
  * A secret defined by libvirt

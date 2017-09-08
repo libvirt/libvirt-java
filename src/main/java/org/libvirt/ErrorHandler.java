@@ -1,12 +1,10 @@
 package org.libvirt;
 
-import org.libvirt.jna.Libvirt;
-import org.libvirt.jna.virError;
-
 import static org.libvirt.Library.libvirt;
 
 import com.sun.jna.Pointer;
 import com.sun.jna.PointerType;
+import org.libvirt.jna.virError;
 
 /**
  * Utility class which processes the last error from the libvirt library. It
