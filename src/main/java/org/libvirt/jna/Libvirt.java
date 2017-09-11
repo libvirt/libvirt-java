@@ -31,7 +31,7 @@ public interface Libvirt extends Library {
     // Constants we need
     int VIR_UUID_BUFLEN = 16;
     int VIR_UUID_STRING_BUFLEN = (36 + 1);
-    int VIR_DOMAIN_SCHED_FIELD_LENGTH = 80;
+    int VIR_TYPED_PARAM_FIELD_LENGTH = 80;
 
     ConnectionPointer virConnectOpen(String name);
 
@@ -185,6 +185,8 @@ public interface Libvirt extends Library {
 
     int virDomainAttachDeviceFlags(DomainPointer virDomainPtr, String deviceXML, int flags);
 
+    int virDomainBlockCopy(DomainPointer virDomainPtr, String disk, String destxml, virTypedParameter params, int nparams, int flags);
+
     int virDomainBlockPeek(DomainPointer virDomainPtr, String disk, long offset, SizeT size, ByteBuffer buffer, int flags);
 
     int virDomainBlockResize(DomainPointer virDomainPtr, String disk, long size, int flags);
@@ -217,7 +219,7 @@ public interface Libvirt extends Library {
 
     int virDomainGetMaxVcpus(DomainPointer virDomainPtr);
 
-    int virDomainGetSchedulerParameters(DomainPointer virDomainPtr, virSchedParameter[] params, IntByReference nparams);
+    int virDomainGetSchedulerParameters(DomainPointer virDomainPtr, virTypedParameter[] params, IntByReference nparams);
 
     int virDomainGetSecurityLabel(DomainPointer virDomainPtr, SecurityLabel seclabel);
 
@@ -281,7 +283,7 @@ public interface Libvirt extends Library {
 
     int virDomainSetMemory(DomainPointer virDomainPtr, NativeLong maxMemory);
 
-    int virDomainSetSchedulerParameters(DomainPointer virDomainPtr, virSchedParameter[] params, int nparams);
+    int virDomainSetSchedulerParameters(DomainPointer virDomainPtr, virTypedParameter[] params, int nparams);
 
     int virDomainSetVcpus(DomainPointer virDomainPtr, int nvcpus);
 

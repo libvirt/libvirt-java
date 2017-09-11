@@ -1,16 +1,15 @@
-package org.libvirt;
+package org.libvirt.parameters;
 
 /**
- * Parameter to hold an int.
+ * Class for representing a int typed parameter
  */
-public final class SchedIntParameter extends SchedParameter {
+public final class TypedIntParameter extends TypedParameter {
     public int value;
 
-    public SchedIntParameter() {
-
+    public TypedIntParameter() {
     }
 
-    public SchedIntParameter(int value) {
+    public TypedIntParameter(int value) {
         this.value = value;
     }
 
@@ -19,7 +18,7 @@ public final class SchedIntParameter extends SchedParameter {
     }
 
     public String getTypeAsString() {
-        return "VIR_DOMAIN_SCHED_FIELD_INT";
+        return "VIR_TYPED_PARAM_INT";
     }
 
     public String getValueAsString() {

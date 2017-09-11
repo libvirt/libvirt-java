@@ -27,8 +27,9 @@ import org.libvirt.jna.virDomainInfo;
 import org.libvirt.jna.virDomainInterfaceStats;
 import org.libvirt.jna.virDomainJobInfo;
 import org.libvirt.jna.virDomainMemoryStats;
-import org.libvirt.jna.virSchedParameter;
+import org.libvirt.jna.virTypedParameter;
 import org.libvirt.jna.virVcpuInfo;
+import org.libvirt.parameters.TypedParameter;
 
 /**
  * A virtual machine defined within libvirt.
@@ -586,29 +587,29 @@ public class Domain {
     /**
      * Gets the scheduler parameters.
      *
-     * @return an array of SchedParameter objects
+     * @return an array of TypedParameter objects
      * @throws LibvirtException
      */
-    public SchedParameter[] getSchedulerParameters() throws LibvirtException {
+    public TypedParameter[] getSchedulerParameters() throws LibvirtException {
         IntByReference nParams = new IntByReference();
         processError(libvirt.virDomainGetSchedulerType(VDP, nParams));
 
         int n = nParams.getValue();
 
         if (n > 0) {
-            virSchedParameter[] nativeParams = new virSchedParameter[n];
+            virTypedParameter[] nativeParams = new virTypedParameter[n];
 
             processError(libvirt.virDomainGetSchedulerParameters(VDP, nativeParams, nParams));
             n = nParams.getValue();
 
-            SchedParameter[] returnValue = new SchedParameter[n];
+            TypedParameter[] returnValue = new TypedParameter[n];
 
             for (int x = 0; x < n; x++) {
-                returnValue[x] = SchedParameter.create(nativeParams[x]);
+                returnValue[x] = TypedParameter.create(nativeParams[x]);
             }
             return returnValue;
         } else {
-            return new SchedParameter[]{};
+            return new TypedParameter[]{};
         }
     }
 
@@ -1286,13 +1287,13 @@ public class Domain {
     /**
      * Changes the scheduler parameters
      *
-     * @param params an array of SchedParameter objects to be changed
+     * @param params an array of TypedParameter objects to be changed
      * @throws LibvirtException
      */
-    public void setSchedulerParameters(SchedParameter[] params) throws LibvirtException {
-        virSchedParameter[] input = new virSchedParameter[params.length];
+    public void setSchedulerParameters(TypedParameter[] params) throws LibvirtException {
+        virTypedParameter[] input = new virTypedParameter[params.length];
         for (int x = 0; x < params.length; x++) {
-            input[x] = SchedParameter.toNative(params[x]);
+            input[x] = TypedParameter.toNative(params[x]);
         }
         processError(libvirt.virDomainSetSchedulerParameters(VDP, input, params.length));
     }

@@ -11,6 +11,8 @@ import junit.framework.TestCase;
 import org.libvirt.event.DomainEvent;
 import org.libvirt.event.DomainEventType;
 import org.libvirt.event.LifecycleListener;
+import org.libvirt.parameters.TypedParameter;
+import org.libvirt.parameters.TypedUintParameter;
 
 public final class TestJavaBindings extends TestCase {
     final int UUIDArray[] = { Integer.decode("0x00"), Integer.decode("0x4b"), Integer.decode("0x96"), Integer.decode("0xe1"),
@@ -182,14 +184,14 @@ public final class TestJavaBindings extends TestCase {
         assertNotNull("dom.getID()", dom.getID());
 
         // Execute the code Iterate over the parameters the easy way
-        for (SchedParameter c : dom.getSchedulerParameters()) {
+        for (TypedParameter c : dom.getSchedulerParameters()) {
             System.out.println(c.getTypeAsString() + ":" + c.field + ":" + c.getValueAsString());
         }
 
         dom.getSchedulerParameters() ;
         
-        SchedUintParameter[] pars = new SchedUintParameter[1];
-        pars[0] = new SchedUintParameter();
+        TypedUintParameter[] pars = new TypedUintParameter[1];
+        pars[0] = new TypedUintParameter();
         pars[0].field = "weight";
         pars[0].value = 100;
         dom.setSchedulerParameters(pars);

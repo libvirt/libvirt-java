@@ -1,76 +1,75 @@
-package org.libvirt;
+package org.libvirt.parameters;
 
 import java.util.Arrays;
 
 import com.sun.jna.Native;
 import org.libvirt.jna.Libvirt;
-import org.libvirt.jna.virSchedParameter;
-import org.libvirt.jna.virSchedParameterValue;
+import org.libvirt.jna.virTypedParameter;
+import org.libvirt.jna.virTypedParameterValue;
 
 /**
- * The abstract parent of the actual Schedparameter classes
- *
- * @author stoty
- *
+ * The abstract parent of the actual TypedParameter classes
  */
-public abstract class SchedParameter {
+public abstract class TypedParameter {
 
-    public static SchedParameter create(virSchedParameter vParam) {
-        SchedParameter returnValue = null;
+    public static TypedParameter create(virTypedParameter vParam) {
+        TypedParameter returnValue = null;
         if (vParam != null) {
             switch (vParam.type) {
                 case (1):
-                    returnValue = new SchedIntParameter(vParam.value.i);
+                    returnValue = new TypedIntParameter(vParam.value.i);
                     break;
                 case (2):
-                    returnValue = new SchedUintParameter(vParam.value.i);
+                    returnValue = new TypedUintParameter(vParam.value.i);
                     break;
                 case (3):
-                    returnValue = new SchedLongParameter(vParam.value.l);
+                    returnValue = new TypedLongParameter(vParam.value.l);
                     break;
                 case (4):
-                    returnValue = new SchedUlongParameter(vParam.value.l);
+                    returnValue = new TypedUlongParameter(vParam.value.l);
                     break;
                 case (5):
-                    returnValue = new SchedDoubleParameter(vParam.value.d);
+                    returnValue = new TypedDoubleParameter(vParam.value.d);
                     break;
                 case (6):
-                    returnValue = new SchedBooleanParameter(vParam.value.b);
+                    returnValue = new TypedBooleanParameter(vParam.value.b);
                     break;
             }
-            returnValue.field = Native.toString(vParam.field);
+            if (returnValue != null) {
+                returnValue.field = Native.toString(vParam.field);
+            }
         }
         return returnValue;
     }
 
-    public static virSchedParameter toNative(SchedParameter param) {
-        virSchedParameter returnValue = new virSchedParameter();
-        returnValue.value = new virSchedParameterValue();
-        returnValue.field = copyOf(param.field.getBytes(), Libvirt.VIR_DOMAIN_SCHED_FIELD_LENGTH);
+    public static virTypedParameter toNative(TypedParameter param) {
+        virTypedParameter returnValue = new virTypedParameter();
+        returnValue.value = new virTypedParameterValue();
+        returnValue.field = copyOf(param.field.getBytes(), Libvirt.VIR_TYPED_PARAM_FIELD_LENGTH);
         returnValue.type = param.getType();
         switch (param.getType()) {
             case (1):
-                returnValue.value.i = ((SchedIntParameter) param).value;
+                returnValue.value.i = ((TypedIntParameter) param).value;
                 returnValue.value.setType(int.class);
                 break;
             case (2):
-                returnValue.value.i = ((SchedUintParameter) param).value;
+                returnValue.value.i = ((TypedUintParameter) param).value;
                 returnValue.value.setType(int.class);
                 break;
             case (3):
-                returnValue.value.l = ((SchedLongParameter) param).value;
+                returnValue.value.l = ((TypedLongParameter) param).value;
                 returnValue.value.setType(long.class);
                 break;
             case (4):
-                returnValue.value.l = ((SchedUlongParameter) param).value;
+                returnValue.value.l = ((TypedUlongParameter) param).value;
                 returnValue.value.setType(long.class);
                 break;
             case (5):
-                returnValue.value.d = ((SchedDoubleParameter) param).value;
+                returnValue.value.d = ((TypedDoubleParameter) param).value;
                 returnValue.value.setType(double.class);
                 break;
             case (6):
-                returnValue.value.b = (byte) (((SchedBooleanParameter) param).value ? 1 : 0);
+                returnValue.value.b = (byte) (((TypedBooleanParameter) param).value ? 1 : 0);
                 returnValue.value.setType(byte.class);
                 break;
 
