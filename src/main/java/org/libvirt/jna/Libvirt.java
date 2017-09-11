@@ -186,6 +186,8 @@ public interface Libvirt extends Library {
 
     int virDomainBlockCopy(DomainPointer virDomainPtr, String disk, String destxml, virTypedParameter[] params, int nparams, int flags);
 
+    int virDomainBlockJobAbort(DomainPointer virDomainPtr, String disk, int flags);
+
     int virDomainBlockPeek(DomainPointer virDomainPtr, String disk, long offset, SizeT size, ByteBuffer buffer, int flags);
 
     int virDomainBlockResize(DomainPointer virDomainPtr, String disk, long size, int flags);

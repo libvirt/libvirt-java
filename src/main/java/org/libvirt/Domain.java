@@ -164,6 +164,22 @@ public class Domain {
     }
 
     /**
+     * Copy the guest-visible contents of a disk image to a new file described by @destxml.
+     *
+     * @param disk    the path to the block device
+     * @param destxml the new disk description
+     * @param params  Array of {@link org.libvirt.parameters.TypedParameter}:
+     *                - VIR_DOMAIN_BLOCK_COPY_BANDWIDTH bandwidth {@link org.libvirt.parameters.TypedUlongParameter}
+     *                - VIR_DOMAIN_BLOCK_COPY_GRANULARITY granularity {@link org.libvirt.parameters.TypedUintParameter}
+     *                - VIR_DOMAIN_BLOCK_COPY_BUF_SIZE buf-size {@link org.libvirt.parameters.TypedUlongParameter}
+     * @param flags   {@link org.libvirt.flags.DomainBlockCopyFlags}
+     * @throws LibvirtException
+     */
+    public void blockCopy(String disk, String destxml, virTypedParameter[] params, int flags) throws LibvirtException {
+        processError(libvirt.virDomainBlockCopy(VDP, disk, destxml, params, params.length, flags));
+    }
+
+    /**
      * This function returns block device (disk) stats for block devices
      * attached to the domain.
      *
@@ -175,6 +191,17 @@ public class Domain {
         virDomainBlockInfo info = new virDomainBlockInfo();
         processError(libvirt.virDomainGetBlockInfo(VDP, path, info, 0));
         return new DomainBlockInfo(info);
+    }
+
+    /**
+     * Cancel the active block job on the given disk.
+     *
+     * @param disk  the path to the block device
+     * @param flags {@link org.libvirt.flags.DomainBlockJobAbortFlags}
+     * @throws LibvirtException
+     */
+    public void blockJobAbort(String disk, int flags) throws LibvirtException {
+        processError(libvirt.virDomainBlockJobAbort(VDP, disk, flags));
     }
 
     /**
