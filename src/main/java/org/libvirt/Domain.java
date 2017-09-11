@@ -16,6 +16,8 @@ import org.libvirt.event.LifecycleListener;
 import org.libvirt.event.PMSuspendListener;
 import org.libvirt.event.PMWakeupListener;
 import org.libvirt.event.RebootListener;
+import org.libvirt.flags.DomainBlockResizeFlags;
+import org.libvirt.flags.DomainMigrateFlags;
 import org.libvirt.jna.CString;
 import org.libvirt.jna.DomainPointer;
 import org.libvirt.jna.DomainSnapshotPointer;
@@ -27,117 +29,15 @@ import org.libvirt.jna.virDomainInfo;
 import org.libvirt.jna.virDomainInterfaceStats;
 import org.libvirt.jna.virDomainJobInfo;
 import org.libvirt.jna.virDomainMemoryStats;
-import org.libvirt.jna.virSchedParameter;
+import org.libvirt.jna.virTypedParameter;
 import org.libvirt.jna.virVcpuInfo;
+import org.libvirt.parameters.DomainBlockCopyParameters;
+import org.libvirt.parameters.typed.TypedParameter;
 
 /**
  * A virtual machine defined within libvirt.
  */
 public class Domain {
-
-    public static final class BlockResizeFlags {
-        /**
-         * size is in bytes instead of KiB
-         */
-        public static final int BYTES = 1;
-    }
-
-    static final class CreateFlags {
-        static final int VIR_DOMAIN_NONE = 0;
-        static final int VIR_DOMAIN_SNAPSHOT_CREATE_REDEFINE = (1 << 0); /* Restore or alter
-                                                                               metadata */
-        static final int VIR_DOMAIN_SNAPSHOT_CREATE_CURRENT = (1 << 1); /* With redefine, make
-                                                                               snapshot current */
-        static final int VIR_DOMAIN_SNAPSHOT_CREATE_NO_METADATA = (1 << 2); /* Make snapshot without
-                                                                               remembering it */
-        static final int VIR_DOMAIN_SNAPSHOT_CREATE_HALT = (1 << 3); /* Stop running guest
-                                                                               after snapshot */
-        static final int VIR_DOMAIN_SNAPSHOT_CREATE_DISK_ONLY = (1 << 4); /* disk snapshot, not
-                                                                               system checkpoint */
-        static final int VIR_DOMAIN_SNAPSHOT_CREATE_REUSE_EXT = (1 << 5); /* reuse any existing
-                                                                               external files */
-        static final int VIR_DOMAIN_SNAPSHOT_CREATE_QUIESCE = (1 << 6); /* use guest agent to
-                                                                               quiesce all mounted
-                                                                               file systems within
-                                                                               the domain */
-        static final int VIR_DOMAIN_SNAPSHOT_CREATE_ATOMIC = (1 << 7); /* atomically avoid
-                                                                               partial changes */
-    }
-
-    static final class MigrateFlags {
-        static final int VIR_MIGRATE_LIVE = (1 << 0); /* live migration */
-        static final int VIR_MIGRATE_PEER2PEER = (1 << 1); /* direct source -> dest host control channel */
-        /* Note the less-common spelling that we're stuck with:
-           VIR_MIGRATE_TUNNELLED should be VIR_MIGRATE_TUNNELED */
-        static final int VIR_MIGRATE_TUNNELLED = (1 << 2); /* tunnel migration data over libvirtd connection */
-        static final int VIR_MIGRATE_PERSIST_DEST = (1 << 3); /* persist the VM on the destination */
-        static final int VIR_MIGRATE_UNDEFINE_SOURCE = (1 << 4); /* undefine the VM on the source */
-        static final int VIR_MIGRATE_PAUSED = (1 << 5); /* pause on remote side */
-        static final int VIR_MIGRATE_NON_SHARED_DISK = (1 << 6); /* migration with non-shared storage with full disk copy */
-        static final int VIR_MIGRATE_NON_SHARED_INC = (1 << 7); /* migration with non-shared storage with incremental copy */
-        /* (same base image shared between source and destination) */
-        static final int VIR_MIGRATE_CHANGE_PROTECTION = (1 << 8); /* protect for changing domain configuration through the
-                                                                    * whole migration process; this will be used automatically
-                                                                    * when supported */
-        static final int VIR_MIGRATE_UNSAFE = (1 << 9); /* force migration even if it is considered unsafe */
-    }
-
-    static final class XMLFlags {
-        /**
-         * dump security sensitive information too
-         */
-        static final int VIR_DOMAIN_XML_SECURE = 1;
-        /**
-         * dump inactive domain information
-         */
-        static final int VIR_DOMAIN_XML_INACTIVE = 2;
-        static final int VIR_DOMAIN_XML_UPDATE_CPU = (1 << 2); /* update guest CPU requirements according to host CPU */
-    }
-
-    public static final class UndefineFlags {
-        /**
-         * Also remove any managed save
-         */
-        public static final int MANAGED_SAVE = (1 << 0);
-        /**
-         * If last use of domain, then also remove any snapshot metadata
-         */
-        public static final int SNAPSHOTS_METADATA = (1 << 1);
-    }
-
-    public static final class SnapshotListFlags {
-        /**
-         * Filter by snapshots with no parents, when listing a domain
-         */
-        public static final int ROOTS = (1 << 0);
-
-        /**
-         * List all descendants, not just children, when listing a snapshot
-         */
-        public static final int DESCENDANTS = (1 << 0);
-
-        /** For historical reasons, groups do not use contiguous bits. */
-
-        /**
-         * Filter by snapshots with no children
-         */
-        public static final int LEAVES = (1 << 2);
-
-        /**
-         * Filter by snapshots that have children
-         */
-        public static final int NO_LEAVES = (1 << 3);
-
-        /**
-         * Filter by snapshots which have metadata
-         */
-        public static final int METADATA = (1 << 1);
-
-        /**
-         * Filter by snapshots with no metadata
-         */
-        public static final int NO_METADATA = (1 << 4);
-    }
 
     /**
      * the native virDomainPtr.
@@ -238,9 +138,6 @@ public class Domain {
      *
      * @return <em>ignore</em> (always 0)
      * @throws LibvirtException
-     * @see <a
-     * href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainAbortJob">Libvirt
-     * Documentation</a>
      */
     public int abortJob() throws LibvirtException {
         return processError(libvirt.virDomainAbortJob(VDP));
@@ -251,9 +148,6 @@ public class Domain {
      *
      * @param xmlDesc XML description of one device
      * @throws LibvirtException
-     * @see <a
-     * href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainAttachDevice">Libvirt
-     * Documentation</a>
      */
     public void attachDevice(String xmlDesc) throws LibvirtException {
         processError(libvirt.virDomainAttachDevice(VDP, xmlDesc));
@@ -265,12 +159,22 @@ public class Domain {
      * @param xmlDesc XML description of one device
      * @param flags   the an OR'ed set of virDomainDeviceModifyFlags
      * @throws LibvirtException
-     * @see <a
-     * href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainAttachDeviceFlags">Libvirt
-     * Documentation</a>
      */
     public void attachDeviceFlags(String xmlDesc, int flags) throws LibvirtException {
         processError(libvirt.virDomainAttachDeviceFlags(VDP, xmlDesc, flags));
+    }
+
+    /**
+     * Copy the guest-visible contents of a disk image to a new file described by @destxml.
+     *
+     * @param disk    the path to the block device
+     * @param destxml the new disk description
+     * @param params  {@Link org.libvirt.parameters.DomainBlockCopyParameters}
+     * @param flags   {@link org.libvirt.flags.DomainBlockCopyFlags}
+     * @throws LibvirtException
+     */
+    public void blockCopy(String disk, String destxml, DomainBlockCopyParameters params, int flags) throws LibvirtException {
+        processError(libvirt.virDomainBlockCopy(VDP, disk, destxml, params.getVirTypedParameters(), params.getVirTypedParametersLength(), flags));
     }
 
     /**
@@ -285,6 +189,17 @@ public class Domain {
         virDomainBlockInfo info = new virDomainBlockInfo();
         processError(libvirt.virDomainGetBlockInfo(VDP, path, info, 0));
         return new DomainBlockInfo(info);
+    }
+
+    /**
+     * Cancel the active block job on the given disk.
+     *
+     * @param disk  the path to the block device
+     * @param flags {@link org.libvirt.flags.DomainBlockJobAbortFlags}
+     * @throws LibvirtException
+     */
+    public void blockJobAbort(String disk, int flags) throws LibvirtException {
+        processError(libvirt.virDomainBlockJobAbort(VDP, disk, flags));
     }
 
     /**
@@ -363,7 +278,7 @@ public class Domain {
      *
      * @param disk  path to the block image, or shorthand (like vda)
      * @param size  the new size of the block devices
-     * @param flags bitwise OR'ed values of {@link BlockResizeFlags}
+     * @param flags bitwise OR'ed values of {@link DomainBlockResizeFlags}
      * @throws LibvirtException
      */
     public void blockResize(String disk, long size, int flags) throws LibvirtException {
@@ -430,9 +345,6 @@ public class Domain {
      *
      * @param xmlDesc XML description of one device
      * @throws LibvirtException
-     * @see <a
-     * href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainDetachDevice">Libvirt
-     * Documentation</a>
      */
     public void detachDevice(String xmlDesc) throws LibvirtException {
         processError(libvirt.virDomainDetachDevice(VDP, xmlDesc));
@@ -443,9 +355,6 @@ public class Domain {
      *
      * @param xmlDesc XML description of one device
      * @throws LibvirtException
-     * @see <a
-     * href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainDetachDeviceFlags">Libvirt
-     * Documentation</a>
      */
     public void detachDeviceFlags(String xmlDesc, int flags) throws LibvirtException {
         processError(libvirt.virDomainDetachDeviceFlags(VDP, xmlDesc, flags));
@@ -512,9 +421,6 @@ public class Domain {
      *
      * @return a DomainInfo object describing this domain
      * @throws LibvirtException
-     * @see <a
-     * href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainGetInfo">Libvirt
-     * Documentation</a>
      */
     public DomainInfo getInfo() throws LibvirtException {
         virDomainInfo vInfo = new virDomainInfo();
@@ -528,9 +434,6 @@ public class Domain {
      *
      * @return a DomainJobInfo object describing this domain
      * @throws LibvirtException
-     * @see <a
-     * href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainGetJobInfo">Libvirt
-     * Documentation</a>
      */
     public DomainJobInfo getJobInfo() throws LibvirtException {
         virDomainJobInfo vInfo = new virDomainJobInfo();
@@ -586,29 +489,29 @@ public class Domain {
     /**
      * Gets the scheduler parameters.
      *
-     * @return an array of SchedParameter objects
+     * @return an array of TypedParameter objects
      * @throws LibvirtException
      */
-    public SchedParameter[] getSchedulerParameters() throws LibvirtException {
+    public TypedParameter[] getSchedulerParameters() throws LibvirtException {
         IntByReference nParams = new IntByReference();
         processError(libvirt.virDomainGetSchedulerType(VDP, nParams));
 
         int n = nParams.getValue();
 
         if (n > 0) {
-            virSchedParameter[] nativeParams = new virSchedParameter[n];
+            virTypedParameter[] nativeParams = new virTypedParameter[n];
 
             processError(libvirt.virDomainGetSchedulerParameters(VDP, nativeParams, nParams));
             n = nParams.getValue();
 
-            SchedParameter[] returnValue = new SchedParameter[n];
+            TypedParameter[] returnValue = new TypedParameter[n];
 
             for (int x = 0; x < n; x++) {
-                returnValue[x] = SchedParameter.create(nativeParams[x]);
+                returnValue[x] = TypedParameter.create(nativeParams[x]);
             }
             return returnValue;
         } else {
-            return new SchedParameter[]{};
+            return new TypedParameter[]{};
         }
     }
 
@@ -721,8 +624,6 @@ public class Domain {
      * @param flags not used
      * @return the XML description String
      * @throws LibvirtException
-     * @see <a href="http://libvirt.org/format.html#Normal1" >The XML
-     * Description format </a>
      */
     public String getXMLDesc(int flags) throws LibvirtException {
         return processError(libvirt.virDomainGetXMLDesc(VDP, flags)).toString();
@@ -733,8 +634,6 @@ public class Domain {
      *
      * @return 1 if running, 0 if inactive
      * @throws LibvirtException
-     * @see <a href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainHasCurrentSnapshot>Libvi
-     * r t Documentation</a>
      */
     public int hasCurrentSnapshot() throws LibvirtException {
         return processError(libvirt.virDomainHasCurrentSnapshot(VDP, 0));
@@ -746,8 +645,6 @@ public class Domain {
      * @return 0 if no image is present, 1 if an image is present, and -1 in
      * case of error
      * @throws LibvirtException
-     * @see <a href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainHasManagedSaveImage>Libvi
-     * r t Documentation</a>
      */
     public int hasManagedSaveImage() throws LibvirtException {
         return processError(libvirt.virDomainHasManagedSaveImage(VDP, 0));
@@ -776,9 +673,6 @@ public class Domain {
      *
      * @return 1 if running, 0 if inactive
      * @throws LibvirtException
-     * @see <a
-     * href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainIsActive">Libvirt
-     * Documentation</a>
      */
     public int isActive() throws LibvirtException {
         return processError(libvirt.virDomainIsActive(VDP));
@@ -790,9 +684,6 @@ public class Domain {
      *
      * @return 1 if persistent, 0 if transient
      * @throws LibvirtException
-     * @see <a
-     * href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainIsPersistent">Libvirt
-     * Documentation</a>
      */
     public int isPersistent() throws LibvirtException {
         return processError(libvirt.virDomainIsPersistent(VDP));
@@ -810,9 +701,6 @@ public class Domain {
      *
      * @return always 0
      * @throws LibvirtException
-     * @see <a
-     * href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainManagedSave">Libvirt
-     * Documentation</a>
      */
     public int managedSave() throws LibvirtException {
         return processError(libvirt.virDomainManagedSave(VDP, 0));
@@ -823,9 +711,6 @@ public class Domain {
      *
      * @return always 0
      * @throws LibvirtException
-     * @see <a
-     * href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainManagedSaveRemove">Libvirt
-     * Documentation</a>
      */
     public int managedSaveRemove() throws LibvirtException {
         return processError(libvirt.virDomainManagedSaveRemove(VDP, 0));
@@ -893,7 +778,7 @@ public class Domain {
      * given by dconn (a connection to the destination host).
      * <p>
      * Flags may be bitwise OR'ed values of
-     * {@link org.libvirt.Domain.MigrateFlags MigrateFlags}.
+     * {@link DomainMigrateFlags MigrateFlags}.
      * <p>
      * If a hypervisor supports renaming domains during migration, then you may
      * set the dname parameter to the new name (otherwise it keeps the same name).
@@ -951,8 +836,8 @@ public class Domain {
      * @throws LibvirtException if the migration fails
      */
     public Domain migrate(Connect dconn, long flags, String dxml, String dname, String uri, long bandwidth) throws LibvirtException {
-        DomainPointer newPtr =
-                processError(libvirt.virDomainMigrate2(VDP, dconn.VCP, dxml, new NativeLong(flags), dname, uri, new NativeLong(bandwidth)));
+        DomainPointer newPtr = processError(libvirt.virDomainMigrate2(VDP, dconn.VCP, dxml, new NativeLong(flags), dname, uri, new NativeLong(bandwidth)));
+
         return new Domain(dconn, newPtr);
     }
 
@@ -1007,9 +892,6 @@ public class Domain {
      * @param downtime the time to be down
      * @return always 0
      * @throws LibvirtException
-     * @see <a
-     * href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainMigrateSetMaxDowntime">LIbvirt
-     * Documentation</a>
      */
     public int migrateSetMaxDowntime(long downtime) throws LibvirtException {
         return processError(libvirt.virDomainMigrateSetMaxDowntime(VDP, downtime, 0));
@@ -1020,10 +902,10 @@ public class Domain {
      * denoted by a given URI.
      * <p>
      * The destination is given either in dconnuri (if the
-     * {@link MigrateFlags#VIR_MIGRATE_PEER2PEER PEER2PEER}
+     * {@link DomainMigrateFlags#VIR_MIGRATE_PEER2PEER PEER2PEER}
      * is flag set), or in miguri (if neither the
-     * {@link MigrateFlags#VIR_MIGRATE_PEER2PEER PEER2PEER} nor the
-     * {@link MigrateFlags#VIR_MIGRATE_TUNNELLED TUNNELLED} migration
+     * {@link DomainMigrateFlags#VIR_MIGRATE_PEER2PEER PEER2PEER} nor the
+     * {@link DomainMigrateFlags#VIR_MIGRATE_TUNNELLED TUNNELLED} migration
      * flag is set in flags).
      *
      * @param dconnuri  (optional) URI for target libvirtd if @flags includes VIR_MIGRATE_PEER2PEER
@@ -1034,9 +916,6 @@ public class Domain {
      * @param bandwidth Specify the migration bandwidth
      * @return 0 if successful
      * @throws LibvirtException
-     * @see <a
-     * href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainMigrateToURI">
-     * virDomainMigrateToURI</a>
      */
     public int migrateToURI(String dconnuri, String miguri, String dxml, long flags, String dname, long bandwidth) throws LibvirtException {
         return processError(libvirt.virDomainMigrateToURI2(VDP, dconnuri, miguri,
@@ -1054,9 +933,6 @@ public class Domain {
      * @param bandwidth Specify the migration bandwidth
      * @return 0 if successful, -1 if not
      * @throws LibvirtException
-     * @see <a
-     * href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainMigrateToURI">
-     * virDomainMigrateToURI</a>
      */
     public int migrateToURI(String uri, long flags, String dname, long bandwidth) throws LibvirtException {
         return processError(libvirt.virDomainMigrateToURI(VDP, uri, new NativeLong(flags), dname, new NativeLong(bandwidth)));
@@ -1137,9 +1013,6 @@ public class Domain {
      *
      * @param cb the IOErrorCallback instance
      * @throws LibvirtException on failure
-     * @see <a
-     * href="http://www.libvirt.org/html/libvirt-libvirt.html#virConnectDomainEventRegisterAny">Libvirt
-     * Documentation</a>
      */
     public void addIOErrorListener(final IOErrorListener cb) throws LibvirtException {
         virConnect.domainEventRegister(this, cb);
@@ -1151,9 +1024,6 @@ public class Domain {
      * @param l the reboot listener
      * @throws LibvirtException on failure
      * @see Connect#addRebootListener
-     * @see <a
-     * href="http://www.libvirt.org/html/libvirt-libvirt.html#virConnectDomainEventRegisterAny"
-     * >virConnectDomainEventRegisterAny</a>
      * @since 1.5.2
      */
     public void addRebootListener(final RebootListener l) throws LibvirtException {
@@ -1167,9 +1037,6 @@ public class Domain {
      * @throws LibvirtException on failure
      * @see Connect#addLifecycleListener
      * @see Connect#removeLifecycleListener
-     * @see <a
-     * href="http://www.libvirt.org/html/libvirt-libvirt.html#virConnectDomainEventRegisterAny"
-     * >virConnectDomainEventRegisterAny</a>
      */
     public void addLifecycleListener(final LifecycleListener l) throws LibvirtException {
         virConnect.domainEventRegister(this, l);
@@ -1182,9 +1049,6 @@ public class Domain {
      * @throws LibvirtException on failure
      * @see Connect#removePMWakeupListener
      * @see Connect#addPMWakeupListener
-     * @see <a
-     * href="http://www.libvirt.org/html/libvirt-libvirt.html#virConnectDomainEventRegisterAny"
-     * >virConnectDomainEventRegisterAny</a>
      * @since 1.5.2
      */
     public void addPMWakeupListener(final PMWakeupListener l) throws LibvirtException {
@@ -1198,9 +1062,6 @@ public class Domain {
      * @throws LibvirtException on failure
      * @see Connect#removePMSuspendListener
      * @see Connect#addPMSuspendListener
-     * @see <a
-     * href="http://www.libvirt.org/html/libvirt-libvirt.html#virConnectDomainEventRegisterAny"
-     * >virConnectDomainEventRegisterAny</a>
      * @since 1.5.2
      */
     public void addPMSuspendListener(final PMSuspendListener l) throws LibvirtException {
@@ -1220,9 +1081,6 @@ public class Domain {
      * @param snapshot the snapshot to revert to
      * @return 0 if the creation is successful
      * @throws LibvirtException
-     * @see <a href=
-     * "http://www.libvirt.org/html/libvirt-libvirt.html#virDomainRevertToSnapshot"
-     * >Libvirt Documentation</>
      */
     public int revertToSnapshot(DomainSnapshot snapshot) throws LibvirtException {
         return processError(libvirt.virDomainRevertToSnapshot(snapshot.VDSP, 0));
@@ -1286,13 +1144,13 @@ public class Domain {
     /**
      * Changes the scheduler parameters
      *
-     * @param params an array of SchedParameter objects to be changed
+     * @param params an array of TypedParameter objects to be changed
      * @throws LibvirtException
      */
-    public void setSchedulerParameters(SchedParameter[] params) throws LibvirtException {
-        virSchedParameter[] input = new virSchedParameter[params.length];
+    public void setSchedulerParameters(TypedParameter[] params) throws LibvirtException {
+        virTypedParameter[] input = new virTypedParameter[params.length];
         for (int x = 0; x < params.length; x++) {
-            input[x] = SchedParameter.toNative(params[x]);
+            input[x] = TypedParameter.toNative(params[x]);
         }
         processError(libvirt.virDomainSetSchedulerParameters(VDP, input, params.length));
     }
@@ -1342,9 +1200,6 @@ public class Domain {
      * @param flags   flags for creating the snapshot, see the virDomainSnapshotCreateFlags for the flag options
      * @return the snapshot
      * @throws LibvirtException
-     * @see <a
-     * href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainSnapshotCreateXML">Libvirt
-     * Documentation</a>
      */
     public DomainSnapshot snapshotCreateXML(String xmlDesc, int flags) throws LibvirtException {
         DomainSnapshotPointer ptr = processError(libvirt.virDomainSnapshotCreateXML(VDP, xmlDesc, flags));
@@ -1362,9 +1217,6 @@ public class Domain {
      * @return the snapshot, or null on Error
      * @throws LibvirtException
      * @see #snapshotCreateXML(String, int)
-     * @see <a
-     * href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainSnapshotCreateXML">Libvirt
-     * Documentation</a>
      */
     public DomainSnapshot snapshotCreateXML(String xmlDesc) throws LibvirtException {
         return snapshotCreateXML(xmlDesc, 0);
@@ -1375,9 +1227,6 @@ public class Domain {
      *
      * @return the snapshot
      * @throws LibvirtException
-     * @see <a
-     * href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainSnapshotCurrent">Libvirt
-     * Documentation</a>
      */
     public DomainSnapshot snapshotCurrent() throws LibvirtException {
         DomainSnapshotPointer ptr = processError(libvirt.virDomainSnapshotCurrent(VDP, 0));
@@ -1389,9 +1238,6 @@ public class Domain {
      *
      * @return The list of names, or null if an error
      * @throws LibvirtException
-     * @see <a
-     * href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainSnapshotListNames">Libvirt
-     * Documentation</a>
      */
     public String[] snapshotListNames(int flags) throws LibvirtException {
         int num = snapshotNum();
@@ -1414,9 +1260,6 @@ public class Domain {
      * @return The list of names, or null if an error
      * @throws LibvirtException
      * @see #snapshotListNames(int)
-     * @see <a
-     * href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainSnapshotListNames">
-     * virDomainSnapshotListNames</a>
      */
     public String[] snapshotListNames() throws LibvirtException {
         return snapshotListNames(0);
@@ -1428,9 +1271,6 @@ public class Domain {
      * @param name the name
      * @return The located snapshot
      * @throws LibvirtException
-     * @see <a
-     * href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainSnapshotLookupByName">Libvirt
-     * Documentation</a>
      */
     public DomainSnapshot snapshotLookupByName(String name) throws LibvirtException {
         DomainSnapshotPointer ptr = processError(libvirt.virDomainSnapshotLookupByName(VDP, name, 0));
@@ -1439,10 +1279,6 @@ public class Domain {
 
     /**
      * Provides the number of domain snapshots for this domain..
-     *
-     * @see <a
-     * href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainSnapshotNum">Libvirt
-     * Documentation</a>
      */
     public int snapshotNum() throws LibvirtException {
         return processError(libvirt.virDomainSnapshotNum(VDP, 0));
@@ -1474,7 +1310,6 @@ public class Domain {
      *
      * @param flags flags for undefining the domain. See virDomainUndefineFlagsValues for more information
      * @throws LibvirtException
-     * @see <a href="http://libvirt.org/html/libvirt-libvirt.html#virDomainUndefineFlags">Libvirt Documentation</a>
      */
     public void undefine(int flags) throws LibvirtException {
         processError(libvirt.virDomainUndefineFlags(VDP, flags));
@@ -1487,7 +1322,6 @@ public class Domain {
      * @param flags controls the update
      * @return always 0
      * @throws LibvirtException
-     * @see <a href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainUpdateDeviceFlags">Libvirt Documentation</a>
      */
     public int updateDeviceFlags(String xml, int flags) throws LibvirtException {
         return processError(libvirt.virDomainUpdateDeviceFlags(VDP, xml, flags));

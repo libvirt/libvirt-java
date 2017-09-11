@@ -57,10 +57,8 @@ public class StoragePool {
      * and a VirConnect object. For use when native libvirt returns a
      * virStoragePoolPtr, i.e. error handling.
      *
-     * @param virConnect
-     *            the Domain's hypervisor
-     * @param VSPP
-     *            the native virStoragePoolPtr
+     * @param virConnect the Domain's hypervisor
+     * @param VSPP       the native virStoragePoolPtr
      */
     StoragePool(Connect virConnect, StoragePoolPointer VSPP) {
         this.virConnect = virConnect;
@@ -70,8 +68,7 @@ public class StoragePool {
     /**
      * Build the underlying storage pool
      *
-     * @param flags
-     *            future flags, use 0 for now
+     * @param flags future flags, use 0 for now
      */
     public void build(int flags) throws LibvirtException {
         processError(libvirt.virStoragePoolBuild(VSPP, flags));
@@ -80,8 +77,7 @@ public class StoragePool {
     /**
      * Starts this inactive storage pool
      *
-     * @param flags
-     *            future flags, use 0 for now
+     * @param flags future flags, use 0 for now
      */
     public void create(int flags) throws LibvirtException {
         processError(libvirt.virStoragePoolCreate(VSPP, flags));
@@ -91,8 +87,7 @@ public class StoragePool {
      * Delete the underlying pool resources. This is a non-recoverable
      * operation. The virStoragePool object itself is not free'd.
      *
-     * @param flags
-     *            flags for obliteration process
+     * @param flags flags for obliteration process
      */
     public void delete(int flags) throws LibvirtException {
         processError(libvirt.virStoragePoolDelete(VSPP, flags));
@@ -117,8 +112,8 @@ public class StoragePool {
      * Free a storage pool object, releasing all memory associated with it. Does
      * not change the state of the pool on the host.
      *
-     * @throws LibvirtException
      * @return number of references left (>= 0)
+     * @throws LibvirtException
      */
     public int free() throws LibvirtException {
         int success = 0;
@@ -202,8 +197,7 @@ public class StoragePool {
      * Fetch an XML document describing all aspects of the storage pool. This is
      * suitable for later feeding back into the virStoragePoolCreateXML method.
      *
-     * @param flags
-     *            flags for XML format options (set of virDomainXMLFlags)
+     * @param flags flags for XML format options (set of virDomainXMLFlags)
      * @return a XML document -java @throws LibvirtException
      */
     public String getXMLDesc(int flags) throws LibvirtException {
@@ -213,9 +207,6 @@ public class StoragePool {
     /**
      * Determine if the storage pool is currently running
      *
-     * @see <a
-     *      href="http://www.libvirt.org/html/libvirt-libvirt.html#virStoragePoolIsActive">Libvirt
-     *      Documentation</a>
      * @return 1 if running, 0 if inactive
      * @throws LibvirtException
      */
@@ -227,9 +218,6 @@ public class StoragePool {
      * Determine if the storage pool has a persistent configuration which means
      * it will still exist after shutting down
      *
-     * @see <a
-     *      href="http://www.libvirt.org/html/libvirt-libvirt.html#virStoragePoolIsPersistent">Libvirt
-     *      Documentation</a>
      * @return 1 if persistent, 0 if transient
      * @throws LibvirtException
      */
@@ -241,7 +229,7 @@ public class StoragePool {
      * Fetch list of storage volume names
      *
      * @return an Array of Strings that contains the names of the storage
-     *         volumes
+     * volumes
      * @throws LibvirtException
      */
     public String[] listVolumes() throws LibvirtException {
@@ -272,8 +260,7 @@ public class StoragePool {
      * communicating with a remote server, and/or initializing new devices at
      * the OS layer
      *
-     * @param flags
-     *            flags to control refresh behaviour (currently unused, use 0)
+     * @param flags flags to control refresh behaviour (currently unused, use 0)
      * @throws LibvirtException
      */
     public void refresh(int flags) throws LibvirtException {
@@ -283,8 +270,7 @@ public class StoragePool {
     /**
      * Sets the autostart flag
      *
-     * @param autostart
-     *            new flag setting
+     * @param autostart new flag setting
      * @throws LibvirtException
      */
     public void setAutostart(int autostart) throws LibvirtException {
@@ -295,10 +281,8 @@ public class StoragePool {
      * Create a storage volume within a pool based on an XML description. Not
      * all pools support creation of volumes
      *
-     * @param xmlDesc
-     *            description of volume to create
-     * @param flags
-     *            flags for creation (unused, pass 0)
+     * @param xmlDesc description of volume to create
+     * @param flags   flags for creation (unused, pass 0)
      * @return the storage volume
      * @throws LibvirtException
      */
@@ -325,8 +309,7 @@ public class StoragePool {
      * Fetch an object representing to a storage volume based on its name within
      * a pool
      *
-     * @param name
-     *            name of storage volume
+     * @param name name of storage volume
      * @return a StorageVol object, or {@code null} if not found.
      * @throws LibvirtException
      */
@@ -344,5 +327,4 @@ public class StoragePool {
     public void undefine() throws LibvirtException {
         processError(libvirt.virStoragePoolUndefine(VSPP));
     }
-
 }

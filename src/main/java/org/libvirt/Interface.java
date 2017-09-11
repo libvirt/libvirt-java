@@ -29,10 +29,8 @@ public class Interface {
      * Constructs an Interface object from an InterfacePointer, and a Connect
      * object.
      *
-     * @param virConnect
-     *            the Interfaces hypervisor
-     * @param VIP
-     *            the native virInterfacePtr
+     * @param virConnect the Interfaces hypervisor
+     * @param VIP        the native virInterfacePtr
      */
     Interface(Connect virConnect, InterfacePointer VIP) {
         this.virConnect = virConnect;
@@ -82,8 +80,8 @@ public class Interface {
      * Frees this interface object. The running instance is kept alive. The data
      * structure is freed and should not be used thereafter.
      *
-     * @throws LibvirtException
      * @return number of references left (>= 0)
+     * @throws LibvirtException
      */
     public int free() throws LibvirtException {
         int success = 0;
@@ -125,9 +123,6 @@ public class Interface {
     /**
      * Determine if the interface is currently running
      *
-     * @see <a
-     *      href="http://www.libvirt.org/html/libvirt-libvirt.html#virInterfaceIsActive">Libvirt
-     *      Documentation</a>
      * @return 1 if running, 0 if inactive
      * @throws LibvirtException
      */

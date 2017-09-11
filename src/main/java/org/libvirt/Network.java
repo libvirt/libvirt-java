@@ -68,8 +68,8 @@ public class Network {
      * becomes invalid and should not be used thereafter if the call does not
      * return an error.
      *
-     * @throws LibvirtException
      * @return number of references left (>= 0)
+     * @throws LibvirtException
      */
     public int free() throws LibvirtException {
         int success = 0;
@@ -155,8 +155,7 @@ public class Network {
      * reused later to relaunch the network with
      * Virconnect.virNetworkCreateXML().
      *
-     * @param flags
-     *            and OR'ed set of extraction flags, not used yet
+     * @param flags and OR'ed set of extraction flags, not used yet
      * @return The XML representation of this network
      * @throws LibvirtException
      */
@@ -167,9 +166,6 @@ public class Network {
     /**
      * Determine if the network is currently running
      *
-     * @see <a
-     *      href="http://www.libvirt.org/html/libvirt-libvirt.html#virNetworkIsActive">Libvirt
-     *      Documentation</a>
      * @return 1 if running, 0 if inactive, -1 on error
      * @throws LibvirtException
      */
@@ -181,9 +177,6 @@ public class Network {
      * Determine if the network has a persistent configuration which means it
      * will still exist after shutting down
      *
-     * @see <a
-     *      href="http://www.libvirt.org/html/libvirt-libvirt.html#virNetworkIsPersistent">Libvirt
-     *      Documentation</a>
      * @return 1 if persistent, 0 if transient, -1 on error
      * @throws LibvirtException
      */
@@ -195,8 +188,7 @@ public class Network {
      * Configures this network to be automatically started when the host machine
      * boots.
      *
-     * @param autostart
-     *            whether the network should be automatically started 0 or 1
+     * @param autostart whether the network should be automatically started 0 or 1
      * @throws LibvirtException
      */
     public void setAutostart(boolean autostart) throws LibvirtException {
@@ -212,5 +204,4 @@ public class Network {
     public void undefine() throws LibvirtException {
         processError(libvirt.virNetworkUndefine(VNP));
     }
-
 }

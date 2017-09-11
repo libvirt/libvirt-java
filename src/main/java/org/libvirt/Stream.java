@@ -131,9 +131,6 @@ public class Stream implements ByteChannel {
      * @param cb     the callback method
      * @return <em>ignore</em> (always 0)
      * @throws LibvirtException
-     * @see <a
-     * href="http://www.libvirt.org/html/libvirt-libvirt.html#virStreamEventAddCallback">Libvirt
-     * Docs</a>
      */
     public int addCallback(int events, VirStreamEventCallback cb) throws LibvirtException {
         return processError(libvirt.virStreamEventAddCallback(VSP, events, cb, null, null));
@@ -283,7 +280,6 @@ public class Stream implements ByteChannel {
      * @param handler the callback handler
      * @return <em>ignore</em> (always 0)
      * @throws LibvirtException
-     * @see <a href="http://www.libvirt.org/html/libvirt-libvirt.html#virStreamRecvAll">virStreamRecvAll</a>
      */
     public int receiveAll(VirStreamSinkFunc handler) throws LibvirtException {
         return processError(libvirt.virStreamRecvAll(VSP, handler, null));
@@ -294,7 +290,6 @@ public class Stream implements ByteChannel {
      *
      * @return <em>ignore</em> (always 0)
      * @throws LibvirtException
-     * @see <a href="http://www.libvirt.org/html/libvirt-libvirt.html#virStreamEventRemoveCallback">Libvirt Docs</a>
      */
     public int removeCallback() throws LibvirtException {
         return processError(libvirt.virStreamEventRemoveCallback(VSP));
@@ -304,8 +299,7 @@ public class Stream implements ByteChannel {
      * Write a series of bytes to the stream.
      *
      * @param data the data to write
-     * @return the number of bytes written, -1 on error, -2 if the buffer is
-     * full
+     * @return the number of bytes written, -1 on error, -2 if the buffer is full
      * @throws LibvirtException
      */
     public int send(byte[] data) throws LibvirtException {
@@ -325,9 +319,6 @@ public class Stream implements ByteChannel {
      * @param handler the callback handler
      * @return <em>ignore</em> (always 0)
      * @throws LibvirtException
-     * @see <a
-     * href="http://www.libvirt.org/html/libvirt-libvirt.html#virStreamSendAll">Libvirt
-     * Documentation</a>
      */
     public int sendAll(VirStreamSourceFunc handler) throws LibvirtException {
         return processError(libvirt.virStreamSendAll(VSP, handler, null));
@@ -339,7 +330,6 @@ public class Stream implements ByteChannel {
      * @param events the events to monitor
      * @return <em>ignore</em> (always 0)
      * @throws LibvirtException
-     * @see <a href="http://www.libvirt.org/html/libvirt-libvirt.html#virStreamEventUpdateCallback">Libvirt Docs</a>
      */
     public int updateCallback(int events) throws LibvirtException {
         return processError(libvirt.virStreamEventUpdateCallback(VSP, events));

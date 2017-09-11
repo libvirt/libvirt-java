@@ -142,11 +142,7 @@ public class Connect {
      * Get the version of a connection.
      *
      * @param conn the connection to use.
-     * @return -1 in case of failure, versions have the format major * 1,000,000
-     * + minor * 1,000 + release.
-     * @see <a
-     * href="http://www.libvirt.org/html/libvirt-libvirt.html#virConnectGetLibVersion">Libvirt
-     * Documentation</a>
+     * @return -1 in case of failure, versions have the format major * 1,000,000 + minor * 1,000 + release.
      * @deprecated Use {@link #getLibVersion} instead.
      */
     @Deprecated
@@ -184,11 +180,7 @@ public class Connect {
      * Get the libvirt library version of this connection.
      *
      * @return The version of libvirt used by the daemon running on
-     * the connected host in the format {@code major *
-     * 1,000,000 + minor * 1,000 + release}.
-     * @see <a
-     * href="http://www.libvirt.org/html/libvirt-libvirt.html#virConnectGetLibVersion">Libvirt
-     * Documentation</a>
+     * the connected host in the format {@code major * 1,000,000 + minor * 1,000 + release}.
      */
     public long getLibVersion() throws LibvirtException {
         LongByReference libVer = new LongByReference();
@@ -277,7 +269,6 @@ public class Connect {
      *
      * @param uri The connection URI
      * @throws LibvirtException
-     * @see <a href="http://libvirt.org/uri.html">The URI documentation</a>
      */
     public Connect(String uri) throws LibvirtException {
         this(uri, null, 0);
@@ -288,7 +279,6 @@ public class Connect {
      *
      * @param uri The connection URI
      * @throws LibvirtException
-     * @see <a href="http://libvirt.org/uri.html">The URI documentation</a>
      */
     public Connect(URI uri, OpenFlags... flags) throws LibvirtException {
         this(uri, null, flags);
@@ -300,7 +290,6 @@ public class Connect {
      * @param uri      The connection URI
      * @param readOnly Whether the connection is read-only
      * @throws LibvirtException
-     * @see <a href="http://libvirt.org/uri.html">The URI documentation</a>
      */
     public Connect(String uri, boolean readOnly) throws LibvirtException {
         this(uri, null, readOnly ? OpenFlags.READONLY.getBit() : 0);
@@ -314,7 +303,6 @@ public class Connect {
      * @param auth  a ConnectAuth object
      * @param flags
      * @throws LibvirtException
-     * @see <a href="http://libvirt.org/uri.html">The URI documentation</a>
      */
     public Connect(String uri, ConnectAuth auth, int flags) throws LibvirtException {
         virConnectAuth vAuth = null;
@@ -348,7 +336,6 @@ public class Connect {
      * @param auth  a ConnectAuth object
      * @param flags
      * @throws LibvirtException
-     * @see <a href="http://libvirt.org/uri.html">The URI documentation</a>
      */
     public Connect(URI uri, ConnectAuth auth, OpenFlags... flags) throws LibvirtException {
         this(uri.toString(), auth, OR(flags));
@@ -361,7 +348,6 @@ public class Connect {
      * @param uri  The connection URI
      * @param auth a ConnectAuth object
      * @throws LibvirtException
-     * @see <a href="http://libvirt.org/uri.html">The URI documentation</a>
      */
     public Connect(URI uri, ConnectAuth auth) throws LibvirtException {
         this(uri.toString(), auth, 0);
@@ -450,9 +436,6 @@ public class Connect {
      * @param xmlDesc
      * @return comparison result according to enum CPUCompareResult
      * @throws LibvirtException
-     * @see <a
-     * href="http://www.libvirt.org/html/libvirt-libvirt.html#virConnectCompareCPU">Libvirt
-     * Documentation</a>
      */
     public CPUCompareResult compareCPU(String xmlDesc) throws LibvirtException {
         int rawResult = processError(libvirt.virConnectCompareCPU(VCP, xmlDesc, 0));
@@ -493,8 +476,6 @@ public class Connect {
      * @param flags   an optional set of flags (unused)
      * @return the Domain object
      * @throws LibvirtException
-     * @see <a href="http://libvirt.org/format.html#Normal1" > The XML format
-     * description </a>
      */
     public Domain domainCreateLinux(String xmlDesc, int flags) throws LibvirtException {
         DomainPointer ptr = processError(libvirt.virDomainCreateLinux(VCP, xmlDesc, flags));
@@ -508,8 +489,6 @@ public class Connect {
      * @param xmlDesc
      * @return the Domain object
      * @throws LibvirtException
-     * @see <a href="http://libvirt.org/format.html#Normal1" > The XML format
-     * description </a>
      */
     public Domain domainCreateXML(String xmlDesc, int flags) throws LibvirtException {
         DomainPointer ptr = processError(libvirt.virDomainCreateXML(VCP, xmlDesc, flags));
@@ -522,8 +501,6 @@ public class Connect {
      * @param xmlDesc
      * @return the Domain object
      * @throws LibvirtException
-     * @see <a href="http://libvirt.org/format.html#Normal1" > The XML format
-     * description </a>
      */
     public Domain domainDefineXML(String xmlDesc) throws LibvirtException {
         DomainPointer ptr = processError(libvirt.virDomainDefineXML(VCP, xmlDesc));
@@ -537,9 +514,6 @@ public class Connect {
      * @param eventID the domain event identifier
      * @param l       the event listener
      * @throws LibvirtException
-     * @see <a
-     * href="http://www.libvirt.org/html/libvirt-libvirt.html#virConnectDomainEventDeregisterAny"
-     * >virConnectDomainEventDeregisterAny</a>
      */
     private void domainEventDeregister(int eventID, EventListener l) throws LibvirtException {
         if (l == null) {
@@ -613,9 +587,6 @@ public class Connect {
      *
      * @param l the I/O error listener
      * @throws LibvirtException on failure
-     * @see <a
-     * href="http://www.libvirt.org/html/libvirt-libvirt.html#virConnectDomainEventRegisterAny">Libvirt
-     * Documentation</a>
      */
     public void addIOErrorListener(final IOErrorListener l) throws LibvirtException {
         domainEventRegister(null, l);
@@ -687,9 +658,6 @@ public class Connect {
      * @throws LibvirtException on failure
      * @see #removeLifecycleListener
      * @see Domain#addLifecycleListener
-     * @see <a
-     * href="http://www.libvirt.org/html/libvirt-libvirt.html#virConnectDomainEventRegisterAny"
-     * >virConnectDomainEventRegisterAny</a>
      */
     public void addLifecycleListener(final LifecycleListener l) throws LibvirtException {
         domainEventRegister(null, l);
@@ -751,9 +719,6 @@ public class Connect {
      * @throws LibvirtException on failure
      * @see #removePMSuspendListener
      * @see Domain#addPMSuspendListener
-     * @see <a
-     * href="http://www.libvirt.org/html/libvirt-libvirt.html#virConnectDomainEventRegisterAny"
-     * >virConnectDomainEventRegisterAny</a>
      * @since 1.5.2
      */
     public void addPMSuspendListener(final PMSuspendListener l) throws LibvirtException {
@@ -766,9 +731,6 @@ public class Connect {
      *
      * @param l the PMSuspend listener
      * @throws LibvirtException
-     * @see <a
-     * href="http://www.libvirt.org/html/libvirt-libvirt.html#virConnectDomainEventDeregisterAny"
-     * >virConnectDomainEventDeregisterAny</a>
      * @since 1.5.2
      */
     public void removePMSuspendListener(final PMSuspendListener l) throws LibvirtException {
@@ -783,9 +745,6 @@ public class Connect {
      * @throws LibvirtException on failure
      * @see #removePMWakeupListener
      * @see Domain#addPMWakeupListener
-     * @see <a
-     * href="http://www.libvirt.org/html/libvirt-libvirt.html#virConnectDomainEventRegisterAny"
-     * >virConnectDomainEventRegisterAny</a>
      * @since 1.5.2
      */
     public void addPMWakeupListener(final PMWakeupListener l) throws LibvirtException {
@@ -798,9 +757,6 @@ public class Connect {
      *
      * @param l the PMWakeup listener
      * @throws LibvirtException
-     * @see <a
-     * href="http://www.libvirt.org/html/libvirt-libvirt.html#virConnectDomainEventDeregisterAny"
-     * >virConnectDomainEventDeregisterAny</a>
      */
     public void removePMWakeupListener(final PMWakeupListener l) throws LibvirtException {
         domainEventDeregister(DomainEventID.PMWAKEUP, l);
@@ -812,9 +768,6 @@ public class Connect {
      *
      * @param l the lifecycle event listener
      * @throws LibvirtException
-     * @see <a
-     * href="http://www.libvirt.org/html/libvirt-libvirt.html#virConnectDomainEventDeregisterAny"
-     * >virConnectDomainEventDeregisterAny</a>
      */
     public void removeLifecycleListener(LifecycleListener l) throws LibvirtException {
         domainEventDeregister(DomainEventID.LIFECYCLE, l);
@@ -827,9 +780,6 @@ public class Connect {
      * @param l the reboot listener
      * @throws LibvirtException on failure
      * @see Domain#addRebootListener
-     * @see <a
-     * href="http://www.libvirt.org/html/libvirt-libvirt.html#virConnectDomainEventRegisterAny"
-     * >virConnectDomainEventRegisterAny</a>
      * @since 1.5.2
      */
     public void addRebootListener(final RebootListener l) throws LibvirtException {
@@ -842,9 +792,6 @@ public class Connect {
      *
      * @param l the I/O error listener
      * @throws LibvirtException
-     * @see <a
-     * href="http://www.libvirt.org/html/libvirt-libvirt.html#virConnectDomainEventDeregisterAny"
-     * >virConnectDomainEventDeregisterAny</a>
      */
     public void removeIOErrorListener(IOErrorListener l) throws LibvirtException {
         domainEventDeregister(DomainEventID.IO_ERROR, l);
@@ -970,8 +917,6 @@ public class Connect {
      *
      * @return an XML String describing the capabilities.
      * @throws LibvirtException
-     * @see <a href="http://libvirt.org/format.html#Capa1" >The XML format
-     * description</a>
      */
     public String getCapabilities() throws LibvirtException {
         return processError(libvirt.virConnectGetCapabilities(VCP)).toString();
@@ -1163,9 +1108,6 @@ public class Connect {
      *
      * @return 1 if encrypted, 0 if not encrypted
      * @throws LibvirtException
-     * @see <a
-     * href="http://www.libvirt.org/html/libvirt-libvirt.html#virConnectIsEncrypted">Libvirt
-     * Documentation</a>
      */
     public int isEncrypted() throws LibvirtException {
         return processError(libvirt.virConnectIsEncrypted(VCP));
@@ -1176,9 +1118,6 @@ public class Connect {
      *
      * @return 1 if secure, 0 if not secure
      * @throws LibvirtException
-     * @see <a
-     * href="http://www.libvirt.org/html/libvirt-libvirt.html#virConnectIsSecure">Libvirt
-     * Documentation</a>
      */
     public int isSecure() throws LibvirtException {
         return processError(libvirt.virConnectIsSecure(VCP));
@@ -1384,8 +1323,6 @@ public class Connect {
      * @param xmlDesc the Network Description
      * @return the Network object representing the created network
      * @throws LibvirtException
-     * @see <a href="http://libvirt.org/format.html#Net1" >The XML format
-     * description</a>
      */
     public Network networkCreateXML(String xmlDesc) throws LibvirtException {
         NetworkPointer ptr = processError(libvirt.virNetworkCreateXML(VCP, xmlDesc));
@@ -1400,8 +1337,6 @@ public class Connect {
      * @param xmlDesc
      * @return the resulting Network object
      * @throws LibvirtException
-     * @see <a href="http://libvirt.org/format.html#Net1" >The XML format
-     * description</a>
      */
     public Network networkDefineXML(String xmlDesc) throws LibvirtException {
         NetworkPointer ptr = processError(libvirt.virNetworkDefineXML(VCP, xmlDesc));
@@ -1414,9 +1349,6 @@ public class Connect {
      * @param xmlDesc the descirption of the filter
      * @return the new filer
      * @throws LibvirtException
-     * @see <a
-     * href="http://www.libvirt.org/html/libvirt-libvirt.html#virNWFilterDefineXML"
-     * > Libvirt Documentation </a>
      */
     public NetworkFilter networkFilterDefineXML(String xmlDesc) throws LibvirtException {
         NetworkFilterPointer ptr = processError(libvirt.virNWFilterDefineXML(VCP, xmlDesc));
@@ -1429,9 +1361,6 @@ public class Connect {
      * @param name name of network filter to fetch
      * @return network filter object
      * @throws LibvirtException
-     * @see <a
-     * href="http://www.libvirt.org/html/libvirt-libvirt.html#virNWFilterLookupByName"
-     * > Libvirt Documentation </a>
      */
     public NetworkFilter networkFilterLookupByName(String name) throws LibvirtException {
         NetworkFilterPointer ptr = processError(libvirt.virNWFilterLookupByName(VCP, name));

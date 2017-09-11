@@ -11,12 +11,14 @@ import junit.framework.TestCase;
 import org.libvirt.event.DomainEvent;
 import org.libvirt.event.DomainEventType;
 import org.libvirt.event.LifecycleListener;
+import org.libvirt.parameters.typed.TypedParameter;
+import org.libvirt.parameters.typed.TypedUintParameter;
 
 public final class TestJavaBindings extends TestCase {
-    final int UUIDArray[] = { Integer.decode("0x00"), Integer.decode("0x4b"), Integer.decode("0x96"), Integer.decode("0xe1"),
+    final int UUIDArray[] = {Integer.decode("0x00"), Integer.decode("0x4b"), Integer.decode("0x96"), Integer.decode("0xe1"),
             Integer.decode("0x2d"), Integer.decode("0x78"), Integer.decode("0xc3"), Integer.decode("0x0f"),
             Integer.decode("0x5a"), Integer.decode("0xa5"), Integer.decode("0xf0"), Integer.decode("0x3c"),
-            Integer.decode("0x87"), Integer.decode("0xd2"), Integer.decode("0x1e"), Integer.decode("0x67") };
+            Integer.decode("0x87"), Integer.decode("0xd2"), Integer.decode("0x1e"), Integer.decode("0x67")};
 
     private Connect conn;
 
@@ -45,7 +47,8 @@ public final class TestJavaBindings extends TestCase {
         try {
             conn.domainDefineXML("fail, miserably");
             fail("LibvirtException expected");
-        } catch (LibvirtException e) {} // ignore
+        } catch (LibvirtException e) {
+        } // ignore
 
         assertTrue("Error callback was not called", cb.error);
     }
@@ -60,7 +63,7 @@ public final class TestJavaBindings extends TestCase {
         assertEquals("conn.getVersion()", 2, conn.getVersion());
         assertTrue("conn.isAlive", conn.isAlive());
         assertTrue("conn.isEncrypted", conn.isEncrypted() == 0);
-        assertTrue("conn.isSecure", conn.isSecure() == 1);        
+        assertTrue("conn.isSecure", conn.isSecure() == 1);
     }
 
     /*
@@ -71,7 +74,7 @@ public final class TestJavaBindings extends TestCase {
         String[] caps = dev.listCapabilities();
 
         // check that all caps are non-empty strings
-        for (String c: caps) {
+        for (String c : caps) {
             assertNotNull("capability is null", c);
             assertFalse("capability is empty", c.isEmpty());
         }
@@ -109,8 +112,8 @@ public final class TestJavaBindings extends TestCase {
         assertEquals("Number of defined networks", 1, conn.numOfDefinedNetworks());
         assertEquals("Number of listed defined networks", 1, conn.listDefinedNetworks().length);
         assertTrue("Network1 should not be persistent", network1.isPersistent() == 0);
-        assertTrue("Network1 should not be active", network1.isActive() == 1);        
-        assertTrue("Network2 should be active", network2.isActive() == 0);            
+        assertTrue("Network1 should not be active", network1.isActive() == 1);
+        assertTrue("Network2 should be active", network2.isActive() == 0);
         this.validateNetworkData(network2);
         this.validateNetworkData(conn.networkLookupByName("deftest"));
         this.validateNetworkData(conn.networkLookupByUUID(UUIDArray));
@@ -156,16 +159,16 @@ public final class TestJavaBindings extends TestCase {
         assertEquals("Number of defined domains", 1, conn.numOfDefinedDomains());
         assertEquals("Number of listed defined domains", 1, conn.listDefinedDomains().length);
         assertTrue("Domain1 should be persistent", dom1.isPersistent() == 1);
-        assertTrue("Domain1 should not be active", dom1.isActive() == 0);        
-        assertTrue("Domain2 should be active", dom2.isActive() == 1);              
+        assertTrue("Domain1 should not be active", dom1.isActive() == 0);
+        assertTrue("Domain2 should be active", dom2.isActive() == 1);
         this.validateDomainData(dom2);
         this.validateDomainData(conn.domainLookupByName("createst"));
         this.validateDomainData(conn.domainLookupByUUID(UUIDArray));
         this.validateDomainData(conn.domainLookupByUUIDString("004b96e1-2d78-c30f-5aa5-f03c87d21e67"));
         this.validateDomainData(conn.domainLookupByUUID(UUID.fromString("004b96e1-2d78-c30f-5aa5-f03c87d21e67")));
         assertEquals("Domain is not equal to Domain retrieved by lookup",
-                     dom2,
-                     conn.domainLookupByUUID(dom2.getUUID()));
+                dom2,
+                conn.domainLookupByUUID(dom2.getUUID()));
     }
 
     private void validateDomainData(Domain dom) throws Exception {
@@ -182,19 +185,19 @@ public final class TestJavaBindings extends TestCase {
         assertNotNull("dom.getID()", dom.getID());
 
         // Execute the code Iterate over the parameters the easy way
-        for (SchedParameter c : dom.getSchedulerParameters()) {
-            System.out.println(c.getTypeAsString() + ":" + c.field + ":" + c.getValueAsString());
+        for (TypedParameter c : dom.getSchedulerParameters()) {
+            System.out.println(c.getTypeAsString() + ":" + c.getField() + ":" + c.getValueAsString());
         }
 
-        dom.getSchedulerParameters() ;
-        
-        SchedUintParameter[] pars = new SchedUintParameter[1];
-        pars[0] = new SchedUintParameter();
-        pars[0].field = "weight";
-        pars[0].value = 100;
+        dom.getSchedulerParameters();
+
+        TypedUintParameter[] pars = new TypedUintParameter[1];
+        pars[0] = new TypedUintParameter();
+        pars[0].setField("weight");
+        pars[0].setValue(100);
         dom.setSchedulerParameters(pars);
-        
-        dom.getSchedulerParameters() ;        
+
+        dom.getSchedulerParameters();
     }
 
     public void testInterfaces() throws Exception {
@@ -206,7 +209,7 @@ public final class TestJavaBindings extends TestCase {
         assertEquals("virtInterfaceGetName", "eth1", virtInt.getName());
         assertEquals("virtInterfaceGetMACString", "aa:bb:cc:dd:ee:ff", virtInt.getMACString());
         assertNotNull("virtInterfaceGetXMLDesc", virtInt.getXMLDescription(0));
-        assertTrue("virInterfaceIsActive", virtInt.isActive() == 1);         
+        assertTrue("virInterfaceIsActive", virtInt.isActive() == 1);
         System.out.println(virtInt.getXMLDescription(0));
 
         String newXML = "<interface type='ethernet' name='eth2'>" + "<start mode='onboot'/>"
@@ -233,7 +236,7 @@ public final class TestJavaBindings extends TestCase {
         }
         assertNotNull(virException);
     }
-    
+
     public void testStoragePool() throws Exception {
         StoragePool pool1 = conn.storagePoolDefineXML("<pool type='dir'>"
                 + "  <name>pool1</name>"
@@ -241,39 +244,38 @@ public final class TestJavaBindings extends TestCase {
                 + "    <path>/pool1</path>"
                 + "  </target>"
                 + "  <uuid>004c96e1-2d78-c30f-5aa5-f03c87d21e67</uuid>"
-                + "</pool>", 0) ;
+                + "</pool>", 0);
         StoragePool defaultPool = conn.storagePoolLookupByName("default-pool");
         assertEquals("numOfStoragePools:", 1, conn.numOfStoragePools());
-        assertEquals("numOfDefinedStoragePools:", 1, conn.numOfDefinedStoragePools());        
+        assertEquals("numOfDefinedStoragePools:", 1, conn.numOfDefinedStoragePools());
         assertNotNull("The pool should not be null", pool1);
-        assertNotNull("The default pool should not be null", defaultPool);   
+        assertNotNull("The default pool should not be null", defaultPool);
         assertEquals("The names should match", defaultPool.getName(), "default-pool");
-        assertEquals("The uids should match", pool1.getUUIDString(), "004c96e1-2d78-c30f-5aa5-f03c87d21e67"); 
+        assertEquals("The uids should match", pool1.getUUIDString(), "004c96e1-2d78-c30f-5aa5-f03c87d21e67");
         assertTrue("pool1 should be persistent", pool1.isPersistent() == 1);
-        assertTrue("pool1 should not be active", pool1.isActive() == 0);        
-        assertTrue("Domain2 should be active", defaultPool.isActive() == 1);         
+        assertTrue("pool1 should not be active", pool1.isActive() == 0);
+        assertTrue("Domain2 should be active", defaultPool.isActive() == 1);
     }
 
     public void testDomainEvents() throws Exception {
         final List<DomainEventType> events = new ArrayList<DomainEventType>();
         final Thread t = new Thread() {
-                @Override
-                public void run() {
-                    try {
-                        Library.runEventLoop();
-                    } catch (LibvirtException e) {
-                        fail("LibvirtException was thrown: " + e);
-                    } catch (InterruptedException e) {
-                    }
+            @Override
+            public void run() {
+                try {
+                    Library.runEventLoop();
+                } catch (LibvirtException e) {
+                    fail("LibvirtException was thrown: " + e);
+                } catch (InterruptedException e) {
                 }
-            };
+            }
+        };
         t.setDaemon(true);
         t.start();
 
         LifecycleListener listener = new LifecycleListener() {
             @Override
-            public int onLifecycleChange(Domain d, DomainEvent e)
-            {
+            public int onLifecycleChange(Domain d, DomainEvent e) {
                 events.add(e.getType());
 
                 return 0;
@@ -283,9 +285,9 @@ public final class TestJavaBindings extends TestCase {
             conn.addLifecycleListener(listener);
 
             Domain dom = conn.domainDefineXML("<domain type='test' id='2'>" + "  <name>deftest</name>"
-                + "  <uuid>004b96e1-2d78-c30f-5aa5-f03c87d21e70</uuid>" + "  <memory>8388608</memory>"
-                + "  <vcpu>2</vcpu>" + "  <os><type arch='i686'>hvm</type></os>" + "  <on_reboot>restart</on_reboot>"
-                + "  <on_poweroff>destroy</on_poweroff>" + "  <on_crash>restart</on_crash>" + "</domain>");
+                    + "  <uuid>004b96e1-2d78-c30f-5aa5-f03c87d21e70</uuid>" + "  <memory>8388608</memory>"
+                    + "  <vcpu>2</vcpu>" + "  <os><type arch='i686'>hvm</type></os>" + "  <on_reboot>restart</on_reboot>"
+                    + "  <on_poweroff>destroy</on_poweroff>" + "  <on_crash>restart</on_crash>" + "</domain>");
 
             dom.create();
             dom.suspend();
@@ -297,12 +299,12 @@ public final class TestJavaBindings extends TestCase {
             Thread.sleep(300);
 
             assertEquals(Arrays.asList(DomainEventType.DEFINED,
-                                       DomainEventType.STARTED,
-                                       DomainEventType.SUSPENDED,
-                                       DomainEventType.RESUMED,
-                                       DomainEventType.STOPPED,
-                                       DomainEventType.UNDEFINED),
-                         events);
+                    DomainEventType.STARTED,
+                    DomainEventType.SUSPENDED,
+                    DomainEventType.RESUMED,
+                    DomainEventType.STOPPED,
+                    DomainEventType.UNDEFINED),
+                    events);
         } finally {
             conn.removeLifecycleListener(listener);
             Library.stopEventLoop();
@@ -316,7 +318,7 @@ public final class TestJavaBindings extends TestCase {
         // connections
         if (version < 1000005) {
             System.err.format("testDomainScreenshot skipped (libvirt version %d.%d.%d < 1.0.5)\n",
-                              version / 1000000, version / 1000 % 1000, version % 1000);
+                    version / 1000000, version / 1000 % 1000, version % 1000);
             return;
         }
 
@@ -330,7 +332,9 @@ public final class TestJavaBindings extends TestCase {
         ByteBuffer bb = ByteBuffer.allocateDirect(8192);
 
         while (str.read(bb) != -1) // consume data
+        {
             bb.clear();
+        }
 
         // ensure that read() repeatedly returns -1 after EOF
 
