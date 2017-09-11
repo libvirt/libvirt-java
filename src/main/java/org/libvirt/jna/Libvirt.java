@@ -185,7 +185,7 @@ public interface Libvirt extends Library {
 
     int virDomainAttachDeviceFlags(DomainPointer virDomainPtr, String deviceXML, int flags);
 
-    int virDomainBlockCopy(DomainPointer virDomainPtr, String disk, String destxml, virTypedParameter params, int nparams, int flags);
+    int virDomainBlockCopy(DomainPointer virDomainPtr, String disk, String destxml, virTypedParameter[] params, int nparams, int flags);
 
     int virDomainBlockPeek(DomainPointer virDomainPtr, String disk, long offset, SizeT size, ByteBuffer buffer, int flags);
 
