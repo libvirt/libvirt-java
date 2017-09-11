@@ -32,8 +32,8 @@ public class NetworkFilter {
      * Release the network filter handle. The underlying snapshot continues to
      * exist.
      *
-     * @throws LibvirtException
      * @return <em>ignore</em> (always 0)
+     * @throws LibvirtException
      */
     public int free() throws LibvirtException {
         int success = 0;
@@ -84,9 +84,6 @@ public class NetworkFilter {
     /**
      * Fetches an XML document describing attributes of the network filter.
      *
-     * @see <a
-     *      href="http://www.libvirt.org/html/libvirt-libvirt.html#virNWFilterGetXMLDesc">Libvirt
-     *      Documentation</a>
      * @return the XML document
      */
     public String getXMLDesc() throws LibvirtException {

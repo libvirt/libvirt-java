@@ -21,8 +21,7 @@ import org.libvirt.jna.types.SecurityLabel;
 import org.libvirt.jna.types.SecurityModel;
 
 /**
- * The libvirt interface which is exposed via JNA. The complete API is
- * documented at http://www.libvirt.org/html/libvirt-libvirt.html.
+ * The libvirt interface which is exposed via JNA.
  */
 public interface Libvirt extends Library {
 

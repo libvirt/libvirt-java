@@ -26,7 +26,7 @@ public class StorageVol {
     public static final class ResizeFlags {
         /**
          * force allocation of new size
-        */
+         */
         public static final int ALLOCATE = 1;
 
         /**
@@ -66,10 +66,8 @@ public class StorageVol {
      * and a VirConnect object. For use when native libvirt returns a
      * virStorageVolPtr, i.e. error handling.
      *
-     * @param virConnect
-     *            the Domain's hypervisor
-     * @param VSVP
-     *            the native virStorageVolPtr
+     * @param virConnect the Domain's hypervisor
+     * @param VSVP       the native virStorageVolPtr
      */
     StorageVol(Connect virConnect, StorageVolPointer VSVP) {
         this.virConnect = virConnect;
@@ -79,8 +77,7 @@ public class StorageVol {
     /**
      * Delete the storage volume from the pool
      *
-     * @param flags
-     *            future flags, use 0 for now
+     * @param flags future flags, use 0 for now
      * @throws LibvirtException
      */
     public void delete(int flags) throws LibvirtException {
@@ -96,8 +93,8 @@ public class StorageVol {
      * Release the storage volume handle. The underlying storage volume contains
      * to exist
      *
-     * @throws LibvirtException
      * @return number of references left (>= 0)
+     * @throws LibvirtException
      */
     public int free() throws LibvirtException {
         int success = 0;
@@ -168,8 +165,7 @@ public class StorageVol {
     /**
      * Fetch an XML document describing all aspects of this storage volume
      *
-     * @param flags
-     *            flags for XML generation (unused, pass 0)
+     * @param flags flags for XML generation (unused, pass 0)
      * @return the XML document
      * @throws LibvirtException
      */
@@ -191,7 +187,6 @@ public class StorageVol {
     /**
      * Ensure data previously on a volume is not accessible to future reads
      *
-     * @see <a href="http://www.libvirt.org/html/libvirt-libvirt.html#virStorageVolWipe">Libvirt Documentation</a>
      * @return <em>ignore</em> (always 0)
      * @throws LibvirtException
      */
@@ -202,11 +197,8 @@ public class StorageVol {
     /**
      * Resize a volume
      *
-     * @see <a href="http://www.libvirt.org/html/libvirt-libvirt.html#virStorageVolResize">Libvirt Documentation</a>
-     * @param capacity
-     *               new capacity for volume
-     * @param flags
-     *               flags for resizing, see libvirt API for exact flags
+     * @param capacity new capacity for volume
+     * @param flags    flags for resizing, see libvirt API for exact flags
      * @return <em>ignore</em> (always 0)
      * @throws LibvirtException
      */

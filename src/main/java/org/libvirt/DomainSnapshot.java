@@ -25,11 +25,7 @@ public class DomainSnapshot {
     /**
      * Delete the Snapshot
      *
-     * @see <a
-     *      href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainSnapshotDelete">Libvirt
-     *      Documentation</a>
-     * @param flags
-     *            controls the deletion
+     * @param flags controls the deletion
      * @return <em>ignore</em> (always 0)
      * @throws LibvirtException
      */
@@ -52,8 +48,8 @@ public class DomainSnapshot {
      * Release the domain snapshot handle. The underlying snapshot continues to
      * exist.
      *
-     * @throws LibvirtException
      * @return 0 on success
+     * @throws LibvirtException
      */
     public int free() throws LibvirtException {
         int success = 0;
@@ -68,7 +64,6 @@ public class DomainSnapshot {
     /**
      * Fetches an XML document describing attributes of the snapshot.
      *
-     * @see <a href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainSnapshotGetXMLDesc">Libvirt Documentation</a>
      * @return the XML document
      */
     public String getXMLDesc() throws LibvirtException {
