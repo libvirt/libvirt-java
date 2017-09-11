@@ -1,6 +1,6 @@
 package org.libvirt.flags;
 
-public final class BlockResizeFlags {
+public final class DomainBlockResizeFlags {
     /**
      * size is in bytes instead of KiB
      */

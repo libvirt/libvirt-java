@@ -16,8 +16,8 @@ import org.libvirt.event.LifecycleListener;
 import org.libvirt.event.PMSuspendListener;
 import org.libvirt.event.PMWakeupListener;
 import org.libvirt.event.RebootListener;
-import org.libvirt.flags.BlockResizeFlags;
-import org.libvirt.flags.MigrateFlags;
+import org.libvirt.flags.DomainBlockResizeFlags;
+import org.libvirt.flags.DomainMigrateFlags;
 import org.libvirt.jna.CString;
 import org.libvirt.jna.DomainPointer;
 import org.libvirt.jna.DomainSnapshotPointer;
@@ -253,7 +253,7 @@ public class Domain {
      *
      * @param disk  path to the block image, or shorthand (like vda)
      * @param size  the new size of the block devices
-     * @param flags bitwise OR'ed values of {@link BlockResizeFlags}
+     * @param flags bitwise OR'ed values of {@link DomainBlockResizeFlags}
      * @throws LibvirtException
      */
     public void blockResize(String disk, long size, int flags) throws LibvirtException {
@@ -753,7 +753,7 @@ public class Domain {
      * given by dconn (a connection to the destination host).
      * <p>
      * Flags may be bitwise OR'ed values of
-     * {@link org.libvirt.flags.MigrateFlags MigrateFlags}.
+     * {@link DomainMigrateFlags MigrateFlags}.
      * <p>
      * If a hypervisor supports renaming domains during migration, then you may
      * set the dname parameter to the new name (otherwise it keeps the same name).
@@ -877,10 +877,10 @@ public class Domain {
      * denoted by a given URI.
      * <p>
      * The destination is given either in dconnuri (if the
-     * {@link MigrateFlags#VIR_MIGRATE_PEER2PEER PEER2PEER}
+     * {@link DomainMigrateFlags#VIR_MIGRATE_PEER2PEER PEER2PEER}
      * is flag set), or in miguri (if neither the
-     * {@link MigrateFlags#VIR_MIGRATE_PEER2PEER PEER2PEER} nor the
-     * {@link MigrateFlags#VIR_MIGRATE_TUNNELLED TUNNELLED} migration
+     * {@link DomainMigrateFlags#VIR_MIGRATE_PEER2PEER PEER2PEER} nor the
+     * {@link DomainMigrateFlags#VIR_MIGRATE_TUNNELLED TUNNELLED} migration
      * flag is set in flags).
      *
      * @param dconnuri  (optional) URI for target libvirtd if @flags includes VIR_MIGRATE_PEER2PEER

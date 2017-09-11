@@ -1,6 +1,6 @@
 package org.libvirt.flags;
 
-public final class UndefineFlags {
+public final class DomainUndefineFlags {
     /**
      * Also remove any managed save
      */

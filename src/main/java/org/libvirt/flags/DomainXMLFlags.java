@@ -1,6 +1,6 @@
 package org.libvirt.flags;
 
-public final class XMLFlags {
+public final class DomainXMLFlags {
     /**
      * dump security sensitive information too
      */

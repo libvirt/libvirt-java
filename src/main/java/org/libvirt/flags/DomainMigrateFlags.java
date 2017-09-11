@@ -1,6 +1,6 @@
 package org.libvirt.flags;
 
-public final class MigrateFlags {
+public final class DomainMigrateFlags {
     /**
      * live migration
      */

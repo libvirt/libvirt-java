@@ -1,6 +1,6 @@
 package org.libvirt.flags;
 
-public final class SnapshotListFlags {
+public final class DomainSnapshotListFlags {
     /**
      * Filter by snapshots with no parents, when listing a domain
      */

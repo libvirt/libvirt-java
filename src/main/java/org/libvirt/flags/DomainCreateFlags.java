@@ -1,6 +1,6 @@
 package org.libvirt.flags;
 
-final class CreateFlags {
+final class DomainCreateFlags {
     static final int VIR_DOMAIN_NONE = 0;
     /**
      * Restore or alter metadata
