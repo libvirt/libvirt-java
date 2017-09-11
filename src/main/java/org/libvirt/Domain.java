@@ -31,7 +31,8 @@ import org.libvirt.jna.virDomainJobInfo;
 import org.libvirt.jna.virDomainMemoryStats;
 import org.libvirt.jna.virTypedParameter;
 import org.libvirt.jna.virVcpuInfo;
-import org.libvirt.parameters.TypedParameter;
+import org.libvirt.parameters.DomainBlockCopyParameters;
+import org.libvirt.parameters.typed.TypedParameter;
 
 /**
  * A virtual machine defined within libvirt.
@@ -168,15 +169,12 @@ public class Domain {
      *
      * @param disk    the path to the block device
      * @param destxml the new disk description
-     * @param params  Array of {@link org.libvirt.parameters.TypedParameter}:
-     *                - VIR_DOMAIN_BLOCK_COPY_BANDWIDTH bandwidth {@link org.libvirt.parameters.TypedUlongParameter}
-     *                - VIR_DOMAIN_BLOCK_COPY_GRANULARITY granularity {@link org.libvirt.parameters.TypedUintParameter}
-     *                - VIR_DOMAIN_BLOCK_COPY_BUF_SIZE buf-size {@link org.libvirt.parameters.TypedUlongParameter}
+     * @param params  {@Link org.libvirt.parameters.DomainBlockCopyParameters}
      * @param flags   {@link org.libvirt.flags.DomainBlockCopyFlags}
      * @throws LibvirtException
      */
-    public void blockCopy(String disk, String destxml, virTypedParameter[] params, int flags) throws LibvirtException {
-        processError(libvirt.virDomainBlockCopy(VDP, disk, destxml, params, params.length, flags));
+    public void blockCopy(String disk, String destxml, DomainBlockCopyParameters params, int flags) throws LibvirtException {
+        processError(libvirt.virDomainBlockCopy(VDP, disk, destxml, params.getVirTypedParameters(), params.getVirTypedParametersLength(), flags));
     }
 
     /**

@@ -1,4 +1,4 @@
-package org.libvirt.parameters;
+package org.libvirt.parameters.typed;
 
 import java.util.Arrays;
 
@@ -17,26 +17,23 @@ public abstract class TypedParameter {
         if (vParam != null) {
             switch (vParam.type) {
                 case (1):
-                    returnValue = new TypedIntParameter(vParam.value.i);
+                    returnValue = new TypedIntParameter(vParam.value.i, Native.toString(vParam.field));
                     break;
                 case (2):
-                    returnValue = new TypedUintParameter(vParam.value.i);
+                    returnValue = new TypedUintParameter(vParam.value.i, Native.toString(vParam.field));
                     break;
                 case (3):
-                    returnValue = new TypedLongParameter(vParam.value.l);
+                    returnValue = new TypedLongParameter(vParam.value.l, Native.toString(vParam.field));
                     break;
                 case (4):
-                    returnValue = new TypedUlongParameter(vParam.value.l);
+                    returnValue = new TypedUlongParameter(vParam.value.l, Native.toString(vParam.field));
                     break;
                 case (5):
-                    returnValue = new TypedDoubleParameter(vParam.value.d);
+                    returnValue = new TypedDoubleParameter(vParam.value.d, Native.toString(vParam.field));
                     break;
                 case (6):
-                    returnValue = new TypedBooleanParameter(vParam.value.b);
+                    returnValue = new TypedBooleanParameter(vParam.value.b, Native.toString(vParam.field));
                     break;
-            }
-            if (returnValue != null) {
-                returnValue.field = Native.toString(vParam.field);
             }
         }
         return returnValue;
@@ -49,48 +46,55 @@ public abstract class TypedParameter {
         returnValue.type = param.getType();
         switch (param.getType()) {
             case (1):
-                returnValue.value.i = ((TypedIntParameter) param).value;
+                returnValue.value.i = ((TypedIntParameter) param).getValue();
                 returnValue.value.setType(int.class);
                 break;
             case (2):
-                returnValue.value.i = ((TypedUintParameter) param).value;
+                returnValue.value.i = ((TypedUintParameter) param).getValue();
                 returnValue.value.setType(int.class);
                 break;
             case (3):
-                returnValue.value.l = ((TypedLongParameter) param).value;
+                returnValue.value.l = ((TypedLongParameter) param).getValue();
                 returnValue.value.setType(long.class);
                 break;
             case (4):
-                returnValue.value.l = ((TypedUlongParameter) param).value;
+                returnValue.value.l = ((TypedUlongParameter) param).getValue();
                 returnValue.value.setType(long.class);
                 break;
             case (5):
-                returnValue.value.d = ((TypedDoubleParameter) param).value;
+                returnValue.value.d = ((TypedDoubleParameter) param).getValue();
                 returnValue.value.setType(double.class);
                 break;
             case (6):
-                returnValue.value.b = (byte) (((TypedBooleanParameter) param).value ? 1 : 0);
+                returnValue.value.b = (byte) (((TypedBooleanParameter) param).getValue() ? 1 : 0);
                 returnValue.value.setType(byte.class);
                 break;
-
         }
         return returnValue;
     }
 
     public static byte[] copyOf(byte[] original, int length) {
         byte[] returnValue = new byte[length];
-        int originalLength = original.length ;
-        Arrays.fill(returnValue, (byte)0);
-        for (int x = 0 ; x < originalLength ; x++) {
-            returnValue[x] = original[x] ;
+        int originalLength = original.length;
+        Arrays.fill(returnValue, (byte) 0);
+        for (int x = 0; x < originalLength; x++) {
+            returnValue[x] = original[x];
         }
-        return returnValue ;
+        return returnValue;
     }
 
     /**
      * Parameter name
      */
-    public String field;
+    private String field;
+
+    public String getField() {
+        return field;
+    }
+
+    public void setField(final String field) {
+        this.field = field;
+    }
 
     /**
      * The type of the parameter

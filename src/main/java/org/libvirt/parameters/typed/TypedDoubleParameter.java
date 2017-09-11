@@ -1,16 +1,17 @@
-package org.libvirt.parameters;
+package org.libvirt.parameters.typed;
 
 /**
  * Class for representing a double typed parameter
  */
 public final class TypedDoubleParameter extends TypedParameter {
-    public double value;
+    private double value;
 
     public TypedDoubleParameter() {
     }
 
-    public TypedDoubleParameter(double value) {
-        this.value = value;
+    public TypedDoubleParameter(double value, String field) {
+        this.setField(field);
+        this.setValue(value);
     }
 
     public int getType() {
@@ -19,6 +20,14 @@ public final class TypedDoubleParameter extends TypedParameter {
 
     public String getTypeAsString() {
         return "VIR_TYPED_PARAM_DOUBLE";
+    }
+
+    public double getValue() {
+        return value;
+    }
+
+    public void setValue(final double value) {
+        this.value = value;
     }
 
     public String getValueAsString() {

@@ -1,16 +1,17 @@
-package org.libvirt.parameters;
+package org.libvirt.parameters.typed;
 
 /**
  * Class for representing a long typed parameter
  */
 public final class TypedLongParameter extends TypedParameter {
-    public long value;
+    private long value;
 
     public TypedLongParameter() {
     }
 
-    public TypedLongParameter(long value) {
-        this.value = value;
+    public TypedLongParameter(long value, String field) {
+        this.setField(field);
+        this.setValue(value);
     }
 
     public int getType() {
@@ -21,8 +22,15 @@ public final class TypedLongParameter extends TypedParameter {
         return "VIR_TYPED_PARAM_LLONG";
     }
 
+    public long getValue() {
+        return value;
+    }
+
+    public void setValue(final long value) {
+        this.value = value;
+    }
+
     public String getValueAsString() {
         return Long.toString(value);
     }
-
 }

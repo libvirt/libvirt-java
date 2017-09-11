@@ -1,16 +1,17 @@
-package org.libvirt.parameters;
+package org.libvirt.parameters.typed;
 
 /**
  * Class for representing an unsigned long int typed parameter
  */
 public final class TypedUlongParameter extends TypedParameter {
-    public long value;
+    private long value;
 
     public TypedUlongParameter() {
     }
 
-    public TypedUlongParameter(long value) {
-        this.value = value;
+    public TypedUlongParameter(long value, String field) {
+        this.setField(field);
+        this.setValue(value);
     }
 
     public int getType() {
@@ -19,6 +20,14 @@ public final class TypedUlongParameter extends TypedParameter {
 
     public String getTypeAsString() {
         return "VIR_TYPED_PARAM_ULLONG";
+    }
+
+    public long getValue() {
+        return value;
+    }
+
+    public void setValue(final long value) {
+        this.value = value;
     }
 
     public String getValueAsString() {
