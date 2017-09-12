@@ -16,11 +16,12 @@ public abstract class Parameters {
 
     public virTypedParameter[] getVirTypedParameters() {
         virTypedParameter[] ret = new virTypedParameter[typedParameters.length];
+
         for (int x = 0; x < typedParameters.length; x++) {
             ret[x] = TypedParameter.toNative(typedParameters[x]);
         }
 
-        return ret;
+        return (virTypedParameter[]) new virTypedParameter().toArray(ret);
     }
 
     public int getVirTypedParametersLength() {
