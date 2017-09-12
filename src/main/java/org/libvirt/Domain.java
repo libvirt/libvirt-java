@@ -29,6 +29,7 @@ import org.libvirt.jna.structures.virDomainInfo;
 import org.libvirt.jna.structures.virDomainInterfaceStats;
 import org.libvirt.jna.structures.virDomainJobInfo;
 import org.libvirt.jna.structures.virDomainMemoryStats;
+import org.libvirt.jna.structures.virSecurityLabel;
 import org.libvirt.jna.structures.virTypedParameter;
 import org.libvirt.jna.structures.virVcpuInfo;
 import org.libvirt.parameters.DomainBlockCopyParameters;
@@ -538,7 +539,7 @@ public class Domain {
      * @throws LibvirtException
      */
     public SecurityLabel getSecurityLabel() throws LibvirtException {
-        org.libvirt.jna.structures.SecurityLabel seclabel = new org.libvirt.jna.structures.SecurityLabel();
+        virSecurityLabel seclabel = new virSecurityLabel();
 
         processError(libvirt.virDomainGetSecurityLabel(this.VDP, seclabel));
 

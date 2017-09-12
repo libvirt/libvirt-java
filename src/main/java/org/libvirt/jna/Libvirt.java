@@ -17,8 +17,6 @@ import org.libvirt.jna.callbacks.VirFreeCallback;
 import org.libvirt.jna.callbacks.VirStreamEventCallback;
 import org.libvirt.jna.callbacks.VirStreamSinkFunc;
 import org.libvirt.jna.callbacks.VirStreamSourceFunc;
-import org.libvirt.jna.structures.SecurityLabel;
-import org.libvirt.jna.structures.SecurityModel;
 import org.libvirt.jna.structures.virConnectAuth;
 import org.libvirt.jna.structures.virDomainBlockInfo;
 import org.libvirt.jna.structures.virDomainBlockJobInfo;
@@ -29,6 +27,8 @@ import org.libvirt.jna.structures.virDomainJobInfo;
 import org.libvirt.jna.structures.virDomainMemoryStats;
 import org.libvirt.jna.structures.virError;
 import org.libvirt.jna.structures.virNodeInfo;
+import org.libvirt.jna.structures.virSecurityLabel;
+import org.libvirt.jna.structures.virSecurityModel;
 import org.libvirt.jna.structures.virStoragePoolInfo;
 import org.libvirt.jna.structures.virStorageVolInfo;
 import org.libvirt.jna.structures.virTypedParameter;
@@ -238,7 +238,7 @@ public interface Libvirt extends Library {
 
     int virDomainGetSchedulerParameters(DomainPointer virDomainPtr, virTypedParameter[] params, IntByReference nparams);
 
-    int virDomainGetSecurityLabel(DomainPointer virDomainPtr, SecurityLabel seclabel);
+    int virDomainGetSecurityLabel(DomainPointer virDomainPtr, virSecurityLabel seclabel);
 
     int virDomainGetUUID(DomainPointer virDomainPtr, byte[] uuidString);
 
@@ -382,7 +382,7 @@ public interface Libvirt extends Library {
 
     int virNodeGetInfo(ConnectionPointer virConnectPtr, virNodeInfo virNodeInfo);
 
-    int virNodeGetSecurityModel(ConnectionPointer virConnectPtr, SecurityModel secmodel);
+    int virNodeGetSecurityModel(ConnectionPointer virConnectPtr, virSecurityModel secmodel);
 
     int virNodeListDevices(ConnectionPointer virConnectPtr, String capabilityName, CString[] names, int maxnames, int flags);
 
