@@ -2,7 +2,7 @@ package org.libvirt;
 
 import com.sun.jna.Pointer;
 import org.libvirt.jna.callbacks.VirConnectAuthCallback;
-import org.libvirt.jna.virConnectCredential;
+import org.libvirt.jna.structures.virConnectCredential;
 
 /**
  * We diverge from the C implementation There is no explicit cbdata field, you

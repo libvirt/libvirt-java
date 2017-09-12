@@ -1,4 +1,4 @@
-package org.libvirt.jna.types;
+package org.libvirt.jna.structures;
 
 import java.util.Arrays;
 import java.util.List;

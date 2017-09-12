@@ -5,7 +5,7 @@ import static org.libvirt.Library.libvirt;
 
 import org.libvirt.jna.StoragePoolPointer;
 import org.libvirt.jna.StorageVolPointer;
-import org.libvirt.jna.virStorageVolInfo;
+import org.libvirt.jna.structures.virStorageVolInfo;
 
 /**
  * An acutal storage bucket.

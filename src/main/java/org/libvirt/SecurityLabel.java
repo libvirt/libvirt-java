@@ -12,7 +12,7 @@ public final class SecurityLabel {
     private boolean enforced;
     private static byte NUL = 0;
 
-    SecurityLabel(org.libvirt.jna.types.SecurityLabel seclabel) {
+    SecurityLabel(org.libvirt.jna.structures.SecurityLabel seclabel) {
         label = Native.toString(seclabel.label, "UTF-8");
         enforced = seclabel.enforcing == 1;
     }

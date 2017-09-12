@@ -2,7 +2,7 @@ package org.libvirt.jna.callbacks;
 
 import com.sun.jna.Callback;
 import com.sun.jna.Pointer;
-import org.libvirt.jna.virConnectCredential;
+import org.libvirt.jna.structures.virConnectCredential;
 
 /**
  * Callback interface for authorization

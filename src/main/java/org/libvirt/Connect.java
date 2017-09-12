@@ -47,8 +47,8 @@ import org.libvirt.jna.callbacks.VirConnectDomainEventIOErrorCallback;
 import org.libvirt.jna.callbacks.VirConnectDomainEventPMChangeCallback;
 import org.libvirt.jna.callbacks.VirDomainEventCallback;
 import org.libvirt.jna.callbacks.VirErrorCallback;
-import org.libvirt.jna.virConnectAuth;
-import org.libvirt.jna.virNodeInfo;
+import org.libvirt.jna.structures.virConnectAuth;
+import org.libvirt.jna.structures.virNodeInfo;
 
 /**
  * The Connect object represents a connection to a local or remote
@@ -1007,7 +1007,7 @@ public class Connect {
      * Returns the security model of the connected node.
      */
     public SecurityModel getSecurityModel() throws LibvirtException {
-        org.libvirt.jna.types.SecurityModel secmodel = new org.libvirt.jna.types.SecurityModel();
+        org.libvirt.jna.structures.SecurityModel secmodel = new org.libvirt.jna.structures.SecurityModel();
 
         processError(libvirt.virNodeGetSecurityModel(this.VCP, secmodel));
 

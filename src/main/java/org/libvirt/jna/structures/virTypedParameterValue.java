@@ -1,4 +1,4 @@
-package org.libvirt.jna;
+package org.libvirt.jna.structures;
 
 import com.sun.jna.Union;
 

@@ -1,6 +1,6 @@
 package org.libvirt.parameters;
 
-import org.libvirt.jna.virTypedParameter;
+import org.libvirt.jna.structures.virTypedParameter;
 import org.libvirt.parameters.typed.TypedParameter;
 
 public abstract class Parameters {

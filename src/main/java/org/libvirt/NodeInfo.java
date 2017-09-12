@@ -1,7 +1,7 @@
 package org.libvirt;
 
 import com.sun.jna.Native;
-import org.libvirt.jna.virNodeInfo;
+import org.libvirt.jna.structures.virNodeInfo;
 
 /**
  * Node data from libvirt.
@@ -56,7 +56,7 @@ public class NodeInfo {
 
     /**
      * @return the total number of CPUs supported but not necessarily active in
-     *         the host.
+     * the host.
      */
     public int maxCpus() {
         return nodes * sockets * cores * threads;

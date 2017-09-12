@@ -2,7 +2,7 @@ package org.libvirt;
 
 import com.sun.jna.Pointer;
 import org.libvirt.jna.callbacks.VirErrorCallback;
-import org.libvirt.jna.virError;
+import org.libvirt.jna.structures.virError;
 
 /**
  * Callback class to allow users of the API to handle the Error messages in a

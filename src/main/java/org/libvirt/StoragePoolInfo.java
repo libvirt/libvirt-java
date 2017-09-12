@@ -1,6 +1,6 @@
 package org.libvirt;
 
-import org.libvirt.jna.virStoragePoolInfo;
+import org.libvirt.jna.structures.virStoragePoolInfo;
 
 /**
  * Detailed information about a storage pool.
@@ -44,14 +44,14 @@ public class StoragePoolInfo {
     /**
      * Remaining free space bytes
      */
-    public long available;;
+    public long available;
+    ;
 
     /**
      * This is meant to be called from the JNI side, as a convenience
      * constructor
      *
-     * @param state
-     *            the state, as defined by libvirt
+     * @param state      the state, as defined by libvirt
      * @param capacity
      * @param allocation
      * @param available

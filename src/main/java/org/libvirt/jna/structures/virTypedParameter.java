@@ -1,9 +1,10 @@
-package org.libvirt.jna;
+package org.libvirt.jna.structures;
 
 import java.util.Arrays;
 import java.util.List;
 
 import com.sun.jna.Structure;
+import org.libvirt.jna.Libvirt;
 
 /**
  * JNA mapping for the virTypedParameter structure

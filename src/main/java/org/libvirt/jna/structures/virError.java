@@ -1,9 +1,12 @@
-package org.libvirt.jna;
+package org.libvirt.jna.structures;
 
 import java.util.Arrays;
 import java.util.List;
 
 import com.sun.jna.Structure;
+import org.libvirt.jna.ConnectionPointer;
+import org.libvirt.jna.DomainPointer;
+import org.libvirt.jna.NetworkPointer;
 
 /**
  * JNA mapping for the virError structure

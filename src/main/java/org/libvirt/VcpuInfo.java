@@ -1,6 +1,6 @@
 package org.libvirt;
 
-import org.libvirt.jna.virVcpuInfo;
+import org.libvirt.jna.structures.virVcpuInfo;
 
 /**
  * Stats about a cpu.
@@ -13,8 +13,7 @@ public class VcpuInfo {
     public int number;
     public VcpuState state;
     public long cpuTime;
-
-    public int cpu;;
+    public int cpu;
 
     public VcpuInfo() {
 

@@ -11,7 +11,7 @@ public final class SecurityModel {
     private String model;
     private String doi;
 
-    SecurityModel(org.libvirt.jna.types.SecurityModel secmodel) {
+    SecurityModel(org.libvirt.jna.structures.SecurityModel secmodel) {
         model = Native.toString(secmodel.model, "UTF-8");
         doi = Native.toString(secmodel.doi, "UTF-8");
     }

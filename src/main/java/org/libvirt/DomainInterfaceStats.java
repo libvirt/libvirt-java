@@ -1,12 +1,11 @@
 package org.libvirt;
 
-import org.libvirt.jna.virDomainInterfaceStats;
+import org.libvirt.jna.structures.virDomainInterfaceStats;
 
 /**
  * The Domain.interfaceStats method returns the network counters in this object.
  *
  * @author stoty
- *
  */
 public class DomainInterfaceStats {
     public long rx_bytes;
@@ -35,7 +34,7 @@ public class DomainInterfaceStats {
 
     @Override
     public String toString() {
-        return String.format("rx_bytes:%d%nrx_packets:%d%nrx_errs:%d%nrx_drop:%d%ntx_bytes:%d%ntx_packets:%d%ntx_errs:%d%ntx_drop:%d%n", rx_bytes, rx_packets, rx_errs, rx_drop, tx_bytes, tx_packets, tx_errs, tx_drop);
+        return String.format("rx_bytes:%d%nrx_packets:%d%nrx_errs:%d%nrx_drop:%d%ntx_bytes:%d%ntx_packets:%d%ntx_errs:%d%ntx_drop:%d%n", rx_bytes, rx_packets, rx_errs, rx_drop, tx_bytes,
+                tx_packets, tx_errs, tx_drop);
     }
-
 }

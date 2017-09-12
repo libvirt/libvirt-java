@@ -4,8 +4,8 @@ import java.util.Arrays;
 
 import com.sun.jna.Native;
 import org.libvirt.jna.Libvirt;
-import org.libvirt.jna.virTypedParameter;
-import org.libvirt.jna.virTypedParameterValue;
+import org.libvirt.jna.structures.virTypedParameter;
+import org.libvirt.jna.structures.virTypedParameterValue;
 
 /**
  * The abstract parent of the actual TypedParameter classes
