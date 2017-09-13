@@ -15,6 +15,7 @@ import com.sun.jna.Memory;
 import com.sun.jna.NativeLong;
 import com.sun.jna.Pointer;
 import com.sun.jna.ptr.LongByReference;
+import org.libvirt.event.BlockJobListener;
 import org.libvirt.event.ConnectionCloseListener;
 import org.libvirt.event.ConnectionCloseReason;
 import org.libvirt.event.DomainEvent;
@@ -30,6 +31,7 @@ import org.libvirt.event.PMWakeupReason;
 import org.libvirt.event.RebootListener;
 import org.libvirt.jna.Libvirt;
 import org.libvirt.jna.callbacks.VirConnectCloseFunc;
+import org.libvirt.jna.callbacks.VirConnectDomainEventBlockJobCallback;
 import org.libvirt.jna.callbacks.VirConnectDomainEventCallback;
 import org.libvirt.jna.callbacks.VirConnectDomainEventGenericCallback;
 import org.libvirt.jna.callbacks.VirConnectDomainEventIOErrorCallback;
@@ -630,12 +632,11 @@ public class Connect {
         }
     }
 
-    private void domainEventRegister(Domain domain, int eventID, VirDomainEventCallback cb, EventListener l)
-            throws LibvirtException {
+    private void domainEventRegister(Domain domain, int eventID, VirDomainEventCallback cb, EventListener l) throws LibvirtException {
         Map<EventListener, RegisteredEventListener> handlers = eventListeners[eventID];
 
         if (handlers == null) {
-            handlers = new HashMap<EventListener, RegisteredEventListener>();
+            handlers = new HashMap<>();
             eventListeners[eventID] = handlers;
         } else if (handlers.containsKey(l)) {
             return;
@@ -745,6 +746,35 @@ public class Connect {
         };
 
         domainEventRegister(domain, DomainEventID.VIR_DOMAIN_EVENT_ID_LIFECYCLE.getValue(), virCB, cb);
+    }
+
+    void domainEventRegister(Domain domain, final BlockJobListener l) throws LibvirtException {
+        if (l == null) {
+            throw new IllegalArgumentException("BlockJobListener cannot be null");
+        }
+
+        VirConnectDomainEventBlockJobCallback virCB = (virConnectPtr, virDomainPointer, disk, type, status, opaque) -> {
+            assert VCP.equals(virConnectPtr);
+
+            try {
+                Domain d = Domain.constructIncRef(Connect.this, virDomainPointer);
+
+                switch (status) {
+                    case 0:
+                        l.onBlockJobCompleted(d, disk, type);
+                    case 1:
+                        l.onBlockJobFailed(d, disk, type);
+                    case 2:
+                        l.onBlockJobCanceled(d, disk, type);
+                    case 3:
+                        l.onBlockJobReady(d, disk, type);
+                }
+            } catch (LibvirtException e) {
+                throw new RuntimeException("libvirt error in block job callback", e);
+            }
+        };
+
+        domainEventRegister(domain, DomainEventID.VIR_DOMAIN_EVENT_ID_BLOCK_JOB.getValue(), virCB, l);
     }
 
     /**
