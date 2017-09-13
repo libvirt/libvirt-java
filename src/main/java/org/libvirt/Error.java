@@ -2,9 +2,9 @@ package org.libvirt;
 
 import java.io.Serializable;
 
-import org.libvirt.jna.ConnectionPointer;
-import org.libvirt.jna.DomainPointer;
-import org.libvirt.jna.NetworkPointer;
+import org.libvirt.jna.pointers.ConnectionPointer;
+import org.libvirt.jna.pointers.DomainPointer;
+import org.libvirt.jna.pointers.NetworkPointer;
 import org.libvirt.jna.structures.virError;
 
 /**

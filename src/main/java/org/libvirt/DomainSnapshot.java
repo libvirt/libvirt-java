@@ -3,7 +3,7 @@ package org.libvirt;
 import static org.libvirt.ErrorHandler.processError;
 import static org.libvirt.Library.libvirt;
 
-import org.libvirt.jna.DomainSnapshotPointer;
+import org.libvirt.jna.pointers.DomainSnapshotPointer;
 
 public class DomainSnapshot {
 

@@ -1,4 +1,4 @@
-package org.libvirt.jna;
+package org.libvirt.jna.types;
 
 import com.sun.jna.IntegerType;
 import com.sun.jna.Native;
@@ -7,7 +7,10 @@ import com.sun.jna.Native;
  * Represents the native {@code size_t} data type.
  */
 public final class SizeT extends IntegerType {
-    public SizeT() { this(0); }
+    public SizeT() {
+        this(0);
+    }
+
     public SizeT(long value) {
         /* The third argument determines whether this class represents
          * an unsigned integer type. When extracting a value into a

@@ -17,6 +17,17 @@ import org.libvirt.jna.callbacks.VirFreeCallback;
 import org.libvirt.jna.callbacks.VirStreamEventCallback;
 import org.libvirt.jna.callbacks.VirStreamSinkFunc;
 import org.libvirt.jna.callbacks.VirStreamSourceFunc;
+import org.libvirt.jna.pointers.ConnectionPointer;
+import org.libvirt.jna.pointers.DevicePointer;
+import org.libvirt.jna.pointers.DomainPointer;
+import org.libvirt.jna.pointers.DomainSnapshotPointer;
+import org.libvirt.jna.pointers.InterfacePointer;
+import org.libvirt.jna.pointers.NetworkFilterPointer;
+import org.libvirt.jna.pointers.NetworkPointer;
+import org.libvirt.jna.pointers.SecretPointer;
+import org.libvirt.jna.pointers.StoragePoolPointer;
+import org.libvirt.jna.pointers.StorageVolPointer;
+import org.libvirt.jna.pointers.StreamPointer;
 import org.libvirt.jna.structures.virConnectAuth;
 import org.libvirt.jna.structures.virDomainBlockInfo;
 import org.libvirt.jna.structures.virDomainBlockJobInfo;
@@ -33,6 +44,9 @@ import org.libvirt.jna.structures.virStoragePoolInfo;
 import org.libvirt.jna.structures.virStorageVolInfo;
 import org.libvirt.jna.structures.virTypedParameter;
 import org.libvirt.jna.structures.virVcpuInfo;
+import org.libvirt.jna.types.CString;
+import org.libvirt.jna.types.SizeT;
+import org.libvirt.jna.types.SizeTByReference;
 
 /**
  * The libvirt interface which is exposed via JNA.

@@ -4,9 +4,9 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.sun.jna.Structure;
-import org.libvirt.jna.ConnectionPointer;
-import org.libvirt.jna.DomainPointer;
-import org.libvirt.jna.NetworkPointer;
+import org.libvirt.jna.pointers.ConnectionPointer;
+import org.libvirt.jna.pointers.DomainPointer;
+import org.libvirt.jna.pointers.NetworkPointer;
 
 /**
  * JNA mapping for the virError structure

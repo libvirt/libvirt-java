@@ -8,9 +8,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 import com.sun.jna.Native;
 import com.sun.jna.Pointer;
 import com.sun.jna.ptr.LongByReference;
-import org.libvirt.jna.CString;
 import org.libvirt.jna.Libvirt;
 import org.libvirt.jna.callbacks.VirEventTimeoutCallback;
+import org.libvirt.jna.types.CString;
 
 /**
  * This class represents an instance of the JNA mapped libvirt
