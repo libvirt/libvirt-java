@@ -29,6 +29,7 @@ import org.libvirt.event.PMSuspendReason;
 import org.libvirt.event.PMWakeupListener;
 import org.libvirt.event.PMWakeupReason;
 import org.libvirt.event.RebootListener;
+import org.libvirt.event.enums.ConnectDomainEventBlockJobStatus;
 import org.libvirt.event.enums.DomainEventID;
 import org.libvirt.jna.Libvirt;
 import org.libvirt.jna.callbacks.VirConnectCloseFunc;
@@ -63,7 +64,7 @@ import org.libvirt.jna.types.CString;
 public class Connect {
 
     // registered event listeners by DomainEventID
-    private Map<EventListener, RegisteredEventListener>[] eventListeners = makeHashMapArray(DomainEventID.values().length);
+    private Map<EventListener, RegisteredEventListener>[] eventListeners = makeHashMapArray(DomainEventID.SIZE);
 
     private static final class RegisteredEventListener {
         public final int callbackId;
@@ -644,14 +645,14 @@ public class Connect {
             try {
                 Domain d = Domain.constructIncRef(Connect.this, virDomainPointer);
 
-                switch (status) {
-                    case 0:
+                switch (ConnectDomainEventBlockJobStatus.valueOf(status)) {
+                    case VIR_DOMAIN_BLOCK_JOB_COMPLETED:
                         l.onBlockJobCompleted(d, disk, type);
-                    case 1:
+                    case VIR_DOMAIN_BLOCK_JOB_FAILED:
                         l.onBlockJobFailed(d, disk, type);
-                    case 2:
+                    case VIR_DOMAIN_BLOCK_JOB_CANCELED:
                         l.onBlockJobCanceled(d, disk, type);
-                    case 3:
+                    case VIR_DOMAIN_BLOCK_JOB_READY:
                         l.onBlockJobReady(d, disk, type);
                 }
             } catch (LibvirtException e) {

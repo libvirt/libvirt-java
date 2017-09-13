@@ -107,6 +107,8 @@ public enum DomainEventID {
 
     private int n;
 
+    public static final int SIZE = values().length;
+
     DomainEventID(int n) {
         this.n = n;
     }
