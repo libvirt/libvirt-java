@@ -6,7 +6,7 @@ import static org.libvirt.Library.libvirt;
 import com.sun.jna.Native;
 import com.sun.jna.ptr.IntByReference;
 import org.libvirt.jna.Libvirt;
-import org.libvirt.jna.NetworkPointer;
+import org.libvirt.jna.pointers.NetworkPointer;
 
 /**
  * A network object defined by libvirt.

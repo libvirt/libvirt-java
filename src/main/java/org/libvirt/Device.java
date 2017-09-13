@@ -3,8 +3,8 @@ package org.libvirt;
 import static org.libvirt.ErrorHandler.processError;
 import static org.libvirt.Library.libvirt;
 
-import org.libvirt.jna.CString;
-import org.libvirt.jna.DevicePointer;
+import org.libvirt.jna.pointers.DevicePointer;
+import org.libvirt.jna.types.CString;
 
 /**
  * A device which is attached to a node
@@ -24,10 +24,8 @@ public class Device {
     /**
      * Constructs a Device object from a DevicePointer, and a Connect object.
      *
-     * @param virConnect
-     *            the Domain's hypervisor
-     * @param VDP
-     *            the native virDomainPtr
+     * @param virConnect the Domain's hypervisor
+     * @param VDP        the native virDomainPtr
      */
     Device(Connect virConnect, DevicePointer VDP) {
         this.virConnect = virConnect;
@@ -38,8 +36,8 @@ public class Device {
      * Destroy the device object. The virtual device is removed from the host
      * operating system. This function may require privileged access.
      *
-     * @throws LibvirtException
      * @return 0 for success, -1 for failure.
+     * @throws LibvirtException
      */
     public int destroy() throws LibvirtException {
         int success = 0;
@@ -70,8 +68,8 @@ public class Device {
      * Frees this device object. The running instance is kept alive. The data
      * structure is freed and should not be used thereafter.
      *
-     * @throws LibvirtException
      * @return number of references left (>= 0) for success, -1 for failure.
+     * @throws LibvirtException
      */
     public int free() throws LibvirtException {
         int success = 0;

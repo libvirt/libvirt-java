@@ -8,9 +8,9 @@ import java.nio.ByteBuffer;
 import com.sun.jna.Native;
 import com.sun.jna.Pointer;
 import org.libvirt.jna.Libvirt;
-import org.libvirt.jna.SecretPointer;
-import org.libvirt.jna.SizeT;
-import org.libvirt.jna.SizeTByReference;
+import org.libvirt.jna.pointers.SecretPointer;
+import org.libvirt.jna.types.SizeT;
+import org.libvirt.jna.types.SizeTByReference;
 
 /**
  * A secret defined by libvirt
@@ -40,8 +40,8 @@ public class Secret {
     /**
      * Release the secret handle. The underlying secret continues to exist.
      *
-     * @throws LibvirtException
      * @return <em>ignore</em> (always 0)
+     * @throws LibvirtException
      */
     public int free() throws LibvirtException {
         int success = 0;
@@ -58,7 +58,7 @@ public class Secret {
      * used.
      *
      * @return a string identifying the object using the secret, or NULL upon
-     *         error
+     * error
      * @throws LibvirtException
      */
     public String getUsageID() throws LibvirtException {

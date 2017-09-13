@@ -10,11 +10,11 @@ import java.nio.channels.ClosedChannelException;
 import java.nio.channels.NonReadableChannelException;
 import java.nio.channels.NonWritableChannelException;
 
-import org.libvirt.jna.SizeT;
-import org.libvirt.jna.StreamPointer;
 import org.libvirt.jna.callbacks.VirStreamEventCallback;
 import org.libvirt.jna.callbacks.VirStreamSinkFunc;
 import org.libvirt.jna.callbacks.VirStreamSourceFunc;
+import org.libvirt.jna.pointers.StreamPointer;
+import org.libvirt.jna.types.SizeT;
 
 /**
  * The Stream class is used to transfer data between a libvirt daemon

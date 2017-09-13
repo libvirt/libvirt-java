@@ -5,11 +5,11 @@ import static org.libvirt.Library.libvirt;
 
 import com.sun.jna.Native;
 import com.sun.jna.ptr.IntByReference;
-import org.libvirt.jna.CString;
 import org.libvirt.jna.Libvirt;
-import org.libvirt.jna.StoragePoolPointer;
-import org.libvirt.jna.StorageVolPointer;
+import org.libvirt.jna.pointers.StoragePoolPointer;
+import org.libvirt.jna.pointers.StorageVolPointer;
 import org.libvirt.jna.structures.virStoragePoolInfo;
+import org.libvirt.jna.types.CString;
 
 /**
  * A collection of storage

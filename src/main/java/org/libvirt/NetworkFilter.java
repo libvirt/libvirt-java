@@ -5,7 +5,7 @@ import static org.libvirt.Library.libvirt;
 
 import com.sun.jna.Native;
 import org.libvirt.jna.Libvirt;
-import org.libvirt.jna.NetworkFilterPointer;
+import org.libvirt.jna.pointers.NetworkFilterPointer;
 
 public class NetworkFilter {
     /**

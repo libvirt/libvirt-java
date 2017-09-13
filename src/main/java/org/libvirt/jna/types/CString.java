@@ -1,4 +1,4 @@
-package org.libvirt.jna;
+package org.libvirt.jna.types;
 
 import java.nio.charset.Charset;
 
@@ -38,19 +38,21 @@ public class CString extends PointerType {
         if (string == null) {
             final Pointer ptr = getPointer();
 
-            if (ptr == null) return null;
+            if (ptr == null) {
+                return null;
+            }
 
             try {
                 // N.B.  could be replaced with Pointer.getString(0L, "UTF-8")
                 //       available in JNA >= 4.x
                 final long len = ptr.indexOf(0, NUL);
-                assert (len != -1): "C-Strings must be \\0 terminated.";
-                assert (len <= Integer.MAX_VALUE): "string length exceeded " + Integer.MAX_VALUE;
+                assert (len != -1) : "C-Strings must be \\0 terminated.";
+                assert (len <= Integer.MAX_VALUE) : "string length exceeded " + Integer.MAX_VALUE;
 
                 if (len == 0) {
                     string = "";
                 } else {
-                    final byte[] data = ptr.getByteArray(0, (int)len);
+                    final byte[] data = ptr.getByteArray(0, (int) len);
 
                     string = new String(data, UTF8);
                 }
@@ -63,9 +65,11 @@ public class CString extends PointerType {
 
     @Override
     public CString fromNative(Object nativeValue, FromNativeContext context) {
-        if (nativeValue == null) return null;
+        if (nativeValue == null) {
+            return null;
+        }
 
-        return new CString((Pointer)nativeValue);
+        return new CString((Pointer) nativeValue);
     }
 
     private void free(Pointer ptr) {
@@ -80,6 +84,8 @@ public class CString extends PointerType {
      */
     public void free() {
         final Pointer ptr = getPointer();
-        if (ptr != null) free(ptr);
+        if (ptr != null) {
+            free(ptr);
+        }
     }
 }
