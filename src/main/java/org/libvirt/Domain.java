@@ -24,6 +24,7 @@ import org.libvirt.jna.DomainSnapshotPointer;
 import org.libvirt.jna.Libvirt;
 import org.libvirt.jna.SizeT;
 import org.libvirt.jna.structures.virDomainBlockInfo;
+import org.libvirt.jna.structures.virDomainBlockJobInfo;
 import org.libvirt.jna.structures.virDomainBlockStats;
 import org.libvirt.jna.structures.virDomainInfo;
 import org.libvirt.jna.structures.virDomainInterfaceStats;
@@ -190,6 +191,19 @@ public class Domain {
         virDomainBlockInfo info = new virDomainBlockInfo();
         processError(libvirt.virDomainGetBlockInfo(VDP, path, info, 0));
         return new DomainBlockInfo(info);
+    }
+
+    /**
+     * This function returns a block job for block devices attached to the domain.
+     *
+     * @param path the path to the block device
+     * @return the info
+     * @throws LibvirtException
+     */
+    public DomainBlockJobInfo blockJobInfo(String path, int flags) throws LibvirtException {
+        virDomainBlockJobInfo info = new virDomainBlockJobInfo();
+        processError(libvirt.virDomainGetBlockJobInfo(VDP, path, info, flags));
+        return new DomainBlockJobInfo(info);
     }
 
     /**
