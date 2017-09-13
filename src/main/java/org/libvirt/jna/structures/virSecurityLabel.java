@@ -1,11 +1,11 @@
-package org.libvirt.jna.types;
+package org.libvirt.jna.structures;
 
 import java.util.Arrays;
 import java.util.List;
 
 import com.sun.jna.Structure;
 
-public class SecurityLabel extends Structure {
+public class virSecurityLabel extends Structure {
     private static final int VIR_SECURITY_LABEL_BUFLEN = 4096 + 1;
     private static final List<String> fields = Arrays.asList("label", "enforcing");
 

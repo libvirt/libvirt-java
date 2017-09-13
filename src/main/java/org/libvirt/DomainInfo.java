@@ -1,17 +1,15 @@
 package org.libvirt;
 
-import org.libvirt.jna.virDomainInfo;
+import org.libvirt.jna.structures.virDomainInfo;
 
 /**
  * This object is returned by Domain.getInfo()
  *
  * @author stoty
- *
  */
 public class DomainInfo {
     /**
      * @author stoty
-     *
      */
     public static enum DomainState {
         /**

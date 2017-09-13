@@ -1,6 +1,6 @@
 package org.libvirt;
 
-import org.libvirt.jna.virDomainMemoryStats;
+import org.libvirt.jna.structures.virDomainMemoryStats;
 
 public class MemoryStatistic {
 

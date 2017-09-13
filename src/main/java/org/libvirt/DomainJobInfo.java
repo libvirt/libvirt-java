@@ -1,6 +1,6 @@
 package org.libvirt;
 
-import org.libvirt.jna.virDomainJobInfo;
+import org.libvirt.jna.structures.virDomainJobInfo;
 
 public class DomainJobInfo {
     protected int type;
@@ -129,6 +129,7 @@ public class DomainJobInfo {
 
     @Override
     public String toString() {
-        return String.format("type:%d%ntimeElapsed:%d%ntimeRemaining:%d%ndataTotal:%d%ndataProcessed:%d%ndataRemaining:%d%nmemTotal:%d%nmemProcessed:%d%nmemRemaining:%d%nfileTotal:%d%nfileProcessed:%d%nfileRemaining:%d%n", type, timeElapsed, timeRemaining, dataTotal, dataProcessed, dataRemaining, memTotal, memProcessed, memRemaining, fileTotal, fileProcessed, fileRemaining);
+        return String.format("type:%d%ntimeElapsed:%d%ntimeRemaining:%d%ndataTotal:%d%ndataProcessed:%d%ndataRemaining:%d%nmemTotal:%d%nmemProcessed:%d%nmemRemaining:%d%nfileTotal:%d%nfileProcessed" +
+                ":%d%nfileRemaining:%d%n", type, timeElapsed, timeRemaining, dataTotal, dataProcessed, dataRemaining, memTotal, memProcessed, memRemaining, fileTotal, fileProcessed, fileRemaining);
     }
 }

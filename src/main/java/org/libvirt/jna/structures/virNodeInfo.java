@@ -1,4 +1,4 @@
-package org.libvirt.jna;
+package org.libvirt.jna.structures;
 
 import java.util.Arrays;
 import java.util.List;
@@ -11,10 +11,10 @@ import com.sun.jna.Structure;
  */
 public class virNodeInfo extends Structure {
     public class ByReference extends virNodeInfo implements Structure.ByReference {
-    };
+    }
 
     public class ByValue extends virNodeInfo implements Structure.ByValue {
-    };
+    }
 
     public byte model[] = new byte[32];
     public NativeLong memory;

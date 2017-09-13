@@ -1,11 +1,11 @@
-package org.libvirt.jna.types;
+package org.libvirt.jna.structures;
 
 import java.util.Arrays;
 import java.util.List;
 
 import com.sun.jna.Structure;
 
-public class SecurityModel extends Structure {
+public class virSecurityModel extends Structure {
     private static final int VIR_SECURITY_MODEL_BUFLEN = 256 + 1;
     private static final int VIR_SECURITY_DOI_BUFLEN = 256 + 1;
 

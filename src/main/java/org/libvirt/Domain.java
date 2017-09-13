@@ -23,14 +23,16 @@ import org.libvirt.jna.DomainPointer;
 import org.libvirt.jna.DomainSnapshotPointer;
 import org.libvirt.jna.Libvirt;
 import org.libvirt.jna.SizeT;
-import org.libvirt.jna.virDomainBlockInfo;
-import org.libvirt.jna.virDomainBlockStats;
-import org.libvirt.jna.virDomainInfo;
-import org.libvirt.jna.virDomainInterfaceStats;
-import org.libvirt.jna.virDomainJobInfo;
-import org.libvirt.jna.virDomainMemoryStats;
-import org.libvirt.jna.virTypedParameter;
-import org.libvirt.jna.virVcpuInfo;
+import org.libvirt.jna.structures.virDomainBlockInfo;
+import org.libvirt.jna.structures.virDomainBlockJobInfo;
+import org.libvirt.jna.structures.virDomainBlockStats;
+import org.libvirt.jna.structures.virDomainInfo;
+import org.libvirt.jna.structures.virDomainInterfaceStats;
+import org.libvirt.jna.structures.virDomainJobInfo;
+import org.libvirt.jna.structures.virDomainMemoryStats;
+import org.libvirt.jna.structures.virSecurityLabel;
+import org.libvirt.jna.structures.virTypedParameter;
+import org.libvirt.jna.structures.virVcpuInfo;
 import org.libvirt.parameters.DomainBlockCopyParameters;
 import org.libvirt.parameters.typed.TypedParameter;
 
@@ -189,6 +191,19 @@ public class Domain {
         virDomainBlockInfo info = new virDomainBlockInfo();
         processError(libvirt.virDomainGetBlockInfo(VDP, path, info, 0));
         return new DomainBlockInfo(info);
+    }
+
+    /**
+     * This function returns a block job for block devices attached to the domain.
+     *
+     * @param path the path to the block device
+     * @return the info
+     * @throws LibvirtException
+     */
+    public DomainBlockJobInfo blockJobInfo(String path, int flags) throws LibvirtException {
+        virDomainBlockJobInfo info = new virDomainBlockJobInfo();
+        processError(libvirt.virDomainGetBlockJobInfo(VDP, path, info, flags));
+        return new DomainBlockJobInfo(info);
     }
 
     /**
@@ -538,7 +553,7 @@ public class Domain {
      * @throws LibvirtException
      */
     public SecurityLabel getSecurityLabel() throws LibvirtException {
-        org.libvirt.jna.types.SecurityLabel seclabel = new org.libvirt.jna.types.SecurityLabel();
+        virSecurityLabel seclabel = new virSecurityLabel();
 
         processError(libvirt.virDomainGetSecurityLabel(this.VDP, seclabel));
 

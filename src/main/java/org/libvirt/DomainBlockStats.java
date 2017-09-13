@@ -1,6 +1,6 @@
 package org.libvirt;
 
-import org.libvirt.jna.virDomainBlockStats;
+import org.libvirt.jna.structures.virDomainBlockStats;
 
 /**
  * This class holds the counters for block device statistics.

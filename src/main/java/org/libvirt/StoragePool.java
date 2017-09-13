@@ -9,7 +9,7 @@ import org.libvirt.jna.CString;
 import org.libvirt.jna.Libvirt;
 import org.libvirt.jna.StoragePoolPointer;
 import org.libvirt.jna.StorageVolPointer;
-import org.libvirt.jna.virStoragePoolInfo;
+import org.libvirt.jna.structures.virStoragePoolInfo;
 
 /**
  * A collection of storage

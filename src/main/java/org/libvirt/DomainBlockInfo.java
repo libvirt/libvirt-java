@@ -1,6 +1,6 @@
 package org.libvirt;
 
-import org.libvirt.jna.virDomainBlockInfo;
+import org.libvirt.jna.structures.virDomainBlockInfo;
 
 public class DomainBlockInfo {
     protected long capacity;
