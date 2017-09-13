@@ -28,4 +28,22 @@ public class LibvirtException extends Exception {
         return virError;
     }
 
+    public LibvirtException() {
+    }
+
+    public LibvirtException(final String message) {
+        super(message);
+    }
+
+    public LibvirtException(final String message, final Throwable cause) {
+        super(message, cause);
+    }
+
+    public LibvirtException(final Throwable cause) {
+        super(cause);
+    }
+
+    public LibvirtException(final String message, final Throwable cause, final boolean enableSuppression, final boolean writableStackTrace) {
+        super(message, cause, enableSuppression, writableStackTrace);
+    }
 }
