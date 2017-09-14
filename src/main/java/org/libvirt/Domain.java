@@ -11,6 +11,7 @@ import java.util.concurrent.TimeUnit;
 import com.sun.jna.Native;
 import com.sun.jna.NativeLong;
 import com.sun.jna.ptr.IntByReference;
+import org.libvirt.event.BlockJobListener;
 import org.libvirt.event.IOErrorListener;
 import org.libvirt.event.LifecycleListener;
 import org.libvirt.event.PMSuspendListener;
@@ -1054,6 +1055,18 @@ public class Domain {
      * @see Connect#removeLifecycleListener
      */
     public void addLifecycleListener(final LifecycleListener l) throws LibvirtException {
+        virConnect.domainEventRegister(this, l);
+    }
+
+    /**
+     * Adds the specified listener to receive blockjob events for this domain.
+     *
+     * @param l the blockjob listener
+     * @throws LibvirtException on failure
+     * @see Connect#addBlockJobListener
+     * @see Connect#removeBlockJobListener
+     */
+    public void addBlockJobListener(final BlockJobListener l) throws LibvirtException {
         virConnect.domainEventRegister(this, l);
     }
 

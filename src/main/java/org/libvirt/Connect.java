@@ -379,43 +379,6 @@ public class Connect {
     }
 
     /**
-     * Register the specified connection close listener to receive notifications
-     * when this connection is closed.
-     * <p>
-     * <strong>Note:</strong> There can only be at most one registered listener
-     * at a time.
-     *
-     * @param l the connection close listener
-     * @throws LibvirtException on failure
-     * @see #unregisterCloseListener
-     */
-    public void registerCloseListener(final ConnectionCloseListener l) throws LibvirtException {
-        CloseFunc cf = new CloseFunc(l);
-
-        processError(libvirt.virConnectRegisterCloseCallback(this.VCP,
-                cf,
-                null,
-                null));
-        this.registeredCloseFunc = cf;
-    }
-
-    /**
-     * Unregister the previously registered close listener.
-     * <p>
-     * When there currently is no registered close listener, this method
-     * does nothing.
-     *
-     * @see #registerCloseListener
-     */
-    public void unregisterCloseListener() throws LibvirtException {
-        if (this.registeredCloseFunc != null) {
-            processError(libvirt.virConnectUnregisterCloseCallback(this.VCP,
-                    this.registeredCloseFunc));
-            this.registeredCloseFunc = null;
-        }
-    }
-
-    /**
      * Compares the given CPU description with the host CPU
      *
      * @param xmlDesc
@@ -565,17 +528,6 @@ public class Connect {
         domainEventRegister(domain, DomainEventID.VIR_DOMAIN_EVENT_ID_IO_ERROR.getValue(), virCB, cb);
     }
 
-    /**
-     * Adds the specified I/O error listener to receive I/O error events
-     * for domains of this connection.
-     *
-     * @param l the I/O error listener
-     * @throws LibvirtException on failure
-     */
-    public void addIOErrorListener(final IOErrorListener l) throws LibvirtException {
-        domainEventRegister(null, l);
-    }
-
     void domainEventRegister(Domain domain, final RebootListener cb) throws LibvirtException {
         if (cb == null) {
             throw new IllegalArgumentException("RebootCallback cannot be null");
@@ -663,19 +615,6 @@ public class Connect {
         domainEventRegister(domain, DomainEventID.VIR_DOMAIN_EVENT_ID_BLOCK_JOB.getValue(), virCB, l);
     }
 
-    /**
-     * Adds the specified listener to receive lifecycle events for
-     * domains of this connection.
-     *
-     * @param l the lifecycle listener
-     * @throws LibvirtException on failure
-     * @see #removeLifecycleListener
-     * @see Domain#addLifecycleListener
-     */
-    public void addLifecycleListener(final LifecycleListener l) throws LibvirtException {
-        domainEventRegister(null, l);
-    }
-
     void domainEventRegister(Domain domain, final PMWakeupListener cb) throws LibvirtException {
         if (cb == null) {
             throw new IllegalArgumentException("PMWakeupCallback cannot be null");
@@ -722,6 +661,102 @@ public class Connect {
                 };
 
         domainEventRegister(domain, DomainEventID.VIR_DOMAIN_EVENT_ID_PMSUSPEND.getValue(), virCB, cb);
+    }
+
+    /**
+     * Register the specified connection close listener to receive notifications
+     * when this connection is closed.
+     * <p>
+     * <strong>Note:</strong> There can only be at most one registered listener
+     * at a time.
+     *
+     * @param l the connection close listener
+     * @throws LibvirtException on failure
+     * @see #unregisterCloseListener
+     */
+    public void registerCloseListener(final ConnectionCloseListener l) throws LibvirtException {
+        CloseFunc cf = new CloseFunc(l);
+
+        processError(libvirt.virConnectRegisterCloseCallback(this.VCP,
+                cf,
+                null,
+                null));
+        this.registeredCloseFunc = cf;
+    }
+
+    /**
+     * Unregister the previously registered close listener.
+     * <p>
+     * When there currently is no registered close listener, this method
+     * does nothing.
+     *
+     * @see #registerCloseListener
+     */
+    public void unregisterCloseListener() throws LibvirtException {
+        if (this.registeredCloseFunc != null) {
+            processError(libvirt.virConnectUnregisterCloseCallback(this.VCP,
+                    this.registeredCloseFunc));
+            this.registeredCloseFunc = null;
+        }
+    }
+
+    /**
+     * Adds the specified I/O error listener to receive I/O error events
+     * for domains of this connection.
+     *
+     * @param l the I/O error listener
+     * @throws LibvirtException on failure
+     */
+    public void addIOErrorListener(final IOErrorListener l) throws LibvirtException {
+        domainEventRegister(null, l);
+    }
+
+    /**
+     * Adds the specified listener to receive lifecycle events for
+     * domains of this connection.
+     *
+     * @param l the lifecycle listener
+     * @throws LibvirtException on failure
+     * @see #removeLifecycleListener
+     * @see Domain#addLifecycleListener
+     */
+    public void addLifecycleListener(final LifecycleListener l) throws LibvirtException {
+        domainEventRegister(null, l);
+    }
+
+    /**
+     * Removes the specified lifecycle event listener so that it no longer
+     * receives lifecycle events.
+     *
+     * @param l the lifecycle event listener
+     * @throws LibvirtException
+     */
+    public void removeLifecycleListener(LifecycleListener l) throws LibvirtException {
+        domainEventDeregister(DomainEventID.VIR_DOMAIN_EVENT_ID_LIFECYCLE.getValue(), l);
+    }
+
+    /**
+     * Adds the specified listener to receive blockjob events for
+     * domains of this connection.
+     *
+     * @param l the blockjob listener
+     * @throws LibvirtException on failure
+     * @see #removeBlockJobListener
+     * @see Domain#addBlockJobListener
+     */
+    public void addBlockJobListener(final BlockJobListener l) throws LibvirtException {
+        domainEventRegister(null, l);
+    }
+
+    /**
+     * Removes the specified lifblockjobecycle event listener so that it no longer
+     * receives blockjob events.
+     *
+     * @param l the blockjob event listener
+     * @throws LibvirtException
+     */
+    public void removeBlockJobListener(BlockJobListener l) throws LibvirtException {
+        domainEventDeregister(DomainEventID.VIR_DOMAIN_EVENT_ID_BLOCK_JOB.getValue(), l);
     }
 
     /**
@@ -773,17 +808,6 @@ public class Connect {
      */
     public void removePMWakeupListener(final PMWakeupListener l) throws LibvirtException {
         domainEventDeregister(DomainEventID.VIR_DOMAIN_EVENT_ID_PMWAKEUP.getValue(), l);
-    }
-
-    /**
-     * Removes the specified lifecycle event listener so that it no longer
-     * receives lifecycle events.
-     *
-     * @param l the lifecycle event listener
-     * @throws LibvirtException
-     */
-    public void removeLifecycleListener(LifecycleListener l) throws LibvirtException {
-        domainEventDeregister(DomainEventID.VIR_DOMAIN_EVENT_ID_LIFECYCLE.getValue(), l);
     }
 
     /**
