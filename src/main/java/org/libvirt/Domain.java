@@ -11,13 +11,11 @@ import java.util.concurrent.TimeUnit;
 import com.sun.jna.Native;
 import com.sun.jna.NativeLong;
 import com.sun.jna.ptr.IntByReference;
-import org.libvirt.event.BlockJobListener;
 import org.libvirt.event.IOErrorListener;
 import org.libvirt.event.LifecycleListener;
 import org.libvirt.event.PMSuspendListener;
 import org.libvirt.event.PMWakeupListener;
 import org.libvirt.event.RebootListener;
-import org.libvirt.flags.DomainBlockJobAbortFlags;
 import org.libvirt.flags.DomainBlockResizeFlags;
 import org.libvirt.flags.DomainMigrateFlags;
 import org.libvirt.jna.Libvirt;
@@ -177,33 +175,7 @@ public class Domain {
      * @param flags   {@link org.libvirt.flags.DomainBlockCopyFlags}
      * @throws LibvirtException
      */
-    public void blockCopy(String disk, String destxml, DomainBlockCopyParameters params, int flags, boolean pivot) throws LibvirtException {
-
-        // Register callback if we want to pivot
-        if (pivot) {
-            virConnect.domainEventRegister(this, new BlockJobListener() {
-                @Override
-                public void onBlockJobCompleted(final Domain domain, final String disk, final int type) throws LibvirtException {
-                    onBlockJobReady(domain, disk, type);
-                }
-
-                @Override
-                public void onBlockJobFailed(final Domain domain, final String disk, final int type) throws LibvirtException {
-                    throw new LibvirtException("BlockJobFailed");
-                }
-
-                @Override
-                public void onBlockJobCanceled(final Domain domain, final String disk, final int type) throws LibvirtException {
-                    throw new LibvirtException("BlockJobCanceled");
-                }
-
-                @Override
-                public void onBlockJobReady(final Domain domain, final String disk, final int type) throws LibvirtException {
-                    domain.blockJobAbort(disk, DomainBlockJobAbortFlags.VIR_DOMAIN_BLOCK_JOB_ABORT_PIVOT);
-                }
-            });
-        }
-
+    public void blockCopy(String disk, String destxml, DomainBlockCopyParameters params, int flags) throws LibvirtException {
         processError(libvirt.virDomainBlockCopy(VDP, disk, destxml, params.getVirTypedParameters(), params.getVirTypedParametersLength(), flags));
     }
 
