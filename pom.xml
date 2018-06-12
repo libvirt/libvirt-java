@@ -5,7 +5,7 @@
     <groupId>org.libvirt</groupId>
     <artifactId>libvirt</artifactId>
     <packaging>jar</packaging>
-    <version>1.0.3-SNAPSHOT</version>
+    <version>1.0.4-SNAPSHOT</version>
 
     <name>libvirt java bindings</name>
     <description>Java API for the libvirt C library</description>
