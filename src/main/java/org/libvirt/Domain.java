@@ -370,6 +370,7 @@ public class Domain {
      * Destroys a virtual device attachment to backend.
      *
      * @param xmlDesc XML description of one device
+     * @param flags   the an OR'ed set of virDomainDeviceModifyFlags
      * @throws LibvirtException
      */
     public void detachDeviceFlags(String xmlDesc, int flags) throws LibvirtException {
