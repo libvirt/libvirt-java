@@ -5,7 +5,7 @@
     <groupId>org.libvirt</groupId>
     <artifactId>libvirt</artifactId>
     <packaging>jar</packaging>
-    <version>1.0.3-SNAPSHOT</version>
+    <version>1.0.3</version>
 
     <name>libvirt java bindings</name>
     <description>Java API for the libvirt C library</description>
@@ -21,7 +21,7 @@
     <scm>
         <connection>scm:git:git@github.com:MissionCriticalCloud/libvirt-java.git</connection>
         <developerConnection>scm:git:git@github.com:MissionCriticalCloud/libvirt-java.git</developerConnection>
-        <tag>HEAD</tag>
+        <tag>libvirt-1.0.3</tag>
     </scm>
 
     <distributionManagement>
