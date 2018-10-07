@@ -18,6 +18,8 @@ import org.libvirt.event.PMSuspendListener;
 import org.libvirt.event.PMWakeupListener;
 import org.libvirt.event.RebootListener;
 import org.libvirt.flags.DomainBlockResizeFlags;
+import org.libvirt.flags.DomainDeviceModifyFlags;
+import org.libvirt.flags.DomainMetadataFlags;
 import org.libvirt.flags.DomainMigrateFlags;
 import org.libvirt.jna.Libvirt;
 import org.libvirt.jna.pointers.DomainPointer;
@@ -481,6 +483,32 @@ public class Domain {
      */
     public int getMaxVcpus() throws LibvirtException {
         return processError(libvirt.virDomainGetMaxVcpus(VDP));
+    }
+
+    /**
+     * @type: type of metadata, from virDomainMetadataType
+     * @uri: XML namespace identifier
+     * @flags: bitwise-OR of virDomainModificationImpact
+     *
+     * Retrieves the appropriate domain element given by @type.
+     * If VIR_DOMAIN_METADATA_ELEMENT is requested parameter @uri
+     * must be set to the name of the namespace the requested elements
+     * belong to, otherwise must be NULL.
+     *
+     * If an element of the domain XML is not present, the resulting
+     * error will be VIR_ERR_NO_DOMAIN_METADATA.  This method forms
+     * a shortcut for seeing information from virDomainSetMetadata()
+     * without having to go through virDomainGetXMLDesc().
+     *
+     * @flags controls whether the live domain or persistent
+     * configuration will be queried.
+     *
+     * @return the metadata string on success (caller must free),
+     * or NULL in case of failure.
+     * @throws LibvirtException
+     */
+    public String getMetadata(DomainMetadataFlags type, String uri, int flags) throws LibvirtException {
+        return processError(libvirt.virDomainGetMetadata(VDP, type.getValue(), uri, flags));
     }
 
     /**
@@ -1168,6 +1196,39 @@ public class Domain {
      */
     public void setMemory(long memory) throws LibvirtException {
         processError(libvirt.virDomainSetMemory(VDP, new NativeLong(memory)));
+    }
+
+    /**
+     * @type: type of metadata, from {@link DomainMetadataFlags}
+     * @metadata: new metadata text
+     * @key: XML namespace key, or NULL
+     * @uri: XML namespace URI, or NULL
+     * @flags: bitwise-OR of {@link DomainDeviceModifyFlags}
+     *
+     * Sets the appropriate domain element given by @type to the
+     * value of @metadata.  A @type of VIR_DOMAIN_METADATA_DESCRIPTION
+     * is free-form text; VIR_DOMAIN_METADATA_TITLE is free-form, but no
+     * newlines are permitted, and should be short (although the length is
+     * not enforced). For these two options @key and @uri are irrelevant and
+     * must be set to NULL.
+     *
+     * For type VIR_DOMAIN_METADATA_ELEMENT @metadata  must be well-formed
+     * XML belonging to namespace defined by @uri with local name @key.
+     *
+     * Passing NULL for @metadata says to remove that element from the
+     * domain XML (passing the empty string leaves the element present).
+     *
+     * The resulting metadata will be present in virDomainGetXMLDesc(),
+     * as well as quick access through virDomainGetMetadata().
+     *
+     * @flags controls whether the live domain, persistent configuration,
+     * or both will be modified.
+     *
+     * @return 0 on success, -1 in case of failure.
+     * @throws LibvirtException
+     */
+    public int setMetadata(DomainMetadataFlags type, String metadata, String key, String uri, int flags) throws LibvirtException {
+        return processError(libvirt.virDomainSetMetadata(VDP, type.getValue(), metadata, key, uri, flags));
     }
 
     /**
