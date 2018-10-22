@@ -1455,23 +1455,6 @@ public class Connect {
     }
 
     /**
-     * Looks up a network based on its UUID represented as an int array. The
-     * UUID Array contains an unpacked representation of the UUID, each int
-     * contains only one byte.
-     *
-     * @param UUID the UUID as an unpacked int array
-     * @return The Network object found
-     * @throws LibvirtException
-     * @deprecated use the UUIDString or UUID API.
-     */
-    @Deprecated
-    public Network networkLookupByUUID(int[] UUID) throws LibvirtException {
-        byte[] uuidBytes = Connect.createUUIDBytes(UUID);
-        NetworkPointer ptr = processError(libvirt.virNetworkLookupByUUID(VCP, uuidBytes));
-        return new Network(this, ptr);
-    }
-
-    /**
      * Fetch a network based on its globally unique id
      *
      * @param uuid a java UUID
