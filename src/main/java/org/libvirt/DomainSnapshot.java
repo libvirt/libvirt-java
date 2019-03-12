@@ -35,13 +35,7 @@ public class DomainSnapshot {
      * @throws LibvirtException
      */
     public int delete(int flags) throws LibvirtException {
-        int success = 0;
-        if (VDSP != null) {
-            success = processError(libvirt.virDomainSnapshotDelete(VDSP, flags));
-            VDSP = null;
-        }
-
-        return success;
+        return processError(libvirt.virDomainSnapshotDelete(VDSP, flags));
     }
 
     @Override
