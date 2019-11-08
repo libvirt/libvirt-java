@@ -11,6 +11,8 @@ import junit.framework.TestCase;
 import org.libvirt.event.DomainEvent;
 import org.libvirt.event.DomainEventType;
 import org.libvirt.event.LifecycleListener;
+import org.libvirt.flags.DomainDeviceModifyFlags;
+import org.libvirt.flags.DomainMetadataFlags;
 import org.libvirt.parameters.typed.TypedParameter;
 import org.libvirt.parameters.typed.TypedUintParameter;
 
@@ -116,7 +118,6 @@ public final class TestJavaBindings extends TestCase {
         assertTrue("Network2 should be active", network2.isActive() == 0);
         this.validateNetworkData(network2);
         this.validateNetworkData(conn.networkLookupByName("deftest"));
-        this.validateNetworkData(conn.networkLookupByUUID(UUIDArray));
         this.validateNetworkData(conn.networkLookupByUUIDString("004b96e1-2d78-c30f-5aa5-f03c87d21e67"));
         this.validateNetworkData(conn.networkLookupByUUID(UUID.fromString("004b96e1-2d78-c30f-5aa5-f03c87d21e67")));
         // this should throw an exception
@@ -174,8 +175,7 @@ public final class TestJavaBindings extends TestCase {
     private void validateDomainData(Domain dom) throws Exception {
         assertEquals("dom.getName()", "createst", dom.getName());
         assertEquals("dom.getMaxMemory()", 8388608, dom.getMaxMemory());
-        // Not supported by the test driver
-        // assertEquals("dom.getMaxVcpus()", 2, dom2.getMaxVcpus()) ;
+        assertEquals("dom.getMaxVcpus()", 2, dom.getMaxVcpus()) ;
         assertEquals("dom.getOSType()", "linux", dom.getOSType());
         assertEquals("dom.getUUIDString()", "004b96e1-2d78-c30f-5aa5-f03c87d21e67", dom.getUUIDString());
         assertFalse("dom.getAutostart()", dom.getAutostart());
@@ -352,5 +352,22 @@ public final class TestJavaBindings extends TestCase {
             fail("ClosedChannelException expected calling read() on a closed stream");
         } catch (ClosedChannelException expected) {
         }
+    }
+
+    public void testDomainMetadata() throws Exception {
+        final String metadata1 =
+                "<test>\n" +
+                "  <testDomainName>test</testDomainName>\n" +
+                "</test>";
+
+        Domain dom = this.conn.domainLookupByName("test");
+
+        assertNotNull("Domain \"test\" not found", dom);
+
+        int result = dom.setMetadata(DomainMetadataFlags.VIR_DOMAIN_METADATA_ELEMENT, metadata1, "cosmic", "https://github.com/MissionCriticalCloud", DomainDeviceModifyFlags.VIR_DOMAIN_DEVICE_MODIFY_LIVE);
+        assertEquals("Error setting metadata", 0, result);
+
+        String metadata = dom.getMetadata(DomainMetadataFlags.VIR_DOMAIN_METADATA_ELEMENT, "https://github.com/MissionCriticalCloud", DomainDeviceModifyFlags.VIR_DOMAIN_DEVICE_MODIFY_LIVE);
+        assertEquals("Retrieved meta data incorrect: " + metadata, metadata, metadata1);
     }
 }

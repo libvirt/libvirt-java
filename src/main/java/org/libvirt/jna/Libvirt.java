@@ -53,7 +53,7 @@ import org.libvirt.jna.types.SizeTByReference;
  */
 public interface Libvirt extends Library {
 
-    Libvirt INSTANCE = (Libvirt) Native.loadLibrary(Platform.isWindows() ? "virt-0" : "virt", Libvirt.class);
+    Libvirt INSTANCE = (Libvirt) Native.load(Platform.isWindows() ? "virt-0" : "virt", Libvirt.class);
 
     // Constants we need
     int VIR_UUID_BUFLEN = 16;
@@ -314,6 +314,8 @@ public interface Libvirt extends Library {
 
     int virDomainSetMemory(DomainPointer virDomainPtr, NativeLong maxMemory);
 
+    int virDomainSetMetadata(DomainPointer virDomainPtr, int type, String metadata, String key, String uri, int flags);
+
     int virDomainSetSchedulerParameters(DomainPointer virDomainPtr, virTypedParameter[] params, int nparams);
 
     int virDomainSetVcpus(DomainPointer virDomainPtr, int nvcpus);
@@ -549,6 +551,8 @@ public interface Libvirt extends Library {
     StreamPointer virStreamNew(ConnectionPointer virConnectPtr, int flags);
 
     String virConnectGetType(ConnectionPointer virConnectPtr);
+
+    String virDomainGetMetadata(DomainPointer virtDomainPtr, int type, String uri, int flags);
 
     String virDomainGetName(DomainPointer virDomainPtr);
 
