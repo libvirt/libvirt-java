@@ -13,6 +13,7 @@ import org.libvirt.event.DomainEventType;
 import org.libvirt.event.LifecycleListener;
 import org.libvirt.flags.DomainDeviceModifyFlags;
 import org.libvirt.flags.DomainMetadataFlags;
+import org.libvirt.parameters.DomainBlockCopyParameters;
 import org.libvirt.parameters.typed.TypedParameter;
 import org.libvirt.parameters.typed.TypedUintParameter;
 
