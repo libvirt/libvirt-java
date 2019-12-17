@@ -174,12 +174,16 @@ public class Domain {
      *
      * @param disk    the path to the block device
      * @param destxml the new disk description
-     * @param params  {@Link org.libvirt.parameters.DomainBlockCopyParameters}
+     * @param params  {@link virTypedParameter}
      * @param flags   {@link org.libvirt.flags.DomainBlockCopyFlags}
      * @throws LibvirtException
      */
-    public void blockCopy(String disk, String destxml, DomainBlockCopyParameters params, int flags) throws LibvirtException {
-        processError(libvirt.virDomainBlockCopy(VDP, disk, destxml, params.getVirTypedParameters(), params.getVirTypedParametersLength(), flags));
+    public void blockCopy(String disk, String destxml, TypedParameter[] params, int flags) throws LibvirtException {
+        virTypedParameter[] input = new virTypedParameter[params.length];
+        for (int x = 0; x < params.length; x++) {
+            input[x] = TypedParameter.toNative(params[x]);
+        }
+        processError(libvirt.virDomainBlockCopy(VDP, disk, destxml, input, params.length, flags));
     }
 
     /**

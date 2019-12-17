@@ -53,7 +53,7 @@ import org.libvirt.jna.types.SizeTByReference;
  */
 public interface Libvirt extends Library {
 
-    Libvirt INSTANCE = (Libvirt) Native.load(Platform.isWindows() ? "virt-0" : "virt", Libvirt.class);
+    Libvirt INSTANCE = Native.loadLibrary(Platform.isWindows() ? "virt-0" : "virt", Libvirt.class);
 
     // Constants we need
     int VIR_UUID_BUFLEN = 16;
