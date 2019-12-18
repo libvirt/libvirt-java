@@ -1,4 +1,7 @@
 pipeline {
+    agent {
+        label 'executor'
+    }
     tools {
         maven "M3"
     }
