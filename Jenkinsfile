@@ -61,7 +61,7 @@ pipeline {
                 expression { env.releaseVersion }
             }
             steps {
-                sh "mvn release:prepare release:perform -Dmaven.javadoc.skip=true -DreleaseVersion=${params.releaseVersion}"
+                sh "mvn release:prepare release:perform -Darguments=\"-Dmaven.javadoc.skip=true\" -DreleaseVersion=${params.releaseVersion}"
             }
         }
     }
