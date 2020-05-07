@@ -325,7 +325,16 @@ public final class TestJavaBindings extends TestCase {
 
         assertFalse("Domain \"test\" not found", dom == null);
 
-        String mimetype = dom.screenshot(str, 0);
+        String mimetype;
+        try {
+            mimetype = dom.screenshot(str, 0);
+        } catch (LibvirtException ex) {
+            if (ex.getMessage().contains("test-screenshot.png': No such file or directory")) {
+                System.err.format("testDomainScreenshot skipped (missing png file)");
+                return;
+            }
+            throw ex;
+        }
 
         ByteBuffer bb = ByteBuffer.allocateDirect(8192);
 
