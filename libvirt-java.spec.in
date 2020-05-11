@@ -20,7 +20,9 @@ Requires:   java >= @java.required@
 Requires:   jpackage-utils
 BuildRequires:  ant
 BuildRequires:  jna
+%if 0%{?rhel} < 8
 BuildRequires:  ant-junit
+%endif
 BuildRequires:  java-devel >= @java.required@
 BuildRequires:  jpackage-utils
 
@@ -68,7 +70,9 @@ cp -r target/javadoc/* %{buildroot}%{_javadocdir}/%{name}-%{version}
 %{__ln_s} %{_javadocdir}/%{name}-%{version} %{buildroot}%{_javadocdir}/%{name}
 
 %check
+%if 0%{?rhel} < 8
 ant test
+%endif
 
 %clean
 rm -rf %{buildroot}
