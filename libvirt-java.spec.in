@@ -80,8 +80,6 @@ rm -rf %{buildroot}
 
 %files devel
 %defattr(-,root,root)
-%doc src/test/java/test.java
-
 
 %files javadoc
 %defattr(-,root,root)
