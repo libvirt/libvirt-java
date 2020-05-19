@@ -5,6 +5,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.libvirt.event.IOErrorListener;
 import org.libvirt.jna.CString;
+import org.libvirt.jna.CStringByReference;
 import org.libvirt.jna.DomainPointer;
 import org.libvirt.jna.DomainSnapshotPointer;
 import org.libvirt.jna.Libvirt;
@@ -22,6 +23,7 @@ import org.libvirt.event.LifecycleListener;
 import org.libvirt.event.PMWakeupListener;
 import org.libvirt.event.PMSuspendListener;
 import static org.libvirt.Library.libvirt;
+import static org.libvirt.Library.libvirtQemu;
 import static org.libvirt.ErrorHandler.processError;
 import static org.libvirt.ErrorHandler.processErrorIfZero;
 
@@ -1556,4 +1558,46 @@ public class Domain {
         return processError(libvirt.virDomainUpdateDeviceFlags(VDP, xml, flags));
     }
 
+    /**
+     * Commands for  Qemu Guest Agent helper daemon
+     *
+     *@see <a
+     *      href="https://www.libvirt.org/html/libvirt-libvirt-qemu.html#virDomainQemuAgentCommand">Libvirt
+     *      Documentation</a>
+     * @param cmd
+     *        the guest agent command string
+     * @param timeout
+     *        timeout seconds
+     * @param flags
+     *        execution flags
+     * @return result
+     *         strings if success, NULL in failure.
+     * @throws LibvirtException
+     */
+    public String qemuAgentCommand(String cmd, int timeout, int flags) throws LibvirtException {
+        CString result = libvirtQemu != null ? libvirtQemu.virDomainQemuAgentCommand(VDP, cmd, timeout, flags) : null;
+        processError(result);
+        return result.toString();
+    }
+
+    /**
+     * Qemu Monitor Command - it will only work with hypervisor connections to the QEMU driver.
+     *
+     *@see <a
+     *      href="https://www.libvirt.org/html/libvirt-libvirt-qemu.html#virDomainQemuMonitorCommand">Libvirt
+     *      Documentation</a>
+     * @param cmd
+     *        the qemu monitor command string
+     * @param flags
+     *        bitwise-or of supported virDomainQemuMonitorCommandFlags
+     * @return result
+     *         a string returned by @cmd
+     * @throws LibvirtException
+     */
+    public String qemuMonitorCommand(String cmd, int flags) throws LibvirtException {
+        CStringByReference result = new CStringByReference();
+        int cmdResult = libvirtQemu != null ? libvirtQemu.virDomainQemuMonitorCommand(VDP, cmd, result, flags) : -1;
+        processError(cmdResult);
+        return result.getValue().toString();
+    }
 }

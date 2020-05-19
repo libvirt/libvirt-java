@@ -1,6 +1,7 @@
 package org.libvirt;
 
 import org.libvirt.jna.Libvirt;
+import org.libvirt.jna.LibvirtQemu;
 import org.libvirt.jna.Libvirt.VirEventTimeoutCallback;
 import org.libvirt.jna.CString;
 import static org.libvirt.ErrorHandler.processError;
@@ -34,6 +35,7 @@ public final class Library {
         };
 
     final static Libvirt libvirt;
+    final static LibvirtQemu libvirtQemu;
 
     // an empty string array constant
     // prefer this over creating empty arrays dynamically.
@@ -46,6 +48,11 @@ public final class Library {
             processError(libvirt.virInitialize());
         } catch (Exception e) {
             e.printStackTrace();
+        }
+        try {
+            libvirtQemu = getVersion() > 9010 ? LibvirtQemu.INSTANCE : null;
+        } catch (LibvirtException e) {
+            throw new RuntimeException("libvirt error get version", e);
         }
     }
 
