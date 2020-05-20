@@ -10,10 +10,10 @@ import com.sun.jna.Structure;
  * JNA mapping for the virNodeInfo structure
  */
 public class virNodeInfo extends Structure {
-    public class ByReference extends virNodeInfo implements Structure.ByReference {
+    public static class ByReference extends virNodeInfo implements Structure.ByReference {
     };
 
-    public class ByValue extends virNodeInfo implements Structure.ByValue {
+    public static class ByValue extends virNodeInfo implements Structure.ByValue {
     };
 
     public byte model[] = new byte[32];

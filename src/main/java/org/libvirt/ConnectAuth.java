@@ -13,7 +13,7 @@ import com.sun.jna.Pointer;
  *
  */
 public abstract class ConnectAuth implements Libvirt.VirConnectAuthCallback {
-    public class Credential {
+    public static class Credential {
 
         /**
          * One of virConnectCredentialType constants
