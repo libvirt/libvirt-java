@@ -102,6 +102,7 @@ public class Secret {
      * This is just kept for backward compatibility
      *
      * @return the value of the secret, or null on failure.
+     * @throws org.libvirt.LibvirtException
      */
     public String getValue() throws LibvirtException {
         String returnValue;
@@ -117,6 +118,7 @@ public class Secret {
      * Fetches the value of the secret as a byte array
      *
      * @return the value of the secret, or null on failure.
+     * @throws org.libvirt.LibvirtException
      */
     public byte[] getByteValue() throws LibvirtException {
         SizeTByReference value_size = new SizeTByReference();
@@ -131,6 +133,7 @@ public class Secret {
      * Fetches an XML document describing attributes of the secret.
      *
      * @return the XML document
+     * @throws org.libvirt.LibvirtException
      */
     public String getXMLDesc() throws LibvirtException {
         return processError(libvirt.virSecretGetXMLDesc(VSP, 0)).toString();
@@ -139,7 +142,9 @@ public class Secret {
     /**
      * Sets the value of the secret
      *
+     * @param value
      * @return <em>ignore</em> (always 0)
+     * @throws org.libvirt.LibvirtException
      */
     public int setValue(String value) throws LibvirtException {
         return processError(libvirt.virSecretSetValue(VSP, value, new SizeT(value.length()), 0));
@@ -148,7 +153,9 @@ public class Secret {
     /**
      * Sets the value of the secret
      *
+     * @param value
      * @return <em>ignore</em> (always 0)
+     * @throws org.libvirt.LibvirtException
      */
     public int setValue(byte[] value) throws LibvirtException {
         return processError(libvirt.virSecretSetValue(VSP, value, new SizeT(value.length), 0));
@@ -158,6 +165,7 @@ public class Secret {
      * Undefines, but does not free, the Secret.
      *
      * @return <em>ignore</em> (always 0)
+     * @throws org.libvirt.LibvirtException
      */
     public int undefine() throws LibvirtException {
         return processError(libvirt.virSecretUndefine(VSP));

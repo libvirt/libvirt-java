@@ -84,6 +84,7 @@ public class NetworkFilter {
     /**
      * Fetches an XML document describing attributes of the network filter.
      *
+     * @throws org.libvirt.LibvirtException
      * @see <a
      *      href="http://www.libvirt.org/html/libvirt-libvirt.html#virNWFilterGetXMLDesc">Libvirt
      *      Documentation</a>

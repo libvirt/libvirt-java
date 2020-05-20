@@ -54,6 +54,7 @@ public class Device {
      * Dettach the node device from the node itself so that it may be assigned
      * to a guest domain.
      *
+     * @return 0 on success or -1 on error
      * @throws LibvirtException
      */
     public int detach() throws LibvirtException {
@@ -85,6 +86,7 @@ public class Device {
     /**
      * Returns the name of the device
      *
+     * @return 0 on success or -1 on error
      * @throws LibvirtException
      */
     public String getName() throws LibvirtException {
@@ -94,6 +96,7 @@ public class Device {
     /**
      * Returns the number of capabilities which the instance has.
      *
+     * @return 0 on success or -1 on error
      * @throws LibvirtException
      */
     public int getNumberOfCapabilities() throws LibvirtException {
@@ -103,6 +106,7 @@ public class Device {
     /**
      * Returns the parent of the device
      *
+     * @return String or null
      * @throws LibvirtException
      */
     public String getParent() throws LibvirtException {
@@ -112,6 +116,7 @@ public class Device {
     /**
      * Returns the XML description of the device
      *
+     * @return String or null
      * @throws LibvirtException
      */
     public String getXMLDescription() throws LibvirtException {
@@ -121,6 +126,7 @@ public class Device {
     /**
      * List the capabilities of the device
      *
+     * @return String or null
      * @throws LibvirtException
      */
     public String[] listCapabilities() throws LibvirtException {
@@ -139,6 +145,7 @@ public class Device {
     /**
      * ReAttach a device to the node.
      *
+     * @return 0 on success or -1 on error
      * @throws LibvirtException
      */
     public int reAttach() throws LibvirtException {
@@ -149,6 +156,7 @@ public class Device {
      * Reset a previously dettached node device to the node before or after
      * assigning it to a guest.
      *
+     * @return 0 on success or -1 on error
      * @throws LibvirtException
      */
     public int reset() throws LibvirtException {

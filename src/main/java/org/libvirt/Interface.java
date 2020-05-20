@@ -39,14 +39,14 @@ public class Interface {
     }
 
     /**
-     * Activate an interface (i.e. call "ifup").
-     * <p>
+     * Activate an interface (i.e. call "ifup").<p>
      * If there was an open network config transaction at the time
      * this interface was defined (that is, if
      * virInterfaceChangeBegin() had been called), the interface will
      * be brought back down (and then undefined) if
      * virInterfaceChangeRollback() is called.
      *
+     * @return 0 on success or -1 on error
      * @throws LibvirtException
      */
     public int create() throws LibvirtException {
@@ -54,8 +54,7 @@ public class Interface {
     }
 
     /**
-     * Deactivate an interface (i.e. call "ifdown").
-     * <p>
+     * Deactivate an interface (i.e. call "ifdown").<p>
      * This does not remove the interface from the config, and does
      * not free the associated virInterfacePtr object.
      * <p>
@@ -66,6 +65,7 @@ public class Interface {
      * the interface definition will also bring the interface back
      * up.
      *
+     * @return 0 on success or -1 on error
      * @throws LibvirtException
      */
     public int destroy() throws LibvirtException {
@@ -97,6 +97,7 @@ public class Interface {
     /**
      * Returns the mac string of the interface
      *
+     * @return String or null
      * @throws LibvirtException
      */
     public String getMACString() throws LibvirtException {
@@ -106,6 +107,7 @@ public class Interface {
     /**
      * Returns the name of the interface
      *
+     * @return String or null
      * @throws LibvirtException
      */
     public String getName() throws LibvirtException {
@@ -115,6 +117,8 @@ public class Interface {
     /**
      * Returns the XML description for theinterface
      *
+     * @param flags
+     * @return String or null
      * @throws LibvirtException
      */
     public String getXMLDescription(int flags) throws LibvirtException {
@@ -138,6 +142,7 @@ public class Interface {
      * Undefine an interface, ie remove it from the config. This does not free
      * the associated virInterfacePtr object.
      *
+     * @return 0 on success or -1 on error
      * @throws LibvirtException
      */
     public int undefine() throws LibvirtException {

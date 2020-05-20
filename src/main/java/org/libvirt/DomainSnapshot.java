@@ -67,6 +67,7 @@ public class DomainSnapshot {
     /**
      * Fetches an XML document describing attributes of the snapshot.
      *
+     * @throws org.libvirt.LibvirtException
      * @see <a href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainSnapshotGetXMLDesc">Libvirt Documentation</a>
      * @return the XML document
      */
