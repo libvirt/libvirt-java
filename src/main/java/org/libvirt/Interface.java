@@ -12,7 +12,7 @@ public class Interface {
     /**
      * Get XML Flag: dump inactive interface information
      */
-    public static int VIR_INTERFACE_XML_INACTIVE = 1;
+    public static final int VIR_INTERFACE_XML_INACTIVE = 1;
 
     /**
      * the native virInterfacePtr.
@@ -22,7 +22,7 @@ public class Interface {
     /**
      * The Connect Object that represents the Hypervisor of this Interface
      */
-    private Connect virConnect;
+    private final Connect virConnect;
 
     /**
      * Constructs an Interface object from an InterfacePointer, and a Connect

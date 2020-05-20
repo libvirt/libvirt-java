@@ -323,18 +323,15 @@ public class Error implements Serializable {
      */
     private static final long serialVersionUID = -4780109197014633842L;
 
-    private ErrorNumber code;
-    private ErrorDomain domain;
-    private String message;
-    private ErrorLevel level;
-    private ConnectionPointer VCP; /* Deprecated */
-    private DomainPointer VDP; /* Deprecated */
-    private String str1;
-    private String str2;
-    private String str3;
-    private int int1;
-    private int int2;
-    private NetworkPointer VNP; /* Deprecated */
+    private final ErrorNumber code;
+    private final ErrorDomain domain;
+    private final String message;
+    private final ErrorLevel level;
+    private final String str1;
+    private final String str2;
+    private final String str3;
+    private final int int1;
+    private final int int2;
 
     public Error(virError vError) {
         code = ErrorNumber.wrap(vError.code);

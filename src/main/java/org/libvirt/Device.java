@@ -18,7 +18,7 @@ public class Device {
     /**
      * The Connect Object that represents the Hypervisor of this Domain
      */
-    private Connect virConnect;
+    private final Connect virConnect;
 
     /**
      * Constructs a Device object from a DevicePointer, and a Connect object.

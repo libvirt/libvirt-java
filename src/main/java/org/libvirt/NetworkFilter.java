@@ -16,7 +16,7 @@ public class NetworkFilter {
     /**
      * The Connect Object that represents the Hypervisor of this Filter
      */
-    private Connect virConnect;
+    private final Connect virConnect;
 
     public NetworkFilter(Connect virConnect, NetworkFilterPointer NFP) {
         this.NFP = NFP;

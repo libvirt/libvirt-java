@@ -25,7 +25,7 @@ public class Secret {
     /**
      * The Connect Object that represents the Hypervisor of this Domain
      */
-    private Connect virConnect;
+    private final Connect virConnect;
 
     Secret(Connect virConnect, SecretPointer VSP) {
         this.virConnect = virConnect;
