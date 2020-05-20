@@ -16,7 +16,7 @@ public class DomainJobInfo {
     protected long fileProcessed;
     protected long fileRemaining;
 
-    public DomainJobInfo(virDomainJobInfo info) {
+    public DomainJobInfo(final virDomainJobInfo info) {
         type = info.type;
         timeElapsed = info.timeElapsed;
         timeRemaining = info.timeRemaining;
@@ -79,51 +79,51 @@ public class DomainJobInfo {
         return type;
     }
 
-    public void setDataProcessed(long dataProcessed) {
+    public void setDataProcessed(final long dataProcessed) {
         this.dataProcessed = dataProcessed;
     }
 
-    public void setDataRemaining(long dataRemaining) {
+    public void setDataRemaining(final long dataRemaining) {
         this.dataRemaining = dataRemaining;
     }
 
-    public void setDataTotal(long dataTotal) {
+    public void setDataTotal(final long dataTotal) {
         this.dataTotal = dataTotal;
     }
 
-    public void setFileProcessed(long fileProcessed) {
+    public void setFileProcessed(final long fileProcessed) {
         this.fileProcessed = fileProcessed;
     }
 
-    public void setFileRemaining(long fileRemaining) {
+    public void setFileRemaining(final long fileRemaining) {
         this.fileRemaining = fileRemaining;
     }
 
-    public void setFileTotal(long fileTotal) {
+    public void setFileTotal(final long fileTotal) {
         this.fileTotal = fileTotal;
     }
 
-    public void setMemProcessed(long memProcessed) {
+    public void setMemProcessed(final long memProcessed) {
         this.memProcessed = memProcessed;
     }
 
-    public void setMemRemaining(long memRemaining) {
+    public void setMemRemaining(final long memRemaining) {
         this.memRemaining = memRemaining;
     }
 
-    public void setMemTotal(long memTotal) {
+    public void setMemTotal(final long memTotal) {
         this.memTotal = memTotal;
     }
 
-    public void setTimeElapsed(long timeElapsed) {
+    public void setTimeElapsed(final long timeElapsed) {
         this.timeElapsed = timeElapsed;
     }
 
-    public void setTimeRemaining(long timeRemaining) {
+    public void setTimeRemaining(final long timeRemaining) {
         this.timeRemaining = timeRemaining;
     }
 
-    public void setType(int type) {
+    public void setType(final int type) {
         this.type = type;
     }
 

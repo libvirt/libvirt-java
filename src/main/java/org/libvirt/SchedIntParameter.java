@@ -10,7 +10,7 @@ public final class SchedIntParameter extends SchedParameter {
 
     }
 
-    public SchedIntParameter(int value) {
+    public SchedIntParameter(final int value) {
         this.value = value;
     }
 

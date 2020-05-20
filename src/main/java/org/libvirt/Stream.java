@@ -52,7 +52,7 @@ public class Stream implements ByteChannel {
     /**
      * The Connect Object that represents the Hypervisor of this Domain
      */
-    private Connect virConnect;
+    private final Connect virConnect;
 
     private final static int CLOSED   =  0;
     private final static int READABLE =  1;
@@ -104,7 +104,7 @@ public class Stream implements ByteChannel {
         state |= EOF;
     }
 
-    Stream(Connect virConnect, StreamPointer VSP) {
+    Stream(final Connect virConnect, final StreamPointer VSP) {
         this.virConnect = virConnect;
         this.VSP = VSP;
     }
@@ -135,7 +135,8 @@ public class Stream implements ByteChannel {
      * @return <em>ignore</em> (always 0)
      * @throws LibvirtException
      */
-    public int addCallback(int events, Libvirt.VirStreamEventCallback cb) throws LibvirtException {
+    public int addCallback(final int events, final Libvirt.VirStreamEventCallback cb)
+            throws LibvirtException {
         return processError(libvirt.virStreamEventAddCallback(VSP, events, cb, null, null));
     }
 
@@ -187,18 +188,18 @@ public class Stream implements ByteChannel {
      * @return the number of bytes read, -1 on error, -2 if the buffer is empty
      * @throws LibvirtException
      */
-    public int receive(byte[] data) throws LibvirtException {
+    public int receive(final byte[] data) throws LibvirtException {
         return receive(ByteBuffer.wrap(data));
     }
 
-    protected int receive(ByteBuffer buffer) throws LibvirtException {
+    protected int receive(final ByteBuffer buffer) throws LibvirtException {
         int returnValue = processError(libvirt.virStreamRecv(VSP, buffer, new SizeT(buffer.remaining())));
         buffer.position(buffer.position() + returnValue);
         return returnValue;
     }
 
     @Override
-    public int read(ByteBuffer buffer) throws IOException {
+    public int read(final ByteBuffer buffer) throws IOException {
         if (!isOpen()) throw new ClosedChannelException();
         if (!isReadable()) throw new NonReadableChannelException();
         if (isEOF()) return -1;
@@ -223,7 +224,7 @@ public class Stream implements ByteChannel {
     }
 
     @Override
-    public int write(ByteBuffer buffer) throws IOException {
+    public int write(final ByteBuffer buffer) throws IOException {
         if (!isOpen()) throw new ClosedChannelException();
         if (!isWritable()) throw new NonWritableChannelException();
 
@@ -273,7 +274,8 @@ public class Stream implements ByteChannel {
      * @return <em>ignore</em> (always 0)
      * @throws LibvirtException
      */
-    public int receiveAll(Libvirt.VirStreamSinkFunc handler) throws LibvirtException {
+    public int receiveAll(final Libvirt.VirStreamSinkFunc handler)
+	    throws LibvirtException {
         return processError(libvirt.virStreamRecvAll(VSP, handler, null));
     }
 
@@ -297,11 +299,11 @@ public class Stream implements ByteChannel {
      *         full
      * @throws LibvirtException
      */
-    public int send(byte[] data) throws LibvirtException {
+    public int send(final byte[] data) throws LibvirtException {
         return send(ByteBuffer.wrap(data));
     }
 
-    protected int send(ByteBuffer buffer) throws LibvirtException {
+    protected int send(final ByteBuffer buffer) throws LibvirtException {
         SizeT size = new SizeT(buffer.remaining());
         int returnValue = processError(libvirt.virStreamSend(VSP, buffer, size));
         buffer.position(buffer.position() + returnValue);
@@ -319,7 +321,8 @@ public class Stream implements ByteChannel {
      * @return <em>ignore</em> (always 0)
      * @throws LibvirtException
      */
-    public int sendAll(Libvirt.VirStreamSourceFunc handler) throws LibvirtException {
+    public int sendAll(final Libvirt.VirStreamSourceFunc handler)
+	    throws LibvirtException {
         return processError(libvirt.virStreamSendAll(VSP, handler, null));
     }
 
@@ -332,7 +335,7 @@ public class Stream implements ByteChannel {
      * @return <em>ignore</em> (always 0)
      * @throws LibvirtException
      */
-    public int updateCallback(int events) throws LibvirtException {
+    public int updateCallback(final int events) throws LibvirtException {
         return processError(libvirt.virStreamEventUpdateCallback(VSP, events));
     }
 }

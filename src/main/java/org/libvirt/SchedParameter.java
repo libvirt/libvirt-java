@@ -17,7 +17,7 @@ import java.io.UnsupportedEncodingException;
  */
 public abstract class SchedParameter {
 
-    public static SchedParameter create(virSchedParameter vParam) {
+    public static SchedParameter create(final virSchedParameter vParam) {
         SchedParameter returnValue = null;
         if (vParam != null) {
             switch (vParam.type) {
@@ -49,7 +49,7 @@ public abstract class SchedParameter {
         return returnValue;
     }
 
-    public static virSchedParameter toNative(SchedParameter param) {
+    public static virSchedParameter toNative(final SchedParameter param) {
         virSchedParameter returnValue = new virSchedParameter();
         returnValue.value = new virSchedParameterValue();
         try {
@@ -89,7 +89,7 @@ public abstract class SchedParameter {
         return returnValue;
     }
 
-    public static byte[] copyOf(byte[] original, int length) {
+    public static byte[] copyOf(final byte[] original, final int length) {
         byte[] returnValue = new byte[length];
         int originalLength = original.length;
         Arrays.fill(returnValue, (byte) 0);

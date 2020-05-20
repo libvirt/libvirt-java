@@ -15,13 +15,13 @@ public enum CPUCompareResult {
         }
     }
 
-    public static CPUCompareResult get(int value) {
+    public static CPUCompareResult get(final int value) {
         return lookup.get(value);
     }
 
     private final int returnCode;
 
-    CPUCompareResult(int returnCode) {
+    CPUCompareResult(final int returnCode) {
         this.returnCode = returnCode;
     }
 

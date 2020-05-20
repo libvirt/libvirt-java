@@ -9,11 +9,11 @@ import com.sun.jna.Native;
  * @see Domain#getSecurityLabel
  */
 public final class SecurityLabel {
-    private String label;
-    private boolean enforced;
-    private static byte NUL = 0;
+    private final String label;
+    private final boolean enforced;
+    private static final byte NUL = 0;
 
-    SecurityLabel(Libvirt.SecurityLabel seclabel) {
+    SecurityLabel(final Libvirt.SecurityLabel seclabel) {
         label = Native.toString(seclabel.label, "UTF-8");
         enforced = seclabel.enforcing == 1;
     }

@@ -31,7 +31,7 @@ public class Network {
      * @param virConnect
      * @param VNP
      */
-    Network(Connect virConnect, NetworkPointer VNP) {
+    Network(final Connect virConnect, final NetworkPointer VNP) {
         this.virConnect = virConnect;
         this.VNP = VNP;
     }
@@ -160,7 +160,7 @@ public class Network {
      * @return The XML representation of this network
      * @throws LibvirtException
      */
-    public String getXMLDesc(int flags) throws LibvirtException {
+    public String getXMLDesc(final int flags) throws LibvirtException {
         return processError(libvirt.virNetworkGetXMLDesc(VNP, flags)).toString();
     }
 
@@ -199,7 +199,7 @@ public class Network {
      *            whether the network should be automatically started 0 or 1
      * @throws LibvirtException
      */
-    public void setAutostart(boolean autostart) throws LibvirtException {
+    public void setAutostart(final boolean autostart) throws LibvirtException {
         int autoValue = autostart ? 1 : 0;
         processError(libvirt.virNetworkSetAutostart(VNP, autoValue));
     }

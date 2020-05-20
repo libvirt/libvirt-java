@@ -16,7 +16,7 @@ public final class SchedLongParameter extends SchedParameter {
 
     }
 
-    public SchedLongParameter(long value) {
+    public SchedLongParameter(final long value) {
         this.value = value;
     }
 

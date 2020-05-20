@@ -44,7 +44,8 @@ public abstract class ConnectAuth implements Libvirt.VirConnectAuthCallback {
          * @param challenge
          * @param defresult
          */
-        Credential(int type, String prompt, String challenge, String defresult) {
+        Credential(final int type, final String prompt, final String challenge,
+                   final String defresult) {
             switch (type) {
                 case 1:
                     this.type = CredentialType.VIR_CRED_USERNAME;
@@ -169,7 +170,8 @@ public abstract class ConnectAuth implements Libvirt.VirConnectAuthCallback {
      */
     public CredentialType credType[];
 
-    public int authCallback(virConnectCredential cred, int ncred, Pointer cbdata) {
+    public int authCallback(final virConnectCredential cred, final int ncred,
+                            final Pointer cbdata) {
         virConnectCredential[] nativeCreds = (virConnectCredential[]) cred.toArray(ncred);
         Credential[] creds = new Credential[ncred];
         for (int x = 0; x < ncred; x++) {

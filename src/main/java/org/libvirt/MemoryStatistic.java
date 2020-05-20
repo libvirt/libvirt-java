@@ -7,7 +7,7 @@ public class MemoryStatistic {
     protected int tag;
     protected long val;
 
-    public MemoryStatistic(virDomainMemoryStats stat) {
+    public MemoryStatistic(final virDomainMemoryStats stat) {
         tag = stat.tag;
         val = stat.val;
     }
@@ -20,11 +20,11 @@ public class MemoryStatistic {
         return val;
     }
 
-    public void setTag(int tag) {
+    public void setTag(final int tag) {
         this.tag = tag;
     }
 
-    public void setValue(long val) {
+    public void setValue(final long val) {
         this.val = val;
     }
 

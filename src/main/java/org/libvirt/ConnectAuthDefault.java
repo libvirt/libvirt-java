@@ -23,7 +23,7 @@ public final class ConnectAuthDefault extends ConnectAuth {
     }
 
     @Override
-    public int callback(Credential[] cred) {
+    public int callback(final Credential[] cred) {
         try (BufferedReader in =
              new BufferedReader(new InputStreamReader(System.in, "UTF-8"))) {
             for (Credential c : cred) {

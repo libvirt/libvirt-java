@@ -13,7 +13,7 @@ public class LibvirtException extends Exception {
 
     private Error virError;
 
-    LibvirtException(Error virError) {
+    LibvirtException(final Error virError) {
         super(virError.getMessage());
         this.virError = virError;
     }

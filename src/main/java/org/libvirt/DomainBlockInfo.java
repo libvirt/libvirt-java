@@ -7,7 +7,7 @@ public class DomainBlockInfo {
     protected long allocation;
     protected long physical;
 
-    public DomainBlockInfo(virDomainBlockInfo info) {
+    public DomainBlockInfo(final virDomainBlockInfo info) {
         capacity = info.capacity;
         allocation = info.allocation;
         physical = info.physical;
@@ -25,15 +25,15 @@ public class DomainBlockInfo {
         return physical;
     }
 
-    public void setAllocation(long allocation) {
+    public void setAllocation(final long allocation) {
         this.allocation = allocation;
     }
 
-    public void setCapacity(long capacity) {
+    public void setCapacity(final long capacity) {
         this.capacity = capacity;
     }
 
-    public void setPhysical(long physical) {
+    public void setPhysical(final long physical) {
         this.physical = physical;
     }
 

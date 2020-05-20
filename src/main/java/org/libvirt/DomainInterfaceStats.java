@@ -22,7 +22,7 @@ public class DomainInterfaceStats {
 
     }
 
-    public DomainInterfaceStats(virDomainInterfaceStats vStats) {
+    public DomainInterfaceStats(final virDomainInterfaceStats vStats) {
         rx_bytes = vStats.rx_bytes;
         rx_packets = vStats.rx_packets;
         rx_errs = vStats.rx_errs;

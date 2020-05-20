@@ -62,7 +62,7 @@ public class StoragePool {
      * @param VSPP
      *            the native virStoragePoolPtr
      */
-    StoragePool(Connect virConnect, StoragePoolPointer VSPP) {
+    StoragePool(final Connect virConnect, final StoragePoolPointer VSPP) {
         this.virConnect = virConnect;
         this.VSPP = VSPP;
     }
@@ -73,7 +73,7 @@ public class StoragePool {
      * @param flags
      *            future flags, use 0 for now
      */
-    public void build(int flags) throws LibvirtException {
+    public void build(final int flags) throws LibvirtException {
         processError(libvirt.virStoragePoolBuild(VSPP, flags));
     }
 
@@ -83,7 +83,7 @@ public class StoragePool {
      * @param flags
      *            future flags, use 0 for now
      */
-    public void create(int flags) throws LibvirtException {
+    public void create(final int flags) throws LibvirtException {
         processError(libvirt.virStoragePoolCreate(VSPP, flags));
     }
 
@@ -94,7 +94,7 @@ public class StoragePool {
      * @param flags
      *            flags for obliteration process
      */
-    public void delete(int flags) throws LibvirtException {
+    public void delete(final int flags) throws LibvirtException {
         processError(libvirt.virStoragePoolDelete(VSPP, flags));
     }
 
@@ -206,7 +206,7 @@ public class StoragePool {
      *            flags for XML format options (set of virDomainXMLFlags)
      * @return a XML document -java @throws LibvirtException
      */
-    public String getXMLDesc(int flags) throws LibvirtException {
+    public String getXMLDesc(final int flags) throws LibvirtException {
         return processError(libvirt.virStoragePoolGetXMLDesc(VSPP, flags)).toString();
     }
 
@@ -276,7 +276,7 @@ public class StoragePool {
      *            flags to control refresh behaviour (currently unused, use 0)
      * @throws LibvirtException
      */
-    public void refresh(int flags) throws LibvirtException {
+    public void refresh(final int flags) throws LibvirtException {
         processError(libvirt.virStoragePoolRefresh(VSPP, flags));
     }
 
@@ -287,7 +287,7 @@ public class StoragePool {
      *            new flag setting
      * @throws LibvirtException
      */
-    public void setAutostart(int autostart) throws LibvirtException {
+    public void setAutostart(final int autostart) throws LibvirtException {
         libvirt.virStoragePoolSetAutostart(VSPP, autostart);
     }
 
@@ -302,7 +302,8 @@ public class StoragePool {
      * @return the storage volume
      * @throws LibvirtException
      */
-    public StorageVol storageVolCreateXML(String xmlDesc, int flags) throws LibvirtException {
+    public StorageVol storageVolCreateXML(final String xmlDesc, final int flags)
+            throws LibvirtException {
         StorageVolPointer sPtr = processError(libvirt.virStorageVolCreateXML(VSPP, xmlDesc, flags));
         return new StorageVol(virConnect, sPtr);
     }
@@ -315,7 +316,9 @@ public class StoragePool {
      * @return The storage volume
      * @throws LibvirtException
      */
-    public StorageVol storageVolCreateXMLFrom(String xmlDesc, StorageVol cloneVolume, int flags)
+    public StorageVol storageVolCreateXMLFrom(final String xmlDesc,
+                                              final StorageVol cloneVolume,
+                                              final int flags)
             throws LibvirtException {
         StorageVolPointer sPtr = processError(libvirt.virStorageVolCreateXMLFrom(VSPP, xmlDesc, cloneVolume.VSVP, flags));
         return new StorageVol(virConnect, sPtr);
@@ -330,7 +333,8 @@ public class StoragePool {
      * @return a StorageVol object, or {@code null} if not found.
      * @throws LibvirtException
      */
-    public StorageVol storageVolLookupByName(String name) throws LibvirtException {
+    public StorageVol storageVolLookupByName(final String name)
+            throws LibvirtException {
         StorageVolPointer sPtr = processError(libvirt.virStorageVolLookupByName(VSPP, name));
 
         return (sPtr == null) ? null : new StorageVol(virConnect, sPtr);

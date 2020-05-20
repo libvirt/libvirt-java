@@ -28,7 +28,7 @@ public class Device {
      * @param VDP
      *            the native virDomainPtr
      */
-    Device(Connect virConnect, DevicePointer VDP) {
+    Device(final Connect virConnect, final DevicePointer VDP) {
         this.virConnect = virConnect;
         this.VDP = VDP;
     }

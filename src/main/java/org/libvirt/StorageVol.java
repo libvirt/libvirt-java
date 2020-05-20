@@ -70,7 +70,7 @@ public class StorageVol {
      * @param VSVP
      *            the native virStorageVolPtr
      */
-    StorageVol(Connect virConnect, StorageVolPointer VSVP) {
+    StorageVol(final Connect virConnect, final StorageVolPointer VSVP) {
         this.virConnect = virConnect;
         this.VSVP = VSVP;
     }
@@ -82,7 +82,7 @@ public class StorageVol {
      *            future flags, use 0 for now
      * @throws LibvirtException
      */
-    public void delete(int flags) throws LibvirtException {
+    public void delete(final int flags) throws LibvirtException {
         processError(libvirt.virStorageVolDelete(VSVP, flags));
     }
 
@@ -172,7 +172,7 @@ public class StorageVol {
      * @return the XML document
      * @throws LibvirtException
      */
-    public String getXMLDesc(int flags) throws LibvirtException {
+    public String getXMLDesc(final int flags) throws LibvirtException {
         return processError(libvirt.virStorageVolGetXMLDesc(VSVP, flags)).toString();
     }
 
@@ -209,7 +209,8 @@ public class StorageVol {
      * @return <em>ignore</em> (always 0)
      * @throws LibvirtException
      */
-    public int resize(long capacity, int flags) throws LibvirtException {
+    public int resize(final long capacity, final int flags)
+            throws LibvirtException {
         return processError(libvirt.virStorageVolResize(VSVP, capacity, flags));
     }
 }

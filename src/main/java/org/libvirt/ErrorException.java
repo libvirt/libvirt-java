@@ -10,7 +10,7 @@ package org.libvirt;
 public class ErrorException extends Exception {
     private static final long serialVersionUID = -4329050530233404971L;
 
-    public ErrorException(String message) {
+    public ErrorException(final String message) {
         super(message);
     }
 

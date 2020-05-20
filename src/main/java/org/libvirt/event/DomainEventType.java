@@ -42,7 +42,7 @@ public enum DomainEventType {
 
     private final Object[] details;
 
-    DomainEventType(Object[] d) {
+    DomainEventType(final Object[] d) {
         details = d;
     }
 

@@ -16,11 +16,11 @@ public final class SchedBooleanParameter extends SchedParameter {
 
     }
 
-    public SchedBooleanParameter(boolean value) {
+    public SchedBooleanParameter(final boolean value) {
         this.value = value;
     }
 
-    public SchedBooleanParameter(byte value) {
+    public SchedBooleanParameter(final byte value) {
         this.value = ((value) != 0) ? true : false;
     }
 

@@ -24,7 +24,7 @@ public class CString extends PointerType {
         super();
     }
 
-    public CString(Pointer p) {
+    public CString(final Pointer p) {
         super(p);
     }
 
@@ -63,13 +63,14 @@ public class CString extends PointerType {
     }
 
     @Override
-    public CString fromNative(Object nativeValue, FromNativeContext context) {
+    public CString fromNative(final Object nativeValue,
+                              final FromNativeContext context) {
         if (nativeValue == null) return null;
 
         return new CString((Pointer) nativeValue);
     }
 
-    private void free(Pointer ptr) {
+    private void free(final Pointer ptr) {
         assert ptr != null;
 
         Native.free(Pointer.nativeValue(ptr));

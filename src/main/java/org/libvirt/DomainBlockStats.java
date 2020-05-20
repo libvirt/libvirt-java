@@ -18,7 +18,7 @@ public class DomainBlockStats {
     public DomainBlockStats() {
     }
 
-    public DomainBlockStats(virDomainBlockStats vStats) {
+    public DomainBlockStats(final virDomainBlockStats vStats) {
         rd_req = vStats.rd_req;
         rd_bytes = vStats.rd_bytes;
         wr_req = vStats.wr_req;

@@ -27,7 +27,7 @@ public class Secret {
      */
     private final Connect virConnect;
 
-    Secret(Connect virConnect, SecretPointer VSP) {
+    Secret(final Connect virConnect, final SecretPointer VSP) {
         this.virConnect = virConnect;
         this.VSP = VSP;
     }
@@ -146,7 +146,7 @@ public class Secret {
      * @return <em>ignore</em> (always 0)
      * @throws org.libvirt.LibvirtException
      */
-    public int setValue(String value) throws LibvirtException {
+    public int setValue(final String value) throws LibvirtException {
         return processError(libvirt.virSecretSetValue(VSP, value, new SizeT(value.length()), 0));
     }
 
@@ -157,7 +157,7 @@ public class Secret {
      * @return <em>ignore</em> (always 0)
      * @throws org.libvirt.LibvirtException
      */
-    public int setValue(byte[] value) throws LibvirtException {
+    public int setValue(final byte[] value) throws LibvirtException {
         return processError(libvirt.virSecretSetValue(VSP, value, new SizeT(value.length), 0));
     }
 

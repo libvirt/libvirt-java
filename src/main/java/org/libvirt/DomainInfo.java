@@ -70,7 +70,7 @@ public class DomainInfo {
 
     }
 
-    public DomainInfo(virDomainInfo info) {
+    public DomainInfo(final virDomainInfo info) {
         cpuTime = info.cpuTime;
         maxMem = info.maxMem.longValue();
         memory = info.memory.longValue();

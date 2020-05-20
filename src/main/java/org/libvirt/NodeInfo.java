@@ -44,7 +44,7 @@ public class NodeInfo {
     public NodeInfo() {
     }
 
-    public NodeInfo(virNodeInfo vInfo) {
+    public NodeInfo(final virNodeInfo vInfo) {
         model = Native.toString(vInfo.model);
         memory = vInfo.memory.longValue();
         cpus = vInfo.cpus;

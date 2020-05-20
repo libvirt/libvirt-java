@@ -41,7 +41,7 @@ public class StorageVolInfo {
      * @param capacity
      * @param allocation
      */
-    StorageVolInfo(int type, long capacity, long allocation) {
+    StorageVolInfo(final int type, final long capacity, final long allocation) {
         switch (type) {
             case 0:
                 this.type = VirStorageVolType.VIR_STORAGE_VOL_FILE;
@@ -56,7 +56,7 @@ public class StorageVolInfo {
         this.allocation = allocation;
     }
 
-    StorageVolInfo(virStorageVolInfo volInfo) {
+    StorageVolInfo(final virStorageVolInfo volInfo) {
         this(volInfo.type, volInfo.capacity, volInfo.allocation);
     }
 

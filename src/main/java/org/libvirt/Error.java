@@ -124,7 +124,7 @@ public class Error implements Serializable {
         /** unknown error domain */
         VIR_FROM_UNKNOWN; // must be the last entry!
 
-        protected static final ErrorDomain wrap(int value) {
+        protected static final ErrorDomain wrap(final int value) {
             return safeElementAt(value, values());
         }
     }
@@ -142,7 +142,7 @@ public class Error implements Serializable {
 
         VIR_ERR_UNKNOWN; /* must be the last entry! */
 
-        protected static final ErrorLevel wrap(int value) {
+        protected static final ErrorLevel wrap(final int value) {
             return safeElementAt(value, values());
         }
     }
@@ -313,7 +313,7 @@ public class Error implements Serializable {
         /** unknown error */
         VIR_ERR_UNKNOWN; // must be the last entry!
 
-        protected static final ErrorNumber wrap(int value) {
+        protected static final ErrorNumber wrap(final int value) {
             return safeElementAt(value, values());
         }
     }
@@ -333,7 +333,7 @@ public class Error implements Serializable {
     private final int int1;
     private final int int2;
 
-    public Error(virError vError) {
+    public Error(final virError vError) {
         code = ErrorNumber.wrap(vError.code);
         domain = ErrorDomain.wrap(vError.domain);
         level = ErrorLevel.wrap(vError.level);

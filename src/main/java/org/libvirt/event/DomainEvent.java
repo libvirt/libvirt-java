@@ -40,7 +40,7 @@ public final class DomainEvent {
     private final DomainEventType type;
     private final int detail;
 
-    public DomainEvent(DomainEventType type, int code) {
+    public DomainEvent(final DomainEventType type, final int code) {
         this.type = type;
         this.detail = code;
     }

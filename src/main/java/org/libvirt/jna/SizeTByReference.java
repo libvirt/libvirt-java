@@ -12,12 +12,12 @@ public final class SizeTByReference extends ByReference {
         this(0);
     }
 
-    public SizeTByReference(long value) {
+    public SizeTByReference(final long value) {
         super(Native.SIZE_T_SIZE);
         setValue(value);
     }
 
-    public void setValue(long value) {
+    public void setValue(final long value) {
         Pointer p = getPointer();
         switch (Native.SIZE_T_SIZE) {
         case 2:

@@ -13,7 +13,7 @@ import com.sun.jna.Pointer;
  *
  */
 public class ErrorCallback implements Libvirt.VirErrorCallback {
-    public void errorCallback(Pointer userData, virError error) {
+    public void errorCallback(final Pointer userData, final virError error) {
         // By default, do nothing. This will silence the default
         // logging done by the C code. Other users can override this
         // and do more interesting things.

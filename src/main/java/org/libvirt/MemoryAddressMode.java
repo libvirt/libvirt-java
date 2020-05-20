@@ -9,7 +9,7 @@ public enum MemoryAddressMode {
 
     private final int value;
 
-    MemoryAddressMode(int v) {
+    MemoryAddressMode(final int v) {
         this.value = v;
     }
 

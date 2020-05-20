@@ -56,7 +56,8 @@ public class StoragePoolInfo {
      * @param allocation
      * @param available
      */
-    StoragePoolInfo(int state, long capacity, long allocation, long available) {
+    StoragePoolInfo(final int state, final long capacity,
+                    final long allocation, final long available) {
         switch (state) {
             case 0:
                 this.state = StoragePoolState.VIR_STORAGE_POOL_INACTIVE;
@@ -78,7 +79,7 @@ public class StoragePoolInfo {
         this.available = available;
     }
 
-    StoragePoolInfo(virStoragePoolInfo vInfo) {
+    StoragePoolInfo(final virStoragePoolInfo vInfo) {
         this(vInfo.state, vInfo.capacity, vInfo.allocation, vInfo.available);
     }
 

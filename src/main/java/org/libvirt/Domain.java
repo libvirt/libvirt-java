@@ -168,7 +168,7 @@ public class Domain {
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         if (this == obj)
             return true;
         if (obj == null)
@@ -207,7 +207,7 @@ public class Domain {
      * @param VDP
      *            the native virDomainPtr
      */
-    Domain(Connect virConnect, DomainPointer VDP) {
+    Domain(final Connect virConnect, final DomainPointer VDP) {
         assert virConnect != null;
 
         this.virConnect = virConnect;
@@ -222,7 +222,8 @@ public class Domain {
      * since the virDomainPtr passed is only valid for the duration of
      * execution of the callback.
      */
-    static Domain constructIncRef(Connect virConnect, DomainPointer VDP) throws LibvirtException {
+    static Domain constructIncRef(final Connect virConnect, final DomainPointer VDP)
+            throws LibvirtException {
         processError(libvirt.virDomainRef(VDP));
 
         return new Domain(virConnect, VDP);
@@ -253,7 +254,7 @@ public class Domain {
      *            XML description of one device
      * @throws LibvirtException
      */
-    public void attachDevice(String xmlDesc) throws LibvirtException {
+    public void attachDevice(final String xmlDesc) throws LibvirtException {
         processError(libvirt.virDomainAttachDevice(VDP, xmlDesc));
     }
 
@@ -269,7 +270,8 @@ public class Domain {
      *            the an OR'ed set of virDomainDeviceModifyFlags
      * @throws LibvirtException
      */
-    public void attachDeviceFlags(String xmlDesc, int flags) throws LibvirtException {
+    public void attachDeviceFlags(final String xmlDesc, final int flags)
+            throws LibvirtException {
         processError(libvirt.virDomainAttachDeviceFlags(VDP, xmlDesc, flags));
     }
 
@@ -282,7 +284,7 @@ public class Domain {
      * @return the info
      * @throws LibvirtException
      */
-    public DomainBlockInfo blockInfo(String path) throws LibvirtException {
+    public DomainBlockInfo blockInfo(final String path) throws LibvirtException {
         virDomainBlockInfo info = new virDomainBlockInfo();
         processError(libvirt.virDomainGetBlockInfo(VDP, path, info, 0));
         return new DomainBlockInfo(info);
@@ -319,7 +321,8 @@ public class Domain {
      * @param  offset  the offset within block device
      * @param  buffer  the buffer receiving the data
      */
-    public void blockPeek(String disk, long offset, ByteBuffer buffer) throws LibvirtException {
+    public void blockPeek(final String disk, final long offset,
+                          final ByteBuffer buffer) throws LibvirtException {
         SizeT size = new SizeT();
 
         // older libvirt has a limitation on the size of data
@@ -354,7 +357,7 @@ public class Domain {
      * @return the statistics in a DomainBlockStats object
      * @throws LibvirtException
      */
-    public DomainBlockStats blockStats(String path) throws LibvirtException {
+    public DomainBlockStats blockStats(final String path) throws LibvirtException {
         virDomainBlockStats stats = new virDomainBlockStats();
         processError(libvirt.virDomainBlockStats(VDP, path, stats, new SizeT(stats.size())));
         return new DomainBlockStats(stats);
@@ -371,7 +374,8 @@ public class Domain {
      *           bitwise OR'ed values of {@link BlockResizeFlags}
      * @throws LibvirtException
      */
-    public void blockResize(String disk, long size, int flags) throws LibvirtException {
+    public void blockResize(final String disk, final long size, final int flags)
+            throws LibvirtException {
         processError(libvirt.virDomainBlockResize(VDP, disk, size, flags));
     }
 
@@ -386,7 +390,7 @@ public class Domain {
      *            extra flags, currently unused
      * @throws LibvirtException
      */
-    public void coreDump(String to, int flags) throws LibvirtException {
+    public void coreDump(final String to, final int flags) throws LibvirtException {
         processError(libvirt.virDomainCoreDump(VDP, to, flags));
     }
 
@@ -394,7 +398,7 @@ public class Domain {
      * It returns the length (in bytes) required to store the complete CPU map
      * between a single virtual & all physical CPUs of a domain.
      */
-    public int cpuMapLength(int maxCpus) {
+    public int cpuMapLength(final int maxCpus) {
         return (((maxCpus) + 7) / 8);
     }
 
@@ -417,7 +421,7 @@ public class Domain {
      * @return <em>ignore</em> (always 0)
      * @throws LibvirtException
      */
-    public int create(int flags) throws LibvirtException {
+    public int create(final int flags) throws LibvirtException {
         return processError(libvirt.virDomainCreateWithFlags(VDP, flags));
     }
 
@@ -443,7 +447,7 @@ public class Domain {
      *            XML description of one device
      * @throws LibvirtException
      */
-    public void detachDevice(String xmlDesc) throws LibvirtException {
+    public void detachDevice(final String xmlDesc) throws LibvirtException {
         processError(libvirt.virDomainDetachDevice(VDP, xmlDesc));
     }
 
@@ -457,7 +461,8 @@ public class Domain {
      *            XML description of one device
      * @throws LibvirtException
      */
-    public void detachDeviceFlags(String xmlDesc, int flags) throws LibvirtException {
+    public void detachDeviceFlags(final String xmlDesc, final int flags)
+            throws LibvirtException {
         processError(libvirt.virDomainDetachDeviceFlags(VDP, xmlDesc, flags));
     }
 
@@ -734,7 +739,7 @@ public class Domain {
      * @see <a href="http://libvirt.org/format.html#Normal1" >The XML
      *      Description format </a>
      */
-    public String getXMLDesc(int flags) throws LibvirtException {
+    public String getXMLDesc(final int flags) throws LibvirtException {
         return processError(libvirt.virDomainGetXMLDesc(VDP, flags)).toString();
     }
 
@@ -776,7 +781,8 @@ public class Domain {
      * @return the statistics in a DomainInterfaceStats object
      * @throws LibvirtException
      */
-    public DomainInterfaceStats interfaceStats(String path) throws LibvirtException {
+    public DomainInterfaceStats interfaceStats(final String path)
+            throws LibvirtException {
         virDomainInterfaceStats stats = new virDomainInterfaceStats();
         processError(libvirt.virDomainInterfaceStats(VDP, path, stats, new SizeT(stats.size())));
         return new DomainInterfaceStats(stats);
@@ -862,8 +868,9 @@ public class Domain {
      * @param mode   the mode which determines whether the given addresses
      *               are interpreted as virtual or physical addresses
      */
-    public void memoryPeek(long start, ByteBuffer buffer, MemoryAddressMode mode) throws LibvirtException
-    {
+    public void memoryPeek(final long start, final ByteBuffer buffer,
+                           final MemoryAddressMode mode)
+            throws LibvirtException {
         SizeT size = new SizeT();
 
         // older libvirt has a limitation on the size of data
@@ -891,7 +898,8 @@ public class Domain {
      * @return the collection of stats
      * @throws LibvirtException
      */
-    public MemoryStatistic[] memoryStats(int number) throws LibvirtException {
+    public MemoryStatistic[] memoryStats(final int number)
+            throws LibvirtException {
         virDomainMemoryStats[] stats = new virDomainMemoryStats[number];
         MemoryStatistic[] returnStats = null;
         int result = processError(libvirt.virDomainMemoryStats(VDP, stats, number, 0));
@@ -970,7 +978,10 @@ public class Domain {
      *         the scope of the destination connection (dconn).
      * @throws LibvirtException if the migration fails
      */
-    public Domain migrate(Connect dconn, long flags, String dxml, String dname, String uri, long bandwidth) throws LibvirtException {
+    public Domain migrate(final Connect dconn, final long flags,
+                          final String dxml, final String dname,
+                          final String uri, final long bandwidth)
+            throws LibvirtException {
         DomainPointer newPtr =
             processError(libvirt.virDomainMigrate2(VDP, dconn.VCP, dxml, new NativeLong(flags), dname, uri, new NativeLong(bandwidth)));
         return new Domain(dconn, newPtr);
@@ -1020,8 +1031,12 @@ public class Domain {
      *         connection (dconn).
      * @throws LibvirtException
      */
-    public Domain migrate(Connect dconn, long flags, String dname, String uri, long bandwidth) throws LibvirtException {
-        DomainPointer newPtr = processError(libvirt.virDomainMigrate(VDP, dconn.VCP, new NativeLong(flags), dname, uri, new NativeLong(bandwidth)));
+    public Domain migrate(final Connect dconn, final long flags,
+                          final String dname, final String uri,
+                          final long bandwidth)
+            throws LibvirtException {
+        DomainPointer newPtr = processError(libvirt.virDomainMigrate(VDP, dconn.VCP,
+                new NativeLong(flags), dname, uri, new NativeLong(bandwidth)));
         return new Domain(dconn, newPtr);
     }
 
@@ -1037,7 +1052,8 @@ public class Domain {
      * @return always 0
      * @throws LibvirtException
      */
-    public int migrateSetMaxDowntime(long downtime) throws LibvirtException {
+    public int migrateSetMaxDowntime(final long downtime)
+            throws LibvirtException {
         return processError(libvirt.virDomainMigrateSetMaxDowntime(VDP, downtime, 0));
     }
 
@@ -1071,7 +1087,10 @@ public class Domain {
      * @return 0 if successful
      * @throws LibvirtException
      */
-    public int migrateToURI(String dconnuri, String miguri, String dxml, long flags, String dname, long bandwidth) throws LibvirtException {
+    public int migrateToURI(final String dconnuri, final String miguri,
+                            final String dxml, final long flags,
+                            final String dname, final long bandwidth)
+            throws LibvirtException {
         return processError(libvirt.virDomainMigrateToURI2(VDP, dconnuri, miguri,
                                                            dxml, new NativeLong(flags),
                                                            dname, new NativeLong(bandwidth)));
@@ -1096,22 +1115,28 @@ public class Domain {
      * @return 0 if successful, -1 if not
      * @throws LibvirtException
      */
-    public int migrateToURI(String uri, long flags, String dname, long bandwidth) throws LibvirtException {
-        return processError(libvirt.virDomainMigrateToURI(VDP, uri, new NativeLong(flags), dname, new NativeLong(bandwidth)));
+    public int migrateToURI(final String uri, final long flags,
+                            final String dname, final long bandwidth)
+            throws LibvirtException {
+        return processError(libvirt.virDomainMigrateToURI(VDP, uri,
+                new NativeLong(flags), dname, new NativeLong(bandwidth)));
     }
 
     /**
      * Enter the given power management suspension target level.
      */
-    public void PMsuspend(SuspendTarget target) throws LibvirtException {
+    public void PMsuspend(final SuspendTarget target) throws LibvirtException {
         PMsuspendFor(target, 0, TimeUnit.SECONDS);
     }
 
     /**
      * Enter the given power management suspension target level for the given duration.
      */
-    public void PMsuspendFor(SuspendTarget target, long duration, TimeUnit unit) throws LibvirtException {
-        processError(libvirt.virDomainPMSuspendForDuration(this.VDP, target.ordinal(), unit.toSeconds(duration), 0));
+    public void PMsuspendFor(final SuspendTarget target, final long duration,
+            final TimeUnit unit)
+            throws LibvirtException {
+        processError(libvirt.virDomainPMSuspendForDuration(this.VDP,
+                target.ordinal(), unit.toSeconds(duration), 0));
     }
 
     /**
@@ -1140,7 +1165,8 @@ public class Domain {
      *            least significant bit.
      * @throws LibvirtException
      */
-    public void pinVcpu(int vcpu, int[] cpumap) throws LibvirtException {
+    public void pinVcpu(final int vcpu, final int[] cpumap)
+            throws LibvirtException {
         byte[] packedMap = new byte[cpumap.length];
         for (int x = 0; x < cpumap.length; x++) {
             packedMap[x] = (byte) cpumap[x];
@@ -1157,7 +1183,7 @@ public class Domain {
      *            extra flags for the reboot operation, not used yet
      * @throws LibvirtException
      */
-    public void reboot(int flags) throws LibvirtException {
+    public void reboot(final int flags) throws LibvirtException {
         processError(libvirt.virDomainReboot(VDP, flags));
     }
 
@@ -1276,7 +1302,8 @@ public class Domain {
      * @return 0 if the creation is successful
      * @throws LibvirtException
      */
-    public int revertToSnapshot(DomainSnapshot snapshot) throws LibvirtException {
+    public int revertToSnapshot(final DomainSnapshot snapshot)
+	    throws LibvirtException {
         return processError(libvirt.virDomainRevertToSnapshot(snapshot.VDSP, 0));
     }
 
@@ -1290,11 +1317,12 @@ public class Domain {
      *            path for the output file
      * @throws LibvirtException
      */
-    public void save(String to) throws LibvirtException {
+    public void save(final String to) throws LibvirtException {
         processError(libvirt.virDomainSave(VDP, to));
     }
 
-    public String screenshot(Stream stream, int screen) throws LibvirtException {
+    public String screenshot(final Stream stream, final int screen)
+            throws LibvirtException {
         CString mimeType = libvirt.virDomainScreenshot(this.VDP, stream.getVSP(), screen, 0);
         processError(mimeType);
         stream.markReadable();
@@ -1308,7 +1336,7 @@ public class Domain {
      * @param autostart
      * @throws LibvirtException
      */
-    public void setAutostart(boolean autostart) throws LibvirtException {
+    public void setAutostart(final boolean autostart) throws LibvirtException {
         int autoValue = autostart ? 1 : 0;
         processError(libvirt.virDomainSetAutostart(VDP, autoValue));
     }
@@ -1321,7 +1349,7 @@ public class Domain {
      *            the amount memory in kilobytes
      * @throws LibvirtException
      */
-    public void setMaxMemory(long memory) throws LibvirtException {
+    public void setMaxMemory(final long memory) throws LibvirtException {
         processError(libvirt.virDomainSetMaxMemory(VDP, new NativeLong(memory)));
     }
 
@@ -1334,7 +1362,7 @@ public class Domain {
      *            in kilobytes
      * @throws LibvirtException
      */
-    public void setMemory(long memory) throws LibvirtException {
+    public void setMemory(final long memory) throws LibvirtException {
         processError(libvirt.virDomainSetMemory(VDP, new NativeLong(memory)));
     }
 
@@ -1345,7 +1373,8 @@ public class Domain {
      *            an array of SchedParameter objects to be changed
      * @throws LibvirtException
      */
-    public void setSchedulerParameters(SchedParameter[] params) throws LibvirtException {
+    public void setSchedulerParameters(final SchedParameter[] params)
+            throws LibvirtException {
         virSchedParameter[] input = new virSchedParameter[params.length];
         for (int x = 0; x < params.length; x++) {
             input[x] = SchedParameter.toNative(params[x]);
@@ -1363,7 +1392,7 @@ public class Domain {
      *            the new number of virtual CPUs for this domain
      * @throws LibvirtException
      */
-    public void setVcpus(int nvcpus) throws LibvirtException {
+    public void setVcpus(final int nvcpus) throws LibvirtException {
         processError(libvirt.virDomainSetVcpus(VDP, nvcpus));
     }
 
@@ -1374,7 +1403,9 @@ public class Domain {
      * @param  holdtime the duration that the keys will be held (in milliseconds)
      * @param  keys     the key codes to be send
      */
-    public void sendKey(KeycodeSet codeset, int holdtime, int... keys) throws LibvirtException {
+    public void sendKey(final KeycodeSet codeset, final int holdtime,
+                        final int... keys)
+            throws LibvirtException {
         processError(libvirt.virDomainSendKey(this.VDP, codeset.ordinal(),
                                               holdtime, keys, keys.length, 0));
     }
@@ -1405,7 +1436,8 @@ public class Domain {
      * @return the snapshot
      * @throws LibvirtException
      */
-    public DomainSnapshot snapshotCreateXML(String xmlDesc, int flags) throws LibvirtException {
+    public DomainSnapshot snapshotCreateXML(final String xmlDesc, final int flags)
+            throws LibvirtException {
         DomainSnapshotPointer ptr = processError(libvirt.virDomainSnapshotCreateXML(VDP, xmlDesc, flags));
         return new DomainSnapshot(virConnect, ptr);
     }
@@ -1426,7 +1458,8 @@ public class Domain {
      * @return the snapshot, or null on Error
      * @throws LibvirtException
      */
-    public DomainSnapshot snapshotCreateXML(String xmlDesc) throws LibvirtException {
+    public DomainSnapshot snapshotCreateXML(final String xmlDesc)
+            throws LibvirtException {
         return snapshotCreateXML(xmlDesc, 0);
     }
 
@@ -1453,7 +1486,7 @@ public class Domain {
      * @return The list of names, or null if an error
      * @throws LibvirtException
      */
-    public String[] snapshotListNames(int flags) throws LibvirtException {
+    public String[] snapshotListNames(final int flags) throws LibvirtException {
         int num = snapshotNum();
         if (num > 0) {
             CString[] names = new CString[num];
@@ -1493,7 +1526,8 @@ public class Domain {
      * @return The located snapshot
      * @throws LibvirtException
      */
-    public DomainSnapshot snapshotLookupByName(String name) throws LibvirtException {
+    public DomainSnapshot snapshotLookupByName(final String name)
+            throws LibvirtException {
         DomainSnapshotPointer ptr = processError(libvirt.virDomainSnapshotLookupByName(VDP, name, 0));
         return new DomainSnapshot(virConnect, ptr);
     }
@@ -1538,7 +1572,7 @@ public class Domain {
      *            flags for undefining the domain. See virDomainUndefineFlagsValues for more information
      * @throws LibvirtException
     */
-    public void undefine(int flags) throws LibvirtException {
+    public void undefine(final int flags) throws LibvirtException {
         processError(libvirt.virDomainUndefineFlags(VDP, flags));
     }
 
@@ -1553,7 +1587,8 @@ public class Domain {
      * @return always 0
      * @throws LibvirtException
      */
-    public int updateDeviceFlags(String xml, int flags) throws LibvirtException {
+    public int updateDeviceFlags(final String xml, final int flags)
+            throws LibvirtException {
         return processError(libvirt.virDomainUpdateDeviceFlags(VDP, xml, flags));
     }
 

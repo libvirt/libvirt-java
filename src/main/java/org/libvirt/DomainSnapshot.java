@@ -16,7 +16,8 @@ public class DomainSnapshot {
      */
     private final Connect virConnect;
 
-    public DomainSnapshot(Connect virConnect, DomainSnapshotPointer VDSP) {
+    public DomainSnapshot(final Connect virConnect,
+                          final DomainSnapshotPointer VDSP) {
         this.VDSP = VDSP;
         this.virConnect = virConnect;
     }
@@ -32,7 +33,7 @@ public class DomainSnapshot {
      * @return <em>ignore</em> (always 0)
      * @throws LibvirtException
      */
-    public int delete(int flags) throws LibvirtException {
+    public int delete(final int flags) throws LibvirtException {
         int success = 0;
         if (VDSP != null) {
             success = processError(libvirt.virDomainSnapshotDelete(VDSP, flags));

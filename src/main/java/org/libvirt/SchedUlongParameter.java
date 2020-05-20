@@ -16,7 +16,7 @@ public final class SchedUlongParameter extends SchedParameter {
 
     }
 
-    public SchedUlongParameter(long value) {
+    public SchedUlongParameter(final long value) {
         this.value = value;
     }
 

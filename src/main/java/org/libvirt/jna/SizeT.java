@@ -8,7 +8,7 @@ import com.sun.jna.IntegerType;
  */
 public final class SizeT extends IntegerType {
     public SizeT() { this(0); }
-    public SizeT(long value) {
+    public SizeT(final long value) {
         /* The third argument determines whether this class represents
          * an unsigned integer type. When extracting a value into a
          * larger-sized container (e.g. 4 byte native type into Java

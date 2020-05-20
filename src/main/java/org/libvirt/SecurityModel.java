@@ -9,10 +9,10 @@ import com.sun.jna.Native;
  * @see Connect#getSecurityModel
  */
 public final class SecurityModel {
-    private String model;
-    private String doi;
+    private final String model;
+    private final String doi;
 
-    SecurityModel(Libvirt.SecurityModel secmodel) {
+    SecurityModel(final Libvirt.SecurityModel secmodel) {
         model = Native.toString(secmodel.model, "UTF-8");
         doi = Native.toString(secmodel.doi, "UTF-8");
     }

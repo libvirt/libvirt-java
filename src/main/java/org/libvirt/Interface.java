@@ -33,7 +33,7 @@ public class Interface {
      * @param VIP
      *            the native virInterfacePtr
      */
-    Interface(Connect virConnect, InterfacePointer VIP) {
+    Interface(final Connect virConnect, final InterfacePointer VIP) {
         this.virConnect = virConnect;
         this.VIP = VIP;
     }
@@ -121,7 +121,7 @@ public class Interface {
      * @return String or null
      * @throws LibvirtException
      */
-    public String getXMLDescription(int flags) throws LibvirtException {
+    public String getXMLDescription(final int flags) throws LibvirtException {
         return processError(libvirt.virInterfaceGetXMLDesc(VIP, flags)).toString();
     }
 

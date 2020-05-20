@@ -27,7 +27,7 @@ public final class Library {
     private static AtomicInteger timerID = new AtomicInteger(-1);
     private static VirEventTimeoutCallback timer = new VirEventTimeoutCallback() {
             @Override
-            public void tick(int id, Pointer p) {
+            public void tick(final int id, final Pointer p) {
                 // disable myself again right after being triggered
                 libvirt.virEventUpdateTimeout(id, -1);
             }
@@ -72,7 +72,7 @@ public final class Library {
     /**
      * Free memory pointed to by ptr.
      */
-    static void free(Pointer ptr) {
+    static void free(final Pointer ptr) {
         Native.free(Pointer.nativeValue(ptr));
         Pointer.nativeValue(ptr, 0L);
     }
@@ -84,7 +84,7 @@ public final class Library {
      * \note The memory used by the elements of the original array
      *       is freed.
      */
-    static String[] toStringArray(CString[] cstrarr, final int size) {
+    static String[] toStringArray(final CString[] cstrarr, final int size) {
         int i = 0;
         try {
             final String[] result = new String[size];

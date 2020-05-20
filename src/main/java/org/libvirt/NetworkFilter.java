@@ -18,7 +18,7 @@ public class NetworkFilter {
      */
     private final Connect virConnect;
 
-    public NetworkFilter(Connect virConnect, NetworkFilterPointer NFP) {
+    public NetworkFilter(final Connect virConnect, final NetworkFilterPointer NFP) {
         this.NFP = NFP;
         this.virConnect = virConnect;
     }

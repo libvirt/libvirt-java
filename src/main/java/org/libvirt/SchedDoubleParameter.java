@@ -16,7 +16,7 @@ public final class SchedDoubleParameter extends SchedParameter {
 
     }
 
-    public SchedDoubleParameter(double value) {
+    public SchedDoubleParameter(final double value) {
         this.value = value;
     }
 

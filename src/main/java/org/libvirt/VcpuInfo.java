@@ -20,7 +20,7 @@ public class VcpuInfo {
 
     }
 
-    public VcpuInfo(virVcpuInfo vVcpu) {
+    public VcpuInfo(final virVcpuInfo vVcpu) {
         number = vVcpu.number;
         cpuTime = vVcpu.cpuTime;
         cpu = vVcpu.cpu;
