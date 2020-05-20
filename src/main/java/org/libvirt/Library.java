@@ -94,7 +94,9 @@ public final class Library {
             return result;
         } catch (RuntimeException e) {
             for (; i < size; ++i) {
-                if (cstrarr[i] != null) cstrarr[i].free();
+                if (cstrarr[i] != null) {
+                    cstrarr[i].free();
+                }
             }
             throw e;
         }
@@ -170,8 +172,9 @@ public final class Library {
         runLoop.set(true);
         do {
             processEvent();
-            if (Thread.interrupted())
+            if (Thread.interrupted()) {
                 throw new InterruptedException();
+            }
         } while (runLoop.get());
     }
 
@@ -187,8 +190,9 @@ public final class Library {
         if (runLoop.getAndSet(false)) {
             // fire the timer immediately
             int timer = timerID.get();
-            if (timer >= 0)
+            if (timer >= 0) {
                 libvirt.virEventUpdateTimeout(timer, 0);
+            }
         }
     }
 
@@ -202,8 +206,9 @@ public final class Library {
      * @throws IllegalArgumentException if {@code ordinal} is negative
      */
     static <T extends Enum<T>> T getConstant(final Class<T> c, final int ordinal) {
-        if (ordinal < 0)
+        if (ordinal < 0) {
             throw new IllegalArgumentException("ordinal must be >= 0");
+        }
 
         T[] a = c.getEnumConstants();
 

@@ -200,9 +200,17 @@ public class Stream implements ByteChannel {
 
     @Override
     public int read(final ByteBuffer buffer) throws IOException {
-        if (!isOpen()) throw new ClosedChannelException();
-        if (!isReadable()) throw new NonReadableChannelException();
-        if (isEOF()) return -1;
+        if (!isOpen()) {
+            throw new ClosedChannelException();
+        }
+
+        if (!isReadable()) {
+            throw new NonReadableChannelException();
+        }
+
+        if (isEOF()) {
+            return -1;
+        }
 
         try {
             int ret = receive(buffer);
@@ -225,8 +233,13 @@ public class Stream implements ByteChannel {
 
     @Override
     public int write(final ByteBuffer buffer) throws IOException {
-        if (!isOpen()) throw new ClosedChannelException();
-        if (!isWritable()) throw new NonWritableChannelException();
+        if (!isOpen()) {
+            throw new ClosedChannelException();
+        }
+
+        if (!isWritable()) {
+            throw new NonWritableChannelException();
+        }
 
         int pos = buffer.position();
 
@@ -234,8 +247,9 @@ public class Stream implements ByteChannel {
             while (buffer.hasRemaining()) {
                 int ret = send(buffer);
 
-                if (ret == -2)
+                if (ret == -2) {
                     throw new UnsupportedOperationException("non-blocking I/O stream not yet supported");
+                }
             }
             return buffer.position() - pos;
         } catch (LibvirtException e) {
@@ -245,8 +259,11 @@ public class Stream implements ByteChannel {
 
     protected void closeStream() throws LibvirtException {
         if (isOpen() && !isEOF()) {
-            if (isWritable()) finish();
-            else if (isReadable()) abort();
+            if (isWritable()) {
+                finish();
+            } else if (isReadable()) {
+                abort();
+            }
         }
         this.state = CLOSED;
     }
@@ -275,7 +292,7 @@ public class Stream implements ByteChannel {
      * @throws LibvirtException
      */
     public int receiveAll(final Libvirt.VirStreamSinkFunc handler)
-	    throws LibvirtException {
+            throws LibvirtException {
         return processError(libvirt.virStreamRecvAll(VSP, handler, null));
     }
 
@@ -322,7 +339,7 @@ public class Stream implements ByteChannel {
      * @throws LibvirtException
      */
     public int sendAll(final Libvirt.VirStreamSourceFunc handler)
-	    throws LibvirtException {
+            throws LibvirtException {
         return processError(libvirt.virStreamSendAll(VSP, handler, null));
     }
 

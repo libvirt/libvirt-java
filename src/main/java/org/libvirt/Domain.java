@@ -179,22 +179,33 @@ public class Domain {
      */
     @Override
     public boolean equals(final Object obj) {
-        if (this == obj)
+        if (this == obj) {
             return true;
-        if (obj == null)
+        }
+
+        if (obj == null) {
             return false;
-        if (!(obj instanceof Domain))
+        }
+
+        if (!(obj instanceof Domain)) {
             return false;
+        }
+
         Domain other = (Domain) obj;
 
         // return false when this domain belongs to
         // a different hypervisor than the other
-        if (!this.virConnect.equals(other.virConnect))
+        if (!this.virConnect.equals(other.virConnect)) {
             return false;
+        }
 
-        if (VDP == null) return (other.VDP == null);
+        if (VDP == null) {
+            return (other.VDP == null);
+        }
 
-        if (VDP.equals(other.VDP)) return true;
+        if (VDP.equals(other.VDP)) {
+            return true;
+        }
 
         try {
             return Arrays.equals(getUUID(), other.getUUID());
@@ -661,10 +672,11 @@ public class Domain {
 
         processError(libvirt.virDomainGetSecurityLabel(this.VDP, seclabel));
 
-        if (seclabel.label[0] == 0)
+        if (seclabel.label[0] == 0) {
             return null;
-        else
+        } else {
             return new SecurityLabel(seclabel);
+        }
     }
 
     /**
@@ -1312,7 +1324,7 @@ public class Domain {
      * @throws LibvirtException
      */
     public int revertToSnapshot(final DomainSnapshot snapshot)
-	    throws LibvirtException {
+            throws LibvirtException {
         return processError(libvirt.virDomainRevertToSnapshot(snapshot.VDSP, 0));
     }
 

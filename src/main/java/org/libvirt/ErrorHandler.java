@@ -37,7 +37,10 @@ public class ErrorHandler {
      * @throws LibvirtException
      */
     static final int processError(final int ret) throws LibvirtException {
-        if (ret == -1) processError();
+        if (ret == -1) {
+            processError();
+        }
+
         return ret;
     }
 
@@ -49,22 +52,34 @@ public class ErrorHandler {
      * @throws LibvirtException
      */
     static final <T extends PointerType> T processError(final T arg) throws LibvirtException {
-        if (arg == null) processError();
+        if (arg == null) {
+            processError();
+        }
+
         return arg;
     }
 
     static final Pointer processError(final Pointer arg) throws LibvirtException {
-        if (arg == null) processError();
+        if (arg == null) {
+            processError();
+        }
+
         return arg;
     }
 
     static final String processError(final String str) throws LibvirtException {
-        if (str == null) processError();
+        if (str == null) {
+            processError();
+        }
+
         return str;
     }
 
     static final long processErrorIfZero(final long ret) throws LibvirtException {
-        if (ret == 0) processError();
+        if (ret == 0) {
+            processError();
+        }
+
         return ret;
     }
 }

@@ -216,17 +216,24 @@ public class Connect {
      */
     @Override
     public boolean equals(final Object obj) {
-        if (this == obj)
+        if (this == obj) {
             return true;
-        if (obj == null)
+        }
+
+        if (obj == null) {
             return false;
-        if (!(obj instanceof Connect))
+        }
+
+        if (!(obj instanceof Connect)) {
             return false;
+        }
+
         Connect other = (Connect) obj;
-        if (VCP == null)
+        if (VCP == null) {
             return (other.VCP == null);
-        else if (VCP.equals(other.VCP))
+        } else if (VCP.equals(other.VCP)) {
             return true;
+        }
 
         try {
             return getURI().equals(other.getURI());
@@ -391,7 +398,9 @@ public class Connect {
 
             // if the connection has been closed (i.e. the reference count is
             // down to zero), forget about the registered close function
-            if (success == 0) registeredCloseFunc = null;
+            if (success == 0) {
+                registeredCloseFunc = null;
+            }
 
             // If leave an invalid pointer dangling around JVM crashes and burns
             // if someone tries to call a method on us
@@ -544,17 +553,21 @@ public class Connect {
      */
     private void domainEventDeregister(final int eventID, final EventListener l)
             throws LibvirtException {
-        if (l == null)
+        if (l == null) {
             return;
+        }
 
         Map<EventListener, RegisteredEventListener> handlers = eventListeners[eventID];
 
-        if (handlers == null) return;
+        if (handlers == null) {
+            return;
+        }
 
         RegisteredEventListener listener = handlers.remove(l);
 
-        if (listener != null)
+        if (listener != null) {
             processError(libvirt.virConnectDomainEventDeregisterAny(VCP, listener.callbackId));
+        }
     }
 
     private void domainEventRegister(final Domain domain, final int eventID,
@@ -583,8 +596,9 @@ public class Connect {
 
     void domainEventRegister(final Domain domain, final IOErrorListener cb)
             throws LibvirtException {
-        if (cb == null)
+        if (cb == null) {
             throw new IllegalArgumentException("IOError callback cannot be null");
+        }
 
         Libvirt.VirConnectDomainEventIOErrorCallback virCB =
                 new Libvirt.VirConnectDomainEventIOErrorCallback() {
@@ -629,8 +643,9 @@ public class Connect {
 
     void domainEventRegister(final Domain domain, final RebootListener cb)
             throws LibvirtException {
-        if (cb == null)
+        if (cb == null) {
             throw new IllegalArgumentException("RebootCallback cannot be null");
+        }
 
         Libvirt.VirConnectDomainEventGenericCallback virCB =
                 new Libvirt.VirConnectDomainEventGenericCallback() {
@@ -654,8 +669,9 @@ public class Connect {
 
     void domainEventRegister(final Domain domain, final LifecycleListener cb)
             throws LibvirtException {
-        if (cb == null)
+        if (cb == null) {
             throw new IllegalArgumentException("LifecycleCallback cannot be null");
+        }
 
         Libvirt.VirConnectDomainEventCallback virCB =
                 new Libvirt.VirConnectDomainEventCallback() {
@@ -708,8 +724,9 @@ public class Connect {
 
     void domainEventRegister(final Domain domain, final PMWakeupListener cb)
             throws LibvirtException {
-        if (cb == null)
+        if (cb == null) {
             throw new IllegalArgumentException("PMWakeupCallback cannot be null");
+        }
 
         Libvirt.VirDomainEventCallback virCB =
             new Libvirt.VirConnectDomainEventPMChangeCallback() {
@@ -734,8 +751,9 @@ public class Connect {
 
     void domainEventRegister(final Domain domain, final PMSuspendListener cb)
             throws LibvirtException {
-        if (cb == null)
+        if (cb == null) {
             throw new IllegalArgumentException("PMSuspendCallback cannot be null");
+        }
 
         Libvirt.VirDomainEventCallback virCB =
             new Libvirt.VirConnectDomainEventPMChangeCallback() {
@@ -1109,11 +1127,11 @@ public class Connect {
 
         processError(libvirt.virNodeGetSecurityModel(this.VCP, secmodel));
 
-        if (secmodel.model[0] == 0)
+        if (secmodel.model[0] == 0) {
             return null;
-        else
+        } else {
             return new SecurityModel(secmodel);
-
+        }
     }
 
     /**

@@ -39,7 +39,9 @@ public class CString extends PointerType {
         if (string == null) {
             final Pointer ptr = getPointer();
 
-            if (ptr == null) return "(null)";
+            if (ptr == null) {
+		return "(null)";
+	    }
 
             try {
                 // N.B.  could be replaced with Pointer.getString(0L, "UTF-8")
@@ -65,7 +67,9 @@ public class CString extends PointerType {
     @Override
     public CString fromNative(final Object nativeValue,
                               final FromNativeContext context) {
-        if (nativeValue == null) return null;
+        if (nativeValue == null) {
+	    return null;
+	}
 
         return new CString((Pointer) nativeValue);
     }
@@ -82,6 +86,8 @@ public class CString extends PointerType {
      */
     public void free() {
         final Pointer ptr = getPointer();
-        if (ptr != null) free(ptr);
+        if (ptr != null) {
+	    free(ptr);
+	}
     }
 }
