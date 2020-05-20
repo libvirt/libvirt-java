@@ -85,6 +85,7 @@ public class StoragePoolInfo {
 
     @Override
     public String toString() {
-        return String.format("state:%s%ncapacity:%d%nallocation:%d%navailable:%d%n", state, capacity, allocation, available);
+        return String.format("state:%s%ncapacity:%d%nallocation:%d%navailable:%d%n",
+                state, capacity, allocation, available);
     }
 }

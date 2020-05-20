@@ -47,104 +47,114 @@ public class Domain {
 
     static final class CreateFlags {
         static final int VIR_DOMAIN_NONE = 0;
-        static final int VIR_DOMAIN_SNAPSHOT_CREATE_REDEFINE    = (1 << 0); /* Restore or alter
-                                                                               metadata */
-        static final int VIR_DOMAIN_SNAPSHOT_CREATE_CURRENT     = (1 << 1); /* With redefine, make
-                                                                               snapshot current */
-        static final int VIR_DOMAIN_SNAPSHOT_CREATE_NO_METADATA = (1 << 2); /* Make snapshot without
-                                                                               remembering it */
-        static final int VIR_DOMAIN_SNAPSHOT_CREATE_HALT        = (1 << 3); /* Stop running guest
-                                                                               after snapshot */
-        static final int VIR_DOMAIN_SNAPSHOT_CREATE_DISK_ONLY   = (1 << 4); /* disk snapshot, not
-                                                                               system checkpoint */
-        static final int VIR_DOMAIN_SNAPSHOT_CREATE_REUSE_EXT   = (1 << 5); /* reuse any existing
-                                                                               external files */
-        static final int VIR_DOMAIN_SNAPSHOT_CREATE_QUIESCE     = (1 << 6); /* use guest agent to
-                                                                               quiesce all mounted
-                                                                               file systems within
-                                                                               the domain */
-        static final int VIR_DOMAIN_SNAPSHOT_CREATE_ATOMIC      = (1 << 7); /* atomically avoid
-                                                                               partial changes */
+        /** Restore or alter metadata */
+        static final int VIR_DOMAIN_SNAPSHOT_CREATE_REDEFINE    = (1 << 0);
+
+        /** With redefine, make snapshot current */
+        static final int VIR_DOMAIN_SNAPSHOT_CREATE_CURRENT     = (1 << 1);
+
+        /** Make snapshot without remembering it */
+        static final int VIR_DOMAIN_SNAPSHOT_CREATE_NO_METADATA = (1 << 2);
+
+        /** Stop running guest after snapshot */
+        static final int VIR_DOMAIN_SNAPSHOT_CREATE_HALT        = (1 << 3);
+
+        /** disk snapshot, not system checkpoint */
+        static final int VIR_DOMAIN_SNAPSHOT_CREATE_DISK_ONLY   = (1 << 4);
+
+        /** reuse any existing external files */
+        static final int VIR_DOMAIN_SNAPSHOT_CREATE_REUSE_EXT   = (1 << 5);
+
+        /** use guest agent to quiesce all mounted file systems within the domain */
+        static final int VIR_DOMAIN_SNAPSHOT_CREATE_QUIESCE     = (1 << 6);
+
+        /* atomically avoid partial changes */
+        static final int VIR_DOMAIN_SNAPSHOT_CREATE_ATOMIC      = (1 << 7);
     }
 
     static final class MigrateFlags {
-        static final int VIR_MIGRATE_LIVE              = (1 << 0); /* live migration */
-        static final int VIR_MIGRATE_PEER2PEER         = (1 << 1); /* direct source -> dest host control channel */
-        /* Note the less-common spelling that we're stuck with:
-           VIR_MIGRATE_TUNNELLED should be VIR_MIGRATE_TUNNELED */
-        static final int VIR_MIGRATE_TUNNELLED         = (1 << 2); /* tunnel migration data over libvirtd connection */
-        static final int VIR_MIGRATE_PERSIST_DEST      = (1 << 3); /* persist the VM on the destination */
-        static final int VIR_MIGRATE_UNDEFINE_SOURCE   = (1 << 4); /* undefine the VM on the source */
-        static final int VIR_MIGRATE_PAUSED            = (1 << 5); /* pause on remote side */
-        static final int VIR_MIGRATE_NON_SHARED_DISK   = (1 << 6); /* migration with non-shared storage with full disk copy */
-        static final int VIR_MIGRATE_NON_SHARED_INC    = (1 << 7); /* migration with non-shared storage with incremental copy */
-                                                                   /* (same base image shared between source and destination) */
-        static final int VIR_MIGRATE_CHANGE_PROTECTION = (1 << 8); /* protect for changing domain configuration through the
-                                                                    * whole migration process; this will be used automatically
-                                                                    * when supported */
-        static final int VIR_MIGRATE_UNSAFE            = (1 << 9); /* force migration even if it is considered unsafe */
+        /** live migration */
+        static final int VIR_MIGRATE_LIVE              = (1 << 0);
+
+        /** direct source -> dest host control channel */
+        static final int VIR_MIGRATE_PEER2PEER         = (1 << 1);
+
+        /** tunnel migration data over libvirtd connection
+         * @apiNote Note the less-common spelling that we're stuck with:
+         *  VIR_MIGRATE_TUNNELLED should be VIR_MIGRATE_TUNNELED
+         */
+        static final int VIR_MIGRATE_TUNNELLED         = (1 << 2);
+
+        /** persist the VM on the destination */
+        static final int VIR_MIGRATE_PERSIST_DEST      = (1 << 3);
+
+        /** undefine the VM on the source */
+        static final int VIR_MIGRATE_UNDEFINE_SOURCE   = (1 << 4);
+
+        /** pause on remote side */
+        static final int VIR_MIGRATE_PAUSED            = (1 << 5);
+
+        /** migration with non-shared storage with full disk copy */
+        static final int VIR_MIGRATE_NON_SHARED_DISK   = (1 << 6);
+
+        /** migration with non-shared storage with incremental copy
+         * (same base image shared between source and destination)
+         */
+        static final int VIR_MIGRATE_NON_SHARED_INC    = (1 << 7);
+
+        /** protect for changing domain configuration through the
+         * whole migration process; this will be used automatically
+         * when supported
+         */
+        static final int VIR_MIGRATE_CHANGE_PROTECTION = (1 << 8);
+
+        /** force migration even if it is considered unsafe */
+        static final int VIR_MIGRATE_UNSAFE            = (1 << 9);
     }
 
     static final class XMLFlags {
-        /**
-         * dump security sensitive information too
-         */
+        /** dump security sensitive information too */
         static final int VIR_DOMAIN_XML_SECURE = 1;
-        /**
-         * dump inactive domain information
-         */
+
+        /** dump inactive domain information*/
         static final int VIR_DOMAIN_XML_INACTIVE = 2;
-        static final int VIR_DOMAIN_XML_UPDATE_CPU   = (1 << 2); /* update guest CPU requirements according to host CPU */
+
+        /** update guest CPU requirements according to host CPU */
+        static final int VIR_DOMAIN_XML_UPDATE_CPU   = (1 << 2);
     }
 
     public static final class UndefineFlags {
-        /**
-         * Also remove any managed save
-         */
+        /** Also remove any managed save */
         public static final int MANAGED_SAVE = (1 << 0);
-        /**
-         * If last use of domain, then also remove any snapshot metadata
-         */
+
+        /** If last use of domain, then also remove any snapshot metadata */
         public static final int SNAPSHOTS_METADATA = (1 << 1);
     }
 
     public static final class SnapshotListFlags {
-        /**
-         * Filter by snapshots with no parents, when listing a domain
-         */
+        /** Filter by snapshots with no parents, when listing a domain */
         public static final int ROOTS       = (1 << 0);
 
-        /**
-         * List all descendants, not just children, when listing a snapshot
-         */
+        /** List all descendants, not just children, when listing a snapshot */
+
         public static final int DESCENDANTS = (1 << 0);
 
-        /** For historical reasons, groups do not use contiguous bits. */
+        /** @apiNote For historical reasons, groups do not use contiguous bits. */
 
-        /**
-         * Filter by snapshots with no children
-         */
+        /** Filter by snapshots with no children */
         public static final int LEAVES      = (1 << 2);
 
-        /**
-         * Filter by snapshots that have children
-         */
+        /** Filter by snapshots that have children */
         public static final int NO_LEAVES   = (1 << 3);
 
-        /**
-         * Filter by snapshots which have metadata
-         */
+        /** Filter by snapshots which have metadata */
         public static final int METADATA    = (1 << 1);
 
-        /**
-         * Filter by snapshots with no metadata
-         */
+        /** Filter by snapshots with no metadata */
         public static final int NO_METADATA = (1 << 4);
     }
 
-    /**
-     * the native virDomainPtr.
-     */
+    /** the native virDomainPtr. */
     DomainPointer VDP;
 
     /* (non-Javadoc)
@@ -193,9 +203,7 @@ public class Domain {
         }
     }
 
-    /**
-     * The Connect Object that represents the Hypervisor of this Domain
-     */
+    /** The Connect Object that represents the Hypervisor of this Domain */
     private final Connect virConnect;
 
     /**
@@ -261,9 +269,8 @@ public class Domain {
     /**
      * Creates a virtual device attachment to backend.
      *
-     * @see <a
-     *      href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainAttachDeviceFlags">Libvirt
-     *      Documentation</a>
+     * @see <a href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainAttachDeviceFlags">
+            Libvirt Documentation</a>
      * @param xmlDesc
      *            XML description of one device
      * @param flags
@@ -983,7 +990,8 @@ public class Domain {
                           final String uri, final long bandwidth)
             throws LibvirtException {
         DomainPointer newPtr =
-            processError(libvirt.virDomainMigrate2(VDP, dconn.VCP, dxml, new NativeLong(flags), dname, uri, new NativeLong(bandwidth)));
+            processError(libvirt.virDomainMigrate2(VDP, dconn.VCP, dxml,
+                    new NativeLong(flags), dname, uri, new NativeLong(bandwidth)));
         return new Domain(dconn, newPtr);
     }
 
@@ -1225,7 +1233,8 @@ public class Domain {
      *      >virConnectDomainEventRegisterAny</a>
      * @since 1.5.2
      */
-    public void addRebootListener(final RebootListener l) throws LibvirtException {
+    public void addRebootListener(final RebootListener l)
+            throws LibvirtException {
         virConnect.domainEventRegister(this, l);
     }
 
@@ -1241,8 +1250,8 @@ public class Domain {
      *       href="http://www.libvirt.org/html/libvirt-libvirt.html#virConnectDomainEventRegisterAny"
      *      >virConnectDomainEventRegisterAny</a>
      */
-    public void addLifecycleListener(final LifecycleListener l) throws LibvirtException
-    {
+    public void addLifecycleListener(final LifecycleListener l)
+            throws LibvirtException {
         virConnect.domainEventRegister(this, l);
     }
 
@@ -1260,8 +1269,8 @@ public class Domain {
      *
      * @since 1.5.2
      */
-    public void addPMWakeupListener(final PMWakeupListener l) throws LibvirtException
-    {
+    public void addPMWakeupListener(final PMWakeupListener l)
+            throws LibvirtException {
         virConnect.domainEventRegister(this, l);
     }
 
@@ -1279,8 +1288,8 @@ public class Domain {
      *
      * @since 1.5.2
      */
-    public void addPMSuspendListener(final PMSuspendListener l) throws LibvirtException
-    {
+    public void addPMSuspendListener(final PMSuspendListener l)
+            throws LibvirtException {
         virConnect.domainEventRegister(this, l);
     }
 
@@ -1565,11 +1574,14 @@ public class Domain {
     }
 
     /**
-     * Undefines this domain but does not stop if it it is running. With option for passing flags
+     * Undefines this domain but does not stop if it it is running.
+     * With option for passing flags
      *
-     * @see <a href="http://libvirt.org/html/libvirt-libvirt.html#virDomainUndefineFlags">Libvirt Documentation</a>
+     * @see <a href="http://libvirt.org/html/libvirt-libvirt.html#virDomainUndefineFlags">
+        Libvirt Documentation</a>
      * @param flags
-     *            flags for undefining the domain. See virDomainUndefineFlagsValues for more information
+     *            flags for undefining the domain.
+     *            See virDomainUndefineFlagsValues for more information
      * @throws LibvirtException
     */
     public void undefine(final int flags) throws LibvirtException {
@@ -1579,7 +1591,8 @@ public class Domain {
     /**
      * Change a virtual device on a domain
      *
-     * @see <a href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainUpdateDeviceFlags">Libvirt Documentation</a>
+     * @see <a href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainUpdateDeviceFlags">
+        Libvirt Documentation</a>
      * @param xml
      *            the xml to update with
      * @param flags

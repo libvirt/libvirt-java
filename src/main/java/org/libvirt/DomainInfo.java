@@ -80,6 +80,7 @@ public class DomainInfo {
 
     @Override
     public String toString() {
-        return String.format("state:%s%nmaxMem:%d%nmemory:%d%nnrVirtCpu:%d%ncpuTime:%d%n", state, maxMem, memory, nrVirtCpu, cpuTime);
+        return String.format("state:%s%nmaxMem:%d%nmemory:%d%nnrVirtCpu:%d%ncpuTime:%d%n",
+                state, maxMem, memory, nrVirtCpu, cpuTime);
     }
 }

@@ -35,7 +35,10 @@ public class DomainInterfaceStats {
 
     @Override
     public String toString() {
-        return String.format("rx_bytes:%d%nrx_packets:%d%nrx_errs:%d%nrx_drop:%d%ntx_bytes:%d%ntx_packets:%d%ntx_errs:%d%ntx_drop:%d%n", rx_bytes, rx_packets, rx_errs, rx_drop, tx_bytes, tx_packets, tx_errs, tx_drop);
+        return String.format("rx_bytes:%d%nrx_packets:%d%nrx_errs:%d%nrx_drop:%d%n"
+                           + "tx_bytes:%d%ntx_packets:%d%ntx_errs:%d%ntx_drop:%d%n",
+                rx_bytes, rx_packets, rx_errs, rx_drop,
+                tx_bytes, tx_packets, tx_errs, tx_drop);
     }
 
 }

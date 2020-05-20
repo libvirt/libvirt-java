@@ -228,8 +228,8 @@ public class StoragePool {
      * it will still exist after shutting down
      *
      * @see <a
-     *      href="http://www.libvirt.org/html/libvirt-libvirt.html#virStoragePoolIsPersistent">Libvirt
-     *      Documentation</a>
+     *      href="http://www.libvirt.org/html/libvirt-libvirt.html#virStoragePoolIsPersistent">
+        Libvirt Documentation</a>
      * @return 1 if persistent, 0 if transient
      * @throws LibvirtException
      */
@@ -304,7 +304,8 @@ public class StoragePool {
      */
     public StorageVol storageVolCreateXML(final String xmlDesc, final int flags)
             throws LibvirtException {
-        StorageVolPointer sPtr = processError(libvirt.virStorageVolCreateXML(VSPP, xmlDesc, flags));
+        StorageVolPointer sPtr =
+                processError(libvirt.virStorageVolCreateXML(VSPP, xmlDesc, flags));
         return new StorageVol(virConnect, sPtr);
     }
 
@@ -320,7 +321,10 @@ public class StoragePool {
                                               final StorageVol cloneVolume,
                                               final int flags)
             throws LibvirtException {
-        StorageVolPointer sPtr = processError(libvirt.virStorageVolCreateXMLFrom(VSPP, xmlDesc, cloneVolume.VSVP, flags));
+        StorageVolPointer sPtr =
+                processError(libvirt.virStorageVolCreateXMLFrom(VSPP, xmlDesc,
+                                                                cloneVolume.VSVP,
+                                                                flags));
         return new StorageVol(virConnect, sPtr);
     }
 

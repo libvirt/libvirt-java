@@ -5,7 +5,8 @@ import org.libvirt.Domain;
 /**
  * Interface for receiving events occurring on a domain.
  *
- * @see <a href="http://libvirt.org/html/libvirt-libvirt.html#virConnectDomainEventCallback">virConnectDomainEventCallback</a>
+ * @see <a href="http://libvirt.org/html/libvirt-libvirt.html#virConnectDomainEventCallback">
+    virConnectDomainEventCallback</a>
  */
 public interface LifecycleListener extends EventListener {
 

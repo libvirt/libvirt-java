@@ -129,6 +129,13 @@ public class DomainJobInfo {
 
     @Override
     public String toString() {
-        return String.format("type:%d%ntimeElapsed:%d%ntimeRemaining:%d%ndataTotal:%d%ndataProcessed:%d%ndataRemaining:%d%nmemTotal:%d%nmemProcessed:%d%nmemRemaining:%d%nfileTotal:%d%nfileProcessed:%d%nfileRemaining:%d%n", type, timeElapsed, timeRemaining, dataTotal, dataProcessed, dataRemaining, memTotal, memProcessed, memRemaining, fileTotal, fileProcessed, fileRemaining);
+        return String.format("type:%d%ntimeElapsed:%d%ntimeRemaining:%d%n"
+                           + "dataTotal:%d%ndataProcessed:%d%ndataRemaining:%d%n"
+                           + "memTotal:%d%nmemProcessed:%d%nmemRemaining:%d%n"
+                           + "fileTotal:%d%nfileProcessed:%d%nfileRemaining:%d%n",
+                type, timeElapsed, timeRemaining,
+                dataTotal, dataProcessed, dataRemaining,
+                memTotal, memProcessed, memRemaining,
+                fileTotal, fileProcessed, fileRemaining);
     }
 }

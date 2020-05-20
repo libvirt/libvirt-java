@@ -485,6 +485,10 @@ public class Error implements Serializable {
 
     @Override
     public String toString() {
-        return String.format("level:%s%ncode:%s%ndomain:%s%nhasConn:%b%nhasDom:%b%nhasNet:%b%nmessage:%s%nstr1:%s%nstr2:%s%nstr3:%s%nint1:%d%nint2:%d%n", level, code, domain, hasConn(), hasDom(), hasNet(), message, str1, str2, str3, int1, int2);
+        return String.format("level:%s%ncode:%s%ndomain:%s%n"
+                           + "hasConn:%b%nhasDom:%b%nhasNet:%b%n"
+                           + "message:%s%nstr1:%s%nstr2:%s%nstr3:%s%nint1:%d%nint2:%d%n",
+                level, code, domain, hasConn(), hasDom(), hasNet(),
+                message, str1, str2, str3, int1, int2);
     }
 }
