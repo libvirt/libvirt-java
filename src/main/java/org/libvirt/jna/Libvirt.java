@@ -170,7 +170,7 @@ public interface Libvirt extends Library {
         private static final int VIR_SECURITY_LABEL_BUFLEN = 4096 + 1;
         private static final List<String> fields = Arrays.asList("label", "enforcing");
 
-        public byte label[] = new byte[VIR_SECURITY_LABEL_BUFLEN];
+        public byte[] label = new byte[VIR_SECURITY_LABEL_BUFLEN];
         public int enforcing;
 
         @Override
@@ -185,8 +185,8 @@ public interface Libvirt extends Library {
 
         private static final List<String> fields = Arrays.asList("model", "doi");
 
-        public byte model[] = new byte[VIR_SECURITY_MODEL_BUFLEN];
-        public byte doi[] = new byte[VIR_SECURITY_DOI_BUFLEN];
+        public byte[] model = new byte[VIR_SECURITY_MODEL_BUFLEN];
+        public byte[] doi = new byte[VIR_SECURITY_DOI_BUFLEN];
 
         @Override
         protected List<String> getFieldOrder() {

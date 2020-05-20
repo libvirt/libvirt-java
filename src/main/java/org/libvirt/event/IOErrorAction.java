@@ -21,7 +21,7 @@ public enum IOErrorAction {
      */
     UNKNOWN;
 
-    private static final IOErrorAction vals[] = IOErrorAction.values();
+    private static final IOErrorAction[] vals = IOErrorAction.values();
 
     static {
         // make sure that the enum constants have the correct

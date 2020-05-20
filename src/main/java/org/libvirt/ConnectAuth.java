@@ -168,7 +168,7 @@ public abstract class ConnectAuth implements Libvirt.VirConnectAuthCallback {
     /**
      * List of supported ConnectCredential.CredentialType values
      */
-    public CredentialType credType[];
+    public CredentialType[] credType;
 
     public int authCallback(final virConnectCredential cred, final int ncred,
                             final Pointer cbdata) {

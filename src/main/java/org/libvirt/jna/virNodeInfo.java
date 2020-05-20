@@ -16,7 +16,7 @@ public class virNodeInfo extends Structure {
     public static class ByValue extends virNodeInfo implements Structure.ByValue {
     };
 
-    public byte model[] = new byte[32];
+    public byte[] model = new byte[32];
     public NativeLong memory;
     public int cpus;
     public int mhz;

@@ -143,7 +143,7 @@ public class Connect {
     /**
      * Helper function to convert bytes into ints for the UUID calls
      */
-    public static int[] convertUUIDBytes(final byte bytes[]) {
+    public static int[] convertUUIDBytes(final byte[] bytes) {
         int[] returnValue = new int[Libvirt.VIR_UUID_BUFLEN];
         for (int x = 0; x < Libvirt.VIR_UUID_BUFLEN; x++) {
             // For some reason, the higher bytes come back wierd.
