@@ -44,39 +44,9 @@ public abstract class ConnectAuth implements Libvirt.VirConnectAuthCallback {
          * @param challenge
          * @param defresult
          */
-        Credential(final int type, final String prompt, final String challenge,
-                   final String defresult) {
-            switch (type) {
-                case 1:
-                    this.type = CredentialType.VIR_CRED_USERNAME;
-                    break;
-                case 2:
-                    this.type = CredentialType.VIR_CRED_AUTHNAME;
-                    break;
-                case 3:
-                    this.type = CredentialType.VIR_CRED_LANGUAGE;
-                    break;
-                case 4:
-                    this.type = CredentialType.VIR_CRED_CNONCE;
-                    break;
-                case 5:
-                    this.type = CredentialType.VIR_CRED_PASSPHRASE;
-                    break;
-                case 6:
-                    this.type = CredentialType.VIR_CRED_ECHOPROMPT;
-                    break;
-                case 7:
-                    this.type = CredentialType.VIR_CRED_NOECHOPROMPT;
-                    break;
-                case 8:
-                    this.type = CredentialType.VIR_CRED_REALM;
-                    break;
-                case 9:
-                    this.type = CredentialType.VIR_CRED_EXTERNAL;
-                    break;
-                default:
-                    assert (false);
-            }
+        Credential(final int type, final String prompt,
+                   final String challenge, final String defresult) {
+            this.type = CredentialType.mapFromInt(type);
             this.prompt = prompt;
             this.challenge = challenge;
             this.defresult = defresult;
@@ -93,75 +63,68 @@ public abstract class ConnectAuth implements Libvirt.VirConnectAuthCallback {
         /**
          * Fake credential so that the ordinal value equls the c value.
          */
-        VIR_CRED_NONE,
+        VIR_CRED_NONE(0),
         /**
          * Identity to act as
          */
-        VIR_CRED_USERNAME,
+        VIR_CRED_USERNAME(1),
         /**
          * Identify to authorize as
          */
-        VIR_CRED_AUTHNAME,
+        VIR_CRED_AUTHNAME(2),
         /**
          * RFC 1766 languages, comma separated
          */
-        VIR_CRED_LANGUAGE,
+        VIR_CRED_LANGUAGE(3),
         /**
          * client supplies a nonce
          */
-        VIR_CRED_CNONCE,
+        VIR_CRED_CNONCE(4),
         /**
          * Passphrase secret
          */
-        VIR_CRED_PASSPHRASE,
+        VIR_CRED_PASSPHRASE(5),
         /**
          * Challenge response
          */
-        VIR_CRED_ECHOPROMPT,
+        VIR_CRED_ECHOPROMPT(6),
         /**
          * Challenge response
          */
-        VIR_CRED_NOECHOPROMPT,
+        VIR_CRED_NOECHOPROMPT(7),
         /**
          * Authentication realm
          */
-        VIR_CRED_REALM,
+        VIR_CRED_REALM(8),
         /**
          * Externally managed credential More may be added - expect the
          * unexpected
          */
-        VIR_CRED_EXTERNAL;
+        VIR_CRED_EXTERNAL(9);
+
+        private final int value;
+
+        CredentialType(final int val) {
+            this.value = val;
+        }
 
         /**
          * Maps the java CredentialType Enum to libvirt's integer constant
          *
          * @return The integer equivalent
          */
-        @SuppressWarnings("all")
         public int mapToInt() {
-            switch (this) {
-                case VIR_CRED_USERNAME:
-                    return 1;
-                case VIR_CRED_AUTHNAME:
-                    return 2;
-                case VIR_CRED_LANGUAGE:
-                    return 3;
-                case VIR_CRED_CNONCE:
-                    return 4;
-                case VIR_CRED_PASSPHRASE:
-                    return 5;
-                case VIR_CRED_ECHOPROMPT:
-                    return 6;
-                case VIR_CRED_NOECHOPROMPT:
-                    return 7;
-                case VIR_CRED_REALM:
-                    return 8;
-                case VIR_CRED_EXTERNAL:
-                    return 9;
+            return value;
+        }
+
+        public static CredentialType mapFromInt(final int t) {
+            for (CredentialType type : CredentialType.values()) {
+                if (t == type.value) {
+                    return type;
+                }
             }
-            // We may never reach this point
             assert (false);
-            return 0;
+            return VIR_CRED_NONE;
         }
     }
 
