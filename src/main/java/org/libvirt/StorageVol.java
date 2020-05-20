@@ -39,7 +39,7 @@ public class StorageVol {
         public static final int SHRINK = 4;
     }
 
-    public static enum Type {
+    public enum Type {
         /**
          * Regular file based volumes
          */

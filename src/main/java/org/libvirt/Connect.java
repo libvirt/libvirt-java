@@ -54,8 +54,8 @@ public class Connect {
         @SuppressWarnings("unused")
         public final Libvirt.VirDomainEventCallback callback;
 
-        public RegisteredEventListener(final Libvirt.VirDomainEventCallback callback,
-                                       final int callbackId) {
+        RegisteredEventListener(final Libvirt.VirDomainEventCallback callback,
+                                final int callbackId) {
             this.callback = callback;
             this.callbackId = callbackId;
         }
@@ -87,20 +87,20 @@ public class Connect {
      * Event IDs.
      */
     private interface DomainEventID {
-        static final int LIFECYCLE = 0;
-        static final int REBOOT = 1;
-        static final int RTC_CHANGE = 2;
-        static final int WATCHDOG = 3;
-        static final int IO_ERROR = 4;
-        static final int GRAPHICS = 5;
-        static final int IO_ERROR_REASON = 6;
-        static final int CONTROL_ERROR = 7;
-        static final int BLOCK_JOB = 8;
-        static final int DISK_CHANGE = 9;
-        static final int TRAY_CHANGE = 10;
-        static final int PMWAKEUP = 11;
-        static final int PMSUSPEND = 12;
-        static final int LAST = 13;
+        int LIFECYCLE = 0;
+        int REBOOT = 1;
+        int RTC_CHANGE = 2;
+        int WATCHDOG = 3;
+        int IO_ERROR = 4;
+        int GRAPHICS = 5;
+        int IO_ERROR_REASON = 6;
+        int CONTROL_ERROR = 7;
+        int BLOCK_JOB = 8;
+        int DISK_CHANGE = 9;
+        int TRAY_CHANGE = 10;
+        int PMWAKEUP = 11;
+        int PMSUSPEND = 12;
+        int LAST = 13;
     }
 
     public enum OpenFlags implements BitFlags {

@@ -7,7 +7,7 @@ import org.libvirt.jna.virStoragePoolInfo;
  */
 public class StoragePoolInfo {
 
-    public static enum StoragePoolState {
+    public enum StoragePoolState {
         /**
          * Not running
          */

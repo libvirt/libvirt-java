@@ -16,8 +16,8 @@ import com.sun.jna.PointerType;
  */
 public class CString extends PointerType {
     // all strings in libvirt are UTF-8 encoded
-    private final static Charset UTF8 = Charset.forName("UTF-8");
-    private final static byte NUL = 0;
+    private static final Charset UTF8 = Charset.forName("UTF-8");
+    private static final byte NUL = 0;
     private String string = null;
 
     public CString() {
@@ -40,8 +40,8 @@ public class CString extends PointerType {
             final Pointer ptr = getPointer();
 
             if (ptr == null) {
-		return "(null)";
-	    }
+                return "(null)";
+            }
 
             try {
                 // N.B.  could be replaced with Pointer.getString(0L, "UTF-8")
@@ -68,8 +68,8 @@ public class CString extends PointerType {
     public CString fromNative(final Object nativeValue,
                               final FromNativeContext context) {
         if (nativeValue == null) {
-	    return null;
-	}
+            return null;
+        }
 
         return new CString((Pointer) nativeValue);
     }
@@ -87,7 +87,7 @@ public class CString extends PointerType {
     public void free() {
         final Pointer ptr = getPointer();
         if (ptr != null) {
-	    free(ptr);
-	}
+            free(ptr);
+        }
     }
 }

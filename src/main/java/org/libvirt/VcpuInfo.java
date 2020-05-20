@@ -6,7 +6,7 @@ import org.libvirt.jna.virVcpuInfo;
  * Stats about a cpu.
  */
 public class VcpuInfo {
-    public static enum VcpuState {
+    public enum VcpuState {
         VIR_VCPU_OFFLINE, VIR_VCPU_RUNNING, VIR_VCPU_BLOCKED
     }
 

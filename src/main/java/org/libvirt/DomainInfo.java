@@ -13,7 +13,7 @@ public class DomainInfo {
      * @author stoty
      *
      */
-    public static enum DomainState {
+    public enum DomainState {
         /**
          * no state
          */

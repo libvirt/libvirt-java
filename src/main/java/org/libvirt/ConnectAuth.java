@@ -88,7 +88,7 @@ public abstract class ConnectAuth implements Libvirt.VirConnectAuthCallback {
      * @author stoty
      *
      */
-    public static enum CredentialType {
+    public enum CredentialType {
 
         /**
          * Fake credential so that the ordinal value equls the c value.

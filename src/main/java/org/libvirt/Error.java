@@ -17,14 +17,14 @@ public class Error implements Serializable {
      * @return n-th item of {@code values} when {@code n <
      *          values.length}, otherwise the last item of {@code values}.
      */
-    private static final <T> T safeElementAt(final int n, final T[] values) {
+    private static <T> T safeElementAt(final int n, final T[] values) {
         assert (n >= 0 && values.length > 0);
 
         int idx = Math.min(n, values.length - 1);
         return values[idx];
     }
 
-    public static enum ErrorDomain {
+    public enum ErrorDomain {
         VIR_FROM_NONE,
         /** Error at Xen hypervisor layer */
         VIR_FROM_XEN,
@@ -124,12 +124,12 @@ public class Error implements Serializable {
         /** unknown error domain */
         VIR_FROM_UNKNOWN; // must be the last entry!
 
-        protected static final ErrorDomain wrap(final int value) {
+        protected static ErrorDomain wrap(final int value) {
             return safeElementAt(value, values());
         }
     }
 
-    public static enum ErrorLevel {
+    public enum ErrorLevel {
         VIR_ERR_NONE,
         /**
          * A simple warning
@@ -142,12 +142,12 @@ public class Error implements Serializable {
 
         VIR_ERR_UNKNOWN; /* must be the last entry! */
 
-        protected static final ErrorLevel wrap(final int value) {
+        protected static ErrorLevel wrap(final int value) {
             return safeElementAt(value, values());
         }
     }
 
-    public static enum ErrorNumber {
+    public enum ErrorNumber {
         VIR_ERR_OK,
         /** internal error */
         VIR_ERR_INTERNAL_ERROR,
@@ -313,7 +313,7 @@ public class Error implements Serializable {
         /** unknown error */
         VIR_ERR_UNKNOWN; // must be the last entry!
 
-        protected static final ErrorNumber wrap(final int value) {
+        protected static ErrorNumber wrap(final int value) {
             return safeElementAt(value, values());
         }
     }

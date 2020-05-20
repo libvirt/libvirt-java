@@ -33,12 +33,12 @@ public final class Library {
             }
         };
 
-    final static Libvirt libvirt;
-    final static LibvirtQemu libvirtQemu;
+    static final Libvirt libvirt;
+    static final LibvirtQemu libvirtQemu;
 
     // an empty string array constant
     // prefer this over creating empty arrays dynamically.
-    final static String[] NO_STRINGS = {};
+    static final String[] NO_STRINGS = {};
 
     // Load the native part
     static {

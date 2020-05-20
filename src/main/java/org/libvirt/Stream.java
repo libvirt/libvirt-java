@@ -54,11 +54,11 @@ public class Stream implements ByteChannel {
      */
     private final Connect virConnect;
 
-    private final static int CLOSED   =  0;
-    private final static int READABLE =  1;
-    private final static int WRITABLE =  2;
-    private final static int OPEN     = READABLE | WRITABLE;
-    private final static int EOF      =  4;
+    private static final int CLOSED   =  0;
+    private static final int READABLE =  1;
+    private static final int WRITABLE =  2;
+    private static final int OPEN     = READABLE | WRITABLE;
+    private static final int EOF      =  4;
 
     /* The status of the stream. A stream starts its live in the
      * "CLOSED" state.

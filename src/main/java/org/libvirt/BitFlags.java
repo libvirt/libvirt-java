@@ -6,7 +6,7 @@ public interface BitFlags {
 
 final class BitFlagsHelper {
     // bitwise-OR
-    final static int OR(final BitFlags[] flags) {
+    static int OR(final BitFlags[] flags) {
         int ret = 0;
         for (BitFlags f: flags) {
             ret |= f.getBit();
@@ -14,5 +14,5 @@ final class BitFlagsHelper {
         return ret;
     }
 
-    final static BitFlags[] NONE = {};
+    static final BitFlags[] NONE = {};
 }

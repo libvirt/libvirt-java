@@ -7,7 +7,7 @@ import org.libvirt.jna.virStorageVolInfo;
  */
 public class StorageVolInfo {
 
-    public static enum VirStorageVolType {
+    public enum VirStorageVolType {
         /**
          * Regular file based volumes
          */

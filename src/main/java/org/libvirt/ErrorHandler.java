@@ -15,7 +15,7 @@ import com.sun.jna.PointerType;
  */
 public class ErrorHandler {
 
-    private static final void processError() throws LibvirtException {
+    private static void processError() throws LibvirtException {
         virError vError = libvirt.virGetLastError();
         if (vError != null) {
             Error error = new Error(vError);
