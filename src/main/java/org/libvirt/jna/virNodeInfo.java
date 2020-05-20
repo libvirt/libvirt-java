@@ -25,12 +25,12 @@ public class virNodeInfo extends Structure {
     public int cores;
     public int threads;
 
-    private static final List<String> fields = Arrays.asList(
+    private static final List<String> FIELDS = Arrays.asList(
             "model", "memory", "cpus", "mhz", "nodes",
             "sockets", "cores", "threads");
 
     @Override
     protected List<String> getFieldOrder() {
-        return fields;
+        return FIELDS;
     }
 }
