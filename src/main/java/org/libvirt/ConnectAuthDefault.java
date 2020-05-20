@@ -1,6 +1,7 @@
 package org.libvirt;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 
 /**
@@ -19,8 +20,8 @@ public final class ConnectAuthDefault extends ConnectAuth {
 
     @Override
     public int callback(Credential[] cred) {
-        BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-        try {
+	try (BufferedReader in =
+	     new BufferedReader(new InputStreamReader(System.in, "UTF-8"))) {
             for (Credential c : cred) {
                 String response = "";
                 switch (c.type) {
@@ -47,7 +48,7 @@ public final class ConnectAuthDefault extends ConnectAuth {
                     return -1;
                 }
             }
-        } catch (Exception e) {
+        } catch (IOException e) {
             return -1;
         }
         return 0;

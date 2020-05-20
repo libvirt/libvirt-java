@@ -7,6 +7,7 @@ import org.libvirt.jna.virSchedParameter;
 import org.libvirt.jna.virSchedParameterValue;
 
 import com.sun.jna.Native;
+import java.io.UnsupportedEncodingException;
 
 /**
  * The abstract parent of the actual Schedparameter classes
@@ -47,7 +48,11 @@ public abstract class SchedParameter {
     public static virSchedParameter toNative(SchedParameter param) {
         virSchedParameter returnValue = new virSchedParameter();
         returnValue.value = new virSchedParameterValue();
-        returnValue.field = copyOf(param.field.getBytes(), Libvirt.VIR_DOMAIN_SCHED_FIELD_LENGTH);
+        try {
+            returnValue.field = copyOf(param.field.getBytes("UTF-8"), Libvirt.VIR_DOMAIN_SCHED_FIELD_LENGTH);
+        } catch (UnsupportedEncodingException ex) {
+            returnValue.field = null;
+        }
         returnValue.type = param.getType();
         switch (param.getType()) {
             case (1):

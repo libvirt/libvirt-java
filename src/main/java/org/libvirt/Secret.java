@@ -9,6 +9,7 @@ import static org.libvirt.ErrorHandler.processError;
 
 import com.sun.jna.Native;
 import com.sun.jna.Pointer;
+import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
 
 /**
@@ -103,7 +104,12 @@ public class Secret {
      * @return the value of the secret, or null on failure.
      */
     public String getValue() throws LibvirtException {
-        String returnValue = new String(getByteValue());
+        String returnValue;
+        try {
+            returnValue = new String(getByteValue(), "UTF-8");
+        } catch (UnsupportedEncodingException ex) {
+            returnValue = null;
+        }
         return returnValue;
     }
 
