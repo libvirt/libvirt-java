@@ -342,10 +342,10 @@ public class Domain {
     /**
      * Returns block device (disk) stats for block devices attached to this
      * domain. The path parameter is the name of the block device. Get this by
-     * calling virDomainGetXMLDesc and finding the <target dev='...'> attribute
-     * within //domain/devices/disk. (For example, "xvda"). Domains may have
-     * more than one block device. To get stats for each you should make
-     * multiple calls to this function. Individual fields within the
+     * calling virDomainGetXMLDesc and finding the {@code <target dev='...'>}
+     * attribute within //domain/devices/disk. (For example, "xvda"). Domains
+     * may have more than one block device. To get stats for each you should
+     * make multiple calls to this function. Individual fields within the
      * DomainBlockStats object may be returned as -1, which indicates that the
      * hypervisor does not support that particular statistic.
      *
