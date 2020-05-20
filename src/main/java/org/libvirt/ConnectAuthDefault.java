@@ -38,6 +38,11 @@ public final class ConnectAuthDefault extends ConnectAuth {
                         System.out.println("WARNING: THE ENTERED PASSWORD WILL NOT BE MASKED!");
                         response = in.readLine();
                         break;
+                    default:
+                    // Unknown Type: Nothing to do here,
+                }
+                if (response == null) {
+                    response = "";
                 }
                 if (response.equals("") && !c.defresult.equals("")) {
                     c.result = c.defresult;

@@ -39,8 +39,12 @@ public abstract class SchedParameter {
                 case (6):
                     returnValue = new SchedBooleanParameter(vParam.value.b);
                     break;
+                default:
+                    // Unknown type: nothing to do.
             }
-            returnValue.field = Native.toString(vParam.field);
+            if (returnValue != null) {
+                returnValue.field = Native.toString(vParam.field);
+            }
         }
         return returnValue;
     }
@@ -79,7 +83,8 @@ public abstract class SchedParameter {
                 returnValue.value.b = (byte) (((SchedBooleanParameter) param).value ? 1 : 0);
                 returnValue.value.setType(byte.class);
                 break;
-
+            default:
+                // Unknown type: nothing to do.
         }
         return returnValue;
     }
@@ -88,9 +93,7 @@ public abstract class SchedParameter {
         byte[] returnValue = new byte[length];
         int originalLength = original.length ;
         Arrays.fill(returnValue, (byte)0);
-        for (int x = 0 ; x < originalLength ; x++) {
-            returnValue[x] = original[x] ;
-        }
+        System.arraycopy(original, 0, returnValue, 0, originalLength);
         return returnValue ;
     }
 
