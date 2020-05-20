@@ -65,7 +65,7 @@
 
 	<target name="test" depends="buildtests" description="tests the code">
 		<junit printsummary="yes" fork="yes" forkMode="perBatch" failureproperty="tests.failed">
-			<formatter type="plain" />
+			<formatter type="xml" />
 			<classpath refid="test.classpath" />
 			<batchtest todir="target">
 				<fileset dir="src/test/java">
