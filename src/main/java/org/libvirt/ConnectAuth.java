@@ -123,7 +123,7 @@ public abstract class ConnectAuth implements Libvirt.VirConnectAuthCallback {
                     return type;
                 }
             }
-            assert (false);
+            assert false;
             return VIR_CRED_NONE;
         }
     }

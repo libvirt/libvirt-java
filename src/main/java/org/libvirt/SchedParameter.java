@@ -31,22 +31,22 @@ public abstract class SchedParameter {
         SchedParameter returnValue = null;
         if (vParam != null) {
             switch (vParam.type) {
-                case (SCHED_PARAM_INT):
+                case SCHED_PARAM_INT:
                     returnValue = new SchedIntParameter(vParam.value.i);
                     break;
-                case (SCHED_PARAM_UINT):
+                case SCHED_PARAM_UINT:
                     returnValue = new SchedUintParameter(vParam.value.i);
                     break;
-                case (SCHED_PARAM_LONG):
+                case SCHED_PARAM_LONG:
                     returnValue = new SchedLongParameter(vParam.value.l);
                     break;
-                case (SCHED_PARAM_ULONG):
+                case SCHED_PARAM_ULONG:
                     returnValue = new SchedUlongParameter(vParam.value.l);
                     break;
-                case (SCHED_PARAM_DOUBLE):
+                case SCHED_PARAM_DOUBLE:
                     returnValue = new SchedDoubleParameter(vParam.value.d);
                     break;
-                case (SCHED_PARAM_BOOLEAN):
+                case SCHED_PARAM_BOOLEAN:
                     returnValue = new SchedBooleanParameter(vParam.value.b);
                     break;
                 default:
@@ -69,27 +69,27 @@ public abstract class SchedParameter {
         }
         returnValue.type = param.getType();
         switch (param.getType()) {
-            case (SCHED_PARAM_INT):
+            case SCHED_PARAM_INT:
                 returnValue.value.i = ((SchedIntParameter) param).value;
                 returnValue.value.setType(int.class);
                 break;
-            case (SCHED_PARAM_UINT):
+            case SCHED_PARAM_UINT:
                 returnValue.value.i = ((SchedUintParameter) param).value;
                 returnValue.value.setType(int.class);
                 break;
-            case (SCHED_PARAM_LONG):
+            case SCHED_PARAM_LONG:
                 returnValue.value.l = ((SchedLongParameter) param).value;
                 returnValue.value.setType(long.class);
                 break;
-            case (SCHED_PARAM_ULONG):
+            case SCHED_PARAM_ULONG:
                 returnValue.value.l = ((SchedUlongParameter) param).value;
                 returnValue.value.setType(long.class);
                 break;
-            case (SCHED_PARAM_DOUBLE):
+            case SCHED_PARAM_DOUBLE:
                 returnValue.value.d = ((SchedDoubleParameter) param).value;
                 returnValue.value.setType(double.class);
                 break;
-            case (SCHED_PARAM_BOOLEAN):
+            case SCHED_PARAM_BOOLEAN:
                 returnValue.value.b = (byte) (((SchedBooleanParameter) param).value ? 1 : 0);
                 returnValue.value.setType(byte.class);
                 break;

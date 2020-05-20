@@ -155,7 +155,7 @@ public interface Libvirt extends Library {
 
     // Constants we need
     int VIR_UUID_BUFLEN = 16;
-    int VIR_UUID_STRING_BUFLEN = (36 + 1);
+    int VIR_UUID_STRING_BUFLEN = 36 + 1;
     int VIR_DOMAIN_SCHED_FIELD_LENGTH = 80;
 
     // Connection Functions

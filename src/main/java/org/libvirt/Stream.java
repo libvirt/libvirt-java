@@ -42,7 +42,7 @@ import static org.libvirt.ErrorHandler.processError;
  */
 public class Stream implements ByteChannel {
 
-    public static final int VIR_STREAM_NONBLOCK = (1 << 0);
+    public static final int VIR_STREAM_NONBLOCK = 1;
 
     /**
      * the native virStreamPtr.

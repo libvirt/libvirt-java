@@ -148,7 +148,7 @@ public class Connect {
         for (int x = 0; x < Libvirt.VIR_UUID_BUFLEN; x++) {
             // For some reason, the higher bytes come back wierd.
             // We only want the lower 2 bytes.
-            returnValue[x] = (bytes[x] & 255);
+            returnValue[x] = bytes[x] & 255;
         }
         return returnValue;
     }
@@ -230,7 +230,7 @@ public class Connect {
 
         Connect other = (Connect) obj;
         if (vcp == null) {
-            return (other.vcp == null);
+            return other.vcp == null;
         } else if (vcp.equals(other.vcp)) {
             return true;
         }
@@ -2010,7 +2010,7 @@ public class Connect {
      * @return {@code true} if alive, {@code false} otherwise.
      */
     public boolean isAlive() throws LibvirtException {
-        return (1 == processError(libvirt.virConnectIsAlive(vcp)));
+        return 1 == processError(libvirt.virConnectIsAlive(vcp));
     }
 
     /**
@@ -2045,6 +2045,6 @@ public class Connect {
      */
     public boolean setKeepAlive(final int interval, final int count)
             throws LibvirtException {
-        return (0 == processError(libvirt.virConnectSetKeepAlive(vcp, interval, count)));
+        return 0 == processError(libvirt.virConnectSetKeepAlive(vcp, interval, count));
     }
 }

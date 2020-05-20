@@ -207,7 +207,7 @@ public class Domain {
         }
 
         if (vdp == null) {
-            return (other.vdp == null);
+            return other.vdp == null;
         }
 
         if (vdp.equals(other.vdp)) {
@@ -424,7 +424,7 @@ public class Domain {
      * between a single virtual & all physical CPUs of a domain.
      */
     public int cpuMapLength(final int maxCpus) {
-        return (((maxCpus) + 7) / 8);
+        return (maxCpus + 7) / 8;
     }
 
     /**

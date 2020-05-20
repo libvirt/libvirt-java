@@ -72,7 +72,7 @@ public class StoragePoolInfo {
                 this.state = StoragePoolState.VIR_STORAGE_POOL_DEGRADED;
                 break;
             default:
-                assert (false);
+                assert false;
         }
         this.capacity = capacity;
         this.allocation = allocation;

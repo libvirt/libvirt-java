@@ -50,7 +50,7 @@ public class StorageVolInfo {
                 this.type = VirStorageVolType.VIR_STORAGE_VOL_BLOCK;
                 break;
             default:
-                assert (false);
+                assert false;
         }
         this.capacity = capacity;
         this.allocation = allocation;
