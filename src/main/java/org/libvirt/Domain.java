@@ -29,7 +29,6 @@ import static org.libvirt.ErrorHandler.processErrorIfZero;
 
 import com.sun.jna.Native;
 import com.sun.jna.NativeLong;
-import com.sun.jna.Pointer;
 import com.sun.jna.ptr.IntByReference;
 
 import java.util.Arrays;

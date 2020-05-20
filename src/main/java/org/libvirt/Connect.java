@@ -5,7 +5,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+//CHECKSTYLE:OFF: AvoidStarImport - Too much events to mention...
 import org.libvirt.event.*;
+//CHECKSTYLE:ON: AvoidStarImport
+
 import org.libvirt.jna.ConnectionPointer;
 import org.libvirt.jna.CString;
 import org.libvirt.jna.DevicePointer;
@@ -20,7 +23,6 @@ import org.libvirt.jna.StorageVolPointer;
 import org.libvirt.jna.StreamPointer;
 import org.libvirt.jna.virConnectAuth;
 import org.libvirt.jna.virNodeInfo;
-import org.libvirt.event.*;
 
 import static org.libvirt.Library.libvirt;
 import static org.libvirt.Library.getConstant;

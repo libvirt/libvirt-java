@@ -5,10 +5,6 @@ import org.libvirt.jna.DevicePointer;
 import static org.libvirt.Library.libvirt;
 import static org.libvirt.ErrorHandler.processError;
 
-import com.sun.jna.Pointer;
-
-import com.sun.jna.Pointer;
-
 /**
  * A device which is attached to a node
  */

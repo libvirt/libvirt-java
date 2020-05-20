@@ -1,6 +1,5 @@
 package org.libvirt;
 
-import org.libvirt.jna.Libvirt;
 import org.libvirt.jna.virError;
 
 import static org.libvirt.Library.libvirt;

@@ -6,8 +6,6 @@ import org.libvirt.jna.virStorageVolInfo;
 import static org.libvirt.Library.libvirt;
 import static org.libvirt.ErrorHandler.processError;
 
-import com.sun.jna.Pointer;
-
 /**
  * An acutal storage bucket.
  */

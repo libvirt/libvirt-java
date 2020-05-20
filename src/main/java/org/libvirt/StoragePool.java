@@ -9,7 +9,6 @@ import static org.libvirt.Library.libvirt;
 import static org.libvirt.ErrorHandler.processError;
 
 import com.sun.jna.Native;
-import com.sun.jna.Pointer;
 import com.sun.jna.ptr.IntByReference;
 
 /**
