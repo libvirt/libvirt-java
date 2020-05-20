@@ -32,13 +32,14 @@ public class CString extends PointerType {
      * Returns a String representing the value of this C-String
      * <p>
      * Side-effect: frees the memory of the C-String.
+     * @return String represented by C-String or "(null)"
      */
     @Override
     public String toString() {
         if (string == null) {
             final Pointer ptr = getPointer();
 
-            if (ptr == null) return null;
+            if (ptr == null) return "(null)";
 
             try {
                 // N.B.  could be replaced with Pointer.getString(0L, "UTF-8")
