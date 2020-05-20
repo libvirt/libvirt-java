@@ -119,22 +119,22 @@ public interface Libvirt extends Library {
      * Stream callbacks
      */
     interface VirStreamSinkFunc extends Callback {
-        int sinkCallback(StreamPointer virStreamPtr, String data, NativeLong nbytes, Pointer opaque) ;
+        int sinkCallback(StreamPointer virStreamPtr, String data, NativeLong nbytes, Pointer opaque);
     }
 
     interface VirStreamSourceFunc extends Callback {
-        int sourceCallback(StreamPointer virStreamPtr, String data, NativeLong nbytes, Pointer opaque) ;
+        int sourceCallback(StreamPointer virStreamPtr, String data, NativeLong nbytes, Pointer opaque);
     }
 
     interface VirStreamEventCallback extends Callback {
-        void eventCallback(StreamPointer virStreamPointer, int events, Pointer opaque) ;
+        void eventCallback(StreamPointer virStreamPointer, int events, Pointer opaque);
     }
 
     /**
      * Generic Callbacks
      */
     interface VirFreeCallback extends Callback {
-        void freeCallback(Pointer opaque) ;
+        void freeCallback(Pointer opaque);
     }
 
     /*
@@ -204,11 +204,11 @@ public interface Libvirt extends Library {
                                         Pointer opaque, Pointer freeOpaque);
     int virConnectUnregisterCloseCallback(ConnectionPointer virConnectPtr, VirConnectCloseFunc cb);
 
-    int virConnectDomainEventDeregisterAny(ConnectionPointer virConnectPtr, int callbackID) ;
+    int virConnectDomainEventDeregisterAny(ConnectionPointer virConnectPtr, int callbackID);
     void virConnSetErrorFunc(ConnectionPointer virConnectPtr, Pointer userData, VirErrorCallback callback);
     int virConnectIsAlive(ConnectionPointer virConnectPtr);
-    int virConnectIsEncrypted(ConnectionPointer virConnectPtr) ;
-    int virConnectIsSecure(ConnectionPointer virConnectPtr) ;
+    int virConnectIsEncrypted(ConnectionPointer virConnectPtr);
+    int virConnectIsSecure(ConnectionPointer virConnectPtr);
     CString virConnectFindStoragePoolSources(ConnectionPointer virConnectPtr, String type, String srcSpec, int flags);
     CString virConnectGetCapabilities(ConnectionPointer virConnectPtr);
     CString virConnectGetHostname(ConnectionPointer virConnectPtr);
@@ -467,14 +467,14 @@ public interface Libvirt extends Library {
     int virSecretUndefine(SecretPointer virSecretPtr);
 
     //Stream Methods
-    int virStreamAbort(StreamPointer virStreamPtr) ;
+    int virStreamAbort(StreamPointer virStreamPtr);
     int virStreamEventAddCallback(StreamPointer virStreamPtr, int events, Libvirt.VirStreamEventCallback cb,
             Pointer opaque, Libvirt.VirFreeCallback ff);
     int virStreamEventUpdateCallback(StreamPointer virStreamPtr, int events);
     int virStreamEventRemoveCallback(StreamPointer virStreamPtr);
-    int virStreamFinish(StreamPointer virStreamPtr) ;
-    int virStreamFree(StreamPointer virStreamPtr) ;
-    StreamPointer virStreamNew(ConnectionPointer virConnectPtr, int flags) ;
+    int virStreamFinish(StreamPointer virStreamPtr);
+    int virStreamFree(StreamPointer virStreamPtr);
+    StreamPointer virStreamNew(ConnectionPointer virConnectPtr, int flags);
     int virStreamSend(StreamPointer virStreamPtr, ByteBuffer data, SizeT size);
     int virStreamSendAll(StreamPointer virStreamPtr, Libvirt.VirStreamSourceFunc handler, Pointer opaque);
     int virStreamRecv(StreamPointer virStreamPtr, ByteBuffer data, SizeT length);

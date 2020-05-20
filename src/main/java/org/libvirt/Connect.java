@@ -1884,7 +1884,7 @@ public class Connect {
      * @throws LibvirtException
      */
     public boolean isConnected() throws LibvirtException {
-        return ( ( VCP != null ) ? true : false );
+        return ((VCP != null) ? true : false);
     }
 
     /**

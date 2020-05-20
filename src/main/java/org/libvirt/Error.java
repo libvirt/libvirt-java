@@ -18,7 +18,7 @@ public class Error implements Serializable {
      *          values.length}, otherwise the last item of {@code values}.
      */
     private static final <T> T safeElementAt(final int n, final T[] values) {
-        assert(n >= 0 && values.length > 0);
+        assert (n >= 0 && values.length > 0);
 
         int idx = Math.min(n, values.length - 1);
         return values[idx];

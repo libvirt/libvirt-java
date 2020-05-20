@@ -14,14 +14,18 @@ import java.io.InputStreamReader;
 public final class ConnectAuthDefault extends ConnectAuth {
 
     public ConnectAuthDefault() {
-        credType = new CredentialType[] { CredentialType.VIR_CRED_AUTHNAME, CredentialType.VIR_CRED_ECHOPROMPT,
-                CredentialType.VIR_CRED_REALM, CredentialType.VIR_CRED_PASSPHRASE, CredentialType.VIR_CRED_NOECHOPROMPT };
+        credType = new CredentialType[] {
+                CredentialType.VIR_CRED_AUTHNAME,
+                CredentialType.VIR_CRED_ECHOPROMPT,
+                CredentialType.VIR_CRED_REALM,
+                CredentialType.VIR_CRED_PASSPHRASE,
+                CredentialType.VIR_CRED_NOECHOPROMPT };
     }
 
     @Override
     public int callback(Credential[] cred) {
-	try (BufferedReader in =
-	     new BufferedReader(new InputStreamReader(System.in, "UTF-8"))) {
+        try (BufferedReader in =
+             new BufferedReader(new InputStreamReader(System.in, "UTF-8"))) {
             for (Credential c : cred) {
                 String response = "";
                 switch (c.type) {

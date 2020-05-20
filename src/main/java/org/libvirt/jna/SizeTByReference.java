@@ -21,10 +21,10 @@ public final class SizeTByReference extends ByReference {
         Pointer p = getPointer();
         switch (Native.SIZE_T_SIZE) {
         case 2:
-            p.setShort(0, (short)value);
+            p.setShort(0, (short) value);
             break;
         case 4:
-            p.setInt(0, (int)value);
+            p.setInt(0, (int) value);
             break;
         case 8:
             p.setLong(0, value);

@@ -91,10 +91,10 @@ public abstract class SchedParameter {
 
     public static byte[] copyOf(byte[] original, int length) {
         byte[] returnValue = new byte[length];
-        int originalLength = original.length ;
-        Arrays.fill(returnValue, (byte)0);
+        int originalLength = original.length;
+        Arrays.fill(returnValue, (byte) 0);
         System.arraycopy(original, 0, returnValue, 0, originalLength);
-        return returnValue ;
+        return returnValue;
     }
 
     /**
