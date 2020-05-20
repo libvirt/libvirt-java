@@ -346,9 +346,6 @@ public class Error implements Serializable {
         str3 = vError.str3;
         int1 = vError.int1;
         int2 = vError.int2;
-        VCP = vError.conn;
-        VDP = vError.dom;
-        VNP = vError.net;
     }
 
     /**
