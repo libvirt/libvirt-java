@@ -10,11 +10,11 @@ public class virDomainBlockInfo extends Structure {
     public long allocation;
     public long physical;
 
-    private static final List<String> fields = Arrays.asList(
+    private static final List<String> FIELDS = Arrays.asList(
             "capacity", "allocation", "physical");
 
     @Override
     protected List<String> getFieldOrder() {
-        return fields;
+        return FIELDS;
     }
 }

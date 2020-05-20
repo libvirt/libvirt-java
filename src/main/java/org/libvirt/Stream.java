@@ -47,7 +47,7 @@ public class Stream implements ByteChannel {
     /**
      * the native virStreamPtr.
      */
-    private StreamPointer VSP;
+    private StreamPointer vsp;
 
     /**
      * The Connect Object that represents the Hypervisor of this Domain
@@ -104,9 +104,9 @@ public class Stream implements ByteChannel {
         state |= EOF;
     }
 
-    Stream(final Connect virConnect, final StreamPointer VSP) {
+    Stream(final Connect virConnect, final StreamPointer vsp) {
         this.virConnect = virConnect;
-        this.VSP = VSP;
+        this.vsp = vsp;
     }
 
     /**
@@ -116,7 +116,7 @@ public class Stream implements ByteChannel {
      * @return <em>ignore</em> (always 0)
      */
     public int abort() throws LibvirtException {
-        int returnValue = processError(libvirt.virStreamAbort(VSP));
+        int returnValue = processError(libvirt.virStreamAbort(vsp));
         this.state = CLOSED;
         return returnValue;
     }
@@ -137,7 +137,7 @@ public class Stream implements ByteChannel {
      */
     public int addCallback(final int events, final Libvirt.VirStreamEventCallback cb)
             throws LibvirtException {
-        return processError(libvirt.virStreamEventAddCallback(VSP, events, cb, null, null));
+        return processError(libvirt.virStreamEventAddCallback(vsp, events, cb, null, null));
     }
 
     @Override
@@ -153,7 +153,7 @@ public class Stream implements ByteChannel {
      * @throws LibvirtException
      */
     public int finish() throws LibvirtException {
-        int returnValue = processError(libvirt.virStreamFinish(VSP));
+        int returnValue = processError(libvirt.virStreamFinish(vsp));
         markEOF();
         return returnValue;
     }
@@ -167,17 +167,17 @@ public class Stream implements ByteChannel {
      */
     public int free() throws LibvirtException {
         int success = 0;
-        if (VSP != null) {
+        if (vsp != null) {
             closeStream();
-            success = processError(libvirt.virStreamFree(VSP));
-            VSP = null;
+            success = processError(libvirt.virStreamFree(vsp));
+            vsp = null;
         }
 
         return success;
     }
 
-    StreamPointer getVSP() {
-        return VSP;
+    StreamPointer getVsp() {
+        return vsp;
     }
 
     /**
@@ -193,7 +193,7 @@ public class Stream implements ByteChannel {
     }
 
     protected int receive(final ByteBuffer buffer) throws LibvirtException {
-        int returnValue = processError(libvirt.virStreamRecv(VSP, buffer, new SizeT(buffer.remaining())));
+        int returnValue = processError(libvirt.virStreamRecv(vsp, buffer, new SizeT(buffer.remaining())));
         buffer.position(buffer.position() + returnValue);
         return returnValue;
     }
@@ -293,7 +293,7 @@ public class Stream implements ByteChannel {
      */
     public int receiveAll(final Libvirt.VirStreamSinkFunc handler)
             throws LibvirtException {
-        return processError(libvirt.virStreamRecvAll(VSP, handler, null));
+        return processError(libvirt.virStreamRecvAll(vsp, handler, null));
     }
 
     /**
@@ -304,7 +304,7 @@ public class Stream implements ByteChannel {
      * @throws LibvirtException
      */
     public int removeCallback() throws LibvirtException {
-        return processError(libvirt.virStreamEventRemoveCallback(VSP));
+        return processError(libvirt.virStreamEventRemoveCallback(vsp));
     }
 
     /**
@@ -322,7 +322,7 @@ public class Stream implements ByteChannel {
 
     protected int send(final ByteBuffer buffer) throws LibvirtException {
         SizeT size = new SizeT(buffer.remaining());
-        int returnValue = processError(libvirt.virStreamSend(VSP, buffer, size));
+        int returnValue = processError(libvirt.virStreamSend(vsp, buffer, size));
         buffer.position(buffer.position() + returnValue);
         return returnValue;
     }
@@ -340,7 +340,7 @@ public class Stream implements ByteChannel {
      */
     public int sendAll(final Libvirt.VirStreamSourceFunc handler)
             throws LibvirtException {
-        return processError(libvirt.virStreamSendAll(VSP, handler, null));
+        return processError(libvirt.virStreamSendAll(vsp, handler, null));
     }
 
     /**
@@ -353,6 +353,6 @@ public class Stream implements ByteChannel {
      * @throws LibvirtException
      */
     public int updateCallback(final int events) throws LibvirtException {
-        return processError(libvirt.virStreamEventUpdateCallback(VSP, events));
+        return processError(libvirt.virStreamEventUpdateCallback(vsp, events));
     }
 }

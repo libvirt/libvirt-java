@@ -9,7 +9,7 @@ public class DomainSnapshot {
     /**
      * the native virDomainSnapshotPtr.
      */
-    DomainSnapshotPointer VDSP;
+    DomainSnapshotPointer vdsp;
 
     /**
      * The Connect Object that represents the Hypervisor of this Domain Snapshot
@@ -17,8 +17,8 @@ public class DomainSnapshot {
     private final Connect virConnect;
 
     public DomainSnapshot(final Connect virConnect,
-                          final DomainSnapshotPointer VDSP) {
-        this.VDSP = VDSP;
+                          final DomainSnapshotPointer vdsp) {
+        this.vdsp = vdsp;
         this.virConnect = virConnect;
     }
 
@@ -35,9 +35,9 @@ public class DomainSnapshot {
      */
     public int delete(final int flags) throws LibvirtException {
         int success = 0;
-        if (VDSP != null) {
-            success = processError(libvirt.virDomainSnapshotDelete(VDSP, flags));
-            VDSP = null;
+        if (vdsp != null) {
+            success = processError(libvirt.virDomainSnapshotDelete(vdsp, flags));
+            vdsp = null;
         }
 
         return success;
@@ -57,9 +57,9 @@ public class DomainSnapshot {
      */
     public int free() throws LibvirtException {
         int success = 0;
-        if (VDSP != null) {
-            success = processError(libvirt.virDomainSnapshotFree(VDSP));
-            VDSP = null;
+        if (vdsp != null) {
+            success = processError(libvirt.virDomainSnapshotFree(vdsp));
+            vdsp = null;
         }
 
         return success;
@@ -74,6 +74,6 @@ public class DomainSnapshot {
      * @return the XML document
      */
     public String getXMLDesc() throws LibvirtException {
-        return processError(libvirt.virDomainSnapshotGetXMLDesc(VDSP, 0)).toString();
+        return processError(libvirt.virDomainSnapshotGetXMLDesc(vdsp, 0)).toString();
     }
 }

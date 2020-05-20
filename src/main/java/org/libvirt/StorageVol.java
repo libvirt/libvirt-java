@@ -53,7 +53,7 @@ public class StorageVol {
     /**
      * the native virStorageVolPtr.
      */
-    StorageVolPointer VSVP;
+    StorageVolPointer vsvp;
 
     /**
      * The VirConnect Object that represents the Hypervisor of this Domain
@@ -67,12 +67,12 @@ public class StorageVol {
      *
      * @param virConnect
      *            the Domain's hypervisor
-     * @param VSVP
+     * @param vsvp
      *            the native virStorageVolPtr
      */
-    StorageVol(final Connect virConnect, final StorageVolPointer VSVP) {
+    StorageVol(final Connect virConnect, final StorageVolPointer vsvp) {
         this.virConnect = virConnect;
-        this.VSVP = VSVP;
+        this.vsvp = vsvp;
     }
 
     /**
@@ -83,7 +83,7 @@ public class StorageVol {
      * @throws LibvirtException
      */
     public void delete(final int flags) throws LibvirtException {
-        processError(libvirt.virStorageVolDelete(VSVP, flags));
+        processError(libvirt.virStorageVolDelete(vsvp, flags));
     }
 
     @Override
@@ -100,9 +100,9 @@ public class StorageVol {
      */
     public int free() throws LibvirtException {
         int success = 0;
-        if (VSVP != null) {
-            success = processError(libvirt.virStorageVolFree(VSVP));
-            VSVP = null;
+        if (vsvp != null) {
+            success = processError(libvirt.virStorageVolFree(vsvp));
+            vsvp = null;
         }
         return success;
     }
@@ -126,7 +126,7 @@ public class StorageVol {
      */
     public StorageVolInfo getInfo() throws LibvirtException {
         virStorageVolInfo vInfo = new virStorageVolInfo();
-        processError(libvirt.virStorageVolGetInfo(VSVP, vInfo));
+        processError(libvirt.virStorageVolGetInfo(vsvp, vInfo));
         return new StorageVolInfo(vInfo);
     }
 
@@ -138,7 +138,7 @@ public class StorageVol {
      * @throws LibvirtException
      */
     public String getKey() throws LibvirtException {
-        return processError(libvirt.virStorageVolGetKey(VSVP));
+        return processError(libvirt.virStorageVolGetKey(vsvp));
     }
 
     /**
@@ -148,7 +148,7 @@ public class StorageVol {
      * @throws LibvirtException
      */
     public String getName() throws LibvirtException {
-        return processError(libvirt.virStorageVolGetName(VSVP));
+        return processError(libvirt.virStorageVolGetName(vsvp));
     }
 
     /**
@@ -161,7 +161,7 @@ public class StorageVol {
      * @throws LibvirtException
      */
     public String getPath() throws LibvirtException {
-        return processError(libvirt.virStorageVolGetPath(VSVP)).toString();
+        return processError(libvirt.virStorageVolGetPath(vsvp)).toString();
     }
 
     /**
@@ -173,7 +173,7 @@ public class StorageVol {
      * @throws LibvirtException
      */
     public String getXMLDesc(final int flags) throws LibvirtException {
-        return processError(libvirt.virStorageVolGetXMLDesc(VSVP, flags)).toString();
+        return processError(libvirt.virStorageVolGetXMLDesc(vsvp, flags)).toString();
     }
 
     /**
@@ -183,7 +183,7 @@ public class StorageVol {
      * @throws LibvirtException
      */
     public StoragePool storagePoolLookupByVolume() throws LibvirtException {
-        StoragePoolPointer ptr = processError(libvirt.virStoragePoolLookupByVolume(VSVP));
+        StoragePoolPointer ptr = processError(libvirt.virStoragePoolLookupByVolume(vsvp));
         return (ptr == null) ? null : new StoragePool(virConnect, ptr);
     }
 
@@ -196,7 +196,7 @@ public class StorageVol {
      * @throws LibvirtException
      */
     public int wipe() throws LibvirtException {
-        return processError(libvirt.virStorageVolWipe(VSVP, 0));
+        return processError(libvirt.virStorageVolWipe(vsvp, 0));
     }
 
     /**
@@ -213,6 +213,6 @@ public class StorageVol {
      */
     public int resize(final long capacity, final int flags)
             throws LibvirtException {
-        return processError(libvirt.virStorageVolResize(VSVP, capacity, flags));
+        return processError(libvirt.virStorageVolResize(vsvp, capacity, flags));
     }
 }

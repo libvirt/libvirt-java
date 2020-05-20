@@ -67,7 +67,7 @@ public interface Libvirt extends Library {
      * Callback interface for connection closed events.
      */
     interface VirConnectCloseFunc extends Callback {
-        void callback(ConnectionPointer VCP, int reason, Pointer opaque);
+        void callback(ConnectionPointer vcp, int reason, Pointer opaque);
     }
 
     /**
@@ -168,14 +168,14 @@ public interface Libvirt extends Library {
 
     class SecurityLabel extends Structure {
         private static final int VIR_SECURITY_LABEL_BUFLEN = 4096 + 1;
-        private static final List<String> fields = Arrays.asList("label", "enforcing");
+        private static final List<String> FIELDS = Arrays.asList("label", "enforcing");
 
         public byte[] label = new byte[VIR_SECURITY_LABEL_BUFLEN];
         public int enforcing;
 
         @Override
         protected List<String> getFieldOrder() {
-            return fields;
+            return FIELDS;
         }
     };
 
@@ -183,14 +183,14 @@ public interface Libvirt extends Library {
         private static final int VIR_SECURITY_MODEL_BUFLEN = 256 + 1;
         private static final int VIR_SECURITY_DOI_BUFLEN = 256 + 1;
 
-        private static final List<String> fields = Arrays.asList("model", "doi");
+        private static final List<String> FIELDS = Arrays.asList("model", "doi");
 
         public byte[] model = new byte[VIR_SECURITY_MODEL_BUFLEN];
         public byte[] doi = new byte[VIR_SECURITY_DOI_BUFLEN];
 
         @Override
         protected List<String> getFieldOrder() {
-            return fields;
+            return FIELDS;
         }
     }
 
@@ -383,7 +383,7 @@ public interface Libvirt extends Library {
                                String dxml, NativeLong flags,
                                String dname, NativeLong bandwidth);
     int virDomainMemoryStats(DomainPointer virDomainPtr,
-                             virDomainMemoryStats[] stats, int nr_stats, int flags);
+                             virDomainMemoryStats[] stats, int nrStats, int flags);
     int virDomainPinVcpu(DomainPointer virDomainPtr,
                          int vcpu, byte[] cpumap, int maplen);
     int virDomainPMSuspendForDuration(DomainPointer virDomainPtr,
@@ -543,7 +543,7 @@ public interface Libvirt extends Library {
     String virSecretGetUsageID(SecretPointer virSecretPtr);
     int virSecretGetUsageType(SecretPointer virSecretPtr);
     Pointer virSecretGetValue(SecretPointer virSecretPtr,
-                              SizeTByReference value_size, int flags);
+                              SizeTByReference valueSize, int flags);
     CString virSecretGetXMLDesc(SecretPointer virSecretPtr, int flags);
     SecretPointer virSecretLookupByUsage(ConnectionPointer virConnectPtr,
                                          int usageType, String usageID);
@@ -552,9 +552,9 @@ public interface Libvirt extends Library {
     SecretPointer virSecretLookupByUUIDString(ConnectionPointer virConnectPtr,
                                               String uuidstr);
     int virSecretSetValue(SecretPointer virSecretPtr,
-                          String value, SizeT value_size, int flags);
+                          String value, SizeT valueSize, int flags);
     int virSecretSetValue(SecretPointer virSecretPtr,
-                          byte[] value, SizeT value_size, int flags);
+                          byte[] value, SizeT valueSize, int flags);
     int virSecretUndefine(SecretPointer virSecretPtr);
 
     //Stream Methods

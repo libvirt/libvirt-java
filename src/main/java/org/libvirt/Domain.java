@@ -155,7 +155,7 @@ public class Domain {
     }
 
     /** the native virDomainPtr. */
-    DomainPointer VDP;
+    DomainPointer vdp;
 
     /* (non-Javadoc)
      * @see java.lang.Object#hashCode()
@@ -167,7 +167,7 @@ public class Domain {
         result = prime * result
             + ((virConnect == null) ? 0 : virConnect.hashCode());
         try {
-            result = prime * result + ((VDP == null) ? 0 : Arrays.hashCode(this.getUUID()));
+            result = prime * result + ((vdp == null) ? 0 : Arrays.hashCode(this.getUUID()));
         } catch (LibvirtException e) {
             throw new RuntimeException("libvirt error testing domain equality", e);
         }
@@ -199,11 +199,11 @@ public class Domain {
             return false;
         }
 
-        if (VDP == null) {
-            return (other.VDP == null);
+        if (vdp == null) {
+            return (other.vdp == null);
         }
 
-        if (VDP.equals(other.VDP)) {
+        if (vdp.equals(other.vdp)) {
             return true;
         }
 
@@ -223,14 +223,14 @@ public class Domain {
      *
      * @param virConnect
      *            the Domain's hypervisor
-     * @param VDP
+     * @param vdp
      *            the native virDomainPtr
      */
-    Domain(final Connect virConnect, final DomainPointer VDP) {
+    Domain(final Connect virConnect, final DomainPointer vdp) {
         assert virConnect != null;
 
         this.virConnect = virConnect;
-        this.VDP = VDP;
+        this.vdp = vdp;
     }
 
     /**
@@ -241,11 +241,11 @@ public class Domain {
      * since the virDomainPtr passed is only valid for the duration of
      * execution of the callback.
      */
-    static Domain constructIncRef(final Connect virConnect, final DomainPointer VDP)
+    static Domain constructIncRef(final Connect virConnect, final DomainPointer vdp)
             throws LibvirtException {
-        processError(libvirt.virDomainRef(VDP));
+        processError(libvirt.virDomainRef(vdp));
 
-        return new Domain(virConnect, VDP);
+        return new Domain(virConnect, vdp);
     }
 
     /**
@@ -260,7 +260,7 @@ public class Domain {
      * @throws LibvirtException
      */
     public int abortJob() throws LibvirtException {
-        return processError(libvirt.virDomainAbortJob(VDP));
+        return processError(libvirt.virDomainAbortJob(vdp));
     }
 
     /**
@@ -274,7 +274,7 @@ public class Domain {
      * @throws LibvirtException
      */
     public void attachDevice(final String xmlDesc) throws LibvirtException {
-        processError(libvirt.virDomainAttachDevice(VDP, xmlDesc));
+        processError(libvirt.virDomainAttachDevice(vdp, xmlDesc));
     }
 
     /**
@@ -290,7 +290,7 @@ public class Domain {
      */
     public void attachDeviceFlags(final String xmlDesc, final int flags)
             throws LibvirtException {
-        processError(libvirt.virDomainAttachDeviceFlags(VDP, xmlDesc, flags));
+        processError(libvirt.virDomainAttachDeviceFlags(vdp, xmlDesc, flags));
     }
 
     /**
@@ -304,7 +304,7 @@ public class Domain {
      */
     public DomainBlockInfo blockInfo(final String path) throws LibvirtException {
         virDomainBlockInfo info = new virDomainBlockInfo();
-        processError(libvirt.virDomainGetBlockInfo(VDP, path, info, 0));
+        processError(libvirt.virDomainGetBlockInfo(vdp, path, info, 0));
         return new DomainBlockInfo(info);
     }
 
@@ -352,7 +352,7 @@ public class Domain {
 
             size.setValue(req);
 
-            processError(libvirt.virDomainBlockPeek(this.VDP, disk, offset, size, buffer, 0));
+            processError(libvirt.virDomainBlockPeek(this.vdp, disk, offset, size, buffer, 0));
 
             buffer.position(buffer.position() + req);
         } while (buffer.hasRemaining());
@@ -377,7 +377,7 @@ public class Domain {
      */
     public DomainBlockStats blockStats(final String path) throws LibvirtException {
         virDomainBlockStats stats = new virDomainBlockStats();
-        processError(libvirt.virDomainBlockStats(VDP, path, stats, new SizeT(stats.size())));
+        processError(libvirt.virDomainBlockStats(vdp, path, stats, new SizeT(stats.size())));
         return new DomainBlockStats(stats);
     }
 
@@ -394,7 +394,7 @@ public class Domain {
      */
     public void blockResize(final String disk, final long size, final int flags)
             throws LibvirtException {
-        processError(libvirt.virDomainBlockResize(VDP, disk, size, flags));
+        processError(libvirt.virDomainBlockResize(vdp, disk, size, flags));
     }
 
 
@@ -409,7 +409,7 @@ public class Domain {
      * @throws LibvirtException
      */
     public void coreDump(final String to, final int flags) throws LibvirtException {
-        processError(libvirt.virDomainCoreDump(VDP, to, flags));
+        processError(libvirt.virDomainCoreDump(vdp, to, flags));
     }
 
     /**
@@ -428,7 +428,7 @@ public class Domain {
      * @throws LibvirtException
      */
     public int create() throws LibvirtException {
-        return processError(libvirt.virDomainCreate(VDP));
+        return processError(libvirt.virDomainCreate(vdp));
     }
 
     /**
@@ -440,7 +440,7 @@ public class Domain {
      * @throws LibvirtException
      */
     public int create(final int flags) throws LibvirtException {
-        return processError(libvirt.virDomainCreateWithFlags(VDP, flags));
+        return processError(libvirt.virDomainCreateWithFlags(vdp, flags));
     }
 
     /**
@@ -452,7 +452,7 @@ public class Domain {
      * @throws LibvirtException
      */
     public void destroy() throws LibvirtException {
-        processError(libvirt.virDomainDestroy(VDP));
+        processError(libvirt.virDomainDestroy(vdp));
     }
 
     /**
@@ -466,7 +466,7 @@ public class Domain {
      * @throws LibvirtException
      */
     public void detachDevice(final String xmlDesc) throws LibvirtException {
-        processError(libvirt.virDomainDetachDevice(VDP, xmlDesc));
+        processError(libvirt.virDomainDetachDevice(vdp, xmlDesc));
     }
 
     /**
@@ -481,7 +481,7 @@ public class Domain {
      */
     public void detachDeviceFlags(final String xmlDesc, final int flags)
             throws LibvirtException {
-        processError(libvirt.virDomainDetachDeviceFlags(VDP, xmlDesc, flags));
+        processError(libvirt.virDomainDetachDeviceFlags(vdp, xmlDesc, flags));
     }
 
     @Override
@@ -498,9 +498,9 @@ public class Domain {
      */
     public int free() throws LibvirtException {
         int success = 0;
-        if (VDP != null) {
-            success = processError(libvirt.virDomainFree(VDP));
-            VDP = null;
+        if (vdp != null) {
+            success = processError(libvirt.virDomainFree(vdp));
+            vdp = null;
         }
 
         return success;
@@ -515,7 +515,7 @@ public class Domain {
      */
     public boolean getAutostart() throws LibvirtException {
         IntByReference autoStart = new IntByReference();
-        processError(libvirt.virDomainGetAutostart(VDP, autoStart));
+        processError(libvirt.virDomainGetAutostart(vdp, autoStart));
         return autoStart.getValue() != 0 ? true : false;
     }
 
@@ -535,7 +535,7 @@ public class Domain {
      * @throws LibvirtException
      */
     public int getID() throws LibvirtException {
-        return processError(libvirt.virDomainGetID(VDP));
+        return processError(libvirt.virDomainGetID(vdp));
     }
 
     /**
@@ -552,7 +552,7 @@ public class Domain {
      */
     public DomainInfo getInfo() throws LibvirtException {
         virDomainInfo vInfo = new virDomainInfo();
-        processError(libvirt.virDomainGetInfo(VDP, vInfo));
+        processError(libvirt.virDomainGetInfo(vdp, vInfo));
         return new DomainInfo(vInfo);
     }
 
@@ -568,7 +568,7 @@ public class Domain {
      */
     public DomainJobInfo getJobInfo() throws LibvirtException {
         virDomainJobInfo vInfo = new virDomainJobInfo();
-        processError(libvirt.virDomainGetJobInfo(VDP, vInfo));
+        processError(libvirt.virDomainGetJobInfo(vdp, vInfo));
         return new DomainJobInfo(vInfo);
     }
 
@@ -580,7 +580,7 @@ public class Domain {
      */
     public long getMaxMemory() throws LibvirtException {
         // the memory size in kibibytes (blocks of 1024 bytes), or 0 in case of error.
-        NativeLong returnValue = libvirt.virDomainGetMaxMemory(VDP);
+        NativeLong returnValue = libvirt.virDomainGetMaxMemory(vdp);
         return processErrorIfZero(returnValue.longValue());
     }
 
@@ -594,7 +594,7 @@ public class Domain {
      * @throws LibvirtException
      */
     public int getMaxVcpus() throws LibvirtException {
-        return processError(libvirt.virDomainGetMaxVcpus(VDP));
+        return processError(libvirt.virDomainGetMaxVcpus(vdp));
     }
 
     /**
@@ -604,7 +604,7 @@ public class Domain {
      * @throws LibvirtException <em>never</em>
      */
     public String getName() throws LibvirtException {
-        return libvirt.virDomainGetName(VDP);
+        return libvirt.virDomainGetName(vdp);
     }
 
     /**
@@ -614,7 +614,7 @@ public class Domain {
      * @throws LibvirtException
      */
     public String getOSType() throws LibvirtException {
-        return processError(libvirt.virDomainGetOSType(VDP)).toString();
+        return processError(libvirt.virDomainGetOSType(vdp)).toString();
     }
 
     /**
@@ -625,14 +625,14 @@ public class Domain {
      */
     public SchedParameter[] getSchedulerParameters() throws LibvirtException {
         IntByReference nParams = new IntByReference();
-        processError(libvirt.virDomainGetSchedulerType(VDP, nParams));
+        processError(libvirt.virDomainGetSchedulerType(vdp, nParams));
 
         int n = nParams.getValue();
 
         if (n > 0) {
             virSchedParameter[] nativeParams = new virSchedParameter[n];
 
-            processError(libvirt.virDomainGetSchedulerParameters(VDP, nativeParams, nParams));
+            processError(libvirt.virDomainGetSchedulerParameters(vdp, nativeParams, nParams));
             n = nParams.getValue();
 
             SchedParameter[] returnValue = new SchedParameter[n];
@@ -657,7 +657,7 @@ public class Domain {
      * @throws LibvirtException
      */
     public String getSchedulerType() throws LibvirtException {
-        return processError(libvirt.virDomainGetSchedulerType(VDP, null)).toString();
+        return processError(libvirt.virDomainGetSchedulerType(vdp, null)).toString();
     }
 
     /**
@@ -670,7 +670,7 @@ public class Domain {
     public SecurityLabel getSecurityLabel() throws LibvirtException {
         Libvirt.SecurityLabel seclabel = new Libvirt.SecurityLabel();
 
-        processError(libvirt.virDomainGetSecurityLabel(this.VDP, seclabel));
+        processError(libvirt.virDomainGetSecurityLabel(this.vdp, seclabel));
 
         if (seclabel.label[0] == 0) {
             return null;
@@ -688,7 +688,7 @@ public class Domain {
      */
     public int[] getUUID() throws LibvirtException {
         byte[] bytes = new byte[Libvirt.VIR_UUID_BUFLEN];
-        processError(libvirt.virDomainGetUUID(VDP, bytes));
+        processError(libvirt.virDomainGetUUID(vdp, bytes));
         return Connect.convertUUIDBytes(bytes);
     }
 
@@ -701,7 +701,7 @@ public class Domain {
      */
     public String getUUIDString() throws LibvirtException {
         byte[] bytes = new byte[Libvirt.VIR_UUID_STRING_BUFLEN];
-        processError(libvirt.virDomainGetUUIDString(VDP, bytes));
+        processError(libvirt.virDomainGetUUIDString(vdp, bytes));
         return Native.toString(bytes);
     }
 
@@ -722,7 +722,7 @@ public class Domain {
             virVcpuInfo[] infos = new virVcpuInfo[cpuCount];
             returnValue = new int[cpuCount * maplength];
             byte[] cpumaps = new byte[cpuCount * maplength];
-            processError(libvirt.virDomainGetVcpus(VDP, infos, cpuCount, cpumaps, maplength));
+            processError(libvirt.virDomainGetVcpus(vdp, infos, cpuCount, cpumaps, maplength));
             for (int x = 0; x < cpuCount * maplength; x++) {
                 returnValue[x] = cpumaps[x];
             }
@@ -740,7 +740,7 @@ public class Domain {
         int cpuCount = getMaxVcpus();
         VcpuInfo[] returnValue = new VcpuInfo[cpuCount];
         virVcpuInfo[] infos = new virVcpuInfo[cpuCount];
-        processError(libvirt.virDomainGetVcpus(VDP, infos, cpuCount, null, 0));
+        processError(libvirt.virDomainGetVcpus(vdp, infos, cpuCount, null, 0));
         for (int x = 0; x < cpuCount; x++) {
             returnValue[x] = new VcpuInfo(infos[x]);
         }
@@ -759,7 +759,7 @@ public class Domain {
      *      Description format </a>
      */
     public String getXMLDesc(final int flags) throws LibvirtException {
-        return processError(libvirt.virDomainGetXMLDesc(VDP, flags)).toString();
+        return processError(libvirt.virDomainGetXMLDesc(vdp, flags)).toString();
     }
 
     /**
@@ -771,7 +771,7 @@ public class Domain {
      * @throws LibvirtException
      */
     public int hasCurrentSnapshot() throws LibvirtException {
-        return processError(libvirt.virDomainHasCurrentSnapshot(VDP, 0));
+        return processError(libvirt.virDomainHasCurrentSnapshot(vdp, 0));
     }
 
     /**
@@ -784,7 +784,7 @@ public class Domain {
      * @throws LibvirtException
      */
     public int hasManagedSaveImage() throws LibvirtException {
-        return processError(libvirt.virDomainHasManagedSaveImage(VDP, 0));
+        return processError(libvirt.virDomainHasManagedSaveImage(vdp, 0));
     }
 
     /**
@@ -803,7 +803,7 @@ public class Domain {
     public DomainInterfaceStats interfaceStats(final String path)
             throws LibvirtException {
         virDomainInterfaceStats stats = new virDomainInterfaceStats();
-        processError(libvirt.virDomainInterfaceStats(VDP, path, stats, new SizeT(stats.size())));
+        processError(libvirt.virDomainInterfaceStats(vdp, path, stats, new SizeT(stats.size())));
         return new DomainInterfaceStats(stats);
     }
 
@@ -817,7 +817,7 @@ public class Domain {
      * @throws LibvirtException
      */
     public int isActive() throws LibvirtException {
-        return processError(libvirt.virDomainIsActive(VDP));
+        return processError(libvirt.virDomainIsActive(vdp));
     }
 
     /**
@@ -831,7 +831,7 @@ public class Domain {
      * @throws LibvirtException
      */
     public int isPersistent() throws LibvirtException {
-        return processError(libvirt.virDomainIsPersistent(VDP));
+        return processError(libvirt.virDomainIsPersistent(vdp));
     }
 
 
@@ -839,7 +839,7 @@ public class Domain {
      * Returns {@code true} if, and only if, this domain has been updated.
      */
     public boolean isUpdated() throws LibvirtException {
-        return processError(libvirt.virDomainIsUpdated(this.VDP)) == 1;
+        return processError(libvirt.virDomainIsUpdated(this.vdp)) == 1;
     }
 
     /**
@@ -852,7 +852,7 @@ public class Domain {
      * @throws LibvirtException
      */
     public int managedSave() throws LibvirtException {
-        return processError(libvirt.virDomainManagedSave(VDP, 0));
+        return processError(libvirt.virDomainManagedSave(vdp, 0));
     }
 
     /**
@@ -865,7 +865,7 @@ public class Domain {
      * @throws LibvirtException
      */
     public int managedSaveRemove() throws LibvirtException {
-        return processError(libvirt.virDomainManagedSaveRemove(VDP, 0));
+        return processError(libvirt.virDomainManagedSaveRemove(vdp, 0));
     }
 
     /**
@@ -901,7 +901,7 @@ public class Domain {
 
             size.setValue(req);
 
-            processError(libvirt.virDomainMemoryPeek(this.VDP, start, size, buffer, mode.getValue()));
+            processError(libvirt.virDomainMemoryPeek(this.vdp, start, size, buffer, mode.getValue()));
 
             buffer.position(buffer.position() + req);
         } while (buffer.hasRemaining());
@@ -921,7 +921,7 @@ public class Domain {
             throws LibvirtException {
         virDomainMemoryStats[] stats = new virDomainMemoryStats[number];
         MemoryStatistic[] returnStats = null;
-        int result = processError(libvirt.virDomainMemoryStats(VDP, stats, number, 0));
+        int result = processError(libvirt.virDomainMemoryStats(vdp, stats, number, 0));
         returnStats = new MemoryStatistic[result];
         for (int x = 0; x < result; x++) {
             returnStats[x] = new MemoryStatistic(stats[x]);
@@ -1002,7 +1002,7 @@ public class Domain {
                           final String uri, final long bandwidth)
             throws LibvirtException {
         DomainPointer newPtr =
-            processError(libvirt.virDomainMigrate2(VDP, dconn.VCP, dxml,
+            processError(libvirt.virDomainMigrate2(vdp, dconn.vcp, dxml,
                     new NativeLong(flags), dname, uri, new NativeLong(bandwidth)));
         return new Domain(dconn, newPtr);
     }
@@ -1055,7 +1055,7 @@ public class Domain {
                           final String dname, final String uri,
                           final long bandwidth)
             throws LibvirtException {
-        DomainPointer newPtr = processError(libvirt.virDomainMigrate(VDP, dconn.VCP,
+        DomainPointer newPtr = processError(libvirt.virDomainMigrate(vdp, dconn.vcp,
                 new NativeLong(flags), dname, uri, new NativeLong(bandwidth)));
         return new Domain(dconn, newPtr);
     }
@@ -1074,7 +1074,7 @@ public class Domain {
      */
     public int migrateSetMaxDowntime(final long downtime)
             throws LibvirtException {
-        return processError(libvirt.virDomainMigrateSetMaxDowntime(VDP, downtime, 0));
+        return processError(libvirt.virDomainMigrateSetMaxDowntime(vdp, downtime, 0));
     }
 
     /**
@@ -1111,7 +1111,7 @@ public class Domain {
                             final String dxml, final long flags,
                             final String dname, final long bandwidth)
             throws LibvirtException {
-        return processError(libvirt.virDomainMigrateToURI2(VDP, dconnuri, miguri,
+        return processError(libvirt.virDomainMigrateToURI2(vdp, dconnuri, miguri,
                                                            dxml, new NativeLong(flags),
                                                            dname, new NativeLong(bandwidth)));
     }
@@ -1138,7 +1138,7 @@ public class Domain {
     public int migrateToURI(final String uri, final long flags,
                             final String dname, final long bandwidth)
             throws LibvirtException {
-        return processError(libvirt.virDomainMigrateToURI(VDP, uri,
+        return processError(libvirt.virDomainMigrateToURI(vdp, uri,
                 new NativeLong(flags), dname, new NativeLong(bandwidth)));
     }
 
@@ -1155,7 +1155,7 @@ public class Domain {
     public void PMsuspendFor(final SuspendTarget target, final long duration,
             final TimeUnit unit)
             throws LibvirtException {
-        processError(libvirt.virDomainPMSuspendForDuration(this.VDP,
+        processError(libvirt.virDomainPMSuspendForDuration(this.vdp,
                 target.ordinal(), unit.toSeconds(duration), 0));
     }
 
@@ -1168,7 +1168,7 @@ public class Domain {
      * elapse.
      */
     public void PMwakeup() throws LibvirtException {
-        processError(libvirt.virDomainPMWakeup(this.VDP, 0));
+        processError(libvirt.virDomainPMWakeup(this.vdp, 0));
     }
 
     /**
@@ -1191,7 +1191,7 @@ public class Domain {
         for (int x = 0; x < cpumap.length; x++) {
             packedMap[x] = (byte) cpumap[x];
         }
-        processError(libvirt.virDomainPinVcpu(VDP, vcpu, packedMap, cpumap.length));
+        processError(libvirt.virDomainPinVcpu(vdp, vcpu, packedMap, cpumap.length));
     }
 
     /**
@@ -1204,7 +1204,7 @@ public class Domain {
      * @throws LibvirtException
      */
     public void reboot(final int flags) throws LibvirtException {
-        processError(libvirt.virDomainReboot(VDP, flags));
+        processError(libvirt.virDomainReboot(vdp, flags));
     }
 
     /**
@@ -1215,7 +1215,7 @@ public class Domain {
      * @throws LibvirtException
      */
     public void resume() throws LibvirtException {
-        processError(libvirt.virDomainResume(VDP));
+        processError(libvirt.virDomainResume(vdp));
     }
 
     /**
@@ -1309,7 +1309,7 @@ public class Domain {
      * Reset a domain immediately without any guest OS shutdown.
      */
     public void reset() throws LibvirtException {
-        processError(libvirt.virDomainReset(this.VDP, 0));
+        processError(libvirt.virDomainReset(this.vdp, 0));
     }
 
     /**
@@ -1325,7 +1325,7 @@ public class Domain {
      */
     public int revertToSnapshot(final DomainSnapshot snapshot)
             throws LibvirtException {
-        return processError(libvirt.virDomainRevertToSnapshot(snapshot.VDSP, 0));
+        return processError(libvirt.virDomainRevertToSnapshot(snapshot.vdsp, 0));
     }
 
     /**
@@ -1339,12 +1339,12 @@ public class Domain {
      * @throws LibvirtException
      */
     public void save(final String to) throws LibvirtException {
-        processError(libvirt.virDomainSave(VDP, to));
+        processError(libvirt.virDomainSave(vdp, to));
     }
 
     public String screenshot(final Stream stream, final int screen)
             throws LibvirtException {
-        CString mimeType = libvirt.virDomainScreenshot(this.VDP, stream.getVSP(), screen, 0);
+        CString mimeType = libvirt.virDomainScreenshot(this.vdp, stream.getVsp(), screen, 0);
         processError(mimeType);
         stream.markReadable();
         return mimeType.toString();
@@ -1359,7 +1359,7 @@ public class Domain {
      */
     public void setAutostart(final boolean autostart) throws LibvirtException {
         int autoValue = autostart ? 1 : 0;
-        processError(libvirt.virDomainSetAutostart(VDP, autoValue));
+        processError(libvirt.virDomainSetAutostart(vdp, autoValue));
     }
 
     /**
@@ -1371,7 +1371,7 @@ public class Domain {
      * @throws LibvirtException
      */
     public void setMaxMemory(final long memory) throws LibvirtException {
-        processError(libvirt.virDomainSetMaxMemory(VDP, new NativeLong(memory)));
+        processError(libvirt.virDomainSetMaxMemory(vdp, new NativeLong(memory)));
     }
 
     /**
@@ -1384,7 +1384,7 @@ public class Domain {
      * @throws LibvirtException
      */
     public void setMemory(final long memory) throws LibvirtException {
-        processError(libvirt.virDomainSetMemory(VDP, new NativeLong(memory)));
+        processError(libvirt.virDomainSetMemory(vdp, new NativeLong(memory)));
     }
 
     /**
@@ -1400,7 +1400,7 @@ public class Domain {
         for (int x = 0; x < params.length; x++) {
             input[x] = SchedParameter.toNative(params[x]);
         }
-        processError(libvirt.virDomainSetSchedulerParameters(VDP, input, params.length));
+        processError(libvirt.virDomainSetSchedulerParameters(vdp, input, params.length));
     }
 
     /**
@@ -1414,7 +1414,7 @@ public class Domain {
      * @throws LibvirtException
      */
     public void setVcpus(final int nvcpus) throws LibvirtException {
-        processError(libvirt.virDomainSetVcpus(VDP, nvcpus));
+        processError(libvirt.virDomainSetVcpus(vdp, nvcpus));
     }
 
     /**
@@ -1427,7 +1427,7 @@ public class Domain {
     public void sendKey(final KeycodeSet codeset, final int holdtime,
                         final int... keys)
             throws LibvirtException {
-        processError(libvirt.virDomainSendKey(this.VDP, codeset.ordinal(),
+        processError(libvirt.virDomainSendKey(this.vdp, codeset.ordinal(),
                                               holdtime, keys, keys.length, 0));
     }
 
@@ -1440,7 +1440,7 @@ public class Domain {
      * @throws LibvirtException
      */
     public void shutdown() throws LibvirtException {
-        processError(libvirt.virDomainShutdown(VDP));
+        processError(libvirt.virDomainShutdown(vdp));
     }
 
     /**
@@ -1459,7 +1459,7 @@ public class Domain {
      */
     public DomainSnapshot snapshotCreateXML(final String xmlDesc, final int flags)
             throws LibvirtException {
-        DomainSnapshotPointer ptr = processError(libvirt.virDomainSnapshotCreateXML(VDP, xmlDesc, flags));
+        DomainSnapshotPointer ptr = processError(libvirt.virDomainSnapshotCreateXML(vdp, xmlDesc, flags));
         return new DomainSnapshot(virConnect, ptr);
     }
 
@@ -1494,7 +1494,7 @@ public class Domain {
      * @throws LibvirtException
      */
     public DomainSnapshot snapshotCurrent() throws LibvirtException {
-        DomainSnapshotPointer ptr = processError(libvirt.virDomainSnapshotCurrent(VDP, 0));
+        DomainSnapshotPointer ptr = processError(libvirt.virDomainSnapshotCurrent(vdp, 0));
         return new DomainSnapshot(virConnect, ptr);
     }
 
@@ -1511,7 +1511,7 @@ public class Domain {
         int num = snapshotNum();
         if (num > 0) {
             CString[] names = new CString[num];
-            int got = processError(libvirt.virDomainSnapshotListNames(VDP, names, num, flags));
+            int got = processError(libvirt.virDomainSnapshotListNames(vdp, names, num, flags));
 
             return Library.toStringArray(names, got);
         } else {
@@ -1549,7 +1549,7 @@ public class Domain {
      */
     public DomainSnapshot snapshotLookupByName(final String name)
             throws LibvirtException {
-        DomainSnapshotPointer ptr = processError(libvirt.virDomainSnapshotLookupByName(VDP, name, 0));
+        DomainSnapshotPointer ptr = processError(libvirt.virDomainSnapshotLookupByName(vdp, name, 0));
         return new DomainSnapshot(virConnect, ptr);
     }
 
@@ -1561,7 +1561,7 @@ public class Domain {
      *      Documentation</a>
      */
     public int snapshotNum() throws LibvirtException {
-        return processError(libvirt.virDomainSnapshotNum(VDP, 0));
+        return processError(libvirt.virDomainSnapshotNum(vdp, 0));
     }
 
     /**
@@ -1573,7 +1573,7 @@ public class Domain {
      * @throws LibvirtException
      */
     public void suspend() throws LibvirtException {
-        processError(libvirt.virDomainSuspend(VDP));
+        processError(libvirt.virDomainSuspend(vdp));
     }
 
     /**
@@ -1582,7 +1582,7 @@ public class Domain {
      * @throws LibvirtException
      */
     public void undefine() throws LibvirtException {
-        processError(libvirt.virDomainUndefine(VDP));
+        processError(libvirt.virDomainUndefine(vdp));
     }
 
     /**
@@ -1597,7 +1597,7 @@ public class Domain {
      * @throws LibvirtException
     */
     public void undefine(final int flags) throws LibvirtException {
-        processError(libvirt.virDomainUndefineFlags(VDP, flags));
+        processError(libvirt.virDomainUndefineFlags(vdp, flags));
     }
 
     /**
@@ -1614,7 +1614,7 @@ public class Domain {
      */
     public int updateDeviceFlags(final String xml, final int flags)
             throws LibvirtException {
-        return processError(libvirt.virDomainUpdateDeviceFlags(VDP, xml, flags));
+        return processError(libvirt.virDomainUpdateDeviceFlags(vdp, xml, flags));
     }
 
     /**
@@ -1634,7 +1634,7 @@ public class Domain {
      * @throws LibvirtException
      */
     public String qemuAgentCommand(String cmd, int timeout, int flags) throws LibvirtException {
-        CString result = libvirtQemu != null ? libvirtQemu.virDomainQemuAgentCommand(VDP, cmd, timeout, flags) : null;
+        CString result = libvirtQemu != null ? libvirtQemu.virDomainQemuAgentCommand(vdp, cmd, timeout, flags) : null;
         processError(result);
         return result.toString();
     }
@@ -1655,7 +1655,7 @@ public class Domain {
      */
     public String qemuMonitorCommand(String cmd, int flags) throws LibvirtException {
         CStringByReference result = new CStringByReference();
-        int cmdResult = libvirtQemu != null ? libvirtQemu.virDomainQemuMonitorCommand(VDP, cmd, result, flags) : -1;
+        int cmdResult = libvirtQemu != null ? libvirtQemu.virDomainQemuMonitorCommand(vdp, cmd, result, flags) : -1;
         processError(cmdResult);
         return result.getValue().toString();
     }

@@ -9,6 +9,7 @@ import org.libvirt.jna.virDomainInterfaceStats;
  *
  */
 public class DomainInterfaceStats {
+    //CHECKSTYLE:OFF: MemberName - public interface: TODO: deprecate and rename
     public long rx_bytes;
     public long rx_packets;
     public long rx_errs;
@@ -17,6 +18,7 @@ public class DomainInterfaceStats {
     public long tx_packets;
     public long tx_errs;
     public long tx_drop;
+    //CHECKSTYLE:ON: AvoidStarImport
 
     public DomainInterfaceStats() {
 

@@ -13,7 +13,7 @@ public class Device {
     /**
      * the native virDomainPtr.
      */
-    DevicePointer VDP;
+    DevicePointer vdp;
 
     /**
      * The Connect Object that represents the Hypervisor of this Domain
@@ -25,12 +25,12 @@ public class Device {
      *
      * @param virConnect
      *            the Domain's hypervisor
-     * @param VDP
+     * @param vdp
      *            the native virDomainPtr
      */
-    Device(final Connect virConnect, final DevicePointer VDP) {
+    Device(final Connect virConnect, final DevicePointer vdp) {
         this.virConnect = virConnect;
-        this.VDP = VDP;
+        this.vdp = vdp;
     }
 
     /**
@@ -42,9 +42,9 @@ public class Device {
      */
     public int destroy() throws LibvirtException {
         int success = 0;
-        if (VDP != null) {
-            success = processError(libvirt.virNodeDeviceDestroy(VDP));
-            VDP = null;
+        if (vdp != null) {
+            success = processError(libvirt.virNodeDeviceDestroy(vdp));
+            vdp = null;
         }
 
         return success;
@@ -58,7 +58,7 @@ public class Device {
      * @throws LibvirtException
      */
     public int detach() throws LibvirtException {
-        return processError(libvirt.virNodeDeviceDettach(VDP));
+        return processError(libvirt.virNodeDeviceDettach(vdp));
     }
 
     @Override
@@ -75,9 +75,9 @@ public class Device {
      */
     public int free() throws LibvirtException {
         int success = 0;
-        if (VDP != null) {
-            success = processError(libvirt.virNodeDeviceFree(VDP));
-            VDP = null;
+        if (vdp != null) {
+            success = processError(libvirt.virNodeDeviceFree(vdp));
+            vdp = null;
         }
 
         return success;
@@ -90,7 +90,7 @@ public class Device {
      * @throws LibvirtException
      */
     public String getName() throws LibvirtException {
-        return processError(libvirt.virNodeDeviceGetName(VDP));
+        return processError(libvirt.virNodeDeviceGetName(vdp));
     }
 
     /**
@@ -100,7 +100,7 @@ public class Device {
      * @throws LibvirtException
      */
     public int getNumberOfCapabilities() throws LibvirtException {
-        return processError(libvirt.virNodeDeviceNumOfCaps(VDP));
+        return processError(libvirt.virNodeDeviceNumOfCaps(vdp));
     }
 
     /**
@@ -110,7 +110,7 @@ public class Device {
      * @throws LibvirtException
      */
     public String getParent() throws LibvirtException {
-        return processError(libvirt.virNodeDeviceGetParent(VDP));
+        return processError(libvirt.virNodeDeviceGetParent(vdp));
     }
 
     /**
@@ -120,7 +120,7 @@ public class Device {
      * @throws LibvirtException
      */
     public String getXMLDescription() throws LibvirtException {
-        return processError(libvirt.virNodeDeviceGetXMLDesc(VDP, 0)).toString();
+        return processError(libvirt.virNodeDeviceGetXMLDesc(vdp, 0)).toString();
     }
 
     /**
@@ -134,7 +134,7 @@ public class Device {
 
         if (maxCaps > 0) {
             CString[] strings = new CString[maxCaps];
-            int got = processError(libvirt.virNodeDeviceListCaps(VDP, strings, maxCaps));
+            int got = processError(libvirt.virNodeDeviceListCaps(vdp, strings, maxCaps));
 
             return Library.toStringArray(strings, got);
         } else {
@@ -149,7 +149,7 @@ public class Device {
      * @throws LibvirtException
      */
     public int reAttach() throws LibvirtException {
-        return processError(libvirt.virNodeDeviceReAttach(VDP));
+        return processError(libvirt.virNodeDeviceReAttach(vdp));
     }
 
     /**
@@ -160,6 +160,6 @@ public class Device {
      * @throws LibvirtException
      */
     public int reset() throws LibvirtException {
-        return processError(libvirt.virNodeDeviceReset(VDP));
+        return processError(libvirt.virNodeDeviceReset(vdp));
     }
 }

@@ -16,11 +16,11 @@ public class virDomainInfo extends Structure {
     public short nrVirtCpu;
     public long cpuTime;
 
-    private static final List<String> fields = Arrays.asList(
+    private static final List<String> FIELDS = Arrays.asList(
             "state", "maxMem", "memory", "nrVirtCpu", "cpuTime");
 
     @Override
     protected List<String> getFieldOrder() {
-        return fields;
+        return FIELDS;
     }
 }

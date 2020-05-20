@@ -9,10 +9,10 @@ public class virDomainMemoryStats extends Structure {
     public int tag;
     public long val;
 
-    private static final List<String> fields = Arrays.asList("tag", "val");
+    private static final List<String> FIELDS = Arrays.asList("tag", "val");
 
     @Override
     protected List<String> getFieldOrder() {
-        return fields;
+        return FIELDS;
     }
 }

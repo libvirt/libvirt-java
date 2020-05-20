@@ -11,15 +11,15 @@ public class NetworkFilter {
     /**
      * the native virNWFilterPtr.
      */
-    NetworkFilterPointer NFP;
+    NetworkFilterPointer nfp;
 
     /**
      * The Connect Object that represents the Hypervisor of this Filter
      */
     private final Connect virConnect;
 
-    public NetworkFilter(final Connect virConnect, final NetworkFilterPointer NFP) {
-        this.NFP = NFP;
+    public NetworkFilter(final Connect virConnect, final NetworkFilterPointer nfp) {
+        this.nfp = nfp;
         this.virConnect = virConnect;
     }
 
@@ -37,9 +37,9 @@ public class NetworkFilter {
      */
     public int free() throws LibvirtException {
         int success = 0;
-        if (NFP != null) {
-            success = processError(libvirt.virNWFilterFree(NFP));
-            NFP = null;
+        if (nfp != null) {
+            success = processError(libvirt.virNWFilterFree(nfp));
+            nfp = null;
         }
 
         return success;
@@ -52,7 +52,7 @@ public class NetworkFilter {
      * @throws LibvirtException
      */
     public String getName() throws LibvirtException {
-        return processError(libvirt.virNWFilterGetName(NFP));
+        return processError(libvirt.virNWFilterGetName(nfp));
     }
 
     /**
@@ -64,7 +64,7 @@ public class NetworkFilter {
      */
     public int[] getUUID() throws LibvirtException {
         byte[] bytes = new byte[Libvirt.VIR_UUID_BUFLEN];
-        processError(libvirt.virNWFilterGetUUID(NFP, bytes));
+        processError(libvirt.virNWFilterGetUUID(nfp, bytes));
         return Connect.convertUUIDBytes(bytes);
     }
 
@@ -77,7 +77,7 @@ public class NetworkFilter {
      */
     public String getUUIDString() throws LibvirtException {
         byte[] bytes = new byte[Libvirt.VIR_UUID_STRING_BUFLEN];
-        processError(libvirt.virNWFilterGetUUIDString(NFP, bytes));
+        processError(libvirt.virNWFilterGetUUIDString(nfp, bytes));
         return Native.toString(bytes);
     }
 
@@ -91,7 +91,7 @@ public class NetworkFilter {
      * @return the XML document
      */
     public String getXMLDesc() throws LibvirtException {
-        return processError(libvirt.virNWFilterGetXMLDesc(NFP, 0)).toString();
+        return processError(libvirt.virNWFilterGetXMLDesc(nfp, 0)).toString();
     }
 
     /**
@@ -100,6 +100,6 @@ public class NetworkFilter {
      * @throws LibvirtException
      */
     public void undefine() throws LibvirtException {
-        processError(libvirt.virNWFilterUndefine(NFP));
+        processError(libvirt.virNWFilterUndefine(nfp));
     }
 }

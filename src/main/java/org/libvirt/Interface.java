@@ -17,7 +17,7 @@ public class Interface {
     /**
      * the native virInterfacePtr.
      */
-    InterfacePointer VIP;
+    InterfacePointer vip;
 
     /**
      * The Connect Object that represents the Hypervisor of this Interface
@@ -30,12 +30,12 @@ public class Interface {
      *
      * @param virConnect
      *            the Interfaces hypervisor
-     * @param VIP
+     * @param vip
      *            the native virInterfacePtr
      */
-    Interface(final Connect virConnect, final InterfacePointer VIP) {
+    Interface(final Connect virConnect, final InterfacePointer vip) {
         this.virConnect = virConnect;
-        this.VIP = VIP;
+        this.vip = vip;
     }
 
     /**
@@ -50,7 +50,7 @@ public class Interface {
      * @throws LibvirtException
      */
     public int create() throws LibvirtException {
-        return processError(libvirt.virInterfaceCreate(VIP, 0));
+        return processError(libvirt.virInterfaceCreate(vip, 0));
     }
 
     /**
@@ -69,7 +69,7 @@ public class Interface {
      * @throws LibvirtException
      */
     public int destroy() throws LibvirtException {
-        return processError(libvirt.virInterfaceDestroy(VIP, 0));
+        return processError(libvirt.virInterfaceDestroy(vip, 0));
     }
 
     @Override
@@ -86,9 +86,9 @@ public class Interface {
      */
     public int free() throws LibvirtException {
         int success = 0;
-        if (VIP != null) {
-            success = processError(libvirt.virInterfaceFree(VIP));
-            VIP = null;
+        if (vip != null) {
+            success = processError(libvirt.virInterfaceFree(vip));
+            vip = null;
         }
 
         return success;
@@ -101,7 +101,7 @@ public class Interface {
      * @throws LibvirtException
      */
     public String getMACString() throws LibvirtException {
-        return processError(libvirt.virInterfaceGetMACString(VIP));
+        return processError(libvirt.virInterfaceGetMACString(vip));
     }
 
     /**
@@ -111,7 +111,7 @@ public class Interface {
      * @throws LibvirtException
      */
     public String getName() throws LibvirtException {
-        return processError(libvirt.virInterfaceGetName(VIP));
+        return processError(libvirt.virInterfaceGetName(vip));
     }
 
     /**
@@ -122,7 +122,7 @@ public class Interface {
      * @throws LibvirtException
      */
     public String getXMLDescription(final int flags) throws LibvirtException {
-        return processError(libvirt.virInterfaceGetXMLDesc(VIP, flags)).toString();
+        return processError(libvirt.virInterfaceGetXMLDesc(vip, flags)).toString();
     }
 
     /**
@@ -135,7 +135,7 @@ public class Interface {
      * @throws LibvirtException
      */
     public int isActive() throws LibvirtException {
-        return processError(libvirt.virInterfaceIsActive(VIP));
+        return processError(libvirt.virInterfaceIsActive(vip));
     }
 
     /**
@@ -146,6 +146,6 @@ public class Interface {
      * @throws LibvirtException
      */
     public int undefine() throws LibvirtException {
-        return processError(libvirt.virInterfaceUndefine(VIP));
+        return processError(libvirt.virInterfaceUndefine(vip));
     }
 }

@@ -20,16 +20,16 @@ public class Secret {
     /**
      * the native virSecretPtr.
      */
-    SecretPointer VSP;
+    SecretPointer vsp;
 
     /**
      * The Connect Object that represents the Hypervisor of this Domain
      */
     private final Connect virConnect;
 
-    Secret(final Connect virConnect, final SecretPointer VSP) {
+    Secret(final Connect virConnect, final SecretPointer vsp) {
         this.virConnect = virConnect;
-        this.VSP = VSP;
+        this.vsp = vsp;
     }
 
     @Override
@@ -45,9 +45,9 @@ public class Secret {
      */
     public int free() throws LibvirtException {
         int success = 0;
-        if (VSP != null) {
-            success = processError(libvirt.virSecretFree(VSP));
-            VSP = null;
+        if (vsp != null) {
+            success = processError(libvirt.virSecretFree(vsp));
+            vsp = null;
         }
 
         return success;
@@ -62,11 +62,11 @@ public class Secret {
      * @throws LibvirtException
      */
     public String getUsageID() throws LibvirtException {
-        return processError(libvirt.virSecretGetUsageID(VSP));
+        return processError(libvirt.virSecretGetUsageID(vsp));
     }
 
     public SecretUsageType getUsageType() throws LibvirtException {
-        final int ret = processError(libvirt.virSecretGetUsageType(this.VSP));
+        final int ret = processError(libvirt.virSecretGetUsageType(this.vsp));
         return Library.getConstant(SecretUsageType.class, ret);
     }
 
@@ -79,7 +79,7 @@ public class Secret {
      */
     public int[] getUUID() throws LibvirtException {
         byte[] bytes = new byte[Libvirt.VIR_UUID_BUFLEN];
-        processError(libvirt.virSecretGetUUID(VSP, bytes));
+        processError(libvirt.virSecretGetUUID(vsp, bytes));
         return Connect.convertUUIDBytes(bytes);
     }
 
@@ -92,7 +92,7 @@ public class Secret {
      */
     public String getUUIDString() throws LibvirtException {
         byte[] bytes = new byte[Libvirt.VIR_UUID_STRING_BUFLEN];
-        processError(libvirt.virSecretGetUUIDString(VSP, bytes));
+        processError(libvirt.virSecretGetUUIDString(vsp, bytes));
         return Native.toString(bytes);
     }
 
@@ -121,9 +121,9 @@ public class Secret {
      * @throws org.libvirt.LibvirtException
      */
     public byte[] getByteValue() throws LibvirtException {
-        SizeTByReference value_size = new SizeTByReference();
-        Pointer value = processError(libvirt.virSecretGetValue(VSP, value_size, 0));
-        ByteBuffer bb = value.getByteBuffer(0, value_size.getValue());
+        SizeTByReference valueSize = new SizeTByReference();
+        Pointer value = processError(libvirt.virSecretGetValue(vsp, valueSize, 0));
+        ByteBuffer bb = value.getByteBuffer(0, valueSize.getValue());
         byte[] returnValue = new byte[bb.remaining()];
         bb.get(returnValue);
         return returnValue;
@@ -136,7 +136,7 @@ public class Secret {
      * @throws org.libvirt.LibvirtException
      */
     public String getXMLDesc() throws LibvirtException {
-        return processError(libvirt.virSecretGetXMLDesc(VSP, 0)).toString();
+        return processError(libvirt.virSecretGetXMLDesc(vsp, 0)).toString();
     }
 
     /**
@@ -147,7 +147,7 @@ public class Secret {
      * @throws org.libvirt.LibvirtException
      */
     public int setValue(final String value) throws LibvirtException {
-        return processError(libvirt.virSecretSetValue(VSP, value, new SizeT(value.length()), 0));
+        return processError(libvirt.virSecretSetValue(vsp, value, new SizeT(value.length()), 0));
     }
 
     /**
@@ -158,7 +158,7 @@ public class Secret {
      * @throws org.libvirt.LibvirtException
      */
     public int setValue(final byte[] value) throws LibvirtException {
-        return processError(libvirt.virSecretSetValue(VSP, value, new SizeT(value.length), 0));
+        return processError(libvirt.virSecretSetValue(vsp, value, new SizeT(value.length), 0));
     }
 
     /**
@@ -168,6 +168,6 @@ public class Secret {
      * @throws org.libvirt.LibvirtException
      */
     public int undefine() throws LibvirtException {
-        return processError(libvirt.virSecretUndefine(VSP));
+        return processError(libvirt.virSecretUndefine(vsp));
     }
 }
