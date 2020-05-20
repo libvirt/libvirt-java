@@ -21,7 +21,7 @@ public final class SchedBooleanParameter extends SchedParameter {
     }
 
     public SchedBooleanParameter(final byte value) {
-        this.value = ((value) != 0) ? true : false;
+        this.value = ((value) != 0);
     }
 
     public int getType() {
