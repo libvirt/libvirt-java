@@ -15,7 +15,7 @@ public final class SchedIntParameter extends SchedParameter {
     }
 
     public int getType() {
-        return 1;
+        return SCHED_PARAM_INT;
     }
 
     public String getTypeAsString() {

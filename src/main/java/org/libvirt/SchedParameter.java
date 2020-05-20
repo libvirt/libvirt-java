@@ -16,27 +16,37 @@ import java.io.UnsupportedEncodingException;
  *
  */
 public abstract class SchedParameter {
+    /**
+      * TODO: get generated constants from libvirt
+      */
+
+    protected static final int SCHED_PARAM_INT = 1;
+    protected static final int SCHED_PARAM_UINT = 2;
+    protected static final int SCHED_PARAM_LONG = 3;
+    protected static final int SCHED_PARAM_ULONG = 4;
+    protected static final int SCHED_PARAM_DOUBLE = 5;
+    protected static final int SCHED_PARAM_BOOLEAN = 6;
 
     public static SchedParameter create(final virSchedParameter vParam) {
         SchedParameter returnValue = null;
         if (vParam != null) {
             switch (vParam.type) {
-                case (1):
+                case (SCHED_PARAM_INT):
                     returnValue = new SchedIntParameter(vParam.value.i);
                     break;
-                case (2):
+                case (SCHED_PARAM_UINT):
                     returnValue = new SchedUintParameter(vParam.value.i);
                     break;
-                case (3):
+                case (SCHED_PARAM_LONG):
                     returnValue = new SchedLongParameter(vParam.value.l);
                     break;
-                case (4):
+                case (SCHED_PARAM_ULONG):
                     returnValue = new SchedUlongParameter(vParam.value.l);
                     break;
-                case (5):
+                case (SCHED_PARAM_DOUBLE):
                     returnValue = new SchedDoubleParameter(vParam.value.d);
                     break;
-                case (6):
+                case (SCHED_PARAM_BOOLEAN):
                     returnValue = new SchedBooleanParameter(vParam.value.b);
                     break;
                 default:
@@ -59,27 +69,27 @@ public abstract class SchedParameter {
         }
         returnValue.type = param.getType();
         switch (param.getType()) {
-            case (1):
+            case (SCHED_PARAM_INT):
                 returnValue.value.i = ((SchedIntParameter) param).value;
                 returnValue.value.setType(int.class);
                 break;
-            case (2):
+            case (SCHED_PARAM_UINT):
                 returnValue.value.i = ((SchedUintParameter) param).value;
                 returnValue.value.setType(int.class);
                 break;
-            case (3):
+            case (SCHED_PARAM_LONG):
                 returnValue.value.l = ((SchedLongParameter) param).value;
                 returnValue.value.setType(long.class);
                 break;
-            case (4):
+            case (SCHED_PARAM_ULONG):
                 returnValue.value.l = ((SchedUlongParameter) param).value;
                 returnValue.value.setType(long.class);
                 break;
-            case (5):
+            case (SCHED_PARAM_DOUBLE):
                 returnValue.value.d = ((SchedDoubleParameter) param).value;
                 returnValue.value.setType(double.class);
                 break;
-            case (6):
+            case (SCHED_PARAM_BOOLEAN):
                 returnValue.value.b = (byte) (((SchedBooleanParameter) param).value ? 1 : 0);
                 returnValue.value.setType(byte.class);
                 break;

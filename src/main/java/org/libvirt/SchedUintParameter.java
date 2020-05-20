@@ -22,7 +22,7 @@ public final class SchedUintParameter extends SchedParameter {
     }
 
     public int getType() {
-        return 2;
+        return SCHED_PARAM_UINT;
     }
 
     public String getTypeAsString() {

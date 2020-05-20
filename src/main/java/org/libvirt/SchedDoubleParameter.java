@@ -21,7 +21,7 @@ public final class SchedDoubleParameter extends SchedParameter {
     }
 
     public int getType() {
-        return 5;
+        return SCHED_PARAM_DOUBLE;
     }
 
     public String getTypeAsString() {

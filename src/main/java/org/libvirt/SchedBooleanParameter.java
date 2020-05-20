@@ -25,7 +25,7 @@ public final class SchedBooleanParameter extends SchedParameter {
     }
 
     public int getType() {
-        return 6;
+        return SCHED_PARAM_BOOLEAN;
     }
 
     public String getTypeAsString() {

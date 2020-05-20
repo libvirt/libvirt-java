@@ -21,7 +21,7 @@ public final class SchedUlongParameter extends SchedParameter {
     }
 
     public int getType() {
-        return 4;
+        return SCHED_PARAM_ULONG;
     }
 
     public String getTypeAsString() {
