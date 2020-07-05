@@ -1641,7 +1641,7 @@ public class Domain {
      * @throws LibvirtException
      */
     public String qemuAgentCommand(String cmd, int timeout, int flags) throws LibvirtException {
-        CString result = libvirtQemu != null ? libvirtQemu.virDomainQemuAgentCommand(vdp, cmd, timeout, flags) : null;
+        CString result = libvirtQemu != null ? libvirtQemu.virDomainQemuAgentCommand(vdp, cmd, timeout, flags) : new CString(null);
         processError(result);
         return result.toString();
     }
