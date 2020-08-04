@@ -14,6 +14,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
             ca-certificates \
             ccache \
             chrony \
+            cpanminus \
             gcc \
             gdb \
             gettext \
@@ -40,7 +41,8 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
             screen \
             strace \
             sudo \
-            vim && \
+            vim \
+            xz-utils && \
     apt-get autoremove -y && \
     apt-get autoclean -y && \
     sed -Ei 's,^# (en_US\.UTF-8 .*)$,\1,' /etc/locale.gen && \
@@ -50,7 +52,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
     ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/$(basename /usr/bin/gcc)
 
 RUN pip3 install \
-         meson==0.49.0
+         meson==0.54.0
 
 ENV LANG "en_US.UTF-8"
 
