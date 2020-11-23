@@ -1,4 +1,4 @@
-FROM centos:7
+FROM registry.centos.org/centos:7
 
 RUN echo -e '[openvz]\n\
 name=OpenVZ addons\n\
@@ -35,29 +35,19 @@ WEiJKtQrZDJloqtyi/mmRa1VsV7RYR0VPJjhK/R8EQ7Ysshy\n\
     yum install -y \
         ant \
         ant-junit \
-        autoconf \
-        automake \
         bash \
         bash-completion \
         ca-certificates \
         ccache \
-        chrony \
         gcc \
-        gdb \
         gettext \
-        gettext-devel \
         git \
         glibc-common \
         glibc-devel \
         java-11-openjdk-headless \
         jna \
         junit \
-        libtool \
         libvirt-devel \
-        lsof \
-        make \
-        net-tools \
-        ninja-build \
         patch \
         perl \
         perl-App-cpanminus \
@@ -66,20 +56,12 @@ WEiJKtQrZDJloqtyi/mmRa1VsV7RYR0VPJjhK/R8EQ7Ysshy\n\
         python3-pip \
         python3-setuptools \
         python3-wheel \
-        rpm-build \
-        screen \
-        strace \
-        sudo \
-        vim \
-        xz && \
+        rpm-build && \
     yum autoremove -y && \
     yum clean all -y && \
     mkdir -p /usr/libexec/ccache-wrappers && \
     ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/cc && \
     ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/$(basename /usr/bin/gcc)
-
-RUN pip3 install \
-         meson==0.54.0
 
 ENV LANG "en_US.UTF-8"
 

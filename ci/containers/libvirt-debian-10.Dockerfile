@@ -1,4 +1,4 @@
-FROM debian:10
+FROM docker.io/library/debian:10
 
 RUN export DEBIAN_FRONTEND=noninteractive && \
     apt-get update && \
@@ -6,30 +6,19 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
     apt-get install --no-install-recommends -y \
             ant \
             ant-optional \
-            autoconf \
-            automake \
-            autopoint \
             bash \
             bash-completion \
             ca-certificates \
             ccache \
-            chrony \
             cpanminus \
             gcc \
-            gdb \
             gettext \
             git \
             junit \
             libc6-dev \
             libjna-java \
-            libtool \
-            libtool-bin \
             libvirt-dev \
             locales \
-            lsof \
-            make \
-            net-tools \
-            ninja-build \
             openjdk-11-jdk-headless \
             patch \
             perl \
@@ -37,12 +26,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
             python3 \
             python3-pip \
             python3-setuptools \
-            python3-wheel \
-            screen \
-            strace \
-            sudo \
-            vim \
-            xz-utils && \
+            python3-wheel && \
     apt-get autoremove -y && \
     apt-get autoclean -y && \
     sed -Ei 's,^# (en_US\.UTF-8 .*)$,\1,' /etc/locale.gen && \
@@ -50,9 +34,6 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
     mkdir -p /usr/libexec/ccache-wrappers && \
     ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/cc && \
     ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/$(basename /usr/bin/gcc)
-
-RUN pip3 install \
-         meson==0.54.0
 
 ENV LANG "en_US.UTF-8"
 
