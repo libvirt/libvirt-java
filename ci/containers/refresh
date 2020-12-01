@@ -18,10 +18,10 @@ HOSTS=$($LCITOOL hosts | grep -v -E '(freebsd|macos)')
 
 for host in $HOSTS
 do
-    if test "$host" = "libvirt-ubuntu-2004"
+    if test "$host" = "ubuntu-2004"
     then
-        $LCITOOL dockerfile $host libvirt+minimal,libvirt+dist,libvirt-java > $host.Dockerfile
+        $LCITOOL dockerfile $host libvirt+minimal,libvirt+dist,libvirt-java > ci-$host.Dockerfile
     else
-        $LCITOOL dockerfile $host libvirt+dist,libvirt-java > $host.Dockerfile
+        $LCITOOL dockerfile $host libvirt+dist,libvirt-java > ci-$host.Dockerfile
     fi
 done
