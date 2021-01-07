@@ -21,6 +21,7 @@ import org.libvirt.flags.DomainBlockResizeFlags;
 import org.libvirt.flags.DomainDeviceModifyFlags;
 import org.libvirt.flags.DomainMetadataFlags;
 import org.libvirt.flags.DomainMigrateFlags;
+import org.libvirt.flags.DomainSnapshotListFlags;
 import org.libvirt.jna.Libvirt;
 import org.libvirt.jna.pointers.DomainPointer;
 import org.libvirt.jna.pointers.DomainSnapshotPointer;
@@ -1145,6 +1146,18 @@ public class Domain {
      */
     public int revertToSnapshot(DomainSnapshot snapshot) throws LibvirtException {
         return processError(libvirt.virDomainRevertToSnapshot(snapshot.VDSP, 0));
+    }
+
+    /**
+     * Revert the domain to a given snapshot.
+     *
+     * @param snapshot the snapshot to revert to
+     * @param flags bitwise-OR of {@link org.libvirt.flags.DomainSnapshotRevertFlags}
+     * @return 0 if the creation is successful
+     * @throws LibvirtException
+     */
+    public int revertToSnapshot(DomainSnapshot snapshot, int flags) throws LibvirtException {
+        return processError(libvirt.virDomainRevertToSnapshot(snapshot.VDSP, flags));
     }
 
     /**
