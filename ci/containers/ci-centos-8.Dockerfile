@@ -2,7 +2,7 @@
 #
 #  $ lcitool dockerfile centos-8 libvirt+dist,libvirt-java
 #
-# https://gitlab.com/libvirt/libvirt-ci/-/commit/050edf1c67395e5723e40dc547f73cdf44f1d8cf
+# https://gitlab.com/libvirt/libvirt-ci/-/commit/d527e0c012f476c293f3bc801b7da08bc85f98ef
 FROM docker.io/library/centos:8
 
 RUN dnf update -y && \
