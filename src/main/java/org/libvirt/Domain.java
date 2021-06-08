@@ -128,6 +128,9 @@ public class Domain {
 
         /** update guest CPU requirements according to host CPU */
         static final int VIR_DOMAIN_XML_UPDATE_CPU   = bit(2);
+
+        /** dump XML suitable for migration */
+        static final int VIR_DOMAIN_XML_MIGRATABLE   = bit(3);
     }
 
     public static final class UndefineFlags {
