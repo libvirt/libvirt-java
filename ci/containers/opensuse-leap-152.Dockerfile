@@ -1,8 +1,9 @@
 # THIS FILE WAS AUTO-GENERATED
 #
-#  $ lcitool dockerfile opensuse-152 libvirt+dist,libvirt-java
+#  $ lcitool manifest ci/manifest.yml
 #
-# https://gitlab.com/libvirt/libvirt-ci/-/commit/d527e0c012f476c293f3bc801b7da08bc85f98ef
+# https://gitlab.com/libvirt/libvirt-ci/-/commit/c5bde43affd9a5fea0c06542d71e708ac1bd6153
+
 FROM registry.opensuse.org/opensuse/leap:15.2
 
 RUN zypper update -y && \

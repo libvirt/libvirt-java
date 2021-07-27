@@ -1,9 +1,10 @@
 # THIS FILE WAS AUTO-GENERATED
 #
-#  $ lcitool dockerfile fedora-32 libvirt+dist,libvirt-java
+#  $ lcitool manifest ci/manifest.yml
 #
-# https://gitlab.com/libvirt/libvirt-ci/-/commit/d527e0c012f476c293f3bc801b7da08bc85f98ef
-FROM registry.fedoraproject.org/fedora:32
+# https://gitlab.com/libvirt/libvirt-ci/-/commit/c5bde43affd9a5fea0c06542d71e708ac1bd6153
+
+FROM registry.fedoraproject.org/fedora:34
 
 RUN dnf install -y nosync && \
     echo -e '#!/bin/sh\n\

@@ -1,11 +1,13 @@
 # THIS FILE WAS AUTO-GENERATED
 #
-#  $ lcitool dockerfile fedora-33 libvirt+dist,libvirt-java
+#  $ lcitool manifest ci/manifest.yml
 #
-# https://gitlab.com/libvirt/libvirt-ci/-/commit/d527e0c012f476c293f3bc801b7da08bc85f98ef
-FROM registry.fedoraproject.org/fedora:33
+# https://gitlab.com/libvirt/libvirt-ci/-/commit/c5bde43affd9a5fea0c06542d71e708ac1bd6153
 
-RUN dnf install -y nosync && \
+FROM registry.fedoraproject.org/fedora:rawhide
+
+RUN dnf update -y --nogpgcheck fedora-gpg-keys && \
+    dnf install -y nosync && \
     echo -e '#!/bin/sh\n\
 if test -d /usr/lib64\n\
 then\n\

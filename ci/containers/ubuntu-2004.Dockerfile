@@ -1,8 +1,9 @@
 # THIS FILE WAS AUTO-GENERATED
 #
-#  $ lcitool dockerfile ubuntu-2004 libvirt+minimal,libvirt+dist,libvirt-java
+#  $ lcitool manifest ci/manifest.yml
 #
-# https://gitlab.com/libvirt/libvirt-ci/-/commit/d527e0c012f476c293f3bc801b7da08bc85f98ef
+# https://gitlab.com/libvirt/libvirt-ci/-/commit/c5bde43affd9a5fea0c06542d71e708ac1bd6153
+
 FROM docker.io/library/ubuntu:20.04
 
 RUN export DEBIAN_FRONTEND=noninteractive && \
@@ -14,6 +15,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
             ant-optional \
             ca-certificates \
             ccache \
+            cpp \
             gcc \
             gettext \
             git \
@@ -33,7 +35,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
             make \
             ninja-build \
             openjdk-11-jdk-headless \
-            perl \
+            perl-base \
             pkgconf \
             python3 \
             python3-docutils \
@@ -48,10 +50,10 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
     dpkg-query --showformat '${Package}_${Version}_${Architecture}\n' --show > /packages.txt && \
     mkdir -p /usr/libexec/ccache-wrappers && \
     ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/cc && \
-    ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/$(basename /usr/bin/gcc)
+    ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/gcc
 
 RUN pip3 install \
-         meson==0.54.0
+         meson==0.56.0
 
 ENV LANG "en_US.UTF-8"
 ENV MAKE "/usr/bin/make"
