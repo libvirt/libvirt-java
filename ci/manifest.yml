@@ -1,0 +1,49 @@
+projects:
+  - libvirt-java
+  - libvirt+dist
+
+gitlab:
+  namespace: libvirt
+  project: libvirt-java
+
+targets:
+  centos-8:
+    jobs:
+      - arch: x86_64
+        variables:
+          TESTS: skip
+
+  centos-stream-8:
+    jobs:
+      - arch: x86_64
+        variables:
+          TESTS: skip
+
+  debian-10: x86_64
+
+  debian-sid: x86_64
+
+  fedora-33: x86_64
+
+  fedora-34: x86_64
+
+  fedora-rawhide: x86_64
+
+  opensuse-leap-152: x86_64
+
+  ubuntu-1804: x86_64
+
+  ubuntu-2004:
+    projects:
+      - libvirt-java
+      - libvirt+dist
+      - libvirt+minimal
+
+    jobs:
+      - arch: x86_64
+        template: .native_build_job
+
+    jobs:
+      - arch: x86_64
+        template: .native_git_build_job
+        suffix: -git
