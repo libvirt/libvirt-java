@@ -52,85 +52,110 @@ public class Domain {
         public static final int BYTES = 1;
     }
 
-    static final class CreateFlags {
-        static final int VIR_DOMAIN_NONE = 0;
-        /** Restore or alter metadata */
-        static final int VIR_DOMAIN_SNAPSHOT_CREATE_REDEFINE    = bit(0);
+    public static final class CreateFlags {
+        /**  Default behavior */
+        public static final int NONE         = 0;
 
-        /** With redefine, make snapshot current */
-        static final int VIR_DOMAIN_SNAPSHOT_CREATE_CURRENT     = bit(1);
+        /**  Launch guest in paused state */
+        public static final int PAUSED       = bit(0);
 
-        /** Make snapshot without remembering it */
-        static final int VIR_DOMAIN_SNAPSHOT_CREATE_NO_METADATA = bit(2);
+        /**  Automatically kill guest when virConnectPtr is closed */
+        public static final int AUTODESTROY  = bit(1);
 
-        /** Stop running guest after snapshot */
-        static final int VIR_DOMAIN_SNAPSHOT_CREATE_HALT        = bit(3);
+        /**  Avoid file system cache pollution */
+        public static final int BYPASS_CACHE = bit(2);
 
-        /** disk snapshot, not system checkpoint */
-        static final int VIR_DOMAIN_SNAPSHOT_CREATE_DISK_ONLY   = bit(4);
+        /**  Boot, discarding any managed save */
+        public static final int FORCE_BOOT   = bit(3);
 
-        /** reuse any existing external files */
-        static final int VIR_DOMAIN_SNAPSHOT_CREATE_REUSE_EXT   = bit(5);
-
-        /** use guest agent to quiesce all mounted file systems within the domain */
-        static final int VIR_DOMAIN_SNAPSHOT_CREATE_QUIESCE     = bit(6);
-
-        /* atomically avoid partial changes */
-        static final int VIR_DOMAIN_SNAPSHOT_CREATE_ATOMIC      = bit(7);
+        /**  Validate the XML document against schema */
+        public static final int VALIDATE     = bit(4);
     }
 
-    static final class MigrateFlags {
+    public static final class MigrateFlags {
         /** live migration */
-        static final int VIR_MIGRATE_LIVE              = bit(0);
+        public static final int LIVE              = bit(0);
 
         /** direct source -> dest host control channel */
-        static final int VIR_MIGRATE_PEER2PEER         = bit(1);
+        public static final int PEER2PEER         = bit(1);
 
-        /** tunnel migration data over libvirtd connection
-         * @apiNote Note the less-common spelling that we're stuck with:
-         *  VIR_MIGRATE_TUNNELLED should be VIR_MIGRATE_TUNNELED
-         */
-        static final int VIR_MIGRATE_TUNNELLED         = bit(2);
+        /** tunnel migration data over libvirtd connection */
+        public static final int TUNNELED          = bit(2);
 
         /** persist the VM on the destination */
-        static final int VIR_MIGRATE_PERSIST_DEST      = bit(3);
+        public static final int PERSIST_DEST      = bit(3);
 
         /** undefine the VM on the source */
-        static final int VIR_MIGRATE_UNDEFINE_SOURCE   = bit(4);
+        public static final int UNDEFINE_SOURCE   = bit(4);
 
         /** pause on remote side */
-        static final int VIR_MIGRATE_PAUSED            = bit(5);
+        public static final int PAUSED            = bit(5);
 
         /** migration with non-shared storage with full disk copy */
-        static final int VIR_MIGRATE_NON_SHARED_DISK   = bit(6);
+        public static final int NON_SHARED_DISK   = bit(6);
 
         /** migration with non-shared storage with incremental copy
          * (same base image shared between source and destination)
          */
-        static final int VIR_MIGRATE_NON_SHARED_INC    = bit(7);
+        public static final int NON_SHARED_INC    = bit(7);
 
         /** protect for changing domain configuration through the
          * whole migration process; this will be used automatically
          * when supported
          */
-        static final int VIR_MIGRATE_CHANGE_PROTECTION = bit(8);
+        public static final int CHANGE_PROTECTION = bit(8);
 
         /** force migration even if it is considered unsafe */
-        static final int VIR_MIGRATE_UNSAFE            = bit(9);
+        public static final int UNSAFE            = bit(9);
+
+        /** Migrate a domain definition without starting the domain on the
+         *  destination and without stopping it on the source host */
+        public static final int OFFLINE           = bit(10);
+
+        /** Compress migration data */
+        public static final int COMPRESSED        = bit(11);
+
+        /** Cancel migration if a soft error (such as I/O error) happens
+         *  during migration */
+        public static final int ABORT_ON_ERROR    = bit(12);
+
+        /** Enable algorithms that ensure a live migration will
+         * eventually converge */
+        public static final int AUTO_CONVERGE     = bit(13);
+
+        /** This flag can be used with RDMA migration (i.e., when
+         * PARAM_URI starts with "rdma://") to tell the
+         * hypervisor to pin all domain's memory at once before migration
+         * starts rather then letting it pin memory pages as needed */
+        public static final int RDMA_PIN_ALL      = bit(14);
+
+        /** Setting the POSTCOPY flag tells libvirt to enable
+         * post-copy migration */
+        public static final int POSTCOPY          = bit(15);
+
+        /** Setting the TLS flag will cause the migration
+         * to attempt to use the TLS environment configured by the
+         * hypervisor in order to perform the migration. */
+        public static final int TLS               = bit(16);
+
+        /** Send memory pages to the destination host through several
+         * network connections */
+        public static final int PARALLEL          = bit(17);
+
     }
 
-    static final class XMLFlags {
+    public static final class XMLFlags {
         /** dump security sensitive information too */
-        static final int VIR_DOMAIN_XML_SECURE = 1;
+        public static final int SECURE = bit(0);
 
         /** dump inactive domain information*/
-        static final int VIR_DOMAIN_XML_INACTIVE = 2;
+        public static final int INACTIVE = bit(1);
 
         /** update guest CPU requirements according to host CPU */
-        static final int VIR_DOMAIN_XML_UPDATE_CPU   = bit(2);
+        public static final int UPDATE_CPU   = bit(2);
 
         /** dump XML suitable for migration */
-        static final int VIR_DOMAIN_XML_MIGRATABLE   = bit(3);
+        public static final int MIGRATABLE   = bit(3);
     }
 
     public static final class UndefineFlags {
@@ -141,27 +166,79 @@ public class Domain {
         public static final int SNAPSHOTS_METADATA = bit(1);
     }
 
+    public static final class SnapshotCreateFlags {
+
+        /**	Restore or alter metadata */
+        public static final int REDEFINE    = bit(0);
+
+        /**	With redefine, make snapshot current */
+        public static final int CURRENT     = bit(1);
+
+        /**	Make snapshot without remembering it */
+        public static final int NO_METADATA = bit(2);
+
+        /**	Stop running guest after snapshot */
+        public static final int HALT        = bit(3);
+
+        /**	disk snapshot, not full system */
+        public static final int DISK_ONLY   = bit(4);
+
+        /**	reuse any existing external files */
+        public static final int REUSE_EXT   = bit(5);
+
+        /**	use guest agent to quiesce all mounted file systems within the domain */
+        public static final int QUIESCE     = bit(6);
+
+        /**	atomically avoid partial changes */
+        public static final int ATOMIC      = bit(7);
+
+        /**	create the snapshot while the guest is running */
+        public static final int LIVE        = bit(8);
+
+        /**	validate the XML against the schema */
+        public static final int VALIDATE    = bit(9);
+    }
+
     public static final class SnapshotListFlags {
-        /** Filter by snapshots with no parents, when listing a domain */
-        public static final int ROOTS       = bit(0);
 
-        /** List all descendants, not just children, when listing a snapshot */
+        /** List all descendants, not just children, when listing a snapshot
+         * For historical reasons, groups do not use contiguous bits. */
+        public static final int DESCENDANTS  = bit(0);
 
-        public static final int DESCENDANTS = bit(0);
+        /**  Filter by snapshots with no parents, when listing a domain */
+        public static final int ROOTS        = bit(0);
 
-        /** @apiNote For historical reasons, groups do not use contiguous bits. */
+        /**  Filter by snapshots which have metadata */
+        public static final int METADATA     = bit(1);
 
-        /** Filter by snapshots with no children */
-        public static final int LEAVES      = bit(2);
+        /**  Filter by snapshots with no children */
+        public static final int LEAVES       = bit(2);
 
-        /** Filter by snapshots that have children */
-        public static final int NO_LEAVES   = bit(3);
+        /**  Filter by snapshots that have children */
+        public static final int NO_LEAVES    = bit(3);
 
-        /** Filter by snapshots which have metadata */
-        public static final int METADATA    = bit(1);
+        /**  Filter by snapshots with no metadata */
+        public static final int NO_METADATA  = bit(4);
 
-        /** Filter by snapshots with no metadata */
-        public static final int NO_METADATA = bit(4);
+        /**  Filter by snapshots taken while guest was shut off */
+        public static final int INACTIVE     = bit(5);
+
+        /**  Filter by snapshots taken while guest was active, and with
+         * memory state */
+        public static final int ACTIVE       = bit(6);
+
+        /**  Filter by snapshots taken while guest was active, but without
+         * memory state */
+        public static final int DISK_ONLY    = bit(7);
+
+        /**  Filter by snapshots stored internal to disk images */
+        public static final int INTERNAL     = bit(8);
+
+        /**  Filter by snapshots that use files external to disk images */
+        public static final int EXTERNAL     = bit(9);
+
+        /**  Ensure parents occur before children in the resulting list */
+        public static final int TOPOLOGICAL  = bit(10);
     }
 
     public static final class ModificationImpact {
@@ -1040,7 +1117,7 @@ public class Domain {
     /**
      * Migrate this domain object from its current host to the destination host
      * given by dconn (a connection to the destination host). Flags may be one
-     * of more of the following: Domain.VIR_MIGRATE_LIVE Attempt a live
+     * of more of the following: Domain.MigrateFlags.LIVE Attempt a live
      * migration. If a hypervisor supports renaming domains during migration,
      * then you may set the dname parameter to the new name (otherwise it keeps
      * the same name). If this is not supported by the hypervisor, dname must be
@@ -1112,10 +1189,10 @@ public class Domain {
      * denoted by a given URI.
      * <p>
      * The destination is given either in dconnuri (if the
-     * {@link MigrateFlags#VIR_MIGRATE_PEER2PEER PEER2PEER}
+     * {@link MigrateFlags#PEER2PEER PEER2PEER}
      * is flag set), or in miguri (if neither the
-     * {@link MigrateFlags#VIR_MIGRATE_PEER2PEER PEER2PEER} nor the
-     * {@link MigrateFlags#VIR_MIGRATE_TUNNELLED TUNNELLED} migration
+     * {@link MigrateFlags#PEER2PEER PEER2PEER} nor the
+     * {@link MigrateFlags#TUNNELED TUNNELED} migration
      * flag is set in flags).
      *
      * @see <a
@@ -1123,9 +1200,9 @@ public class Domain {
      * virDomainMigrateToURI</a>
      *
      * @param dconnuri
-     *            (optional) URI for target libvirtd if @flags includes VIR_MIGRATE_PEER2PEER
+     *            (optional) URI for target libvirtd if @flags includes PEER2PEER
      * @param miguri
-     *            (optional) URI for invoking the migration, not if @flags includs VIR_MIGRATE_TUNNELLED
+     *            (optional) URI for invoking the migration, not if @flags includs TUNNELED
      * @param dxml
      *            (optional) XML config for launching guest on target
      * @param flags
@@ -1483,7 +1560,7 @@ public class Domain {
      * @param xmlDesc
      *            string containing an XML description of the domain
      * @param flags
-     *            flags for creating the snapshot, see the virDomainSnapshotCreateFlags for the flag options
+     *            flags for creating the snapshot, see the {@link SnapshotCreateFlags } for the flag options
      * @return the snapshot
      * @throws LibvirtException
      */
@@ -1534,6 +1611,7 @@ public class Domain {
      * @see <a
      *      href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainSnapshotListNames">Libvirt
      *      Documentation</a>
+     * @param flags {@link SnapshotListFlags}
      * @return The list of names, or null if an error
      * @throws LibvirtException
      */

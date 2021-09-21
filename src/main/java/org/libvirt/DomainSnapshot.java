@@ -6,6 +6,16 @@ import static org.libvirt.ErrorHandler.processError;
 
 public class DomainSnapshot {
 
+    private static int bit(final int i) {
+        return 1 << i;
+    }
+
+    public static final class SnapshotDeleteFlags {
+        public static final int CHILDREN      = bit(0); /* Also delete children */
+        public static final int METADATA_ONLY = bit(1); /* Delete just metadata */
+        public static final int CHILDREN_ONLY = bit(2); /* Delete just children */
+    }
+
     /**
      * the native virDomainSnapshotPtr.
      */
@@ -28,7 +38,7 @@ public class DomainSnapshot {
      * @see <a
      *      href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainSnapshotDelete">Libvirt
      *      Documentation</a>
-     * @param flags
+     * @param flags see {@link SnapshotDeleteFlags}
      *            controls the deletion
      * @return <em>ignore</em> (always 0)
      * @throws LibvirtException
