@@ -120,7 +120,56 @@ public class Error implements Serializable {
         VIR_FROM_AUTH,
         /** Error from DBus */
         VIR_FROM_DBUS,
-
+        /** Error from Parallels */
+        VIR_FROM_PARALLELS,
+        /** Error from Device */
+        VIR_FROM_DEVICE,
+        /** Error from libssh2 connection transport */
+        VIR_FROM_SSH,
+        /** Error from lockspace */
+        VIR_FROM_LOCKSPACE,
+        /** Error from initctl device communication */
+        VIR_FROM_INITCTL,
+        /** Error from identity code */
+        VIR_FROM_IDENTITY,
+        /** Error from cgroups */
+        VIR_FROM_CGROUP,
+        /** Error from access control manager */
+        VIR_FROM_ACCESS,
+        /** Error from systemd code */
+        VIR_FROM_SYSTEMD,
+        /** Error from bhyve driver */
+        VIR_FROM_BHYVE,
+        /** Error from crypto code */
+        VIR_FROM_CRYPTO,
+        /** Error from firewall */
+        VIR_FROM_FIREWALL,
+        /** Error from polkit code */
+        VIR_FROM_POLKIT,
+        /** Error from thread utils */
+        VIR_FROM_THREAD,
+        /** Error from admin backend */
+        VIR_FROM_ADMIN,
+        /** Error from log manager */
+        VIR_FROM_LOGGING,
+        /** Error from Xen xl config code */
+        VIR_FROM_XENXL,
+        /** Error from perf */
+        VIR_FROM_PERF,
+        /** Error from libssh connection transport */
+        VIR_FROM_LIBSSH,
+        /** Error from resource control */
+        VIR_FROM_RESCTRL,
+        /** Error from firewalld */
+        VIR_FROM_FIREWALLD,
+        /** Error from domain checkpoint */
+        VIR_FROM_DOMAIN_CHECKPOINT,
+        /** Error from TPM */
+        VIR_FROM_TPM,
+        /** Error from BPF code */
+        VIR_FROM_BPF,
+        /** Error from Cloud-Hypervisor driver */
+        VIR_FROM_CH,
         /** unknown error domain */
         VIR_FROM_UNKNOWN; // must be the last entry!
 
@@ -247,7 +296,7 @@ public class Error implements Serializable {
         VIR_WAR_NO_STORAGE,
         /** storage pool not found */
         VIR_ERR_NO_STORAGE_POOL,
-        /** storage pool not found */
+        /** storage volume not found */
         VIR_ERR_NO_STORAGE_VOL,
         /** failed to start node driver */
         VIR_WAR_NO_NODE,
@@ -267,6 +316,14 @@ public class Error implements Serializable {
         VIR_ERR_INVALID_INTERFACE,
         /** more than one matching interface found */
         VIR_ERR_MULTIPLE_INTERFACES,
+        /** failed to start nwfilter driver */
+        VIR_WAR_NO_NWFILTER,
+        /** invalid nwfilter object */
+        VIR_ERR_INVALID_NWFILTER,
+        /** nw filter pool not found */
+        VIR_ERR_NO_NWFILTER,
+        /** nw filter pool not found */
+        VIR_ERR_BUILD_FIREWALL,
         /** failed to start secret storage */
         VIR_WAR_NO_SECRET,
         /** invalid secret */
@@ -309,7 +366,60 @@ public class Error implements Serializable {
         VIR_ERR_OVERFLOW,
         /** action prevented by block copy job */
         VIR_ERR_BLOCK_COPY_ACTIVE,
-
+        /** The requested operation is not supported */
+        VIR_ERR_OPERATION_UNSUPPORTED,
+        /** error in ssh transport driver */
+        VIR_ERR_SSH,
+        /** guest agent is unresponsive, not running or not usable */
+        VIR_ERR_AGENT_UNRESPONSIVE,
+        /** resource is already in use */
+        VIR_ERR_RESOURCE_BUSY,
+        /** operation on the object/resource was denied */
+        VIR_ERR_ACCESS_DENIED,
+        /** error from a dbus service */
+        VIR_ERR_DBUS_SERVICE,
+        /** the storage vol already exists */
+        VIR_ERR_STORAGE_VOL_EXIST,
+        /** given CPU is incompatible with host CPU */
+        VIR_ERR_CPU_INCOMPATIBLE,
+        /** XML document doesn't validate against schema */
+        VIR_ERR_XML_INVALID_SCHEMA,
+        /** Finish API succeeded but it is expected to return NULL */
+        VIR_ERR_MIGRATE_FINISH_OK,
+        /** authentication unavailable */
+        VIR_ERR_AUTH_UNAVAILABLE,
+        /** Server was not found */
+        VIR_ERR_NO_SERVER,
+        /** Client was not found */
+        VIR_ERR_NO_CLIENT,
+        /** guest agent replies with wrong id to guest-sync command (DEPRECATED) */
+        VIR_ERR_AGENT_UNSYNCED,
+        /** error in libssh transport driver */
+        VIR_ERR_LIBSSH,
+        /** fail to find the desired device */
+        VIR_ERR_DEVICE_MISSING,
+        /** invalid nwfilter binding */
+        VIR_ERR_INVALID_NWFILTER_BINDING,
+        /** no nwfilter binding */
+        VIR_ERR_NO_NWFILTER_BINDING,
+        /** invalid domain checkpoint */
+        VIR_ERR_INVALID_DOMAIN_CHECKPOINT,
+        /** domain checkpoint not found */
+        VIR_ERR_NO_DOMAIN_CHECKPOINT,
+        /** domain backup job id not found */
+        VIR_ERR_NO_DOMAIN_BACKUP,
+        /** invalid network port object */
+        VIR_ERR_INVALID_NETWORK_PORT,
+        /** the network port already exist */
+        VIR_ERR_NETWORK_PORT_EXIST,
+        /** network port not found */
+        VIR_ERR_NO_NETWORK_PORT,
+        /** no domain's hostname found */
+        VIR_ERR_NO_HOSTNAME,
+        /** checkpoint can't be used */
+        VIR_ERR_CHECKPOINT_INCONSISTENT,
+        /** more than one matching domain found */
+        VIR_ERR_MULTIPLE_DOMAINS,
         /** unknown error */
         VIR_ERR_UNKNOWN; // must be the last entry!
 
