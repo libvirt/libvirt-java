@@ -305,6 +305,9 @@ public interface Libvirt extends Library {
     int virDomainAttachDevice(DomainPointer virDomainPtr, String deviceXML);
     int virDomainAttachDeviceFlags(DomainPointer virDomainPtr,
                                    String deviceXML, int flags);
+    int virDomainBlockCommit(DomainPointer virDomainPtr, String disk,
+                             String base, String top, long bandwidth, int flags);
+    int virDomainBlockJobAbort(DomainPointer virDomainPtr, String disk, int flags);
     int virDomainBlockPeek(DomainPointer virDomainPtr,
                            String disk, long offset, SizeT size,
                            ByteBuffer buffer, int flags);
@@ -329,6 +332,7 @@ public interface Libvirt extends Library {
     int virDomainGetAutostart(DomainPointer virDomainPtr, IntByReference value);
     int virDomainGetBlockInfo(DomainPointer virDomainPtr, String path,
                               virDomainBlockInfo info, int flags);
+    int virDomainGetBlockJobInfo(DomainPointer virDomainPtr, String disk, virDomainBlockJobInfo info, int flags);
     int virDomainGetID(DomainPointer virDomainPtr);
     int virDomainGetInfo(DomainPointer virDomainPtr, virDomainInfo vInfo);
     int virDomainGetJobInfo(DomainPointer virDomainPtr, virDomainJobInfo vInfo);

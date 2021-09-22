@@ -11,6 +11,7 @@ import org.libvirt.jna.DomainSnapshotPointer;
 import org.libvirt.jna.Libvirt;
 import org.libvirt.jna.SizeT;
 import org.libvirt.jna.virDomainBlockInfo;
+import org.libvirt.jna.virDomainBlockJobInfo;
 import org.libvirt.jna.virDomainBlockStats;
 import org.libvirt.jna.virDomainInfo;
 import org.libvirt.jna.virDomainInterfaceStats;
@@ -45,6 +46,34 @@ public class Domain {
     /**
      * TODO: get generated constants from libvirt
      */
+
+    public static final class BlockCommitFlags {
+        /** NULL base means next backing file, not whole chain */
+        public static int SHALLOW         = bit(0);
+
+        /** Delete any files that are now invalid after their contents have been committed */
+        public static int DELETE          = bit(1);
+
+        /** Allow a two-phase commit when top is the active layer */
+        public static int ACTIVE          = bit(2);
+
+        /** keep the backing chain referenced using relative names */
+        public static int RELATIVE        = bit(3);
+
+        /** bandwidth in bytes/s instead of MiB/s */
+        public static int BANDWIDTH_BYTES = bit(4);
+    }
+
+    public static final class BlockJobInfoFlags {
+        /** bandwidth in bytes/s instead of MiB/s */
+        public static int BANDWIDTH_BYTES = bit(0);
+    }
+
+    public static final class BlockJobAbortFlags {
+        public static int ASYNC = bit(0);
+        public static int PIVOT = bit(1);
+    }
+
     public static final class BlockResizeFlags {
         /**
          * size is in bytes instead of KiB
@@ -504,6 +533,53 @@ public class Domain {
         processError(libvirt.virDomainBlockResize(vdp, disk, size, flags));
     }
 
+    /**
+     * Commit changes that were made to temporary top-level files within a disk
+     * image backing file chain into a lower-level base file.
+     *
+     * @see <a href="https://libvirt.org/html/libvirt-libvirt-domain.html#virDomainBlockCommit">
+     *    virDomainBlockCommit</a>
+     * @param disk path to the block device, or device shorthand
+     * @param base path to backing file to merge into, or device shorthand, or
+     *             NULL for default
+     * @param top path to file within backing chain that contains data to be
+     *            merged, or device shorthand, or NULL to merge all possible data
+     * @param bandwidth (optional) specify bandwidth limit; flags determine the unit
+     * @param flags bitwise-OR of {@link BlockCommitFlags}
+     * @throws LibvirtException
+     */
+    public void blockCommit(String disk, String base, String top, long bandwidth, int flags) throws LibvirtException {
+        processError(libvirt.virDomainBlockCommit(vdp, disk, base, top, bandwidth, flags));
+    }
+
+    /**
+     * Request block job information for the given disk.
+     *
+     * @see <a href="https://libvirt.org/html/libvirt-libvirt-domain.html#virDomainGetBlockJobInfo">
+     *    virDomainGetBlockJobInfo</a>
+     * @param disk path to the block device, or device shorthand
+     * @param flags see {@link BlockJobInfoFlags}
+     * @return the statistics in a BlockJobInfo object
+     * @throws LibvirtException
+     */
+    public DomainBlockJobInfo getBlockJobInfo(String disk, int flags) throws LibvirtException {
+        final virDomainBlockJobInfo info = new virDomainBlockJobInfo();
+        processError(libvirt.virDomainGetBlockJobInfo(vdp, disk, info, flags));
+        return new DomainBlockJobInfo(info);
+    }
+
+    /**
+     * Cancel the active block job on the given disk.
+     *
+     * @see <a href="https://libvirt.org/html/libvirt-libvirt-domain.html#virDomainBlockJobAbort">
+     *    virDomainBlockJobAbort</a>
+     * @param disk path to the block device, or device shorthand
+     * @param flags see {@link BlockJobAbortFlags}
+     * @throws LibvirtException
+     */
+    public void blockJobAbort(String disk, int flags) throws LibvirtException {
+        processError(libvirt.virDomainBlockJobAbort(vdp, disk, flags));
+    }
 
     /**
      * Dumps the core of this domain on a given file for analysis. Note that for
