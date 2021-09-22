@@ -3,7 +3,12 @@ package org.libvirt;
 import java.nio.ByteBuffer;
 import java.util.concurrent.TimeUnit;
 
+import org.libvirt.event.AgentLifecycleListener;
 import org.libvirt.event.IOErrorListener;
+import org.libvirt.event.LifecycleListener;
+import org.libvirt.event.PMSuspendListener;
+import org.libvirt.event.PMWakeupListener;
+import org.libvirt.event.RebootListener;
 import org.libvirt.jna.CString;
 import org.libvirt.jna.CStringByReference;
 import org.libvirt.jna.DomainPointer;
@@ -19,10 +24,7 @@ import org.libvirt.jna.virDomainJobInfo;
 import org.libvirt.jna.virDomainMemoryStats;
 import org.libvirt.jna.virSchedParameter;
 import org.libvirt.jna.virVcpuInfo;
-import org.libvirt.event.RebootListener;
-import org.libvirt.event.LifecycleListener;
-import org.libvirt.event.PMWakeupListener;
-import org.libvirt.event.PMSuspendListener;
+
 import static org.libvirt.Library.libvirt;
 import static org.libvirt.Library.libvirtQemu;
 import static org.libvirt.ErrorHandler.processError;
@@ -1466,6 +1468,22 @@ public class Domain {
     public void addRebootListener(final RebootListener l)
             throws LibvirtException {
         virConnect.domainEventRegister(this, l);
+    }
+
+    /**
+     * Adds the specified listener to receive agent lifecycle events for this domain.
+     *
+     * @param  cb  the agent lifecycle listener
+     * @throws    LibvirtException on failure
+     *
+     * @see Connect#addAgentLifecycleListener
+     * @see Connect#removeAgentLifecycleListener
+     * @see
+     *  <a href="https://libvirt.org/html/libvirt-libvirt-domain.html#virConnectDomainEventRegisterAny">
+    virConnectDomainEventRegisterAny</a>
+     */
+    public void addAgentLifecycleListener(final AgentLifecycleListener cb) throws LibvirtException {
+        virConnect.domainEventRegister(this, cb);
     }
 
     /**

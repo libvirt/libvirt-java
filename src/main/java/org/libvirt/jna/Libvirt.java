@@ -97,6 +97,13 @@ public interface Libvirt extends Library {
                            DomainPointer virDomainPointer, Pointer opaque);
     }
 
+    interface VirConnectDomainAgentLifecycleEventCallback extends VirDomainEventCallback {
+        int eventCallback(ConnectionPointer virConnectPtr, DomainPointer virDomainPointer,
+                          int state,
+                          int reason,
+                          Pointer opaque);
+    }
+
     interface VirConnectDomainEventCallback extends VirDomainEventCallback {
         int eventCallback(ConnectionPointer virConnectPtr,
                           DomainPointer virDomainPointer,

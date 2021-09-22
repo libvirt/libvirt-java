@@ -100,7 +100,20 @@ public class Connect {
         int TRAY_CHANGE = 10;
         int PMWAKEUP = 11;
         int PMSUSPEND = 12;
-        int LAST = 13;
+        int BALLON_CHANGE = 13;
+        int PMSUSPEND_DISK = 14;
+        int DEVICE_REMOVED = 15;
+        int BLOCK_JOB_2 = 16;
+        int TUNABLE = 17;
+        int AGENT_LIFECYCLE = 18;
+        int DEVICE_ADDED = 19;
+        int MIGRATION_ITERATION = 20;
+        int JOB_COMPLETED = 21;
+        int DEVICE_REMOVAL_FAILED = 22;
+        int METADATA_CHANGE = 23;
+        int BLOCK_THRESHOLD = 24;
+        int MEMORY_FAILURE = 25;
+        int LAST = 26;
     }
 
     public enum OpenFlags implements BitFlags {
@@ -704,6 +717,52 @@ public class Connect {
         domainEventRegister(domain, DomainEventID.LIFECYCLE, virCB, cb);
     }
 
+    void domainEventRegister(final Domain domain, final AgentLifecycleListener cb) throws LibvirtException {
+        if (cb == null)
+            throw new IllegalArgumentException("AgentLifecycleCallback cannot be null");
+
+        Libvirt.VirConnectDomainAgentLifecycleEventCallback virCB = new Libvirt.VirConnectDomainAgentLifecycleEventCallback() {
+            @Override
+            public int eventCallback(ConnectionPointer virConnectPtr, DomainPointer virDomainPointer,
+                                     final int state,
+                                     final int reason,
+                                     Pointer opaque) {
+                assert vcp.equals(virConnectPtr);
+
+                try {
+                    Domain dom = Domain.constructIncRef(Connect.this, virDomainPointer);
+                    cb.onAgentLifecycleChange(dom, state, reason);
+                } catch (LibvirtException e) {
+                    throw new RuntimeException("libvirt error in  agent lifecycle callback", e);
+                }
+
+                // always return 0, regardless of what the
+                // callback method returned. This may need to be
+                // changed in the future, in case the return value
+                // is used for something by libvirt.
+                return 0;
+            }
+        };
+
+        domainEventRegister(domain, DomainEventID.AGENT_LIFECYCLE, virCB, cb);
+    }
+
+    /**
+     * Adds the specified listener to receive agent lifecycle events.
+     *
+     * @param  cb  the agent lifecycle listener
+     * @throws    LibvirtException on failure
+     *
+     * @see #removeAgentLifecycleListener
+     * @see Domain#addAgentLifecycleListener
+     * @see
+     *  <a href="https://libvirt.org/html/libvirt-libvirt-domain.html#virConnectDomainEventRegisterAny">
+    virConnectDomainEventRegisterAny</a>
+     */
+    public void addAgentLifecycleListener(final AgentLifecycleListener cb) throws LibvirtException {
+        domainEventRegister(null, cb);
+    }
+
     /**
      * Adds the specified listener to receive lifecycle events for
      * domains of this connection.
@@ -859,6 +918,21 @@ public class Connect {
      */
     public void removeLifecycleListener(final LifecycleListener l) throws LibvirtException {
         domainEventDeregister(DomainEventID.LIFECYCLE, l);
+    }
+
+    /**
+     * Removes the specified agent lifecycle event listener so that it no longer
+     * receives agent lifecycle events.
+     *
+     * @param l    the agent lifecycle event listener
+     * @throws     LibvirtException
+     *
+     * @see
+     *  <a href="https://libvirt.org/html/libvirt-libvirt-domain.html#virConnectDomainEventDeregisterAny">
+    virConnectDomainEventDeregisterAny</a>
+     */
+    public void removeAgentLifecycleListener(final AgentLifecycleListener l) throws LibvirtException {
+        domainEventDeregister(DomainEventID.AGENT_LIFECYCLE, l);
     }
 
     /**
