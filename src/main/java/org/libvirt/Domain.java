@@ -164,6 +164,26 @@ public class Domain {
         public static final int NO_METADATA = bit(4);
     }
 
+    public static final class ModificationImpact {
+
+        /** Affect current domain state */
+        public static final int VIR_DOMAIN_AFFECT_CURRENT = 0;
+
+        /** Affect running domain state */
+        public static final int VIR_DOMAIN_AFFECT_LIVE    = bit(0);
+
+        /** Affect persistent domain state */
+        public static final int VIR_DOMAIN_AFFECT_CONFIG  = bit(1);
+    }
+
+    public static final class DeviceModifyFlags {
+        public static final int VIR_DOMAIN_DEVICE_MODIFY_CONFIG  = ModificationImpact.VIR_DOMAIN_AFFECT_CONFIG;
+        public static final int VIR_DOMAIN_DEVICE_MODIFY_CURRENT = ModificationImpact.VIR_DOMAIN_AFFECT_CURRENT;
+        public static final int VIR_DOMAIN_DEVICE_MODIFY_LIVE    = ModificationImpact.VIR_DOMAIN_AFFECT_LIVE;
+        public static final int VIR_DOMAIN_DEVICE_MODIFY_FORCE   = bit(2);
+    }
+
+
     /** the native virDomainPtr. */
     DomainPointer vdp;
 
@@ -290,12 +310,12 @@ public class Domain {
     /**
      * Creates a virtual device attachment to backend.
      *
-     * @see <a href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainAttachDeviceFlags">
+     * @see <a href="https://libvirt.org/html/libvirt-libvirt-domain.html#virDomainAttachDeviceFlags">
             Libvirt Documentation</a>
      * @param xmlDesc
      *            XML description of one device
      * @param flags
-     *            the an OR'ed set of virDomainDeviceModifyFlags
+     *            the an OR'ed set of {@link DeviceModifyFlags}
      * @throws LibvirtException
      */
     public void attachDeviceFlags(final String xmlDesc, final int flags)
