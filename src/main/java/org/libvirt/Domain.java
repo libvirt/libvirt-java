@@ -290,6 +290,21 @@ public class Domain {
     }
 
 
+    public static final class VcpuFlags {
+        public static final int CONFIG  = ModificationImpact.CONFIG;
+        public static final int CURRENT = ModificationImpact.CURRENT;
+        public static final int LIVE    = ModificationImpact.LIVE;
+
+        /** Max rather than current count */
+        public static final int MAXIMUM      = bit(2);
+
+        /** Modify state of the cpu in the guest */
+        public static final int GUEST        = bit(3);
+
+        /** Make vcpus added hot(un)pluggable */
+        public static final int HOTPLUGGABLE = bit(4);
+    }
+
     /** the native virDomainPtr. */
     DomainPointer vdp;
 
@@ -1590,7 +1605,7 @@ public class Domain {
      * Dynamically changes the number of virtual CPUs used by this domain. Note
      * that this call may fail if the underlying virtualization hypervisor does
      * not support it or if growing the number is arbitrary limited. This
-     * function requires priviledged access to the hypervisor.
+     * function requires privileged access to the hypervisor.
      *
      * @param nvcpus
      *            the new number of virtual CPUs for this domain
@@ -1598,6 +1613,22 @@ public class Domain {
      */
     public void setVcpus(final int nvcpus) throws LibvirtException {
         processError(libvirt.virDomainSetVcpus(vdp, nvcpus));
+    }
+
+    /**
+     * Dynamically changes the number of virtual CPUs used by this domain. Note
+     * that this call may fail if the underlying virtualization hypervisor does
+     * not support it or if growing the number is arbitrary limited. This
+     * function requires privileged access to the hypervisor.
+     *
+     * @param nvcpus
+     *            the new number of virtual CPUs for this domain
+     * @param flags
+     *            {@link VcpuFlags}
+     * @throws LibvirtException
+     */
+    public void setVcpusFlags(final int nvcpus, final int flags) throws LibvirtException {
+        processError(libvirt.virDomainSetVcpusFlags(vdp, nvcpus, flags));
     }
 
     /**
