@@ -244,20 +244,20 @@ public class Domain {
     public static final class ModificationImpact {
 
         /** Affect current domain state */
-        public static final int VIR_DOMAIN_AFFECT_CURRENT = 0;
+        public static final int CURRENT = 0;
 
         /** Affect running domain state */
-        public static final int VIR_DOMAIN_AFFECT_LIVE    = bit(0);
+        public static final int LIVE    = bit(0);
 
         /** Affect persistent domain state */
-        public static final int VIR_DOMAIN_AFFECT_CONFIG  = bit(1);
+        public static final int CONFIG  = bit(1);
     }
 
     public static final class DeviceModifyFlags {
-        public static final int VIR_DOMAIN_DEVICE_MODIFY_CONFIG  = ModificationImpact.VIR_DOMAIN_AFFECT_CONFIG;
-        public static final int VIR_DOMAIN_DEVICE_MODIFY_CURRENT = ModificationImpact.VIR_DOMAIN_AFFECT_CURRENT;
-        public static final int VIR_DOMAIN_DEVICE_MODIFY_LIVE    = ModificationImpact.VIR_DOMAIN_AFFECT_LIVE;
-        public static final int VIR_DOMAIN_DEVICE_MODIFY_FORCE   = bit(2);
+        public static final int CONFIG  = ModificationImpact.CONFIG;
+        public static final int CURRENT = ModificationImpact.CURRENT;
+        public static final int LIVE    = ModificationImpact.LIVE;
+        public static final int FORCE   = bit(2);
     }
 
 
