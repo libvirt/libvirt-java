@@ -507,6 +507,8 @@ public interface Libvirt extends Library {
                                                  StorageVolPointer cloneVolume,
                                                  int flags);
     int virStorageVolDelete(StorageVolPointer storageVolPtr, int flags);
+    int virStorageVolDownload(StorageVolPointer storageVolPointer, StreamPointer streamPtr,
+                              long offset, long length, int flags);
     int virStorageVolFree(StorageVolPointer storageVolPtr);
     int virStorageVolGetInfo(StorageVolPointer storageVolPtr, virStorageVolInfo info);
     String virStorageVolGetKey(StorageVolPointer storageVolPtr);
@@ -522,6 +524,8 @@ public interface Libvirt extends Library {
     int virStorageVolWipe(StorageVolPointer storageVolPtr, int flags);
     int virStorageVolResize(StorageVolPointer storageVolPtr,
                             long capacity, int flags);
+    int virStorageVolUpload(StorageVolPointer storageVolPointer, StreamPointer streamPtr,
+                            long offset, long length, int flags);
 
     // Interface Methods
     int virInterfaceCreate(InterfacePointer virDevicePointer, int flags);

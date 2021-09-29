@@ -39,6 +39,20 @@ public class StorageVol {
         public static final int SHRINK = 4;
     }
 
+    public static final class DownloadFlags {
+        /**
+         * Use sparse stream
+         */
+        public static final int SPARSE_STREAM = 1;
+    }
+
+    public static final class UploadFlags {
+        /**
+         * Use sparse stream
+         */
+        public static final int SPARSE_STREAM = 1;
+    }
+
     public enum Type {
         /**
          * Regular file based volumes
@@ -214,5 +228,37 @@ public class StorageVol {
     public int resize(final long capacity, final int flags)
             throws LibvirtException {
         return processError(libvirt.virStorageVolResize(vsvp, capacity, flags));
+    }
+
+    /**
+     * Upload new content to the volume from a stream
+     *
+     * @see <a href="https://libvirt.org/html/libvirt-libvirt-storage.html#virStorageVolUpload">
+     *         Libvirt Documentation</a>
+     * @param stream stream to use as input
+     * @param offset position to start writing to
+     * @param length limit on amount of data to upload
+     * @param flags see {@link UploadFlags}
+     * @throws LibvirtException
+     */
+    public void upload(Stream stream, long offset, long length, int flags) throws LibvirtException {
+        stream.markWritable();
+        processError(libvirt.virStorageVolUpload(vsvp, stream.getVsp(), offset, length, flags));
+    }
+
+    /**
+     * Download the content of the volume as a stream
+     *
+     * @see <a href="https://libvirt.org/html/libvirt-libvirt-storage.html#virStorageVolDownload">
+     *         Libvirt Documentation</a>
+     * @param stream stream to use as output
+     * @param offset position to start reading from
+     * @param length limit on amount of data to download
+     * @param flags see {@link DownloadFlags}
+     * @throws LibvirtException
+     */
+    public void download(Stream stream, long offset, long length, int flags) throws LibvirtException {
+        stream.markReadable();
+        processError(libvirt.virStorageVolDownload(vsvp, stream.getVsp(), offset, length, flags));
     }
 }
