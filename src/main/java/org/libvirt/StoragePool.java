@@ -42,6 +42,13 @@ public class StoragePool {
         static final int VIR_STORAGE_POOL_DELETE_ZEROED = 1;
     }
 
+    public static final class VolumeCreateFlags {
+        public static final int PREALLOC_METADATA =	1;
+
+        /** perform a btrfs lightweight copy */
+        public static final int REFLINK           = 2;
+    }
+
     /**
      * the native virStoragePoolPtr.
      */
@@ -298,7 +305,7 @@ public class StoragePool {
      * @param xmlDesc
      *            description of volume to create
      * @param flags
-     *            flags for creation (unused, pass 0)
+     *            flags for creation, see {@link VolumeCreateFlags}
      * @return the storage volume
      * @throws LibvirtException
      */
@@ -314,6 +321,12 @@ public class StoragePool {
      * as input. Information for the new volume (name, perms) are passed via a
      * typical volume XML description.
      *
+     * @param xmlDesc
+     *            description of volume to create
+     * @param cloneVolume
+     *            storage volume to use as input
+     * @param flags
+     *            flags for creation, see {@link VolumeCreateFlags}
      * @return The storage volume
      * @throws LibvirtException
      */
