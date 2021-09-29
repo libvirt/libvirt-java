@@ -195,6 +195,26 @@ public class Domain {
         public static final int SNAPSHOTS_METADATA = bit(1);
     }
 
+    public static final class RebootFlags {
+        /** hypervisor choice */
+        public static final int DEFAULT        = 0;
+
+        /** Send ACPI event */
+        public static final int ACPI_POWER_BTN = bit(0);
+
+        /**  Use guest agent */
+        public static final int GUEST_AGENT    = bit(1);
+
+        /**  Use initctl */
+        public static final int INITCTL        = bit(2);
+
+        /**  Send a signal */
+        public static final int SIGNAL          = bit(3);
+
+        /**  Use paravirt guest control */
+        public static final int PARAVIRT        = bit(4);
+    }
+
     public static final class SnapshotCreateFlags {
 
         /**	Restore or alter metadata */
@@ -1398,7 +1418,7 @@ public class Domain {
      * ignore the request.
      *
      * @param flags
-     *            extra flags for the reboot operation, not used yet
+     *            extra flags for the reboot operation, see {@link RebootFlags}
      * @throws LibvirtException
      */
     public void reboot(final int flags) throws LibvirtException {
