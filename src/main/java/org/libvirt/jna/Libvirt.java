@@ -345,6 +345,7 @@ public interface Libvirt extends Library {
     int virDomainGetJobInfo(DomainPointer virDomainPtr, virDomainJobInfo vInfo);
     NativeLong virDomainGetMaxMemory(DomainPointer virDomainPtr);
     int virDomainGetMaxVcpus(DomainPointer virDomainPtr);
+    String virDomainGetMetadata(DomainPointer virDomainPtr, int type, String uri, int flags);
     String virDomainGetName(DomainPointer virDomainPtr);
     CString virDomainGetOSType(DomainPointer virDomainPtr);
     int virDomainGetSchedulerParameters(DomainPointer virDomainPtr,
@@ -414,6 +415,8 @@ public interface Libvirt extends Library {
     int virDomainSetAutostart(DomainPointer virDomainPtr, int autoStart);
     int virDomainSetMaxMemory(DomainPointer virDomainPtr, NativeLong maxMemory);
     int virDomainSetMemory(DomainPointer virDomainPtr, NativeLong maxMemory);
+    int virDomainSetMetadata(DomainPointer domain, int type, String metadata, String key,
+                             String uri, int flags);
     int virDomainSetSchedulerParameters(DomainPointer virDomainPtr,
                                         virSchedParameter[] params, int nparams);
     int virDomainSetVcpus(DomainPointer virDomainPtr, int nvcpus);

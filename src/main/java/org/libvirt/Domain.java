@@ -103,6 +103,17 @@ public class Domain {
         public static final int VALIDATE     = bit(4);
     }
 
+    public static final class MetadataType {
+        /** Operate on &lt;description> */
+        public static final int DESCRIPTION = 0;
+
+        /** Operate on &lt;title> */
+        public static final int TITLE       = 1;
+
+        /** Operate on &lt;metadata> */
+        public static final int ELEMENT     = 2;
+    }
+
     public static final class MigrateFlags {
         /** live migration */
         public static final int LIVE              = bit(0);
@@ -815,6 +826,19 @@ public class Domain {
      */
     public int getMaxVcpus() throws LibvirtException {
         return processError(libvirt.virDomainGetMaxVcpus(vdp));
+    }
+
+    /**
+     * Retrieves the appropriate domain element given by type.
+     *
+     * @param type type of metadata, see {@link MetadataType}
+     * @param uri XML namespace identifier if type == MetadataType.ELEMENT, null otherwise
+     * @param flags bitwise-OR of {@link ModificationImpact}
+     * @return the metadata string
+     * @throws LibvirtException
+     */
+    public String getMetadata(int type, String uri, int flags) throws LibvirtException {
+        return processError(libvirt.virDomainGetMetadata(vdp, type, uri, flags));
     }
 
     /**
@@ -1621,6 +1645,32 @@ public class Domain {
      */
     public void setMemory(final long memory) throws LibvirtException {
         processError(libvirt.virDomainSetMemory(vdp, new NativeLong(memory)));
+    }
+
+    /**
+     * Sets the appropriate domain element given by type to the value of metadata.
+     *
+     * A type of MetadataType.DESCRIPTION is free-form text; MetadataType.TITLE is
+     * free-form, but no newlines are permitted, and should be short (although the length
+     * is not enforced). For these two options key and uri are irrelevant and must be set
+     * to null.
+     *
+     * For type MetadataType.ELEMENT metadata must be well-formed XML belonging to
+     * namespace defined by uri with local name key.
+     *
+     * Passing null for metadata says to remove that element from the domain XML (passing
+     * the empty string leaves the element present).
+     *
+     * @param type see {@link MetadataType}
+     * @param metadata the new metadata content
+     * @param key XML namespace prefix for type MetadataType.ELEMENT, null otherwise
+     * @param uri XML namespace URI for typeMetadataType.ELEMENT, null otherwise
+     * @param flags see {@link ModificationImpact}
+     * @throws LibvirtException
+     */
+    public void setMetadata(int type, String metadata, String key, String uri, int flags)
+            throws LibvirtException {
+        processError(libvirt.virDomainSetMetadata(vdp, type, metadata, key, uri, flags));
     }
 
     /**

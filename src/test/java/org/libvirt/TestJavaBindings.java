@@ -9,6 +9,7 @@ import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.regex.Pattern;
 
 import junit.framework.TestCase;
 
@@ -357,5 +358,28 @@ public final class TestJavaBindings extends TestCase {
             fail("ClosedChannelException expected calling read() on a closed stream");
         } catch (ClosedChannelException expected) {
         }
+    }
+
+    public void testDomainMetadata() throws LibvirtException {
+        Domain dom = conn.domainDefineXML("<domain type='test' id='2'>" + "  <name>metatest</name>"
+                + "  <uuid>004b96e1-2d78-c30f-5aa5-f03c87d21e70</uuid>" + "  <memory>8388608</memory>"
+                + "  <vcpu>2</vcpu>" + "  <os><type arch='i686'>hvm</type></os>" + "  <on_reboot>restart</on_reboot>"
+                + "  <on_poweroff>destroy</on_poweroff>" + "  <on_crash>restart</on_crash>" + "</domain>");
+
+        dom.setMetadata(Domain.MetadataType.DESCRIPTION, "a description", null, null, Domain.ModificationImpact.CURRENT);
+        dom.setMetadata(Domain.MetadataType.TITLE, "a title", null, null, Domain.ModificationImpact.CURRENT);
+        String xml1 = "<test><property name=\"key\">value</property></test>";
+        Pattern pattern1 = Pattern.compile("<test>\\s*<property\\s+name=\"key\">value</property>\\s*</test>");
+        String uri1 = "http://libvirt.org/test.rng";
+        dom.setMetadata(Domain.MetadataType.ELEMENT, xml1, "pfx", uri1, Domain.ModificationImpact.CURRENT);
+        String xml2 = "<test><property name=\"key2\">value2</property></test>";
+        Pattern pattern2 = Pattern.compile("<test>\\s*<property\\s+name=\"key2\">value2</property>\\s*</test>");
+        String uri2 = "http://libvirt.org/othertest.rng";
+        dom.setMetadata(Domain.MetadataType.ELEMENT, xml2, "pfx", uri2, Domain.ModificationImpact.CURRENT);
+
+        assertEquals("a description", dom.getMetadata(Domain.MetadataType.DESCRIPTION, null, Domain.ModificationImpact.CURRENT));
+        assertEquals("a title", dom.getMetadata(Domain.MetadataType.TITLE, null, Domain.ModificationImpact.CURRENT));
+        assertTrue(pattern1.matcher(dom.getMetadata(Domain.MetadataType.ELEMENT, uri1, Domain.ModificationImpact.CURRENT)).matches());
+        assertTrue(pattern2.matcher(dom.getMetadata(Domain.MetadataType.ELEMENT, uri2, Domain.ModificationImpact.CURRENT)).matches());
     }
 }
