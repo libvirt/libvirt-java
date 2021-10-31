@@ -330,6 +330,7 @@ public class Connect {
             throws LibvirtException {
         virConnectAuth vAuth = null;
 
+        Memory mem;
         if (auth != null) {
             vAuth = new virConnectAuth();
             vAuth.cb = auth;
@@ -341,7 +342,7 @@ public class Connect {
                 authInts[x] = auth.credType[x].mapToInt();
             }
 
-            Memory mem = new Memory(4 * vAuth.ncredtype);
+            mem = new Memory(4 * vAuth.ncredtype);
             mem.write(0, authInts, 0, vAuth.ncredtype);
             vAuth.credtype = mem.share(0);
         }
