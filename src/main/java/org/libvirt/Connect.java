@@ -608,6 +608,36 @@ public class Connect {
         handlers.put(l, new RegisteredEventListener(cb, ret));
     }
 
+    void domainEventRegister(final Domain domain, final BlockJobListener cb) throws LibvirtException{
+        if (cb == null) {
+            throw new IllegalArgumentException("BlockCopy callback cannot be null");
+        }
+
+        Libvirt.VirConnectDomainEventBlockJobCallback virCB =
+            new Libvirt.VirConnectDomainEventBlockJobCallback() {
+                @Override
+                public void eventCallback(final ConnectionPointer virConnectPtr,
+                                          final DomainPointer virDomainPointer,
+                                          final String diskPath,
+                                          final int type,
+                                          final int status,
+                                          final Pointer opaque) {
+                    assert vcp.equals(virConnectPtr);
+
+                    try {
+                        Domain d = Domain.constructIncRef(Connect.this, virDomainPointer);
+                        cb.onEvent(d,
+                                   diskPath,
+                                   getConstant(BlockJobType.class, type),
+                                   getConstant(BlockJobStatus.class, status));
+                    } catch (LibvirtException e) {
+                        throw new RuntimeException("libvirt error in Block Job Callback", e);
+                    }
+                }
+            };
+        domainEventRegister(domain, DomainEventID.BLOCK_JOB_2, virCB, cb);
+    }
+
     void domainEventRegister(final Domain domain, final IOErrorListener cb)
             throws LibvirtException {
         if (cb == null) {
@@ -951,6 +981,17 @@ public class Connect {
      */
     public void addRebootListener(final RebootListener l) throws LibvirtException {
         domainEventRegister(null, l);
+    }
+
+    /**
+     * Removes the specified Block Job listener so that it no longer
+     * receives events
+     * @param l
+     * @throws LibvirtException
+     */
+
+    public void removeBlockJobListener(final BlockJobListener l) throws LibvirtException {
+        domainEventDeregister(DomainEventID.BLOCK_JOB_2, l);
     }
 
     /**

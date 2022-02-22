@@ -83,6 +83,15 @@ public interface Libvirt extends Library {
      */
     interface VirDomainEventCallback extends Callback {}
 
+    interface VirConnectDomainEventBlockJobCallback extends VirDomainEventCallback {
+        void eventCallback(ConnectionPointer virConnectPtr,
+                           DomainPointer virDomainPointer,
+                           String diskPath,
+                           int type,
+                           int status,
+                           Pointer opaque);
+    }
+
     interface VirConnectDomainEventIOErrorCallback extends VirDomainEventCallback {
         void eventCallback(ConnectionPointer virConnectPtr,
                            DomainPointer virDomainPointer,
@@ -164,6 +173,7 @@ public interface Libvirt extends Library {
     int VIR_UUID_BUFLEN = 16;
     int VIR_UUID_STRING_BUFLEN = 36 + 1;
     int VIR_DOMAIN_SCHED_FIELD_LENGTH = 80;
+    int VIR_TYPED_PARAM_FIELD_LENGTH = 80;
 
     // Connection Functions
     CString virConnectBaselineCPU(ConnectionPointer virConnectPtr,
@@ -314,6 +324,9 @@ public interface Libvirt extends Library {
                                    String deviceXML, int flags);
     int virDomainBlockCommit(DomainPointer virDomainPtr, String disk,
                              String base, String top, long bandwidth, int flags);
+    int virDomainBlockCopy(DomainPointer virDomainPtr, String disk,
+                           String deviceXML, virTypedParameter[] params,
+                           int nparams, int flags);
     int virDomainBlockJobAbort(DomainPointer virDomainPtr, String disk, int flags);
     int virDomainBlockPeek(DomainPointer virDomainPtr,
                            String disk, long offset, SizeT size,

@@ -4,6 +4,7 @@ import java.nio.ByteBuffer;
 import java.util.concurrent.TimeUnit;
 
 import org.libvirt.event.AgentLifecycleListener;
+import org.libvirt.event.BlockJobListener;
 import org.libvirt.event.IOErrorListener;
 import org.libvirt.event.LifecycleListener;
 import org.libvirt.event.PMSuspendListener;
@@ -23,6 +24,7 @@ import org.libvirt.jna.virDomainInterfaceStats;
 import org.libvirt.jna.virDomainJobInfo;
 import org.libvirt.jna.virDomainMemoryStats;
 import org.libvirt.jna.virSchedParameter;
+import org.libvirt.jna.virTypedParameter;
 import org.libvirt.jna.virVcpuInfo;
 
 import static org.libvirt.Library.libvirt;
@@ -64,6 +66,52 @@ public class Domain {
 
         /** bandwidth in bytes/s instead of MiB/s */
         public static int BANDWIDTH_BYTES = bit(4);
+    }
+
+    public static final class BlockCopyFlags {
+        /** Limit copy to top of source backing chain */
+        public static int SHALLOW            = bit(0);
+
+        /** Reuse existing external file for a copy */
+        public static int REUSE_EXT          = bit(1);
+
+        /** Don't force usage of recoverable job for the copy operation */
+        public static int TRANSIENT_JOB      = bit(2);
+
+        /**
+         * Force the copy job to synchronously propagate guest writes into the destination image,
+         * so that the copy is guaranteed to converge
+         */
+        public static int SYNCHRONOUS_WRITES = bit(3);
+    }
+
+    public static final class BlockCopyParameters {
+        /**
+         * The maximum bandwidth in bytes/s, and is used while getting the copy operation
+         * into the mirrored phase, with a type of ullong.
+         *
+         * @see <a href="https://libvirt.org/html/libvirt-libvirt-domain.html#VIR_DOMAIN_BLOCK_COPY_BANDWIDTH">
+         *     Libvirt Documentation</a>
+         */
+        public static String BANDWIDTH = "bandwidth";
+
+        /**
+         *  How much data in bytes can be in flight between source and destination,
+         *  as an unsigned long long.
+         *
+         * @see <a href="https://libvirt.org/html/libvirt-libvirt-domain.html#VIR_DOMAIN_BLOCK_COPY_BUF_SIZE">
+         *     Libvirt Documentation</a>
+         */
+        public static String BUF_SIZE = "buf-size";
+
+        /**
+         * The granularity in bytes at which the copy operation recognizes dirty blocks that need copying,
+         * as an unsigned int.
+         *
+         * @see <a href="https://libvirt.org/html/libvirt-libvirt-domain.html#VIR_DOMAIN_BLOCK_COPY_GRANULARITY">
+         *     Libvirt Documentation</a>
+         */
+        public static String GRANULARITY = "granularity";
     }
 
     public static final class BlockJobInfoFlags {
@@ -475,6 +523,32 @@ public class Domain {
     public void attachDeviceFlags(final String xmlDesc, final int flags)
             throws LibvirtException {
         processError(libvirt.virDomainAttachDeviceFlags(vdp, xmlDesc, flags));
+    }
+
+    /**
+     * This function migrates domain's live block device (disk) to another
+     * block device.
+     *
+     * @see <a href="https://libvirt.org/html/libvirt-libvirt-domain.html#virDomainBlockCopy">
+     *    virDomainBlockCopy</a>
+     * @param diskPath
+     *            Path to current disk
+     * @param xmlDesc
+     *            XML description of destination disk
+     * @param params
+     *            Hypervisor-specific tuning parameters
+     * @param flags
+     *            Bitwise OR'ed values of {@link BlockCopyFlags}
+     * @throws LibvirtException
+     */
+    public void blockCopy(final String diskPath, final String xmlDesc,
+                          final TypedParameter[] params, final int flags) throws LibvirtException {
+        assert params != null : "blockCopy typed parameters cannot be null";
+        virTypedParameter[] input = new virTypedParameter[params.length];
+        for (int x = 0; x < params.length; x++) {
+            input[x] = TypedParameter.toNative(params[x]);
+        }
+        processError(libvirt.virDomainBlockCopy(vdp, diskPath, xmlDesc, input, input.length, flags));
     }
 
     /**
@@ -1460,6 +1534,29 @@ public class Domain {
      */
     public void resume() throws LibvirtException {
         processError(libvirt.virDomainResume(vdp));
+    }
+
+    /**
+     * Adds a callback to receive notifications of Block Job events
+     *
+     * @see <a
+     *      href="http://www.libvirt.org/html/libvirt-libvirt.html#virConnectDomainEventRegisterAny">Libvirt
+     *      Documentation</a>
+     * @param cb
+     * @throws LibvirtException
+     */
+    public void addBlockJobListener(final BlockJobListener cb) throws LibvirtException {
+        virConnect.domainEventRegister(this, cb);
+    }
+
+    /**
+     * Removes BlockJobListener from the event framework, so it no longer receives events
+     * @param cb
+     *         The BlockJobListener
+     * @throws LibvirtException
+     */
+    public void removeBlockJobListener(final BlockJobListener cb) throws LibvirtException {
+        virConnect.removeBlockJobListener(cb);
     }
 
     /**
