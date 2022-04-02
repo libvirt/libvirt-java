@@ -11,6 +11,7 @@ import com.sun.jna.Pointer;
 import com.sun.jna.Structure;
 import com.sun.jna.ptr.IntByReference;
 import com.sun.jna.ptr.LongByReference;
+import com.sun.jna.ptr.PointerByReference;
 
 import java.util.Arrays;
 import java.util.List;
@@ -375,6 +376,8 @@ public interface Libvirt extends Library {
     CString virDomainGetXMLDesc(DomainPointer virDomainPtr, int flags);
     int virDomainHasCurrentSnapshot(DomainPointer virDomainPtr, int flags);
     int virDomainHasManagedSaveImage(DomainPointer virDomainPtr, int flags);
+    int virDomainInterfaceAddresses(DomainPointer virDomainPtr, PointerByReference ifaces, int source, int flags);
+    int virDomainInterfaceFree(virDomainInterface.Ptr pointer);
     int virDomainInterfaceStats(DomainPointer virDomainPtr, String path,
                                 virDomainInterfaceStats stats, SizeT size);
     int virDomainIsActive(DomainPointer virDomainPtr);

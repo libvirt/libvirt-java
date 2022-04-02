@@ -1,8 +1,12 @@
 package org.libvirt;
 
 import java.nio.ByteBuffer;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.concurrent.TimeUnit;
 
+import com.sun.jna.Pointer;
+import com.sun.jna.ptr.PointerByReference;
 import org.libvirt.event.AgentLifecycleListener;
 import org.libvirt.event.BlockJobListener;
 import org.libvirt.event.IOErrorListener;
@@ -20,6 +24,7 @@ import org.libvirt.jna.virDomainBlockInfo;
 import org.libvirt.jna.virDomainBlockJobInfo;
 import org.libvirt.jna.virDomainBlockStats;
 import org.libvirt.jna.virDomainInfo;
+import org.libvirt.jna.virDomainInterface;
 import org.libvirt.jna.virDomainInterfaceStats;
 import org.libvirt.jna.virDomainJobInfo;
 import org.libvirt.jna.virDomainMemoryStats;
@@ -37,6 +42,7 @@ import com.sun.jna.NativeLong;
 import com.sun.jna.ptr.IntByReference;
 
 import java.util.Arrays;
+import java.util.stream.Collectors;
 
 /**
  * A virtual machine defined within libvirt.
@@ -352,6 +358,18 @@ public class Domain {
         /**  Validate the XML document against schema */
         public static final int VALIDATE     = bit(4);
     }
+
+    public static final class InterfaceAddressesSource {
+        /** Parse DHCP lease file */
+        public static final int VIR_DOMAIN_INTERFACE_ADDRESSES_SRC_LEASE = 0;
+
+        /** Query qemu guest agent */
+        public static final int VIR_DOMAIN_INTERFACE_ADDRESSES_SRC_AGENT = 1;
+
+        /** Query ARP tables */
+        public static final int VIR_DOMAIN_INTERFACE_ADDRESSES_SRC_ARP = 2;
+    }
+
 
     public static final class MetadataType {
         /** Operate on &lt;description> */
@@ -1302,6 +1320,60 @@ public class Domain {
      */
     public int hasManagedSaveImage() throws LibvirtException {
         return processError(libvirt.virDomainHasManagedSaveImage(vdp, 0));
+    }
+
+    /** Retrieves a list of the network interfaces present in given domain along with their IP and MAC addresses.
+     *  Note that single interface can have multiple or even 0 IP addresses.
+     *  If source is VIR_DOMAIN_INTERFACE_ADDRESSES_SRC_LEASE, the DHCP lease file associated with any virtual
+     *  networks will be examined to obtain the interface addresses. This only returns data for interfaces which are
+     *  connected to virtual networks managed by libvirt.
+     *  If source is VIR_DOMAIN_INTERFACE_ADDRESSES_SRC_AGENT, a configured guest agent is needed for successful
+     *  return from this API. Moreover, if guest agent is used then the interface name is the one seen by guest OS.
+     *  To match such interface with the one from dom XML use MAC address or IP range.
+     *  If source is VIR_DOMAIN_INTERFACE_ADDRESSES_SRC_ARP, the host ARP table will be check to obtain the interface
+     *  addresses. As the arp cache refreshes in time, the returned ip address may be unreachable. Depending on the
+     *  route table config of the guest, the returned mac address may be duplicated.
+     *
+     *  Note that for some source values some pieces of returned ifaces might be unset (e.g.
+     *  VIR_DOMAIN_INTERFACE_ADDRESSES_SRC_ARP does not set IP address prefix as ARP table does not have any notion
+     *  of that).
+     *
+     *  name and hwaddr of the returned interfaces are never NULL.
+     *
+     * @param source one of the {@link InterfaceAddressesSource} constants
+     * @param flags currently unused, pass zero
+     * @return the interfaces of this domain
+     * @throws LibvirtException if something goes wrong
+     */
+    public Collection<DomainInterface> interfaceAddresses(int source, int flags) throws LibvirtException {
+        PointerByReference ifaces = new PointerByReference();
+        ifaces.setValue(Pointer.NULL);
+        int count = libvirt.virDomainInterfaceAddresses(vdp, ifaces, source, flags);
+
+        if (ifaces.getValue() == null) {
+            if (count != 0) {
+                processError(count);
+                throw new IllegalStateException("virDomainInterfaceAddresses returned " + count);
+            }
+            return Collections.emptyList();
+        }
+
+        try {
+            if (count < 0) {
+                processError(count);
+                throw new IllegalStateException("virDomainInterfaceAddresses returned " + count);
+            }
+            return Arrays.stream(ifaces.getValue().getPointerArray(0, count))
+                    .map(virDomainInterface::new)
+                    .map(vdi -> {
+                        DomainInterface di = new DomainInterface(vdi);
+                        libvirt.virDomainInterfaceFree(vdi.getPtr());
+                        return di;
+                    })
+                    .collect(Collectors.toList());
+        } finally {
+            Library.free(ifaces.getValue());
+        }
     }
 
     /**

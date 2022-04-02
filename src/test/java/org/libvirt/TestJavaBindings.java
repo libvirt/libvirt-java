@@ -2,11 +2,11 @@ package org.libvirt;
 
 import org.libvirt.event.*;
 
-import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.ClosedChannelException;
 import java.util.Arrays;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 import java.util.regex.Pattern;
@@ -381,5 +381,24 @@ public final class TestJavaBindings extends TestCase {
         assertEquals("a title", dom.getMetadata(Domain.MetadataType.TITLE, null, Domain.ModificationImpact.CURRENT));
         assertTrue(pattern1.matcher(dom.getMetadata(Domain.MetadataType.ELEMENT, uri1, Domain.ModificationImpact.CURRENT)).matches());
         assertTrue(pattern2.matcher(dom.getMetadata(Domain.MetadataType.ELEMENT, uri2, Domain.ModificationImpact.CURRENT)).matches());
+    }
+
+    public void testDomainInterfaceAddresses() throws LibvirtException {
+        if (conn.getLibVersion() < 5004000) { return; } // earlier versions do not support the call
+        Domain dom = conn.domainDefineXML("<domain type='test' id='2'>" + "  <name>ifacetest</name>"
+                + "  <uuid>7814e417-b628-4e6b-bbd3-a82cb15483f2</uuid>" + "  <memory>8388608</memory>"
+                + "  <vcpu>2</vcpu>" + "  <os><type arch='i686'>hvm</type></os>" + "  <on_reboot>restart</on_reboot>"
+                + "  <on_poweroff>destroy</on_poweroff>" + "  <on_crash>restart</on_crash>" + "</domain>");
+        dom.create();
+
+        try {
+            Collection<DomainInterface> ifaces = dom.interfaceAddresses(Domain.InterfaceAddressesSource.VIR_DOMAIN_INTERFACE_ADDRESSES_SRC_LEASE, 0);
+            assertNotNull(ifaces);
+            assertTrue(ifaces.isEmpty());
+            // Can't really test this without a live network inside the guest. :-(
+        } finally {
+            dom.destroy();
+            dom.undefine();
+        }
     }
 }

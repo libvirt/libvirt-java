@@ -13,6 +13,11 @@ import com.sun.jna.ptr.IntByReference;
  */
 public class Network {
 
+    public static final class IP_Addr_Type {
+        public static final int IP_ADDR_TYPE_IPV4 = 0;
+        public static final int IP_ADDR_TYPE_IPV6 = 1;
+    }
+
     /**
      * The native virNetworkPtr
      */
