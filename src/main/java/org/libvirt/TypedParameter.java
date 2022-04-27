@@ -16,6 +16,7 @@ public abstract class TypedParameter {
     protected static final int TYPED_PARAM_ULONG = 4;
     protected static final int TYPED_PARAM_DOUBLE = 5;
     protected static final int TYPED_PARAM_BOOLEAN = 6;
+    protected static final int TYPED_PARAM_STRING = 7;
 
     /**
      * Parameter name
@@ -65,7 +66,10 @@ public abstract class TypedParameter {
                 case TYPED_PARAM_BOOLEAN:
                     returnValue = new TypedBooleanParameter(vParam.value.b);
                     break;
-                default:
+                case TYPED_PARAM_STRING:
+                    returnValue = new TypedStringParameter(vParam.value.s);
+                    break;
+            default:
                     // Unknown type: nothing to do.
             }
             if (returnValue != null) {
@@ -105,7 +109,11 @@ public abstract class TypedParameter {
                 returnValue.value.b = (byte) (((TypedBooleanParameter) param).value ? 1 : 0);
                 returnValue.value.setType(byte.class);
                 break;
-            default:
+            case TYPED_PARAM_STRING:
+                returnValue.value.s = ((TypedStringParameter)param).value;
+                returnValue.value.setType(String.class);
+                break;
+        default:
                 // Unknown type: nothing to do.
         }
         return returnValue;

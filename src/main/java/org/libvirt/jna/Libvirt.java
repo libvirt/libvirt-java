@@ -399,6 +399,11 @@ public interface Libvirt extends Library {
                                     ConnectionPointer virConnectPtr, String dxml,
                                     NativeLong flags, String dname, String uri,
                                     NativeLong bandwidth);
+    DomainPointer virDomainMigrate3(DomainPointer virDomainPtr,
+                                    ConnectionPointer virConnectPtr,
+                                    virTypedParameter[] params,
+                                    int nparams,
+                                    NativeLong flags);
     int virDomainMigrateSetMaxDowntime(DomainPointer virDomainPtr,
                                        long downtime, int flags);
     int virDomainMigrateToURI(DomainPointer virDomainPtr, String duri,

@@ -114,6 +114,208 @@ public class Domain {
         public static String GRANULARITY = "granularity";
     }
 
+    /**
+     * Contains multiple constants that defines "virDomainMigrate* params" multiple field.
+     * @see <a href="https://libvirt.org/html/libvirt-libvirt-domain.html">Libvirt domain documentation.</a>, and
+     *      <a href="https://gitlab.com/libvirt/libvirt/-/blob/master/include/libvirt/libvirt-domain.h">libvirt-domain.h</a>.
+     */
+    public static final class DomainMigrateParameters {
+        /**
+         * Lists the block devices to be migrated.
+         * At the moment this is only supported by the QEMU driver but not for the tunnelled migration.
+         *
+         * @see <a href="https://libvirt.org/html/libvirt-libvirt-domain.html#VIR_MIGRATE_PARAM_MIGRATE_DISKS">
+         *     Libvirt Documentation</a>
+         */
+        public static final String VIR_MIGRATE_PARAM_MIGRATE_DISKS = "migrate_disks";
+
+        /**
+         * The new configuration to be used for the domain on the destination host as
+         * TYPED_PARAM_STRING. The configuration must include an identical set of
+         * virtual devices, to ensure a stable guest ABI across migration.
+         *
+         * @see <a href="https://libvirt.org/html/libvirt-libvirt-domain.html#VIR_MIGRATE_PARAM_DEST_XML">
+         *     Libvirt Documentation</a>
+         */
+        public static final String VIR_MIGRATE_PARAM_DEST_XML = "destination_xml";
+
+        /**
+         * The new persistent configuration to be used for the domain on the destination host as
+         * TYPED_PARAM_STRING. This field cannot be used to rename the domain during migration.
+         * Domain name in the destination XML must match the original domain name.
+         * Omitting this parameter keeps the original domain persistent configuration.
+         *  @see <a href="https://libvirt.org/html/libvirt-libvirt-domain.html#VIR_MIGRATE_PARAM_PERSIST_XML">
+         *      Libvirt Documentation</a>
+         */
+        public static final String VIR_MIGRATE_PARAM_PERSIST_XML = "persistent_xml";
+
+        /**
+         * The maximum bandwidth (in MiB/s) that will be used for migration as TYPED_PARAM_ULLONG.
+         * If set to 0 or omitted, libvirt will choose a suitable default. Some hypervisors do not
+         * support this feature and will return an error if this field is used and is not 0.
+         *
+         * @see <a href="https://libvirt.org/html/libvirt-libvirt-domain.html#VIR_MIGRATE_PARAM_BANDWIDTH">
+         *     Libvirt Documentation</a>
+         */
+        public static final String VIR_MIGRATE_PARAM_BANDWIDTH = "bandwidth";
+
+        /**
+         * The maximum bandwidth (in MiB/s) that will be used for post-copy phase of a migration
+         * as TYPED_PARAM_ULLONG. If set to 0 or omitted, post-copy migration speed will not be limited.
+         *
+         * @see <a href="https://libvirt.org/html/libvirt-libvirt-domain.html#VIR_MIGRATE_PARAM_BANDWIDTH_POSTCOPY">
+         *     Libvirt Documentation</a>
+         */
+        public static final String VIR_MIGRATE_PARAM_BANDWIDTH_POSTCOPY = "bandwidth.postcopy";
+
+        /**
+         * The name to be used for the domain on the destination host as TYPED_PARAM_STRING.
+         * Omitting this parameter keeps the domain name the same. This field is only allowed to be
+         * used with hypervisors that support domain renaming during migration.
+         *
+         * @see <a href="https://libvirt.org/html/libvirt-libvirt-domain.html#VIR_MIGRATE_PARAM_DEST_NAME">
+         *     Libvirt Documentation</a>
+         */
+        public static final String VIR_MIGRATE_PARAM_DEST_NAME = "destination_name";
+
+        /**
+         * URI to use for migrating client's connection to domain's graphical console, as TYPED_PARAM_STRING.
+         * If specified, the client will be asked to automatically reconnect using these parameters instead of
+         * the automatically computed ones.
+         *
+         * @see <a href="https://libvirt.org/html/libvirt-libvirt-domain.html#VIR_MIGRATE_PARAM_GRAPHICS_URI">
+         *     Libvirt Documentation</a>
+         */
+        public static final String VIR_MIGRATE_PARAM_GRAPHICS_URI = "graphics_uri";
+
+        /**
+         * The listen address that hypervisor on the destination side should bind to for incoming migration.
+         * Both IPv4 and IPv6 addresses are accepted as well as hostnames (the resolving is done on destination).
+         * Some hypervisors do not support this feature and will return an error if this field is used.
+         *
+         * @see <a href="https://libvirt.org/html/libvirt-libvirt-domain.html#VIR_MIGRATE_PARAM_LISTEN_ADDRESS">
+         *     Libvirt Documentation</a>
+         */
+        public static final String VIR_MIGRATE_PARAM_LISTEN_ADDRESS = "listen_address";
+
+        /**
+         * URI to use for initiating domain migration as TYPED_PARAM_STRING. It takes a hypervisor specific format.
+         * The uri_transports element of the hypervisor capabilities XML includes details of the
+         * supported URI schemes. When omitted libvirt will auto-generate suitable default URI.
+         * It is typically only necessary to specify this URI if the destination host has multiple
+         * interfaces and a specific interface is required to transmit migration data.
+         * This field may not be used when VIR_MIGRATE_TUNNELLED flag is set.
+         *
+         * @see <a href="https://libvirt.org/html/libvirt-libvirt-domain.html#VIR_MIGRATE_PARAM_URI">
+         *     Libvirt Documentation</a>
+         */
+        public static final String VIR_MIGRATE_PARAM_URI = "migrate_uri";
+
+        /**
+         * Port that destination server should use for incoming disks migration.
+         * Type is TYPED_PARAM_INT. If set to 0 or omitted, libvirt will choose a suitable default.
+         * At the moment this is only supported by the QEMU driver.
+         *
+         * For more details, please check Libvirt documentation:7
+         * @see <a href="https://libvirt.org/html/libvirt-libvirt-domain.html#VIR_MIGRATE_PARAM_DISKS_PORT"> Libvirt Documentation</a>
+         */
+        public static final String VIR_MIGRATE_PARAM_DISKS_PORT = "disks_port";
+
+        /**
+         * URI used for incoming disks migration. Type is TYPED_PARAM_STRING. Only schemes "tcp" and
+         * "unix" are accepted. TCP URI can currently only provide a server and port to listen on
+         * (and connect to), UNIX URI may only provide a path component for a UNIX socket.
+         * UNIX URI is only usable if the management application makes sure that socket created with
+         * this name on the destination will be reachable from the source under the same exact path.
+         *
+         * @see <a href="https://libvirt.org/html/libvirt-libvirt-domain.html#VIR_MIGRATE_PARAM_DISKS_URI">
+         *     Libvirt Documentation</a>
+         */
+        public static final String VIR_MIGRATE_PARAM_DISKS_URI = "disks_uri";
+
+        /**
+         * The name of the method used to compress migration traffic as TYPED_PARAM_STRING.
+         * Supported compression methods: xbzrle, mt.
+         * The parameter may be specified multiple times if more than one method should be used.
+         *
+         * @see <a href="https://libvirt.org/html/libvirt-libvirt-domain.html#VIR_MIGRATE_PARAM_COMPRESSION">
+         *     Libvirt Documentation</a>
+         */
+        public static final String VIR_MIGRATE_PARAM_COMPRESSION = "compression";
+
+        /**
+         * The level of compression for multithread compression as TYPED_PARAM_INT.
+         * Accepted values are in range 0-9. 0 is no compression, 1 is maximum speed
+         * and 9 is maximum compression.
+         *
+         * @see <a href="https://libvirt.org/html/libvirt-libvirt-domain.html#VIR_MIGRATE_PARAM_COMPRESSION_MT_LEVEL">
+         *     Libvirt Documentation</a>
+         */
+        public static final String VIR_MIGRATE_PARAM_COMPRESSION_MT_LEVEL = "compression.mt.level";
+
+        /**
+         * The number of compression threads for multithread compression as TYPED_PARAM_INT.
+         *
+         * @see <a href="https://libvirt.org/html/libvirt-libvirt-domain.html#VIR_MIGRATE_PARAM_COMPRESSION_MT_THREADS">
+         *     Libvirt Documentation</a>
+         */
+        public static final String VIR_MIGRATE_PARAM_COMPRESSION_MT_THREADS = "compression.mt.threads";
+
+        /**
+         * The number of decompression threads for multithread compression as TYPED_PARAM_INT.
+         *
+         * @see <a href="https://libvirt.org/html/libvirt-libvirt-domain.html#VIR_MIGRATE_PARAM_COMPRESSION_MT_DTHREADS">
+         *     Libvirt Documentation</a>
+         */
+        public static final String VIR_MIGRATE_PARAM_COMPRESSION_MT_DTHREADS = "compression.mt.dthreads";
+
+        /**
+         * The size of page cache for xbzrle compression as TYPED_PARAM_ULLONG.
+         *
+         * @see <a href="https://libvirt.org/html/libvirt-libvirt-domain.html#VIR_MIGRATE_PARAM_COMPRESSION_XBZRLE_CACHE">
+         *     Libvirt Documentation</a>
+         */
+        public static final String VIR_MIGRATE_PARAM_COMPRESSION_XBZRLE_CACHE = "compression.xbzrle.cache";
+
+        /**
+         * The initial percentage guest CPUs are throttled to when auto-convergence decides migration
+         * is not converging as TYPED_PARAM_INT.
+         *
+         * @see <a href="https://libvirt.org/html/libvirt-libvirt-domain.html#VIR_MIGRATE_PARAM_AUTO_CONVERGE_INITIAL">
+         *     Libvirt Documentation</a>
+         */
+        public static final String VIR_MIGRATE_PARAM_AUTO_CONVERGE_INITIAL = "auto_converge.initial";
+
+        /**
+         * The increment added to VIR_MIGRATE_PARAM_AUTO_CONVERGE_INITIAL whenever the hypervisor
+         * decides the current rate is not enough to ensure convergence of the migration. As TYPED_PARAM_INT.
+         *
+         * @see <a href="https://libvirt.org/html/libvirt-libvirt-domain.html#VIR_MIGRATE_PARAM_AUTO_CONVERGE_INCREMENT">
+         *     Libvirt Documentation</a>
+         */
+        public static final String VIR_MIGRATE_PARAM_AUTO_CONVERGE_INCREMENT = "auto_converge.increment";
+
+        /**
+         * The number of connections used during parallel migration as TYPED_PARAM_INT.
+         *
+         * @see <a href="https://libvirt.org/html/libvirt-libvirt-domain.html#VIR_MIGRATE_PARAM_PARALLEL_CONNECTIONS">
+         *     Libvirt Documentation</a>
+         */
+        public static final String VIR_MIGRATE_PARAM_PARALLEL_CONNECTIONS = "parallel.connections";
+
+        /**
+         * Override the destination host name used for TLS verification as TYPED_PARAM_STRING.
+         * Normally the TLS certificate from the destination host must match the host's name for TLS
+         * verification to succeed. When the certificate does not match the destination hostname and
+         * the expected certificate's hostname is known, this parameter can be used to pass this
+         * expected hostname when starting the migration.
+         *
+         * @see <a href="https://libvirt.org/html/libvirt-libvirt-domain.html#VIR_MIGRATE_PARAM_TLS_DESTINATION">
+         *     Libvirt Documentation</a>
+         */
+        public static final String VIR_MIGRATE_PARAM_TLS_DESTINATION = "tls.destination";
+    }
+
     public static final class BlockJobInfoFlags {
         /** bandwidth in bytes/s instead of MiB/s */
         public static int BANDWIDTH_BYTES = bit(0);
@@ -544,10 +746,7 @@ public class Domain {
     public void blockCopy(final String diskPath, final String xmlDesc,
                           final TypedParameter[] params, final int flags) throws LibvirtException {
         assert params != null : "blockCopy typed parameters cannot be null";
-        virTypedParameter[] input = new virTypedParameter[params.length];
-        for (int x = 0; x < params.length; x++) {
-            input[x] = TypedParameter.toNative(params[x]);
-        }
+        virTypedParameter[] input = generateNativeVirTypedParameters(params);
         processError(libvirt.virDomainBlockCopy(vdp, diskPath, xmlDesc, input, input.length, flags));
     }
 
@@ -1376,6 +1575,69 @@ public class Domain {
         DomainPointer newPtr = processError(libvirt.virDomainMigrate(vdp, dconn.vcp,
                 new NativeLong(flags), dname, uri, new NativeLong(bandwidth)));
         return new Domain(dconn, newPtr);
+    }
+
+    /**
+     * Migrate the domain object from its current host to the destination host
+     * given by dconn (a connection to the destination host).
+     * See VIR_MIGRATE_PARAM_* and virDomainMigrateFlags for detailed
+     * description of accepted migration parameters and flags.
+     * See virDomainMigrateFlags documentation for description of individual
+     * flags. VIR_MIGRATE_TUNNELLED and VIR_MIGRATE_PEER2PEER are not supported
+     * by this API, use virDomainMigrateToURI3 instead.
+     * <br>
+     * There are many limitations on migration imposed by the underlying
+     * technology - for example it may not be possible to migrate between
+     * different processors even with the same architecture, or between different
+     * types of hypervisor. virDomainFree should be used to free the resources
+     * after the returned domain object is no longer needed.
+     * <br> <br>
+     * For more informations, please @see <a href="https://libvirt.org/html/libvirt-libvirt-domain.html#virDomainMigrate3"> virDomainMigrate3</a>
+     * @param dconn
+     *            destination host (a Connect object)
+     * @param params
+     *            (optional) migration parameters
+     *
+     * @param flags
+     *            bitwise-OR of virDomainMigrateFlags
+     * @return
+     *            the new domain object if the migration was successful. Note that
+     *            the new domain object exists in the scope of the destination
+     *            connection (dconn).
+     * @throws LibvirtException
+     */
+    public Domain migrate(final Connect dconn, final TypedParameter[] params, long flags) throws LibvirtException {
+        assert params != null : "migrate Typed parameters cannot be null";
+        virTypedParameter[] virTypedParameters = generateNativeVirTypedParameters(params);
+        DomainPointer newPtr = processError(libvirt.virDomainMigrate3(vdp, dconn.vcp, virTypedParameters, params.length, new NativeLong(flags)));
+        return new Domain(dconn, newPtr);
+    }
+
+    /**
+     * This methods creates an array of virTypedParameter objects based on the
+     * given array of TypedParameter objects. The way it has been designed ensures
+     * that the output will be in contiguous memory, regardless of the memory
+     * allocated for each of the provided "TypedParameter[]", avoiding
+     * "non contiguous memory due to bad backing address at Structure array".
+     *
+     * @param params
+     *          Array of TypedParameter objects which can be:
+     *          TypedBooleanParameter, TypedBooleanParameter, TypedDoubleParameter,
+     *          TypedIntParameter, TypedLongParameter, TypedStringParameter,
+     *          TypedUintParameter, or TypedUlongParameter
+     * @return
+     *          An array of "virTypedParameter" objects in contiguous memory.
+     */
+    private virTypedParameter[] generateNativeVirTypedParameters(TypedParameter[] params) {
+        virTypedParameter param = new virTypedParameter();
+        virTypedParameter[] virTypedParameters = (virTypedParameter[]) param.toArray(params.length);
+        for (int x = 0; x < params.length; x++) {
+            virTypedParameter temporaryTypedParameter = TypedParameter.toNative(params[x]);
+            virTypedParameters[x].field = temporaryTypedParameter.field;
+            virTypedParameters[x].type = temporaryTypedParameter.type;
+            virTypedParameters[x].value = temporaryTypedParameter.value;
+        }
+        return virTypedParameters;
     }
 
     /**
