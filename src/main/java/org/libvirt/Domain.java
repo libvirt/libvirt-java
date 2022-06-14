@@ -936,7 +936,7 @@ public class Domain {
 
     /**
      * It returns the length (in bytes) required to store the complete CPU map
-     * between a single virtual & all physical CPUs of a domain.
+     * between a single virtual &amp; all physical CPUs of a domain.
      */
     public int cpuMapLength(final int maxCpus) {
         return (maxCpus + 7) / 8;
@@ -1300,8 +1300,8 @@ public class Domain {
     /**
      * Determine if the domain has a snapshot
      *
-     * @see <a href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainHasCurrentSnapshot>Libvi
-     *      r t Documentation</a>
+     * @see <a href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainHasCurrentSnapshot"
+     *      >Libvirt Documentation</a>
      * @return 1 if running, 0 if inactive
      * @throws LibvirtException
      */
@@ -1312,8 +1312,8 @@ public class Domain {
     /**
      * Determine if the domain has a managed save image
      *
-     * @see <a href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainHasManagedSaveImage>Libvi
-     *      r t Documentation</a>
+     * @see <a href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainHasManagedSaveImage"
+     *      >Libvirt Documentation</a>
      * @return 0 if no image is present, 1 if an image is present, and -1 in
      *         case of error
      * @throws LibvirtException
@@ -1814,7 +1814,7 @@ public class Domain {
     /**
      * Immediately wake up a guest using power management.
      * <p>
-     * Injects a <em>wakeup<em> into the guest that previously used
+     * Injects a <em>wakeup</em> into the guest that previously used
      * {@link #PMsuspend} or {@link #PMsuspendFor}, rather than
      * waiting for the previously requested duration (if any) to
      * elapse.
@@ -2008,7 +2008,7 @@ public class Domain {
      *
      * @see <a href=
      *      "http://www.libvirt.org/html/libvirt-libvirt.html#virDomainRevertToSnapshot"
-     *      >Libvirt Documentation</>
+     *      >Libvirt Documentation</a>
      * @param snapshot
      *            the snapshot to revert to
      * @return 0 if the creation is successful

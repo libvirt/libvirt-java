@@ -1225,7 +1225,7 @@ public class Connect {
     /**
      * Provides the maximum number of virtual CPUs supported for a guest VM of a
      * specific type. The 'type' parameter here corresponds to the 'type'
-     * attribute in the <domain> element of the XML.
+     * attribute in the &lt;domain&gt; element of the XML.
      *
      * @param type
      * @return the number of CPUs
@@ -2139,7 +2139,7 @@ public class Connect {
      * In other words, sending {@code count + 1} keepalive message
      * results in closing the connection.
      * <p>
-     * When interval is <= 0, no keepalive messages will be sent.
+     * When interval is &lt;= 0, no keepalive messages will be sent.
      * <p>
      * When count is 0, the connection will be automatically closed after
      * interval seconds of inactivity without sending any keepalive
