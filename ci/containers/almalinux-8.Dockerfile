@@ -2,9 +2,9 @@
 #
 #  $ lcitool manifest ci/manifest.yml
 #
-# https://gitlab.com/libvirt/libvirt-ci/-/commit/c5bde43affd9a5fea0c06542d71e708ac1bd6153
+# https://gitlab.com/libvirt/libvirt-ci
 
-FROM docker.io/library/centos:8
+FROM docker.io/library/almalinux:8
 
 RUN dnf update -y && \
     dnf install 'dnf-command(config-manager)' -y && \

@@ -1,0 +1,17 @@
+# THIS FILE WAS AUTO-GENERATED
+#
+#  $ lcitool manifest ci/manifest.yml
+#
+# https://gitlab.com/libvirt/libvirt-ci
+
+
+.gitlab_native_build_job:
+  image: $CI_REGISTRY_IMAGE/ci-$NAME:latest
+  stage: builds
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+      when: never
+    - if: '$JOB_OPTIONAL'
+      when: manual
+      allow_failure: true
+    - when: on_success

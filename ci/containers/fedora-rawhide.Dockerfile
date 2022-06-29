@@ -2,7 +2,7 @@
 #
 #  $ lcitool manifest ci/manifest.yml
 #
-# https://gitlab.com/libvirt/libvirt-ci/-/commit/c5bde43affd9a5fea0c06542d71e708ac1bd6153
+# https://gitlab.com/libvirt/libvirt-ci
 
 FROM registry.fedoraproject.org/fedora:rawhide
 
@@ -17,7 +17,7 @@ else\n\
 fi\n\
 exec "$@"' > /usr/bin/nosync && \
     chmod +x /usr/bin/nosync && \
-    nosync dnf update -y && \
+    nosync dnf distro-sync -y && \
     nosync dnf install -y \
         ant \
         ant-junit \

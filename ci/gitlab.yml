@@ -2,213 +2,33 @@
 #
 #  $ lcitool manifest ci/manifest.yml
 #
-# https://gitlab.com/libvirt/libvirt-ci/-/commit/c5bde43affd9a5fea0c06542d71e708ac1bd6153
+# https://gitlab.com/libvirt/libvirt-ci
 
 
-.container_job:
-  image: docker:stable
-  stage: containers
-  needs: []
-  services:
-    - name: registry.gitlab.com/libvirt/libvirt-ci/docker-dind:master
-      alias: docker
-  before_script:
-    - export TAG="$CI_REGISTRY_IMAGE/ci-$NAME:latest"
-    - export COMMON_TAG="$CI_REGISTRY/libvirt/libvirt-java/ci-$NAME:latest"
-    - docker info
-    - docker login registry.gitlab.com -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD"
-  script:
-    - docker pull "$TAG" || docker pull "$COMMON_TAG" || true
-    - docker build --cache-from "$TAG" --cache-from "$COMMON_TAG" --tag "$TAG" -f "ci/containers/$NAME.Dockerfile" ci/containers
-    - docker push "$TAG"
-  after_script:
-    - docker logout
+# Variables that can be set to control the behaviour of
+# pipelines that are run
+#
+#  - RUN_ALL_CONTAINERS - build all containers
+#    even if they don't have any changes detected
+#
+# These can be set as git push options
+#
+#  $ git push -o ci.variable=RUN_ALL_CONTAINERS=1
+#
+# Aliases can be set for common usage
+#
+#  $ git config --local alias.push-all-ctr "push -o ci.variable=RUN_ALL_CONTAINERS=1"
+#
+# Allowing the less verbose invokation
+#
+#  $ git push-all-ctr
+#
+# Pipeline variables can also be set in the repository
+# pipeline config globally, or set against scheduled pipelines
 
-
-.gitlab_native_build_job:
-  image: $CI_REGISTRY_IMAGE/ci-$NAME:latest
-  stage: builds
-
-
-.gitlab_cross_build_job:
-  image: $CI_REGISTRY_IMAGE/ci-$NAME-cross-$CROSS:latest
-  stage: builds
-
-
-check-dco:
-  stage: sanity_checks
-  needs: []
-  image: registry.gitlab.com/libvirt/libvirt-ci/check-dco:master
-  script:
-    - /check-dco libvirt
-  except:
-    variables:
-      - $CI_PROJECT_NAMESPACE == 'libvirt'
-  variables:
-    GIT_DEPTH: 1000
-
-
-# Native container jobs
-
-x86_64-centos-8-container:
-  extends: .container_job
-  allow_failure: false
-  variables:
-    NAME: centos-8
-
-
-x86_64-centos-stream-8-container:
-  extends: .container_job
-  allow_failure: false
-  variables:
-    NAME: centos-stream-8
-
-
-x86_64-debian-10-container:
-  extends: .container_job
-  allow_failure: false
-  variables:
-    NAME: debian-10
-
-
-x86_64-debian-sid-container:
-  extends: .container_job
-  allow_failure: false
-  variables:
-    NAME: debian-sid
-
-
-x86_64-fedora-33-container:
-  extends: .container_job
-  allow_failure: false
-  variables:
-    NAME: fedora-33
-
-
-x86_64-fedora-34-container:
-  extends: .container_job
-  allow_failure: false
-  variables:
-    NAME: fedora-34
-
-
-x86_64-fedora-rawhide-container:
-  extends: .container_job
-  allow_failure: false
-  variables:
-    NAME: fedora-rawhide
-
-
-x86_64-opensuse-leap-152-container:
-  extends: .container_job
-  allow_failure: false
-  variables:
-    NAME: opensuse-leap-152
-
-
-x86_64-ubuntu-1804-container:
-  extends: .container_job
-  allow_failure: false
-  variables:
-    NAME: ubuntu-1804
-
-
-x86_64-ubuntu-2004-container:
-  extends: .container_job
-  allow_failure: false
-  variables:
-    NAME: ubuntu-2004
-
-
-# Native build jobs
-
-x86_64-centos-8:
-  extends: .native_build_job
-  needs:
-    - x86_64-centos-8-container
-  allow_failure: false
-  variables:
-    NAME: centos-8
-    TESTS: skip
-
-
-x86_64-centos-stream-8:
-  extends: .native_build_job
-  needs:
-    - x86_64-centos-stream-8-container
-  allow_failure: false
-  variables:
-    NAME: centos-stream-8
-    TESTS: skip
-
-
-x86_64-debian-10:
-  extends: .native_build_job
-  needs:
-    - x86_64-debian-10-container
-  allow_failure: false
-  variables:
-    NAME: debian-10
-
-
-x86_64-debian-sid:
-  extends: .native_build_job
-  needs:
-    - x86_64-debian-sid-container
-  allow_failure: false
-  variables:
-    NAME: debian-sid
-
-
-x86_64-fedora-33:
-  extends: .native_build_job
-  needs:
-    - x86_64-fedora-33-container
-  allow_failure: false
-  variables:
-    NAME: fedora-33
-
-
-x86_64-fedora-34:
-  extends: .native_build_job
-  needs:
-    - x86_64-fedora-34-container
-  allow_failure: false
-  variables:
-    NAME: fedora-34
-
-
-x86_64-fedora-rawhide:
-  extends: .native_build_job
-  needs:
-    - x86_64-fedora-rawhide-container
-  allow_failure: false
-  variables:
-    NAME: fedora-rawhide
-
-
-x86_64-opensuse-leap-152:
-  extends: .native_build_job
-  needs:
-    - x86_64-opensuse-leap-152-container
-  allow_failure: false
-  variables:
-    NAME: opensuse-leap-152
-
-
-x86_64-ubuntu-1804:
-  extends: .native_build_job
-  needs:
-    - x86_64-ubuntu-1804-container
-  allow_failure: false
-  variables:
-    NAME: ubuntu-1804
-
-
-x86_64-ubuntu-2004-git:
-  extends: .native_git_build_job
-  needs:
-    - x86_64-ubuntu-2004-container
-  allow_failure: false
-  variables:
-    NAME: ubuntu-2004
+include:
+  - local: '/ci/gitlab/container-templates.yml'
+  - local: '/ci/gitlab/build-templates.yml'
+  - local: '/ci/gitlab/sanity-checks.yml'
+  - local: '/ci/gitlab/containers.yml'
+  - local: '/ci/gitlab/builds.yml'

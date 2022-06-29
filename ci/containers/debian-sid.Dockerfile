@@ -2,7 +2,7 @@
 #
 #  $ lcitool manifest ci/manifest.yml
 #
-# https://gitlab.com/libvirt/libvirt-ci/-/commit/c5bde43affd9a5fea0c06542d71e708ac1bd6153
+# https://gitlab.com/libvirt/libvirt-ci
 
 FROM docker.io/library/debian:sid-slim
 
@@ -10,7 +10,6 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
     apt-get update && \
     apt-get install -y eatmydata && \
     eatmydata apt-get dist-upgrade -y && \
-    mkdir -p /usr/share/man/man1 && \
     eatmydata apt-get install --no-install-recommends -y \
             ant \
             ant-optional \

@@ -1,0 +1,109 @@
+# THIS FILE WAS AUTO-GENERATED
+#
+#  $ lcitool manifest ci/manifest.yml
+#
+# https://gitlab.com/libvirt/libvirt-ci
+
+
+# Native build jobs
+
+x86_64-almalinux-8:
+  extends: .native_build_job
+  needs:
+    - job: x86_64-almalinux-8-container
+      optional: true
+  allow_failure: false
+  variables:
+    NAME: almalinux-8
+    TESTS: skip
+
+
+x86_64-centos-stream-8:
+  extends: .native_build_job
+  needs:
+    - job: x86_64-centos-stream-8-container
+      optional: true
+  allow_failure: false
+  variables:
+    NAME: centos-stream-8
+    TESTS: skip
+
+
+x86_64-debian-10:
+  extends: .native_build_job
+  needs:
+    - job: x86_64-debian-10-container
+      optional: true
+  allow_failure: false
+  variables:
+    NAME: debian-10
+
+
+x86_64-debian-sid:
+  extends: .native_build_job
+  needs:
+    - job: x86_64-debian-sid-container
+      optional: true
+  allow_failure: false
+  variables:
+    NAME: debian-sid
+
+
+x86_64-fedora-35:
+  extends: .native_build_job
+  needs:
+    - job: x86_64-fedora-35-container
+      optional: true
+  allow_failure: false
+  variables:
+    NAME: fedora-35
+
+
+x86_64-fedora-36:
+  extends: .native_build_job
+  needs:
+    - job: x86_64-fedora-36-container
+      optional: true
+  allow_failure: false
+  variables:
+    NAME: fedora-36
+
+
+x86_64-fedora-rawhide:
+  extends: .native_build_job
+  needs:
+    - job: x86_64-fedora-rawhide-container
+      optional: true
+  allow_failure: false
+  variables:
+    NAME: fedora-rawhide
+
+
+x86_64-opensuse-leap-153:
+  extends: .native_build_job
+  needs:
+    - job: x86_64-opensuse-leap-153-container
+      optional: true
+  allow_failure: false
+  variables:
+    NAME: opensuse-leap-153
+
+
+x86_64-ubuntu-2004:
+  extends: .native_build_job
+  needs:
+    - job: x86_64-ubuntu-2004-container
+      optional: true
+  allow_failure: false
+  variables:
+    NAME: ubuntu-2004
+
+
+x86_64-ubuntu-2204-git:
+  extends: .native_git_build_job
+  needs:
+    - job: x86_64-ubuntu-2204-container
+      optional: true
+  allow_failure: false
+  variables:
+    NAME: ubuntu-2204
