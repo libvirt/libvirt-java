@@ -651,4 +651,7 @@ public interface Libvirt extends Library {
                            Pointer opaque, Pointer ff);
     int virEventRemoveTimeout(int timer);
     void virEventUpdateTimeout(int timer, int timeout);
+
+    int virDomainSetUserPassword(DomainPointer virDomainPtr,
+                                 String user, String password, int flags);
 }

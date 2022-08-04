@@ -606,6 +606,13 @@ public class Domain {
         public static final int HOTPLUGGABLE = bit(4);
     }
 
+    public static final class DomainSetUserPasswordFlags {
+        /** Password is not encrypted */
+        public static final int DOMAIN_PASSWORD_NOT_ENCRYPTED = 0;
+        /** Password is already encrypted */
+        public static final int DOMAIN_PASSWORD_ENCRYPTED = bit(1);
+    }
+
     /** the native virDomainPtr. */
     DomainPointer vdp;
 
@@ -2118,6 +2125,20 @@ public class Domain {
             input[x] = SchedParameter.toNative(params[x]);
         }
         processError(libvirt.virDomainSetSchedulerParameters(vdp, input, params.length));
+    }
+
+    /**
+     * Sets the user password to the value specified by password.
+     * If flags contain DomainSetUserPasswordFlags.DOMAIN_PASSWORD_ENCRYPTED, the password
+     * is assumed to be encrypted by the method required by the guest OS.
+     *
+     * @param user the username that will get a new password
+     * @param password the password to set
+     * @param flags see {@link DomainSetUserPasswordFlags}
+     * @throws LibvirtException
+     */
+    public void setUserPassword(String user, String password, int flags) throws LibvirtException {
+        processError(libvirt.virDomainSetUserPassword(vdp, user, password, flags));
     }
 
     /**
