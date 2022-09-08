@@ -9,20 +9,7 @@ import java.util.UUID;
 import org.libvirt.event.*;
 //CHECKSTYLE:ON: AvoidStarImport
 
-import org.libvirt.jna.ConnectionPointer;
-import org.libvirt.jna.CString;
-import org.libvirt.jna.DevicePointer;
-import org.libvirt.jna.DomainPointer;
-import org.libvirt.jna.InterfacePointer;
-import org.libvirt.jna.Libvirt;
-import org.libvirt.jna.NetworkFilterPointer;
-import org.libvirt.jna.NetworkPointer;
-import org.libvirt.jna.SecretPointer;
-import org.libvirt.jna.StoragePoolPointer;
-import org.libvirt.jna.StorageVolPointer;
-import org.libvirt.jna.StreamPointer;
-import org.libvirt.jna.virConnectAuth;
-import org.libvirt.jna.virNodeInfo;
+import org.libvirt.jna.*;
 
 import static org.libvirt.Library.libvirt;
 import static org.libvirt.Library.getConstant;
@@ -132,6 +119,25 @@ public class Connect {
             return value;
         }
         private final int value;
+    }
+
+    public static final class ConnectListAllDomainsFlags {
+        public static int CONNECT_LIST_DOMAINS_ACTIVE = 1 << 0;
+        public static int CONNECT_LIST_DOMAINS_INACTIVE = 1 << 1;
+        public static int CONNECT_LIST_DOMAINS_PERSISTENT = 1 << 2;
+        public static int CONNECT_LIST_DOMAINS_TRANSIENT = 1 << 3;
+        public static int CONNECT_LIST_DOMAINS_RUNNING = 1 << 4;
+        public static int CONNECT_LIST_DOMAINS_PAUSED = 1 << 5;
+        public static int CONNECT_LIST_DOMAINS_SHUTOFF = 1 << 6;
+        public static int CONNECT_LIST_DOMAINS_OTHER = 1 << 7;
+        public static int CONNECT_LIST_DOMAINS_MANAGEDSAVE = 1 << 8;
+        public static int CONNECT_LIST_DOMAINS_NO_MANAGEDSAVE = 1 << 9;
+        public static int CONNECT_LIST_DOMAINS_AUTOSTART = 1 << 10;
+        public static int CONNECT_LIST_DOMAINS_NO_AUTOSTART = 1 << 11;
+        public static int CONNECT_LIST_DOMAINS_HAS_SNAPSHOT = 1 << 12;
+        public static int CONNECT_LIST_DOMAINS_NO_SNAPSHOT = 1 << 13;
+        public static int CONNECT_LIST_DOMAINS_HAS_CHECKPOINT = 1 << 14;
+        public static int CONNECT_LIST_DOMAINS_NO_CHECKPOINT = 1 << 15;
     }
 
     /**
@@ -1481,6 +1487,29 @@ public class Connect {
             processError(libvirt.virConnectListDomains(vcp, ids, maxids));
         }
         return ids;
+    }
+
+    /**
+     * Gets an array of domains.
+     * @param flags bitwise-OR of {@link ConnectListAllDomainsFlags}
+     * @return array of Domain objects
+     * @throws LibvirtException
+     */
+    public Domain[] listAllDomains(int flags) throws LibvirtException {
+        DomainByReference domainByReference = new DomainByReference();
+        int domainsCount = processError(libvirt.virConnectListAllDomains(vcp, domainByReference, flags));
+
+        Pointer[] pointerArray = domainByReference.getValue().getPointerArray(0, domainsCount);
+        if (domainsCount > 0) {
+            Domain[] domains = new Domain[domainsCount];
+            for (int i = 0; i < domainsCount; i++) {
+                domains[i] = new Domain(this, new DomainPointer(pointerArray[i]));
+            }
+
+            return domains;
+        }
+
+        return new Domain[]{};
     }
 
     /**

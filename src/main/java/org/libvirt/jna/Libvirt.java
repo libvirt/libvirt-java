@@ -262,6 +262,8 @@ public interface Libvirt extends Library {
                                         CString[] name, int maxNames);
     int virConnectListDomains(ConnectionPointer virConnectPtr,
                               int[] ids, int maxnames);
+    int virConnectListAllDomains(ConnectionPointer virConnectPtr,
+                                 DomainByReference domains, int flags);
     int virConnectListInterfaces(ConnectionPointer virConnectPtr,
                                  CString[] name, int maxNames);
     int virConnectListNetworks(ConnectionPointer virConnectPtr,
