@@ -11,15 +11,15 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
     apt-get install -y eatmydata && \
     eatmydata apt-get dist-upgrade -y && \
     eatmydata apt-get install --no-install-recommends -y \
-            ant \
-            ant-optional \
-            ca-certificates \
-            git \
-            junit \
-            libjna-java \
-            libvirt-dev \
-            locales \
-            openjdk-11-jdk-headless && \
+                      ant \
+                      ant-optional \
+                      ca-certificates \
+                      git \
+                      junit \
+                      libjna-java \
+                      libvirt-dev \
+                      locales \
+                      openjdk-11-jdk-headless && \
     eatmydata apt-get autoremove -y && \
     eatmydata apt-get autoclean -y && \
     sed -Ei 's,^# (en_US\.UTF-8 .*)$,\1,' /etc/locale.gen && \

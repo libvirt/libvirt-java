@@ -7,8 +7,8 @@
 
 # Native build jobs
 
-x86_64-almalinux-8:
-  extends: .native_build_job
+x86_64-almalinux-8-prebuilt-env:
+  extends: .native_build_job_prebuilt_env
   needs:
     - job: x86_64-almalinux-8-container
       optional: true
@@ -17,9 +17,18 @@ x86_64-almalinux-8:
     NAME: almalinux-8
     TESTS: skip
 
+x86_64-almalinux-8-local-env:
+  extends: .native_build_job_local_env
+  needs: []
+  allow_failure: false
+  variables:
+    IMAGE: docker.io/library/almalinux:8
+    NAME: almalinux-8
+    TESTS: skip
 
-x86_64-centos-stream-8:
-  extends: .native_build_job
+
+x86_64-centos-stream-8-prebuilt-env:
+  extends: .native_build_job_prebuilt_env
   needs:
     - job: x86_64-centos-stream-8-container
       optional: true
@@ -28,9 +37,18 @@ x86_64-centos-stream-8:
     NAME: centos-stream-8
     TESTS: skip
 
+x86_64-centos-stream-8-local-env:
+  extends: .native_build_job_local_env
+  needs: []
+  allow_failure: false
+  variables:
+    IMAGE: quay.io/centos/centos:stream8
+    NAME: centos-stream-8
+    TESTS: skip
 
-x86_64-debian-10:
-  extends: .native_build_job
+
+x86_64-debian-10-prebuilt-env:
+  extends: .native_build_job_prebuilt_env
   needs:
     - job: x86_64-debian-10-container
       optional: true
@@ -38,9 +56,17 @@ x86_64-debian-10:
   variables:
     NAME: debian-10
 
+x86_64-debian-10-local-env:
+  extends: .native_build_job_local_env
+  needs: []
+  allow_failure: false
+  variables:
+    IMAGE: docker.io/library/debian:10-slim
+    NAME: debian-10
 
-x86_64-debian-sid:
-  extends: .native_build_job
+
+x86_64-debian-sid-prebuilt-env:
+  extends: .native_build_job_prebuilt_env
   needs:
     - job: x86_64-debian-sid-container
       optional: true
@@ -48,9 +74,17 @@ x86_64-debian-sid:
   variables:
     NAME: debian-sid
 
+x86_64-debian-sid-local-env:
+  extends: .native_build_job_local_env
+  needs: []
+  allow_failure: false
+  variables:
+    IMAGE: docker.io/library/debian:sid-slim
+    NAME: debian-sid
 
-x86_64-fedora-35:
-  extends: .native_build_job
+
+x86_64-fedora-35-prebuilt-env:
+  extends: .native_build_job_prebuilt_env
   needs:
     - job: x86_64-fedora-35-container
       optional: true
@@ -58,9 +92,17 @@ x86_64-fedora-35:
   variables:
     NAME: fedora-35
 
+x86_64-fedora-35-local-env:
+  extends: .native_build_job_local_env
+  needs: []
+  allow_failure: false
+  variables:
+    IMAGE: registry.fedoraproject.org/fedora:35
+    NAME: fedora-35
 
-x86_64-fedora-36:
-  extends: .native_build_job
+
+x86_64-fedora-36-prebuilt-env:
+  extends: .native_build_job_prebuilt_env
   needs:
     - job: x86_64-fedora-36-container
       optional: true
@@ -68,9 +110,17 @@ x86_64-fedora-36:
   variables:
     NAME: fedora-36
 
+x86_64-fedora-36-local-env:
+  extends: .native_build_job_local_env
+  needs: []
+  allow_failure: false
+  variables:
+    IMAGE: registry.fedoraproject.org/fedora:36
+    NAME: fedora-36
 
-x86_64-fedora-rawhide:
-  extends: .native_build_job
+
+x86_64-fedora-rawhide-prebuilt-env:
+  extends: .native_build_job_prebuilt_env
   needs:
     - job: x86_64-fedora-rawhide-container
       optional: true
@@ -78,9 +128,17 @@ x86_64-fedora-rawhide:
   variables:
     NAME: fedora-rawhide
 
+x86_64-fedora-rawhide-local-env:
+  extends: .native_build_job_local_env
+  needs: []
+  allow_failure: false
+  variables:
+    IMAGE: registry.fedoraproject.org/fedora:rawhide
+    NAME: fedora-rawhide
 
-x86_64-opensuse-leap-153:
-  extends: .native_build_job
+
+x86_64-opensuse-leap-153-prebuilt-env:
+  extends: .native_build_job_prebuilt_env
   needs:
     - job: x86_64-opensuse-leap-153-container
       optional: true
@@ -88,9 +146,17 @@ x86_64-opensuse-leap-153:
   variables:
     NAME: opensuse-leap-153
 
+x86_64-opensuse-leap-153-local-env:
+  extends: .native_build_job_local_env
+  needs: []
+  allow_failure: false
+  variables:
+    IMAGE: registry.opensuse.org/opensuse/leap:15.3
+    NAME: opensuse-leap-153
 
-x86_64-ubuntu-2004:
-  extends: .native_build_job
+
+x86_64-ubuntu-2004-prebuilt-env:
+  extends: .native_build_job_prebuilt_env
   needs:
     - job: x86_64-ubuntu-2004-container
       optional: true
@@ -98,12 +164,28 @@ x86_64-ubuntu-2004:
   variables:
     NAME: ubuntu-2004
 
+x86_64-ubuntu-2004-local-env:
+  extends: .native_build_job_local_env
+  needs: []
+  allow_failure: false
+  variables:
+    IMAGE: docker.io/library/ubuntu:20.04
+    NAME: ubuntu-2004
 
-x86_64-ubuntu-2204-git:
-  extends: .native_git_build_job
+
+x86_64-ubuntu-2204-git-prebuilt-env:
+  extends: .native_git_build_job_prebuilt_env
   needs:
     - job: x86_64-ubuntu-2204-container
       optional: true
   allow_failure: false
   variables:
+    NAME: ubuntu-2204
+
+x86_64-ubuntu-2204-git-local-env:
+  extends: .native_git_build_job_local_env
+  needs: []
+  allow_failure: false
+  variables:
+    IMAGE: docker.io/library/ubuntu:22.04
     NAME: ubuntu-2204

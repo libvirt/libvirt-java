@@ -19,16 +19,16 @@ exec "$@"' > /usr/bin/nosync && \
     chmod +x /usr/bin/nosync && \
     nosync dnf distro-sync -y && \
     nosync dnf install -y \
-        ant \
-        ant-junit \
-        ca-certificates \
-        git \
-        glibc-langpack-en \
-        java-11-openjdk-headless \
-        jna \
-        junit \
-        libvirt-devel \
-        rpm-build && \
+               ant \
+               ant-junit \
+               ca-certificates \
+               git \
+               glibc-langpack-en \
+               java-11-openjdk-headless \
+               jna \
+               junit \
+               libvirt-devel \
+               rpm-build && \
     nosync dnf autoremove -y && \
     nosync dnf clean all -y && \
     rpm -qa | sort > /packages.txt
