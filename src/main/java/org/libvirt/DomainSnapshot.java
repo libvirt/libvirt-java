@@ -47,7 +47,6 @@ public class DomainSnapshot {
         int success = 0;
         if (vdsp != null) {
             success = processError(libvirt.virDomainSnapshotDelete(vdsp, flags));
-            vdsp = null;
         }
 
         return success;
