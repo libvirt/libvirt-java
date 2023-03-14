@@ -129,7 +129,7 @@ public class Interface {
      * Determine if the interface is currently running
      *
      * @see <a
-     *      href="http://www.libvirt.org/html/libvirt-libvirt.html#virInterfaceIsActive">Libvirt
+     *      href="https://libvirt.org/html/libvirt-libvirt.html#virInterfaceIsActive">Libvirt
      *      Documentation</a>
      * @return 1 if running, 0 if inactive
      * @throws LibvirtException

@@ -221,7 +221,7 @@ public class StoragePool {
      * Determine if the storage pool is currently running
      *
      * @see <a
-     *      href="http://www.libvirt.org/html/libvirt-libvirt.html#virStoragePoolIsActive">Libvirt
+     *      href="https://libvirt.org/html/libvirt-libvirt.html#virStoragePoolIsActive">Libvirt
      *      Documentation</a>
      * @return 1 if running, 0 if inactive
      * @throws LibvirtException
@@ -235,7 +235,7 @@ public class StoragePool {
      * it will still exist after shutting down
      *
      * @see <a
-     *      href="http://www.libvirt.org/html/libvirt-libvirt.html#virStoragePoolIsPersistent">
+     *      href="https://libvirt.org/html/libvirt-libvirt.html#virStoragePoolIsPersistent">
         Libvirt Documentation</a>
      * @return 1 if persistent, 0 if transient
      * @throws LibvirtException

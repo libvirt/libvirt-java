@@ -144,7 +144,7 @@ public class Connect {
      * Get the version of a connection.
      *
      * @see <a
-     *      href="http://www.libvirt.org/html/libvirt-libvirt.html#virConnectGetLibVersion">Libvirt
+     *      href="https://libvirt.org/html/libvirt-libvirt.html#virConnectGetLibVersion">Libvirt
      *      Documentation</a>
      * @param conn
      *            the connection to use.
@@ -187,7 +187,7 @@ public class Connect {
      * Get the libvirt library version of this connection.
      *
      * @see <a
-     *      href="http://www.libvirt.org/html/libvirt-libvirt.html#virConnectGetLibVersion">Libvirt
+     *      href="https://libvirt.org/html/libvirt-libvirt.html#virConnectGetLibVersion">Libvirt
      *      Documentation</a>
      * @return The version of libvirt used by the daemon running on
      *         the connected host in the format {@code major *
@@ -471,7 +471,7 @@ public class Connect {
      * Compares the given CPU description with the host CPU
      *
      * @see <a
-     *      href="http://www.libvirt.org/html/libvirt-libvirt.html#virConnectCompareCPU">Libvirt
+     *      href="https://libvirt.org/html/libvirt-libvirt.html#virConnectCompareCPU">Libvirt
      *      Documentation</a>
      * @param xmlDesc
      * @return comparison result according to enum CPUCompareResult
@@ -568,7 +568,7 @@ public class Connect {
      * @throws           LibvirtException
      *
      * @see
-     * <a href="http://www.libvirt.org/html/libvirt-libvirt.html#virConnectDomainEventDeregisterAny">
+     * <a href="https://libvirt.org/html/libvirt-libvirt.html#virConnectDomainEventDeregisterAny">
         virConnectDomainEventDeregisterAny</a>
      */
     private void domainEventDeregister(final int eventID, final EventListener l)
@@ -681,7 +681,7 @@ public class Connect {
      * for domains of this connection.
      *
      * @see
-     *  <a href="http://www.libvirt.org/html/libvirt-libvirt.html#virConnectDomainEventRegisterAny">
+     *  <a href="https://libvirt.org/html/libvirt-libvirt.html#virConnectDomainEventRegisterAny">
         Libvirt Documentation</a>
      * @param l
      *            the I/O error listener
@@ -810,7 +810,7 @@ public class Connect {
      * @see #removeLifecycleListener
      * @see Domain#addLifecycleListener
      * @see
-     *  <a href="http://www.libvirt.org/html/libvirt-libvirt.html#virConnectDomainEventRegisterAny">
+     *  <a href="https://libvirt.org/html/libvirt-libvirt.html#virConnectDomainEventRegisterAny">
         virConnectDomainEventRegisterAny</a>
      */
     public void addLifecycleListener(final LifecycleListener l)
@@ -882,7 +882,7 @@ public class Connect {
      * @see #removePMSuspendListener
      * @see Domain#addPMSuspendListener
      * @see
-     *  <a href="http://www.libvirt.org/html/libvirt-libvirt.html#virConnectDomainEventRegisterAny">
+     *  <a href="https://libvirt.org/html/libvirt-libvirt.html#virConnectDomainEventRegisterAny">
         virConnectDomainEventRegisterAny</a>
      *
      * @since 1.5.2
@@ -899,7 +899,7 @@ public class Connect {
      * @throws     LibvirtException
      *
      * @see
-     *  <a href="http://www.libvirt.org/html/libvirt-libvirt.html#virConnectDomainEventDeregisterAny">
+     *  <a href="https://libvirt.org/html/libvirt-libvirt.html#virConnectDomainEventDeregisterAny">
         virConnectDomainEventDeregisterAny</a>
      *
      * @since 1.5.2
@@ -918,7 +918,7 @@ public class Connect {
      * @see #removePMWakeupListener
      * @see Domain#addPMWakeupListener
      * @see
-     *  <a href="http://www.libvirt.org/html/libvirt-libvirt.html#virConnectDomainEventRegisterAny">
+     *  <a href="https://libvirt.org/html/libvirt-libvirt.html#virConnectDomainEventRegisterAny">
         virConnectDomainEventRegisterAny</a>
      *
      * @since 1.5.2
@@ -935,7 +935,7 @@ public class Connect {
      * @throws     LibvirtException
      *
      * @see
-     *  <a href="http://www.libvirt.org/html/libvirt-libvirt.html#virConnectDomainEventDeregisterAny">
+     *  <a href="https://libvirt.org/html/libvirt-libvirt.html#virConnectDomainEventDeregisterAny">
         virConnectDomainEventDeregisterAny</a>
      */
     public void removePMWakeupListener(final PMWakeupListener l) throws LibvirtException {
@@ -950,7 +950,7 @@ public class Connect {
      * @throws     LibvirtException
      *
      * @see
-     *  <a href="http://www.libvirt.org/html/libvirt-libvirt.html#virConnectDomainEventDeregisterAny">
+     *  <a href="https://libvirt.org/html/libvirt-libvirt.html#virConnectDomainEventDeregisterAny">
         virConnectDomainEventDeregisterAny</a>
      */
     public void removeLifecycleListener(final LifecycleListener l) throws LibvirtException {
@@ -981,7 +981,7 @@ public class Connect {
      *
      * @see Domain#addRebootListener
      * @see
-     *  <a href="http://www.libvirt.org/html/libvirt-libvirt.html#virConnectDomainEventRegisterAny">
+     *  <a href="https://libvirt.org/html/libvirt-libvirt.html#virConnectDomainEventRegisterAny">
         virConnectDomainEventRegisterAny</a>
      * @since 1.5.2
      */
@@ -1008,7 +1008,7 @@ public class Connect {
      * @throws     LibvirtException
      *
      * @see
-     *  <a href="http://www.libvirt.org/html/libvirt-libvirt.html#virConnectDomainEventDeregisterAny">
+     *  <a href="https://libvirt.org/html/libvirt-libvirt.html#virConnectDomainEventDeregisterAny">
         virConnectDomainEventDeregisterAny</a>
      */
     public void removeIOErrorListener(final IOErrorListener l) throws LibvirtException {
@@ -1352,7 +1352,7 @@ public class Connect {
      * Determine if the connection is encrypted
      *
      * @see
-     *  <a href="http://www.libvirt.org/html/libvirt-libvirt.html#virConnectIsEncrypted">
+     *  <a href="https://libvirt.org/html/libvirt-libvirt.html#virConnectIsEncrypted">
         Libvirt Documentation</a>
      * @return 1 if encrypted, 0 if not encrypted
      * @throws LibvirtException
@@ -1365,7 +1365,7 @@ public class Connect {
      * Determine if the connection is secure
      *
      * @see
-     *  <a href="http://www.libvirt.org/html/libvirt-libvirt.html#virConnectIsSecure">
+     *  <a href="https://libvirt.org/html/libvirt-libvirt.html#virConnectIsSecure">
         Libvirt Documentation</a>
      * @return 1 if secure, 0 if not secure
      * @throws LibvirtException
@@ -1648,7 +1648,7 @@ public class Connect {
      * @return the new filer
      * @throws LibvirtException
      * @see
-     *  <a href="http://www.libvirt.org/html/libvirt-libvirt.html#virNWFilterDefineXML">
+     *  <a href="https://libvirt.org/html/libvirt-libvirt.html#virNWFilterDefineXML">
         Libvirt Documentation </a>
      */
     public NetworkFilter networkFilterDefineXML(final String xmlDesc)
@@ -1665,7 +1665,7 @@ public class Connect {
      * @return network filter object
      * @throws LibvirtException
      * @see
-     *  <a href="http://www.libvirt.org/html/libvirt-libvirt.html#virNWFilterLookupByName">
+     *  <a href="https://libvirt.org/html/libvirt-libvirt.html#virNWFilterLookupByName">
         Libvirt Documentation </a>
      */
     public NetworkFilter networkFilterLookupByName(final String name)

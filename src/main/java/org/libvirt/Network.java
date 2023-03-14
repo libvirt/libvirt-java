@@ -173,7 +173,7 @@ public class Network {
      * Determine if the network is currently running
      *
      * @see <a
-     *      href="http://www.libvirt.org/html/libvirt-libvirt.html#virNetworkIsActive">Libvirt
+     *      href="https://libvirt.org/html/libvirt-libvirt.html#virNetworkIsActive">Libvirt
      *      Documentation</a>
      * @return 1 if running, 0 if inactive, -1 on error
      * @throws LibvirtException
@@ -187,7 +187,7 @@ public class Network {
      * will still exist after shutting down
      *
      * @see <a
-     *      href="http://www.libvirt.org/html/libvirt-libvirt.html#virNetworkIsPersistent">Libvirt
+     *      href="https://libvirt.org/html/libvirt-libvirt.html#virNetworkIsPersistent">Libvirt
      *      Documentation</a>
      * @return 1 if persistent, 0 if transient, -1 on error
      * @throws LibvirtException

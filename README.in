@@ -15,5 +15,5 @@ By default the installs it to /usr/share/java/@version@.jar
 
 5. There is full javadoc for the API in /usr/share/javadoc/libvirt-java-@version@/
 
-6. The full API can be found at http://www.libvirt.org/html/libvirt-libvirt.html
+6. The full API can be found at https://libvirt.org/html/libvirt-libvirt.html
 

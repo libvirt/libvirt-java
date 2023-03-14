@@ -126,7 +126,7 @@ public class Stream implements ByteChannel {
      * readable.
      *
      * @see <a
-     *      href="http://www.libvirt.org/html/libvirt-libvirt.html#virStreamEventAddCallback">Libvirt
+     *      href="https://libvirt.org/html/libvirt-libvirt.html#virStreamEventAddCallback">Libvirt
      *      Docs</a>
      * @param events
      *            the events to monitor
@@ -285,7 +285,7 @@ public class Stream implements ByteChannel {
     /**
      * Batch receive method
      *
-     * @see <a href="http://www.libvirt.org/html/libvirt-libvirt.html#virStreamRecvAll">virStreamRecvAll</a>
+     * @see <a href="https://libvirt.org/html/libvirt-libvirt.html#virStreamRecvAll">virStreamRecvAll</a>
      * @param handler
      *            the callback handler
      * @return <em>ignore</em> (always 0)
@@ -299,7 +299,7 @@ public class Stream implements ByteChannel {
     /**
      * Remove an event callback from the stream
      *
-     * @see <a href="http://www.libvirt.org/html/libvirt-libvirt.html#virStreamEventRemoveCallback">Libvirt Docs</a>
+     * @see <a href="https://libvirt.org/html/libvirt-libvirt.html#virStreamEventRemoveCallback">Libvirt Docs</a>
      * @return <em>ignore</em> (always 0)
      * @throws LibvirtException
      */
@@ -331,7 +331,7 @@ public class Stream implements ByteChannel {
      * Batch send method
      *
      * @see <a
-     *      href="http://www.libvirt.org/html/libvirt-libvirt.html#virStreamSendAll">Libvirt
+     *      href="https://libvirt.org/html/libvirt-libvirt.html#virStreamSendAll">Libvirt
      *      Documentation</a>
      * @param handler
      *            the callback handler
@@ -346,7 +346,7 @@ public class Stream implements ByteChannel {
     /**
      * Changes the set of events to monitor for a stream.
      *
-     * @see <a href="http://www.libvirt.org/html/libvirt-libvirt.html#virStreamEventUpdateCallback">Libvirt Docs</a>
+     * @see <a href="https://libvirt.org/html/libvirt-libvirt.html#virStreamEventUpdateCallback">Libvirt Docs</a>
      * @param events
      *            the events to monitor
      * @return <em>ignore</em> (always 0)

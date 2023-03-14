@@ -713,7 +713,7 @@ public class Domain {
      * aborted.
      *
      * @see <a
-     *      href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainAbortJob">Libvirt
+     *      href="https://libvirt.org/html/libvirt-libvirt.html#virDomainAbortJob">Libvirt
      *      Documentation</a>
      * @return <em>ignore</em> (always 0)
      * @throws LibvirtException
@@ -726,7 +726,7 @@ public class Domain {
      * Creates a virtual device attachment to backend.
      *
      * @see <a
-     *      href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainAttachDevice">Libvirt
+     *      href="https://libvirt.org/html/libvirt-libvirt.html#virDomainAttachDevice">Libvirt
      *      Documentation</a>
      * @param xmlDesc
      *            XML description of one device
@@ -988,7 +988,7 @@ public class Domain {
      * Destroys a virtual device attachment to backend.
      *
      * @see <a
-     *      href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainDetachDevice">Libvirt
+     *      href="https://libvirt.org/html/libvirt-libvirt.html#virDomainDetachDevice">Libvirt
      *      Documentation</a>
      * @param xmlDesc
      *            XML description of one device
@@ -1002,7 +1002,7 @@ public class Domain {
      * Destroys a virtual device attachment to backend.
      *
      * @see <a
-     *      href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainDetachDeviceFlags">Libvirt
+     *      href="https://libvirt.org/html/libvirt-libvirt.html#virDomainDetachDeviceFlags">Libvirt
      *      Documentation</a>
      * @param xmlDesc
      *            XML description of one device
@@ -1073,7 +1073,7 @@ public class Domain {
      * extracted.
      *
      * @see <a
-     *      href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainGetInfo">Libvirt
+     *      href="https://libvirt.org/html/libvirt-libvirt.html#virDomainGetInfo">Libvirt
      *      Documentation</a>
      *
      * @return a DomainInfo object describing this domain
@@ -1090,7 +1090,7 @@ public class Domain {
      * return an error if the domain is not active.
      *
      * @see <a
-     *      href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainGetJobInfo">Libvirt
+     *      href="https://libvirt.org/html/libvirt-libvirt.html#virDomainGetJobInfo">Libvirt
      *      Documentation</a>
      * @return a DomainJobInfo object describing this domain
      * @throws LibvirtException
@@ -1307,7 +1307,7 @@ public class Domain {
     /**
      * Determine if the domain has a snapshot
      *
-     * @see <a href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainHasCurrentSnapshot"
+     * @see <a href="https://libvirt.org/html/libvirt-libvirt.html#virDomainHasCurrentSnapshot"
      *      >Libvirt Documentation</a>
      * @return 1 if running, 0 if inactive
      * @throws LibvirtException
@@ -1319,7 +1319,7 @@ public class Domain {
     /**
      * Determine if the domain has a managed save image
      *
-     * @see <a href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainHasManagedSaveImage"
+     * @see <a href="https://libvirt.org/html/libvirt-libvirt.html#virDomainHasManagedSaveImage"
      *      >Libvirt Documentation</a>
      * @return 0 if no image is present, 1 if an image is present, and -1 in
      *         case of error
@@ -1407,7 +1407,7 @@ public class Domain {
      * Determine if the domain is currently running
      *
      * @see <a
-     *      href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainIsActive">Libvirt
+     *      href="https://libvirt.org/html/libvirt-libvirt.html#virDomainIsActive">Libvirt
      *      Documentation</a>
      * @return 1 if running, 0 if inactive
      * @throws LibvirtException
@@ -1421,7 +1421,7 @@ public class Domain {
      * will still exist after shutting down
      *
      * @see <a
-     *      href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainIsPersistent">Libvirt
+     *      href="https://libvirt.org/html/libvirt-libvirt.html#virDomainIsPersistent">Libvirt
      *      Documentation</a>
      * @return 1 if persistent, 0 if transient
      * @throws LibvirtException
@@ -1442,7 +1442,7 @@ public class Domain {
      * suspend a domain and save its memory contents to a file on disk.
      *
      * @see <a
-     *      href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainManagedSave">Libvirt
+     *      href="https://libvirt.org/html/libvirt-libvirt.html#virDomainManagedSave">Libvirt
      *      Documentation</a>
      * @return always 0
      * @throws LibvirtException
@@ -1455,7 +1455,7 @@ public class Domain {
      * Remove any managed save images from the domain
      *
      * @see <a
-     *      href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainManagedSaveRemove">Libvirt
+     *      href="https://libvirt.org/html/libvirt-libvirt.html#virDomainManagedSaveRemove">Libvirt
      *      Documentation</a>
      * @return always 0
      * @throws LibvirtException
@@ -1724,7 +1724,7 @@ public class Domain {
      * at the end of live migration.
      *
      * @see <a
-     *      href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainMigrateSetMaxDowntime">LIbvirt
+     *      href="https://libvirt.org/html/libvirt-libvirt.html#virDomainMigrateSetMaxDowntime">LIbvirt
      *      Documentation</a>
      * @param downtime
      *            the time to be down
@@ -1748,7 +1748,7 @@ public class Domain {
      * flag is set in flags).
      *
      * @see <a
-     * href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainMigrateToURI">
+     * href="https://libvirt.org/html/libvirt-libvirt.html#virDomainMigrateToURI">
      * virDomainMigrateToURI</a>
      *
      * @param dconnuri
@@ -1780,7 +1780,7 @@ public class Domain {
      * given by duri.
      *
      * @see <a
-     *       href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainMigrateToURI">
+     *       href="https://libvirt.org/html/libvirt-libvirt.html#virDomainMigrateToURI">
      *       virDomainMigrateToURI</a>
      *
      * @param uri
@@ -1881,7 +1881,7 @@ public class Domain {
      * Adds a callback to receive notifications of Block Job events
      *
      * @see <a
-     *      href="http://www.libvirt.org/html/libvirt-libvirt.html#virConnectDomainEventRegisterAny">Libvirt
+     *      href="https://libvirt.org/html/libvirt-libvirt.html#virConnectDomainEventRegisterAny">Libvirt
      *      Documentation</a>
      * @param cb
      * @throws LibvirtException
@@ -1905,7 +1905,7 @@ public class Domain {
      * occurring on this domain.
      *
      * @see <a
-     *      href="http://www.libvirt.org/html/libvirt-libvirt.html#virConnectDomainEventRegisterAny">Libvirt
+     *      href="https://libvirt.org/html/libvirt-libvirt.html#virConnectDomainEventRegisterAny">Libvirt
      *      Documentation</a>
      * @param cb
      *            the IOErrorCallback instance
@@ -1923,7 +1923,7 @@ public class Domain {
      *
      * @see Connect#addRebootListener
      * @see <a
-     *       href="http://www.libvirt.org/html/libvirt-libvirt.html#virConnectDomainEventRegisterAny"
+     *       href="https://libvirt.org/html/libvirt-libvirt.html#virConnectDomainEventRegisterAny"
      *      >virConnectDomainEventRegisterAny</a>
      * @since 1.5.2
      */
@@ -1957,7 +1957,7 @@ public class Domain {
      * @see Connect#addLifecycleListener
      * @see Connect#removeLifecycleListener
      * @see <a
-     *       href="http://www.libvirt.org/html/libvirt-libvirt.html#virConnectDomainEventRegisterAny"
+     *       href="https://libvirt.org/html/libvirt-libvirt.html#virConnectDomainEventRegisterAny"
      *      >virConnectDomainEventRegisterAny</a>
      */
     public void addLifecycleListener(final LifecycleListener l)
@@ -1974,7 +1974,7 @@ public class Domain {
      * @see Connect#removePMWakeupListener
      * @see Connect#addPMWakeupListener
      * @see <a
-     *       href="http://www.libvirt.org/html/libvirt-libvirt.html#virConnectDomainEventRegisterAny"
+     *       href="https://libvirt.org/html/libvirt-libvirt.html#virConnectDomainEventRegisterAny"
      *      >virConnectDomainEventRegisterAny</a>
      *
      * @since 1.5.2
@@ -1993,7 +1993,7 @@ public class Domain {
      * @see Connect#removePMSuspendListener
      * @see Connect#addPMSuspendListener
      * @see <a
-     *       href="http://www.libvirt.org/html/libvirt-libvirt.html#virConnectDomainEventRegisterAny"
+     *       href="https://libvirt.org/html/libvirt-libvirt.html#virConnectDomainEventRegisterAny"
      *      >virConnectDomainEventRegisterAny</a>
      *
      * @since 1.5.2
@@ -2014,7 +2014,7 @@ public class Domain {
      * Revert the domain to a given snapshot.
      *
      * @see <a href=
-     *      "http://www.libvirt.org/html/libvirt-libvirt.html#virDomainRevertToSnapshot"
+     *      "https://libvirt.org/html/libvirt-libvirt.html#virDomainRevertToSnapshot"
      *      >Libvirt Documentation</a>
      * @param snapshot
      *            the snapshot to revert to
@@ -2202,7 +2202,7 @@ public class Domain {
      * xmlDesc.
      *
      * @see <a
-     *      href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainSnapshotCreateXML">Libvirt
+     *      href="https://libvirt.org/html/libvirt-libvirt.html#virDomainSnapshotCreateXML">Libvirt
      *      Documentation</a>
      * @param xmlDesc
      *            string containing an XML description of the domain
@@ -2226,7 +2226,7 @@ public class Domain {
      *
      * @see #snapshotCreateXML(String, int)
      * @see <a
-     *      href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainSnapshotCreateXML">Libvirt
+     *      href="https://libvirt.org/html/libvirt-libvirt.html#virDomainSnapshotCreateXML">Libvirt
      *      Documentation</a>
      * @param xmlDesc
      *            string containing an XML description of the domain
@@ -2242,7 +2242,7 @@ public class Domain {
      * Get the current snapshot for a domain, if any.
      *
      * @see <a
-     *      href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainSnapshotCurrent">Libvirt
+     *      href="https://libvirt.org/html/libvirt-libvirt.html#virDomainSnapshotCurrent">Libvirt
      *      Documentation</a>
      * @return the snapshot
      * @throws LibvirtException
@@ -2256,7 +2256,7 @@ public class Domain {
      * Collect the list of domain snapshots for the given domain. With the option to pass flags
      *
      * @see <a
-     *      href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainSnapshotListNames">Libvirt
+     *      href="https://libvirt.org/html/libvirt-libvirt.html#virDomainSnapshotListNames">Libvirt
      *      Documentation</a>
      * @param flags {@link SnapshotListFlags}
      * @return The list of names, or null if an error
@@ -2282,7 +2282,7 @@ public class Domain {
      *
      * @see #snapshotListNames(int)
      * @see <a
-     *      href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainSnapshotListNames">
+     *      href="https://libvirt.org/html/libvirt-libvirt.html#virDomainSnapshotListNames">
      *        virDomainSnapshotListNames</a>
      * @return The list of names, or null if an error
      * @throws LibvirtException
@@ -2295,7 +2295,7 @@ public class Domain {
      * Retrieve a snapshot by name
      *
      * @see <a
-     *      href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainSnapshotLookupByName">Libvirt
+     *      href="https://libvirt.org/html/libvirt-libvirt.html#virDomainSnapshotLookupByName">Libvirt
      *      Documentation</a>
      * @param name
      *            the name
@@ -2312,7 +2312,7 @@ public class Domain {
      * Provides the number of domain snapshots for this domain..
      *
      * @see <a
-     *      href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainSnapshotNum">Libvirt
+     *      href="https://libvirt.org/html/libvirt-libvirt.html#virDomainSnapshotNum">Libvirt
      *      Documentation</a>
      */
     public int snapshotNum() throws LibvirtException {
@@ -2358,7 +2358,7 @@ public class Domain {
     /**
      * Change a virtual device on a domain
      *
-     * @see <a href="http://www.libvirt.org/html/libvirt-libvirt.html#virDomainUpdateDeviceFlags">
+     * @see <a href="https://libvirt.org/html/libvirt-libvirt.html#virDomainUpdateDeviceFlags">
         Libvirt Documentation</a>
      * @param xml
      *            the xml to update with
@@ -2376,7 +2376,7 @@ public class Domain {
      * Commands for  Qemu Guest Agent helper daemon
      *
      *@see <a
-     *      href="https://www.libvirt.org/html/libvirt-libvirt-qemu.html#virDomainQemuAgentCommand">Libvirt
+     *      href="https://libvirt.org/html/libvirt-libvirt-qemu.html#virDomainQemuAgentCommand">Libvirt
      *      Documentation</a>
      * @param cmd
      *        the guest agent command string
@@ -2398,7 +2398,7 @@ public class Domain {
      * Qemu Monitor Command - it will only work with hypervisor connections to the QEMU driver.
      *
      *@see <a
-     *      href="https://www.libvirt.org/html/libvirt-libvirt-qemu.html#virDomainQemuMonitorCommand">Libvirt
+     *      href="https://libvirt.org/html/libvirt-libvirt-qemu.html#virDomainQemuMonitorCommand">Libvirt
      *      Documentation</a>
      * @param cmd
      *        the qemu monitor command string

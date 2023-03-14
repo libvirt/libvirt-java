@@ -204,7 +204,7 @@ public class StorageVol {
     /**
      * Ensure data previously on a volume is not accessible to future reads
      *
-     * @see <a href="http://www.libvirt.org/html/libvirt-libvirt.html#virStorageVolWipe">
+     * @see <a href="https://libvirt.org/html/libvirt-libvirt.html#virStorageVolWipe">
         Libvirt Documentation</a>
      * @return <em>ignore</em> (always 0)
      * @throws LibvirtException
@@ -216,7 +216,7 @@ public class StorageVol {
     /**
      * Resize a volume
      *
-     * @see <a href="http://www.libvirt.org/html/libvirt-libvirt.html#virStorageVolResize">
+     * @see <a href="https://libvirt.org/html/libvirt-libvirt.html#virStorageVolResize">
         Libvirt Documentation</a>
      * @param capacity
      *               new capacity for volume
