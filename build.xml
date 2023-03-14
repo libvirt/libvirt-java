@@ -9,9 +9,6 @@
 	<property name="src.file" value="target/${src}.tar.gz" />
 	<property name="spec" value="libvirt-java.spec" />
 	<property name="spec.file" value="target/${spec}" />
-	<property name="debian.pkgdir" value="target/libvirt-java" />
-	<property name="debian.controlfile" value="${debian.pkgdir}/DEBIAN/control" />
-	<property name="debian.pkg" value="target/libvirt-java_${version}_all.deb" />
 	<property environment="env"/>
 	<property name="javac.debug" value="off" />
 
@@ -95,22 +92,6 @@
 		<copy file="libvirt-java.spec.in" tofile="${spec.file}" overwrite="true" filtering="true">
 			<filterset filtersfile="build.properties" />
 		</copy>
-	</target>
-
-	<target name="deb" depends="build,jar" description="build a debian Debian package">
-		<mkdir dir="${debian.pkgdir}/DEBIAN" />
-		<copy file="debian/control.in" tofile="${debian.controlfile}" overwrite="true" filtering="true">
-			<filterset filtersfile="build.properties" />
-		</copy>
-
-		<mkdir dir="${debian.pkgdir}/${jar.dir}" />
-		<copy file="${jar.file}" todir="${debian.pkgdir}/${jar.dir}" />
-		<symlink link="${debian.pkgdir}/${jar.dir}/libvirt.jar" resource="${jar.dir}/${jar}.jar" overwrite="true" />
-		<exec executable="dpkg-deb">
-			<arg value="-b" />
-			<arg value="${debian.pkgdir}" />
-			<arg value="${debian.pkg}" />
-		</exec>
 	</target>
 
 	<target name="package" depends="src,build,docs,spec" description="builds the rpms">
