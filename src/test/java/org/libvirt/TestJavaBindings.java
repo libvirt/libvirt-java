@@ -370,11 +370,11 @@ public final class TestJavaBindings extends TestCase {
         dom.setMetadata(Domain.MetadataType.TITLE, "a title", null, null, Domain.ModificationImpact.CURRENT);
         String xml1 = "<test><property name=\"key\">value</property></test>";
         Pattern pattern1 = Pattern.compile("<test>\\s*<property\\s+name=\"key\">value</property>\\s*</test>");
-        String uri1 = "http://libvirt.org/test.rng";
+        String uri1 = "https://libvirt.org/test.rng";
         dom.setMetadata(Domain.MetadataType.ELEMENT, xml1, "pfx", uri1, Domain.ModificationImpact.CURRENT);
         String xml2 = "<test><property name=\"key2\">value2</property></test>";
         Pattern pattern2 = Pattern.compile("<test>\\s*<property\\s+name=\"key2\">value2</property>\\s*</test>");
-        String uri2 = "http://libvirt.org/othertest.rng";
+        String uri2 = "https://libvirt.org/othertest.rng";
         dom.setMetadata(Domain.MetadataType.ELEMENT, xml2, "pfx", uri2, Domain.ModificationImpact.CURRENT);
 
         assertEquals("a description", dom.getMetadata(Domain.MetadataType.DESCRIPTION, null, Domain.ModificationImpact.CURRENT));

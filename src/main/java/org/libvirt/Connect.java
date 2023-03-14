@@ -287,7 +287,7 @@ public class Connect {
      * @param uri
      *            The connection URI
      * @throws LibvirtException
-     * @see <a href="http://libvirt.org/uri.html">The URI documentation</a>
+     * @see <a href="https://libvirt.org/uri.html">The URI documentation</a>
      */
     public Connect(final String uri) throws LibvirtException {
         this(uri, null, 0);
@@ -300,7 +300,7 @@ public class Connect {
      * @param uri
      *            The connection URI
      * @throws LibvirtException
-     * @see <a href="http://libvirt.org/uri.html">The URI documentation</a>
+     * @see <a href="https://libvirt.org/uri.html">The URI documentation</a>
      */
     public Connect(final URI uri, final OpenFlags... flags) throws LibvirtException {
         this(uri, null, flags);
@@ -314,7 +314,7 @@ public class Connect {
      * @param readOnly
      *            Whether the connection is read-only
      * @throws LibvirtException
-     * @see <a href="http://libvirt.org/uri.html">The URI documentation</a>
+     * @see <a href="https://libvirt.org/uri.html">The URI documentation</a>
      */
     public Connect(final String uri, final boolean readOnly) throws LibvirtException {
         this(uri, null, readOnly ? OpenFlags.READONLY.getBit() : 0);
@@ -330,7 +330,7 @@ public class Connect {
      *            a ConnectAuth object
      * @param flags
      * @throws LibvirtException
-     * @see <a href="http://libvirt.org/uri.html">The URI documentation</a>
+     * @see <a href="https://libvirt.org/uri.html">The URI documentation</a>
      */
     public Connect(final String uri, final ConnectAuth auth, final int flags)
             throws LibvirtException {
@@ -368,7 +368,7 @@ public class Connect {
      *            a ConnectAuth object
      * @param flags
      * @throws LibvirtException
-     * @see <a href="http://libvirt.org/uri.html">The URI documentation</a>
+     * @see <a href="https://libvirt.org/uri.html">The URI documentation</a>
      */
     public Connect(final URI uri, final ConnectAuth auth, final OpenFlags... flags)
             throws LibvirtException {
@@ -384,7 +384,7 @@ public class Connect {
      * @param auth
      *            a ConnectAuth object
      * @throws LibvirtException
-     * @see <a href="http://libvirt.org/uri.html">The URI documentation</a>
+     * @see <a href="https://libvirt.org/uri.html">The URI documentation</a>
      */
     public Connect(final URI uri, final ConnectAuth auth) throws LibvirtException {
         this(uri.toString(), auth, 0);
@@ -520,7 +520,7 @@ public class Connect {
      *            an optional set of flags (unused)
      * @return the Domain object
      * @throws LibvirtException
-     * @see <a href="http://libvirt.org/format.html#Normal1" > The XML format
+     * @see <a href="https://libvirt.org/format.html#Normal1" > The XML format
      *      description </a>
      */
     public Domain domainCreateLinux(final String xmlDesc, final int flags)
@@ -536,7 +536,7 @@ public class Connect {
      * @param xmlDesc
      * @return the Domain object
      * @throws LibvirtException
-     * @see <a href="http://libvirt.org/format.html#Normal1" > The XML format
+     * @see <a href="https://libvirt.org/format.html#Normal1" > The XML format
      *      description </a>
      */
     public Domain domainCreateXML(final String xmlDesc, final int flags)
@@ -551,7 +551,7 @@ public class Connect {
      * @param xmlDesc
      * @return the Domain object
      * @throws LibvirtException
-     * @see <a href="http://libvirt.org/format.html#Normal1" > The XML format
+     * @see <a href="https://libvirt.org/format.html#Normal1" > The XML format
      *      description </a>
      */
     public Domain domainDefineXML(final String xmlDesc) throws LibvirtException {
@@ -1153,7 +1153,7 @@ public class Connect {
      *
      * @return an XML String describing the capabilities.
      * @throws LibvirtException
-     * @see <a href="http://libvirt.org/format.html#Capa1" >
+     * @see <a href="https://libvirt.org/format.html#Capa1" >
         The XML format description</a>
      */
     public String getCapabilities() throws LibvirtException {
@@ -1616,7 +1616,7 @@ public class Connect {
      *            the Network Description
      * @return the Network object representing the created network
      * @throws LibvirtException
-     * @see <a href="http://libvirt.org/format.html#Net1" >The XML format
+     * @see <a href="https://libvirt.org/format.html#Net1" >The XML format
      *      description</a>
      */
     public Network networkCreateXML(final String xmlDesc) throws LibvirtException {
@@ -1632,7 +1632,7 @@ public class Connect {
      * @param xmlDesc
      * @return the resulting Network object
      * @throws LibvirtException
-     * @see <a href="http://libvirt.org/format.html#Net1" >
+     * @see <a href="https://libvirt.org/format.html#Net1" >
         The XML format description</a>
      */
     public Network networkDefineXML(final String xmlDesc) throws LibvirtException {

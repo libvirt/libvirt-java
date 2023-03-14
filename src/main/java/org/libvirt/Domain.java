@@ -1297,7 +1297,7 @@ public class Domain {
      *            not used
      * @return the XML description String
      * @throws LibvirtException
-     * @see <a href="http://libvirt.org/format.html#Normal1" >The XML
+     * @see <a href="https://libvirt.org/format.html#Normal1" >The XML
      *      Description format </a>
      */
     public String getXMLDesc(final int flags) throws LibvirtException {
@@ -2344,7 +2344,7 @@ public class Domain {
      * Undefines this domain but does not stop if it it is running.
      * With option for passing flags
      *
-     * @see <a href="http://libvirt.org/html/libvirt-libvirt.html#virDomainUndefineFlags">
+     * @see <a href="https://libvirt.org/html/libvirt-libvirt.html#virDomainUndefineFlags">
         Libvirt Documentation</a>
      * @param flags
      *            flags for undefining the domain.
