@@ -19,13 +19,13 @@ targets:
         variables:
           TESTS: skip
 
-  debian-10: x86_64
+  debian-11: x86_64
 
   debian-sid: x86_64
 
-  fedora-35: x86_64
-
   fedora-36: x86_64
+
+  fedora-37: x86_64
 
   fedora-rawhide: x86_64
 

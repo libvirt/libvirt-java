@@ -4,7 +4,7 @@
 #
 # https://gitlab.com/libvirt/libvirt-ci
 
-FROM docker.io/library/debian:10-slim
+FROM docker.io/library/debian:11-slim
 
 RUN export DEBIAN_FRONTEND=noninteractive && \
     apt-get update && \
