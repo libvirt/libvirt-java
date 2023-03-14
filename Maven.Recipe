@@ -1,5 +1,5 @@
 To update the maven files at
- http://www.libvirt.org/maven2/org/libvirt/libvirt/
+ https://download.libvirt.org/maven2/org/libvirt/libvirt/
 
 Run the build, upload the tarball, jars and rpms
 
@@ -20,7 +20,7 @@ for i in *.jar *.xml *.asc ; do md5sum $i > $i.md5 ; done
 for i in *.jar *.xml *.asc ; do sha1sum $i > $i.sha1 ; done
 
 create the directory on the server and upload everything there
-scp * libvirt.org:/data/www/libvirt.org/maven2/org/libvirt/libvirt/$version/
+scp * libvirt.org:/data/ftp/libvirt/maven2/org/libvirt/libvirt/$version/
 
 check permissions on the server, edit the top maven-metadata-local.xml
 add the new directory and update the timestamp

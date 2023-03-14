@@ -133,7 +133,7 @@
 			addproperty="scp.home" defaultvalue="${env.HOME}"/>
 		<input message="Passphrase: "
 			addproperty="scp.passphrase"/>
-		<scp file="${scp.username}@www.libvirt.org:/data/www/maven2"
+		<scp file="${scp.username}@download.libvirt.org:/data/ftp/libvirt/maven2"
 			todir="target/repo"
 			keyfile="${scp.home}/.ssh/id_rsa"
 			sftp="true"
@@ -145,7 +145,7 @@
 			<attach file="${jar.docfile}" classifier="javadoc"/>
 			<attach file="${jar.srcfile}" classifier="sources"/>
 		</artifact:install>
-		<scp todir="${scp.username}@www.libvirt.org:/data/www/maven2"
+		<scp todir="${scp.username}@download.libvirt.org:/data/ftp/libvirt/maven2"
 			keyfile="${scp.home}/.ssh/id_rsa"
 			sftp="true"
 			passphrase="${scp.passphrase}">
@@ -161,7 +161,7 @@
 		<input message="Passphrase: "
 			addproperty="scp.passphrase"/>
 		<scp file="${src.file}"
-			todir="${scp.username}@www.libvirt.org:/data/ftp/libvirt/java"
+			todir="${scp.username}@download.libvirt.org:/data/ftp/libvirt/java"
 			keyfile="${scp.home}/.ssh/id_rsa"
 			sftp="true"
 			passphrase="${scp.passphrase}"/>
@@ -174,7 +174,7 @@
 			addproperty="scp.home" defaultvalue="${env.HOME}"/>
 		<input message="Passphrase: "
 			addproperty="scp.passphrase"/>
-		<scp todir="${scp.username}@www.libvirt.org:/data/ftp/libvirt/java"
+		<scp todir="${scp.username}@download.libvirt.org:/data/ftp/libvirt/java"
 			keyfile="${scp.home}/.ssh/id_rsa"
 			sftp="true"
 			passphrase="${scp.passphrase}">
