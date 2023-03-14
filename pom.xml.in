@@ -19,7 +19,7 @@
         </license>
     </licenses>
     <scm>
-	<url>http://www.libvirt.org/git/?p=libvirt-java.git;a=summary</url>
+	<url>https://gitlab.com/libvirt/libvirt-java</url>
     </scm>
 
     <dependencies>
