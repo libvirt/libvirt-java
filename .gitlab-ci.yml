@@ -53,4 +53,31 @@ stages:
     - .native_build_job
     - .gitlab_native_build_job_local_env
 
+.website:
+  script:
+    - ant docs
+    - mkdir public
+    - mv target/javadoc public/
+  artifacts:
+    paths:
+      - public
+
+pages:
+  extends:
+    - .website
+    - .gitlab_native_build_job_prebuilt_env
+  needs:
+    - job: x86_64-ubuntu-2204-container
+      optional: true
+  variables:
+    NAME: ubuntu-2204
+
+website_local_env:
+  extends:
+    - .website
+    - .gitlab_native_build_job_local_env
+  variables:
+    IMAGE: docker.io/library/ubuntu:22.04
+    NAME: ubuntu-2204
+
 include: '/ci/gitlab.yml'
