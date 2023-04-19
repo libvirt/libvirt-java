@@ -1,0 +1,132 @@
+<!--?xml version="1.0" encoding="UTF-8"?-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" type="text/css" href="stylesheets/main.css">
+    <title>libvirt-java</title>
+    <meta name="description" content="libvirt, virtualization, virtualization API">
+  </head>
+  <body>
+    <div id="header">
+      <div id="headerLogo"></div>
+    </div>
+    <div id="body">
+      <div id="menu">
+        <ul class="l0">
+          <li>
+            <div>
+              <a class="active" href="index.html">Home</a>
+            </div>
+          </li>
+          <li>
+            <div>
+              <a class="inactive" href="downloads.html">Downloads</a>
+            </div>
+          </li>
+          <li>
+            <div>
+              <a class="inactive" href="javadoc/">Documentation</a>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div id="content">
+        <h1>Java API bindings</h1>
+        <p>
+          The Java bindings make use of
+          <a href="https://en.wikipedia.org/wiki/Java_Native_Access">JNA</a>
+          to expose the C API in a Java friendly way. The bindings are based on
+          work initiated by Toth Istvan.
+        </p>
+        <h2>Content</h2>
+        <p>
+          The bindings are articulated around a few classes in the
+          <code>org/libvirt</code> package, notably the <code>Connect</code>,
+          <code>Domain</code> and <code>Network</code> ones. Functions in the
+          <a href="https://libvirt.org/html/index.html">C API</a> taking
+          <code>virConnectPtr</code>, <code>virDomainPtr</code> or
+          <code>virNetworkPtr</code> as their first argument usually become
+          methods for the classes, their name is just stripped from the
+          virConnect or virDomain(Get) prefix and the first letter gets
+          converted to lower case, for example the C functions:
+        </p>
+        <pre>int virConnectNumOfDomains (virConnectPtr conn);
+int virDomainSetMaxMemory (virDomainPtr domain, unsigned long memory);</pre>
+        <p>
+          become
+        </p>
+        <pre>virConn.numOfDomains()
+virDomain.setMaxMemory(long memory)</pre>
+        <p>
+          There is of course some functions where the mapping is less direct
+          and using extra classes to map complex arguments. The
+          <a href="javadoc/">Javadoc</a> is available online or as part of a
+          separate libvirt-java-javadoc package.
+        </p>
+        <p>
+          So let's look at a simple example inspired from the
+          <code>test.java</code> test found in <code>src</code> in the source
+          tree:
+        </p>
+        <pre>import org.libvirt.*;
+public class minitest {
+    public static void main(String[] args) {
+        Connect conn=null;
+        try{
+            conn = new Connect("test:///default", true);
+        } catch (LibvirtException e) {
+            System.out.println("exception caught:"+e);
+            System.out.println(e.getError());
+        }
+        try{
+            Domain testDomain=conn.domainLookupByName("test");
+            System.out.println("Domain:" + testDomain.getName() + " id " +
+                               testDomain.getID() + " running " +
+                               testDomain.getOSType());
+        } catch (LibvirtException e) {
+            System.out.println("exception caught:"+e);
+            System.out.println(e.getError());
+        }
+    }
+}</pre>
+        <p>
+          There is not much to comment about it, it really is a straight
+          mapping from the C API, the only points to notice are:
+        </p>
+        <ul>
+          <li>
+            <p>
+              the import of the modules in the <code>org.libvirt</code> package
+            </p>
+          </li>
+          <li>
+            <p>
+              getting a connection to the hypervisor, in that case using the
+              readonly access to the default test hypervisor.
+            </p>
+          </li>
+          <li>
+            <p>
+              getting an object representing the test domain using
+              <code>lookupByName</code>
+            </p>
+          </li>
+          <li>
+            <p>
+              if the domain is not found a LibvirtError exception will be
+              raised
+            </p>
+          </li>
+          <li>
+            <p>
+              extracting and printing some information about the domain using
+              various methods associated to the Domain class.
+            </p>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div id="footer"></div>
+  </body>
+</html>

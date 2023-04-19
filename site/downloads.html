@@ -1,0 +1,85 @@
+<!--?xml version="1.0" encoding="UTF-8"?-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" type="text/css" href="stylesheets/main.css">
+    <title>libvirt-java</title>
+    <meta name="description" content="libvirt, virtualization, virtualization API">
+  </head>
+  <body>
+    <div id="header">
+      <div id="headerLogo"></div>
+    </div>
+    <div id="body">
+      <div id="menu">
+        <ul class="l0">
+          <li>
+            <div>
+              <a class="inactive" href="index.html">Home</a>
+            </div>
+          </li>
+          <li>
+            <div>
+              <a class="active" href="downloads.html">Downloads</a>
+            </div>
+          </li>
+          <li>
+            <div>
+              <a class="inactive" href="javadoc/">Documentation</a>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div id="content">
+        <h1>Downloads</h1>
+        <p>
+          The latest versions of the libvirt Java bindings can be downloaded from:
+        </p>
+        <ul>
+          <li>
+            <p>
+              <a href="https://download.libvirt.org/java/">libvirt.org HTTP server</a>
+            </p>
+          </li>
+        </ul>
+        <p>
+          A maven repository is located at
+          <a href="https://download.libvirt.org/maven2/">https://download.libvirt.org/maven2/</a>
+          which you can use to include this in your maven projects.
+        </p>
+        <h2>GIT source repository</h2>
+        <p>
+          The Java bindings code source is now maintained in a
+          <a href="https://git-scm.com/">git</a> repository available on
+          <a href="https://gitlab.com/libvirt/libvirt-java/">gitlab.com</a>:
+        </p>
+        <pre>git clone https://gitlab.com/libvirt/libvirt-java.git</pre>
+        <h2>Building</h2>
+        <p>
+          The code is built using ant, and assumes that you have the jna jar
+          installed. Once you have downloaded the code you can build the code
+          with
+        </p>
+        <pre>% cd libvirt-java
+% ant build</pre>
+        <h2>Maven</h2>
+        <p>
+          Up until version 0.4.7 the Java bindings were available from the
+          central maven repository.
+        </p>
+        <p>
+          If you want to use 0.4.8 or higher, please add the following
+          repository to your pom.xml
+        </p>
+        <pre>&lt;repositories&gt;
+  &lt;repository&gt;
+    &lt;id&gt;libvirt-org&lt;/id&gt;
+    &lt;url&gt;https://download.libvirt.org/maven2&lt;/url&gt;
+  &lt;/repository&gt;
+&lt;/repositories&gt;</pre>
+      </div>
+    </div>
+    <div id="footer"></div>
+  </body>
+</html>
