@@ -58,6 +58,7 @@ stages:
     - ant docs
     - mkdir public
     - mv target/javadoc public/
+    - cp -rf site/* public/
   artifacts:
     paths:
       - public
