@@ -41,7 +41,11 @@ public class DomainInfo {
         /**
          * the domain is crashed
          */
-        VIR_DOMAIN_CRASHED
+        VIR_DOMAIN_CRASHED,
+        /**
+         * the domain is suspended by guest power management
+         */
+        VIR_DOMAIN_PMSUSPENDED
     }
 
     /**
