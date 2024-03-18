@@ -41,9 +41,6 @@ targets:
 
     jobs:
       - arch: x86_64
-        template: .native_build_job
-
-    jobs:
       - arch: x86_64
         template: .native_git_build_job
         suffix: -git

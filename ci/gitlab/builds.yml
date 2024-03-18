@@ -108,6 +108,17 @@ x86_64-ubuntu-2004:
     TARGET_BASE_IMAGE: docker.io/library/ubuntu:20.04
 
 
+x86_64-ubuntu-2204:
+  extends: .native_build_job
+  needs:
+    - job: x86_64-ubuntu-2204-container
+      optional: true
+  allow_failure: false
+  variables:
+    NAME: ubuntu-2204
+    TARGET_BASE_IMAGE: docker.io/library/ubuntu:22.04
+
+
 x86_64-ubuntu-2204-git:
   extends: .native_git_build_job
   needs:
