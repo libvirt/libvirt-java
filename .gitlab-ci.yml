@@ -5,6 +5,8 @@ stages:
   - sanity_checks
 
 .native_git_build_job:
+  extends:
+    - .gitlab_native_build_job
   script:
     - export MAKEFLAGS="-j$(getconf _NPROCESSORS_ONLN)"
     - export SCRATCH_DIR="/tmp/scratch"
@@ -26,32 +28,14 @@ stages:
     - ant src
     - if test -x /usr/bin/rpmbuild ; then ant spec && rpmbuild -ba --define "_sourcedir `pwd`/target" target/libvirt-java.spec ; fi
 
-.native_git_build_job_prebuilt_env:
-  extends:
-    - .native_git_build_job
-    - .gitlab_native_build_job_prebuilt_env
-
-.native_git_build_job_local_env:
-  extends:
-    - .native_git_build_job
-    - .gitlab_native_build_job_local_env
-
 .native_build_job:
+  extends:
+    - .gitlab_native_build_job
   script:
     - ant build jar docs
     - if test "$TESTS" != "skip" ; then ant test ; fi
     - ant src
     - if test -x /usr/bin/rpmbuild ; then ant spec && rpmbuild -ba --define "_sourcedir `pwd`/target" target/libvirt-java.spec ; fi
-
-.native_build_job_prebuilt_env:
-  extends:
-    - .native_build_job
-    - .gitlab_native_build_job_prebuilt_env
-
-.native_build_job_local_env:
-  extends:
-    - .native_build_job
-    - .gitlab_native_build_job_local_env
 
 .website:
   script:
@@ -66,19 +50,11 @@ stages:
 pages:
   extends:
     - .website
-    - .gitlab_native_build_job_prebuilt_env
+    - .gitlab_native_build_job
   needs:
     - job: x86_64-ubuntu-2204-container
       optional: true
   variables:
-    NAME: ubuntu-2204
-
-website_local_env:
-  extends:
-    - .website
-    - .gitlab_native_build_job_local_env
-  variables:
-    IMAGE: docker.io/library/ubuntu:22.04
     NAME: ubuntu-2204
 
 include: '/ci/gitlab.yml'
