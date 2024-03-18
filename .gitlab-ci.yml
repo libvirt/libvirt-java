@@ -2,6 +2,7 @@
 stages:
   - containers
   - builds
+  - pages
   - sanity_checks
 
 .native_git_build_job:
@@ -37,23 +38,30 @@ stages:
     - ant src
     - if test -x /usr/bin/rpmbuild ; then ant spec && rpmbuild -ba --define "_sourcedir `pwd`/target" target/libvirt-java.spec ; fi
 
-.website:
-  script:
-    - ant docs
-    - cp -rf site public
-    - mv target/javadoc public/
-  artifacts:
-    paths:
-      - public
-
-pages:
+website_job:
   extends:
-    - .website
     - .gitlab_native_build_job
   needs:
     - job: x86_64-ubuntu-2204-container
       optional: true
+  script:
+    - ant docs
+    - cp -rf site website
+    - mv target/javadoc website/
+  artifacts:
+    paths:
+      - website
   variables:
     NAME: ubuntu-2204
+
+pages:
+  stage: pages
+  dependencies:
+    - website_job
+  script:
+    - mv website public
+  artifacts:
+    paths:
+      - public
 
 include: '/ci/gitlab.yml'
