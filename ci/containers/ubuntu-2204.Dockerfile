@@ -20,7 +20,6 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
                       gettext \
                       git \
                       junit \
-                      libc-dev-bin \
                       libc6-dev \
                       libglib2.0-dev \
                       libgnutls28-dev \
@@ -35,7 +34,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
                       make \
                       meson \
                       ninja-build \
-                      openjdk-11-jdk-headless \
+                      openjdk-17-jdk-headless \
                       perl-base \
                       pkgconf \
                       python3 \
@@ -45,6 +44,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
     eatmydata apt-get autoclean -y && \
     sed -Ei 's,^# (en_US\.UTF-8 .*)$,\1,' /etc/locale.gen && \
     dpkg-reconfigure locales && \
+    rm -f /usr/lib*/python3*/EXTERNALLY-MANAGED && \
     dpkg-query --showformat '${Package}_${Version}_${Architecture}\n' --show > /packages.txt && \
     mkdir -p /usr/libexec/ccache-wrappers && \
     ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/cc && \

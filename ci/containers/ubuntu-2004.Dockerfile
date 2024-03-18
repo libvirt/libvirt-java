@@ -19,7 +19,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
                       libjna-java \
                       libvirt-dev \
                       locales \
-                      openjdk-11-jdk-headless && \
+                      openjdk-17-jdk-headless && \
     eatmydata apt-get autoremove -y && \
     eatmydata apt-get autoclean -y && \
     sed -Ei 's,^# (en_US\.UTF-8 .*)$,\1,' /etc/locale.gen && \
