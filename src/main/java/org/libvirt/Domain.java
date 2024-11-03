@@ -1293,8 +1293,7 @@ public class Domain {
      * Provides an XML description of the domain. The description may be reused
      * later to relaunch the domain with createLinux().
      *
-     * @param flags
-     *            not used
+     * @param flags bitwise-OR of {@link XMLFlags}
      * @return the XML description String
      * @throws LibvirtException
      * @see <a href="https://libvirt.org/format.html#Normal1" >The XML

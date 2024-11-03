@@ -16,6 +16,10 @@ public class DomainSnapshot {
         public static final int CHILDREN_ONLY = bit(2); /* Delete just children */
     }
 
+    public static final class XMLFlags {
+        public static final int SECURE = bit(0); /* Dump security sensitive information too */
+    }
+
     /**
      * the native virDomainSnapshotPtr.
      */
@@ -75,14 +79,27 @@ public class DomainSnapshot {
     }
 
     /**
-     * Fetches an XML document describing attributes of the snapshot.
+     * Fetches an XML document describing attributes of the snapshot, without security-sensitive data.
      *
-     * @throws org.libvirt.LibvirtException
-     * @see <a href="https://libvirt.org/html/libvirt-libvirt.html#virDomainSnapshotGetXMLDesc">
-        Libvirt Documentation</a>
+     * @see <a href="https://libvirt.org/html/libvirt-libvirt-domain-snapshot.html#virDomainSnapshotGetXMLDesc">
+     *      Libvirt Documentation</a>
      * @return the XML document
+     * @throws org.libvirt.LibvirtException
      */
     public String getXMLDesc() throws LibvirtException {
-        return processError(libvirt.virDomainSnapshotGetXMLDesc(vdsp, 0)).toString();
+        return getXMLDesc(0);
+    }
+
+    /**
+     * Fetches an XML document describing attributes of the snapshot.
+     *
+     * @see <a href="https://libvirt.org/html/libvirt-libvirt-domain-snapshot.html#virDomainSnapshotGetXMLDesc">
+     *      Libvirt Documentation</a>
+     * @param flags bitwise-OR of {@link XMLFlags}
+     * @return the XML document
+     * @throws org.libvirt.LibvirtException
+     */
+    public String getXMLDesc(final int flags) throws LibvirtException {
+        return processError(libvirt.virDomainSnapshotGetXMLDesc(vdsp, flags)).toString();
     }
 }
