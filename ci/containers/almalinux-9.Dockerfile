@@ -4,20 +4,21 @@
 #
 # https://gitlab.com/libvirt/libvirt-ci
 
-FROM docker.io/library/almalinux:8
+FROM docker.io/library/almalinux:9
 
 RUN dnf update -y && \
     dnf install 'dnf-command(config-manager)' -y && \
-    dnf config-manager --set-enabled -y powertools && \
-    dnf install -y centos-release-advanced-virtualization && \
+    dnf config-manager --set-enabled -y crb && \
     dnf install -y epel-release && \
     dnf install -y \
         ant \
+        ant-junit \
         ca-certificates \
         git \
         glibc-langpack-en \
-        java-11-openjdk-headless \
+        java-21-openjdk-headless \
         jna \
+        junit \
         libvirt-devel \
         rpm-build && \
     dnf autoremove -y && \

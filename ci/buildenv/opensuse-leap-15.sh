@@ -6,13 +6,14 @@
 
 function install_buildenv() {
     zypper update -y
+    zypper addrepo -fc https://download.opensuse.org/update/leap/15.6/backports/openSUSE:Backports:SLE-15-SP6:Update.repo
     zypper install -y \
            ant \
            ant-junit \
            ca-certificates \
            git \
            glibc-locale \
-           java-11-openjdk-headless \
+           java-21-openjdk-headless \
            jna \
            junit \
            libvirt-devel \

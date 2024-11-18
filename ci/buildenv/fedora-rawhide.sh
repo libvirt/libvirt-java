@@ -13,7 +13,7 @@ function install_buildenv() {
         ca-certificates \
         git \
         glibc-langpack-en \
-        java-11-openjdk-headless \
+        java-21-openjdk-headless \
         jna \
         junit \
         libvirt-devel \

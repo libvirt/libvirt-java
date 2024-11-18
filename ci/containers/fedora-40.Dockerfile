@@ -4,7 +4,7 @@
 #
 # https://gitlab.com/libvirt/libvirt-ci
 
-FROM registry.fedoraproject.org/fedora:38
+FROM registry.fedoraproject.org/fedora:40
 
 RUN dnf install -y nosync && \
     printf '#!/bin/sh\n\
@@ -23,7 +23,7 @@ exec "$@"\n' > /usr/bin/nosync && \
                ca-certificates \
                git \
                glibc-langpack-en \
-               java-11-openjdk-headless \
+               java-21-openjdk-headless \
                jna \
                junit \
                libvirt-devel \
