@@ -61,7 +61,7 @@ public final class TestJavaBindings extends TestCase {
         assertEquals("conn.getVersion()", 2, conn.getVersion());
         assertTrue("conn.isAlive", conn.isAlive());
         assertTrue("conn.isEncrypted", conn.isEncrypted() == 0);
-        assertTrue("conn.isSecure", conn.isSecure() == 1);        
+        assertTrue("conn.isSecure", conn.isSecure() == 1);
     }
 
     /*
@@ -110,8 +110,8 @@ public final class TestJavaBindings extends TestCase {
         assertEquals("Number of defined networks", 1, conn.numOfDefinedNetworks());
         assertEquals("Number of listed defined networks", 1, conn.listDefinedNetworks().length);
         assertTrue("Network1 should not be persistent", network1.isPersistent() == 0);
-        assertTrue("Network1 should not be active", network1.isActive() == 1);        
-        assertTrue("Network2 should be active", network2.isActive() == 0);            
+        assertTrue("Network1 should not be active", network1.isActive() == 1);
+        assertTrue("Network2 should be active", network2.isActive() == 0);
         this.validateNetworkData(network2);
         this.validateNetworkData(conn.networkLookupByName("deftest"));
         this.validateNetworkData(conn.networkLookupByUUID(UUIDArray));
@@ -157,8 +157,8 @@ public final class TestJavaBindings extends TestCase {
         assertEquals("Number of defined domains", 1, conn.numOfDefinedDomains());
         assertEquals("Number of listed defined domains", 1, conn.listDefinedDomains().length);
         assertTrue("Domain1 should be persistent", dom1.isPersistent() == 1);
-        assertTrue("Domain1 should not be active", dom1.isActive() == 0);        
-        assertTrue("Domain2 should be active", dom2.isActive() == 1);              
+        assertTrue("Domain1 should not be active", dom1.isActive() == 0);
+        assertTrue("Domain2 should be active", dom2.isActive() == 1);
         this.validateDomainData(dom2);
         this.validateDomainData(conn.domainLookupByName("createst"));
         this.validateDomainData(conn.domainLookupByUUID(UUIDArray));
@@ -216,7 +216,7 @@ public final class TestJavaBindings extends TestCase {
         assertEquals("virtInterfaceGetName", "eth1", virtInt.getName());
         assertEquals("virtInterfaceGetMACString", "aa:bb:cc:dd:ee:ff", virtInt.getMACString());
         assertNotNull("virtInterfaceGetXMLDesc", virtInt.getXMLDescription(0));
-        assertTrue("virInterfaceIsActive", virtInt.isActive() == 1);         
+        assertTrue("virInterfaceIsActive", virtInt.isActive() == 1);
         System.out.println(virtInt.getXMLDescription(0));
 
         String newXML = "<interface type='ethernet' name='eth2'>" + "<start mode='onboot'/>"
@@ -243,7 +243,7 @@ public final class TestJavaBindings extends TestCase {
         }
         assertNotNull(virException);
     }
-    
+
     public void testStoragePool() throws Exception {
         StoragePool pool1 = conn.storagePoolDefineXML("<pool type='dir'>"
                 + "  <name>pool1</name>"
@@ -254,14 +254,14 @@ public final class TestJavaBindings extends TestCase {
                 + "</pool>", 0) ;
         StoragePool defaultPool = conn.storagePoolLookupByName("default-pool");
         assertEquals("numOfStoragePools:", 1, conn.numOfStoragePools());
-        assertEquals("numOfDefinedStoragePools:", 1, conn.numOfDefinedStoragePools());        
+        assertEquals("numOfDefinedStoragePools:", 1, conn.numOfDefinedStoragePools());
         assertNotNull("The pool should not be null", pool1);
-        assertNotNull("The default pool should not be null", defaultPool);   
+        assertNotNull("The default pool should not be null", defaultPool);
         assertEquals("The names should match", defaultPool.getName(), "default-pool");
-        assertEquals("The uids should match", pool1.getUUIDString(), "004c96e1-2d78-c30f-5aa5-f03c87d21e67"); 
+        assertEquals("The uids should match", pool1.getUUIDString(), "004c96e1-2d78-c30f-5aa5-f03c87d21e67");
         assertTrue("pool1 should be persistent", pool1.isPersistent() == 1);
-        assertTrue("pool1 should not be active", pool1.isActive() == 0);        
-        assertTrue("Domain2 should be active", defaultPool.isActive() == 1);         
+        assertTrue("pool1 should not be active", pool1.isActive() == 0);
+        assertTrue("Domain2 should be active", defaultPool.isActive() == 1);
     }
 
     public void testDomainEvents() throws Exception {
