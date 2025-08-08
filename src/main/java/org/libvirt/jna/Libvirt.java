@@ -423,6 +423,8 @@ public interface Libvirt extends Library {
                                int flags);
     int virDomainMemoryStats(DomainPointer virDomainPtr,
                              virDomainMemoryStats[] stats, int nrStats, int flags);
+    int virDomainGetCPUStats(DomainPointer virDomainPtr,
+                             virTypedParameter[] params, int nparams, int start_cpu, int ncpus, int flags);
     int virDomainPinVcpu(DomainPointer virDomainPtr,
                          int vcpu, byte[] cpumap, int maplen);
     int virDomainPMSuspendForDuration(DomainPointer virDomainPtr,

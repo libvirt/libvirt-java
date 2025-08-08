@@ -1505,6 +1505,28 @@ public class Domain {
     }
 
     /**
+     * This function provides cpu statistics for the domain.
+     *
+     * @param start_cpu
+     *            which cpu to start with, or -1 for summary
+     * @param ncpus
+     *            how many cpus to query
+     * @return the collection of stats
+     * @throws LibvirtException
+     */
+    public TypedParameter[] getCPUStats(final int start_cpu, final int ncpus)
+            throws LibvirtException {
+        int number = processError(libvirt.virDomainGetCPUStats(vdp, null, 0, start_cpu, ncpus, 0));
+        virTypedParameter[] params = new virTypedParameter[number];
+        int result = processError(libvirt.virDomainGetCPUStats(vdp, params, number, start_cpu, ncpus, 0));
+        TypedParameter[] returnStats = new TypedParameter[result];
+        for (int x = 0; x < result; x++) {
+            returnStats[x] = TypedParameter.create(params[x]);
+        }
+        return returnStats;
+    }
+
+    /**
      * This function provides memory statistics for the domain.
      *
      * @param number

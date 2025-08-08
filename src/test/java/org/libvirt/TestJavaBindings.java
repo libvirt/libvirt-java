@@ -187,15 +187,24 @@ public final class TestJavaBindings extends TestCase {
             System.out.println(c.getTypeAsString() + ":" + c.field + ":" + c.getValueAsString());
         }
 
-        dom.getSchedulerParameters() ;
-        
+        dom.getSchedulerParameters();
+
         SchedUintParameter[] pars = new SchedUintParameter[1];
         pars[0] = new SchedUintParameter();
         pars[0].field = "weight";
         pars[0].value = 100;
         dom.setSchedulerParameters(pars);
-        
-        dom.getSchedulerParameters() ;        
+
+        dom.getSchedulerParameters();
+
+        TypedParameter[] cpuStats = dom.getCPUStats(-1, 1);
+        assertEquals(3, cpuStats.length);
+        assertEquals("cpu_time", cpuStats[0].field);
+        assertEquals("48772617035", cpuStats[0].getValueAsString());
+        assertEquals("user_time", cpuStats[1].field);
+        assertEquals("5540000000", cpuStats[1].getValueAsString());
+        assertEquals("system_time", cpuStats[2].field);
+        assertEquals("6460000000", cpuStats[2].getValueAsString());
     }
 
     public void testInterfaces() throws Exception {
