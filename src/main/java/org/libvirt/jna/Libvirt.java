@@ -417,6 +417,10 @@ public interface Libvirt extends Library {
                                String dconnuri, String miguri,
                                String dxml, NativeLong flags,
                                String dname, NativeLong bandwidth);
+    int virDomainMigrateToURI3(DomainPointer virDomainPtr,
+                               String dconnuri,
+                               virTypedParameter[] params, int nparams,
+                               int flags);
     int virDomainMemoryStats(DomainPointer virDomainPtr,
                              virDomainMemoryStats[] stats, int nrStats, int flags);
     int virDomainPinVcpu(DomainPointer virDomainPtr,

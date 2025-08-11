@@ -1752,6 +1752,41 @@ public class Domain {
      *
      * @param dconnuri
      *            (optional) URI for target libvirtd if @flags includes PEER2PEER
+     * @param params
+     *            (optional) Migration parameters
+     * @param flags
+     *            Controls the migrate
+     * @return 0 if successful
+     * @throws LibvirtException
+     */
+    public int migrateToURI(final String dconnuri,
+                            final TypedParameter[] params,
+                            final int flags)
+            throws LibvirtException {
+        assert params != null : "migrate Typed parameters cannot be null";
+        virTypedParameter[] input = generateNativeVirTypedParameters(params);
+        return processError(libvirt.virDomainMigrateToURI3(vdp, dconnuri,
+                                                           input, input.length,
+                                                           flags));
+    }
+
+    /**
+     * Migrate the domain object from its current host to the destination
+     * denoted by a given URI.
+     * <p>
+     * The destination is given either in dconnuri (if the
+     * {@link MigrateFlags#PEER2PEER PEER2PEER}
+     * is flag set), or in miguri (if neither the
+     * {@link MigrateFlags#PEER2PEER PEER2PEER} nor the
+     * {@link MigrateFlags#TUNNELED TUNNELED} migration
+     * flag is set in flags).
+     *
+     * @see <a
+     * href="https://libvirt.org/html/libvirt-libvirt.html#virDomainMigrateToURI">
+     * virDomainMigrateToURI</a>
+     *
+     * @param dconnuri
+     *            (optional) URI for target libvirtd if @flags includes PEER2PEER
      * @param miguri
      *            (optional) URI for invoking the migration, not if @flags includs TUNNELED
      * @param dxml
