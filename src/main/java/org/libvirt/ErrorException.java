@@ -7,6 +7,7 @@ package org.libvirt;
  * @author stoty
  * @deprecated
  */
+@Deprecated
 public class ErrorException extends Exception {
     private static final long serialVersionUID = -4329050530233404971L;
 
