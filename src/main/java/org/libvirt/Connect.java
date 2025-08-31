@@ -18,6 +18,7 @@ import static org.libvirt.ErrorHandler.processErrorIfZero;
 import static org.libvirt.BitFlagsHelper.OR;
 
 import com.sun.jna.Memory;
+import com.sun.jna.Native;
 import com.sun.jna.NativeLong;
 import com.sun.jna.Pointer;
 import com.sun.jna.ptr.LongByReference;
@@ -1499,17 +1500,14 @@ public class Connect {
         DomainByReference domainByReference = new DomainByReference();
         int domainsCount = processError(libvirt.virConnectListAllDomains(vcp, domainByReference, flags));
 
-        Pointer[] pointerArray = domainByReference.getValue().getPointerArray(0, domainsCount);
-        if (domainsCount > 0) {
-            Domain[] domains = new Domain[domainsCount];
-            for (int i = 0; i < domainsCount; i++) {
-                domains[i] = new Domain(this, new DomainPointer(pointerArray[i]));
-            }
-
-            return domains;
+        Pointer pointer = domainByReference.getValue();
+        Domain[] domains = new Domain[domainsCount];
+        for (int i = 0; i < domainsCount; i++) {
+            domains[i] = new Domain(this, new DomainPointer(pointer.getPointer(i * Native.POINTER_SIZE)));
         }
+        Library.free(pointer);
 
-        return new Domain[]{};
+        return domains;
     }
 
     /**
