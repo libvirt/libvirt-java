@@ -123,7 +123,7 @@ public class Domain {
     /**
      * Contains multiple constants that defines "virDomainMigrate* params" multiple field.
      * @see <a href="https://libvirt.org/html/libvirt-libvirt-domain.html">Libvirt domain documentation.</a>, and
-     *      <a href="https://gitlab.com/libvirt/libvirt/-/blob/master/include/libvirt/libvirt-domain.h">libvirt-domain.h</a>.
+     *      <a href="https://gitlab.com/libvirt/libvirt/-/blob/master/include/libvirt/libvirt-domain.h">libvirt-domain.h</a>
      */
     public static final class DomainMigrateParameters {
         /**
