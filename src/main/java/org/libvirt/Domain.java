@@ -58,6 +58,132 @@ public class Domain {
      * TODO: get generated constants from libvirt
      */
 
+    public static final class JobOperation {
+        /**
+         * @see <a href="https://libvirt.org/html/libvirt-libvirt-domain.html#VIR_DOMAIN_JOB_OPERATION_UNKNOWN">
+         *      Libvirt Documentation</a>
+         */
+        public static final int UNKNOWN           = 0;
+        /**
+         * @see <a href="https://libvirt.org/html/libvirt-libvirt-domain.html#VIR_DOMAIN_JOB_OPERATION_START">
+         *      Libvirt Documentation</a>
+         */
+        public static final int START             = 1;
+
+        /**
+         * @see <a href="https://libvirt.org/html/libvirt-libvirt-domain.html#VIR_DOMAIN_JOB_OPERATION_SAVE">
+         *      Libvirt Documentation</a>
+         */
+        public static final int SAVE              = 2;
+        /**
+         * @see <a href="https://libvirt.org/html/libvirt-libvirt-domain.html#VIR_DOMAIN_JOB_OPERATION_RESTORE">
+         *      Libvirt Documentation</a>
+         */
+        public static final int RESTORE           = 3;
+
+        /**
+         * @see <a href="https://libvirt.org/html/libvirt-libvirt-domain.html#VIR_DOMAIN_JOB_OPERATION_MIGRATION_IN">
+         *      Libvirt Documentation</a>
+         */
+        public static final int MIGRATION_IN      = 4;
+
+        /**
+         * @see <a href="https://libvirt.org/html/libvirt-libvirt-domain.html#VIR_DOMAIN_JOB_OPERATION_MIGRATION_OUT">
+         *      Libvirt Documentation</a>
+         */
+        public static final int MIGRATION_OUT     = 5;
+        /**
+         * @see <a href="https://libvirt.org/html/libvirt-libvirt-domain.html#VIR_DOMAIN_JOB_OPERATION_SNAPSHOT">
+         *      Libvirt Documentation</a>
+         */
+        public static final int SNAPSHOT          = 6;
+
+        /**
+         * @see <a href="https://libvirt.org/html/libvirt-libvirt-domain.html#VIR_DOMAIN_JOB_OPERATION_SNAPSHOT_REVERT">
+         *      Libvirt Documentation</a>
+         */
+        public static final int SNAPSHOT_REVERT   = 7;
+
+        /**
+         * @see <a href="https://libvirt.org/html/libvirt-libvirt-domain.html#VIR_DOMAIN_JOB_OPERATION_DUMP">
+         *      Libvirt Documentation</a>
+         */
+        public static final int DUMP              = 8;
+
+        /**
+         * @see <a href="https://libvirt.org/html/libvirt-libvirt-domain.html#VIR_DOMAIN_JOB_OPERATION_BACKUP">
+         *      Libvirt Documentation</a>
+         */
+        public static final int BACKUP            = 9;
+
+        /**
+         * @see <a href="https://libvirt.org/html/libvirt-libvirt-domain.html#VIR_DOMAIN_JOB_OPERATION_SNAPSHOT_DELETE">
+         *      Libvirt Documentation</a>
+         */
+        public static final int SNAPSHOT_DELETE   = 10;
+        /**
+         * @see <a href="https://libvirt.org/html/libvirt-libvirt-domain.html#VIR_DOMAIN_JOB_OPERATION_LAST">
+         *      Libvirt Documentation</a>
+         */
+        public static final int LAST              = 11;
+    }
+
+    public static final class BlockJobType {
+        /**
+         * Placeholder
+         *
+         * @see <a href="https://libvirt.org/html/libvirt-libvirt-domain.html#VIR_DOMAIN_BLOCK_JOB_TYPE_UNKNOWN">
+         *      Libvirt Documentation</a>
+         */
+        public static int UNKNOWN = 0;
+
+        /**
+         * Block Pull (virDomainBlockPull, or virDomainBlockRebase without flags), job ends on completion
+         *
+         * @see <a href="https://libvirt.org/html/libvirt-libvirt-domain.html#VIR_DOMAIN_BLOCK_JOB_TYPE_PULL">
+         *      Libvirt Documentation</a>
+         */
+        public static int PULL = 1;
+
+        /**
+         * Block Copy (virDomainBlockCopy, or virDomainBlockRebase with flags), job exists as long as mirroring is active
+         *
+         * @see <a href="https://libvirt.org/html/libvirt-libvirt-domain.html#VIR_DOMAIN_BLOCK_JOB_TYPE_COPY">
+         *      Libvirt Documentation</a>
+         */
+        public static int COPY = 2;
+
+        /**
+         * Block Commit (virDomainBlockCommit without flags), job ends on completion
+         *
+         * @see <a href="https://libvirt.org/html/libvirt-libvirt-domain.html#VIR_DOMAIN_BLOCK_JOB_TYPE_COMMIT">
+         *      Libvirt Documentation</a>
+         */
+        public static int COMMIT = 3;
+
+        /**
+         * Active Block Commit (virDomainBlockCommit with flags), job exists as long as sync is active
+         *
+         * @see <a href="https://libvirt.org/html/libvirt-libvirt-domain.html#VIR_DOMAIN_BLOCK_JOB_TYPE_ACTIVE_COMMIT">
+         *      Libvirt Documentation</a>
+         */
+        public static int ACTIVE_COMMIT = 4;
+
+        /**
+         * Backup (virDomainBackupBegin)
+         *
+         * @see <a href="https://libvirt.org/html/libvirt-libvirt-domain.html#VIR_DOMAIN_BLOCK_JOB_TYPE_BACKUP">
+         *      Libvirt Documentation</a>
+         */
+        public static int BACKUP = 5;
+
+        /**
+         * @see <a href="https://libvirt.org/html/libvirt-libvirt-domain.html#VIR_DOMAIN_BLOCK_JOB_TYPE_LAST">
+         *      Libvirt Documentation</a>
+         */
+        public static int LAST = 6;
+    }
+
     public static final class BlockCommitFlags {
         /** NULL base means next backing file, not whole chain */
         public static int SHALLOW         = bit(0);
@@ -521,11 +647,39 @@ public class Domain {
         /**  Use paravirt guest control */
         public static final int PARAVIRT        = bit(4);
     }
-    
+
+    public static final class DomainBackupBeginFlags {
+        /**
+         * reuse separately provided images
+         *
+         * @see <a href="https://libvirt.org/html/libvirt-libvirt-domain.html#VIR_DOMAIN_BACKUP_BEGIN_REUSE_EXTERNAL">
+         * Libvirt Documentation</a>
+         */
+        public static final int REUSE_EXTERNAL    = bit(0);
+    }
+
+    public static final class DomainGetJobStatsFlags {
+        /**
+         * return stats of a recently completed job
+         *
+         * @see <a href="https://libvirt.org/html/libvirt-libvirt-domain.html#VIR_DOMAIN_JOB_STATS_COMPLETED">
+         * Libvirt Documentation</a>
+         */
+        public static final int COMPLETED        = bit(0);
+
+        /**
+         * don't remove completed stats when reading them
+         *
+         * @see <a href="https://libvirt.org/html/libvirt-libvirt-domain.html#VIR_DOMAIN_JOB_STATS_KEEP_COMPLETED">
+         * Libvirt Documentation</a>
+         */
+        public static final int KEEP_COMPLETED   = bit(1);
+    }
+
     public static final class CheckpointCreateFlags {
 
         /**	Restore or alter metadata (Since: 5.6.0)
-         * 
+         *
          * @see <a href="https://libvirt.org/html/libvirt-libvirt-domain-checkpoint.html#VIR_DOMAIN_CHECKPOINT_CREATE_REDEFINE">
          *     Libvirt Documentation</a>
         */
@@ -533,7 +687,7 @@ public class Domain {
 
         /**	use guest agent to quiesce all mounted file
          * systems within the domain  (Since: 5.6.0)
-         * 
+         *
          * @see <a href="https://libvirt.org/html/libvirt-libvirt-domain-checkpoint.html#VIR_DOMAIN_CHECKPOINT_CREATE_QUIESCE">
          *     Libvirt Documentation</a>
         */
@@ -541,7 +695,7 @@ public class Domain {
 
         /**	validate disk data state when redefining
          * a checkpoint (Since: 6.10.0)
-         * 
+         *
          * @see <a href="https://libvirt.org/html/libvirt-libvirt-domain-checkpoint.html#VIR_DOMAIN_CHECKPOINT_CREATE_REDEFINE_VALIDATE">
          *     Libvirt Documentation</a>
         */
@@ -552,7 +706,7 @@ public class Domain {
 
         /** List all descendants, not just children, when
          * listing a checkpoint (Since: 5.6.0)
-         * 
+         *
          * @see <a href="https://libvirt.org/html/libvirt-libvirt-domain-checkpoint.html#VIR_DOMAIN_CHECKPOINT_LIST_DESCENDANTS">
          *     Libvirt Documentation</a>
         */
@@ -560,7 +714,7 @@ public class Domain {
 
         /**  Filter by checkpoints with no parents, when
          * listing a domain (Since: 5.6.0)
-         * 
+         *
          * @see <a href="https://libvirt.org/html/libvirt-libvirt-domain-checkpoint.html#VIR_DOMAIN_CHECKPOINT_LIST_ROOTS">
          *     Libvirt Documentation</a>
         */
@@ -568,21 +722,21 @@ public class Domain {
 
         /**  Ensure parents occur before children in
          * the resulting list (Since: 5.6.0)
-         * 
+         *
          * @see <a href="https://libvirt.org/html/libvirt-libvirt-domain-checkpoint.html#VIR_DOMAIN_CHECKPOINT_LIST_TOPOLOGICAL">
          *     Libvirt Documentation</a>
         */
         public static final int TOPOLOGICAL  = bit(1);
 
         /** Filter by checkpoints with no children (Since: 5.6.0)
-         * 
+         *
          * @see <a href="https://libvirt.org/html/libvirt-libvirt-domain-checkpoint.html#VIR_DOMAIN_CHECKPOINT_LIST_LEAVES">
          *     Libvirt Documentation</a>
         */
         public static final int LEAVES = bit(2);
 
         /** Filter by checkpoints that have children (Since: 5.6.0)
-         * 
+         *
          * @see <a href="https://libvirt.org/html/libvirt-libvirt-domain-checkpoint.html#VIR_DOMAIN_CHECKPOINT_LIST_NO_LEAVES">
          *     Libvirt Documentation</a>
         */
@@ -843,6 +997,35 @@ public class Domain {
     public void attachDeviceFlags(final String xmlDesc, final int flags)
             throws LibvirtException {
         processError(libvirt.virDomainAttachDeviceFlags(vdp, xmlDesc, flags));
+    }
+
+    /**
+     * Start a point-in-time backup job for the specified disks of a running domain.
+     *
+     * @see <a href="https://libvirt.org/html/libvirt-libvirt-domain.html#virDomainBackupBegin">
+     *      Libvirt Documentation</a>
+     * @param backupXML contains details about the backup in the top-level element <domainbackup>
+     * @param checkpointXML description of a checkpoint to create or null
+     * @param flags the an OR'ed set of {@link DomainBackupBeginFlags}
+     * @throws LibvirtException
+     */
+    public void backupBegin(final String backupXML, final String checkpointXML, int flags)
+            throws LibvirtException {
+        processError(libvirt.virDomainBackupBegin(vdp, backupXML, checkpointXML, flags));
+    }
+
+    /**
+     * Queries the configuration of the active backup job.
+     * @see <a href="https://libvirt.org/html/libvirt-libvirt-domain.html#virDomainBackupGetXMLDesc">
+            Libvirt Documentation</a>
+     * @param flags extra flags; not used yet, so callers should always pass 0
+     * @returnthe XML document
+     * @throws LibvirtException
+     */
+    public String getBackupXMLDesc(final int flags) throws LibvirtException {
+        CString result = libvirt.virDomainBackupGetXMLDesc(vdp, flags);
+        processError(result);
+        return result.toString();
     }
 
     /**
@@ -2459,11 +2642,11 @@ public class Domain {
 
     /**
      * Array of domain checkpoints for the given domain.
-     * 
-     * @see <a 
+     *
+     * @see <a
      *      href="https://libvirt.org/html/libvirt-libvirt-domain-checkpoint.html#virDomainListAllCheckpoints">Libvirt
      *      Documentation</a>
-     * 
+     *
      * @param flags
      *            flags for list the checkpoint, see the {@link CheckpointListFlags} for the flag options
      * @return Array with domain checkpoints of the given domain
@@ -2479,12 +2662,12 @@ public class Domain {
             }
             return new DomainCheckpoint[0];
         }
-        
+
         try {
             if (count < 0) {
                 processError(count);
                 throw new IllegalStateException("virDomainListAllCheckpoints returned " + count);
-            } 
+            }
             DomainCheckpoint[] result = new DomainCheckpoint[count];
             Pointer arrayPtr = checkpoints.getValue();
             for (int i = 0; i < count; i++) {

@@ -25,11 +25,12 @@ public class virTypedParameter extends Structure {
     public int type;
     public virTypedParameterValue value;
 
-    public virTypedParameter() {
+    public virTypedParameter(){
+        super();
     }
 
-    public virTypedParameter(Pointer ptr) {
-        super(ptr);
+    public virTypedParameter(Pointer p) {
+        super(p);
     }
 
     @Override

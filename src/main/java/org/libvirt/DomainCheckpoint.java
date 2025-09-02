@@ -23,7 +23,7 @@ public class DomainCheckpoint {
     public static final class CheckpointDeleteFlags {
         /**
          * Also delete children (Since: 5.6.0)
-         * 
+         *
          * @see <a href="change">
          *     Libvirt Documentation</a>
          */
@@ -31,7 +31,7 @@ public class DomainCheckpoint {
 
         /**
          * Delete just metadata (Since: 5.6.0)
-         * 
+         *
          * @see <a href="https://libvirt.org/html/libvirt-libvirt-domain-checkpoint.html#VIR_DOMAIN_CHECKPOINT_DELETE_METADATA_ONLY">
          *     Libvirt Documentation</a>
          */
@@ -39,7 +39,7 @@ public class DomainCheckpoint {
 
         /**
          * Delete just children (Since: 5.6.0)
-         * 
+         *
          * @see <a href="https://libvirt.org/html/libvirt-libvirt-domain-checkpoint.html#VIR_DOMAIN_CHECKPOINT_DELETE_CHILDREN_ONLY">
          *     Libvirt Documentation</a>
          */
@@ -48,25 +48,25 @@ public class DomainCheckpoint {
 
     public static final class XMLFlags {
         /** Include sensitive data (Since: 5.6.0)
-         * 
+         *
          * @see <a href="https://libvirt.org/html/libvirt-libvirt-domain-checkpoint.html#VIR_DOMAIN_CHECKPOINT_XML_SECURE">
          *     Libvirt Documentation</a>
         */
         public static final int SECURE      = bit(0);
 
         /** Supress <domain> subelement (Since: 5.6.0)
-         * 
+         *
          * @see <a href="https://libvirt.org/html/libvirt-libvirt-domain-checkpoint.html#VIR_DOMAIN_CHECKPOINT_XML_NO_DOMAIN">
          *     Libvirt Documentation</a>
         */
         public static final int NO_DOMAIN   = bit(1);
 
         /** Include dynamic per-<disk> size (Since: 5.6.0)
-         * 
+         *
          * @see <a href="https://libvirt.org/html/libvirt-libvirt-domain-checkpoint.html#VIR_DOMAIN_CHECKPOINT_XML_SIZE">
          *     Libvirt Documentation</a>
         */
-        public static final int XML_SIZE    = bit(2); 
+        public static final int XML_SIZE    = bit(2);
     }
 
     /**
@@ -176,8 +176,8 @@ public class DomainCheckpoint {
 
     /**
      * Array of domain checkpoints children for the given domain checkpoint.
-     * 
-     * @see <a 
+     *
+     * @see <a
      *      href="https://libvirt.org/html/libvirt-libvirt-domain-checkpoint.html#virDomainCheckpointListAllChildren">Libvirt
      *      Documentation</a>
      * @param flags
@@ -200,8 +200,8 @@ public class DomainCheckpoint {
             if (count < 0) {
                 processError(count);
                 throw new IllegalStateException("virDomainListAllCheckpoints returned " + count);
-            } 
-            
+            }
+
             Pointer arrayPtr = checkpoints.getValue();
             for (int i = 0; i < count; i++) {
                 Pointer p = arrayPtr.getPointer((long) i * Native.POINTER_SIZE);
@@ -216,7 +216,7 @@ public class DomainCheckpoint {
 
     /**
      * Get the parent checkpoint for checkpoint, if any.
-     * 
+     *
      * @see <a
      *      href="https://libvirt.org/html/libvirt-libvirt-domain-checkpoint.html#virDomainCheckpointGetParent">Libvirt
      *      Documentation</a>
@@ -234,7 +234,7 @@ public class DomainCheckpoint {
 
     /**
      * Get the parent checkpoint for checkpoint, if any.
-     * 
+     *
      * This is just a convenience method, it has the same effect
      * as calling {@code getParent(0);}.
      *

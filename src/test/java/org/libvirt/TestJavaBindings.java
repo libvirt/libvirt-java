@@ -9,6 +9,7 @@ import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.regex.Pattern;
 
@@ -469,7 +470,7 @@ public final class TestJavaBindings extends TestCase {
         }
         assertNotNull(virException);
     }
-    
+
     /**
      * Check methods to create and destroy checkpoints of a domain
      * @throws LibvirtException
@@ -581,5 +582,64 @@ public final class TestJavaBindings extends TestCase {
         for(int i = 1; i < NUM_CHECKPOINTS; i++) {
             assertEquals(childrenFromFirst[i-1].getName(), domainCheckpoints[i].getName());
         }
+    }
+
+    public void testDomainBackupBegin() throws LibvirtException {
+        /**
+         * The driver test:///default is not compatible with virBackupBegin function.
+         * Discomment the test and put your own values and run.
+         */
+        // String connectionURI = "qemu+ssh://root@fgar-libvirt/system";
+        // String domainName = "deb12-1";
+        // String checkpointName = "test-backup-begin-checkpoint";
+
+        /**
+         * In this test:
+         *  - uses your local connection to search the domain.
+         *  - Init backup of given domain.
+         *  - Check if created correctly.
+         *  - Delete the created checkpoint previously.
+         */
+
+        // Connect connToThisTest = new Connect(connectionURI, false);
+
+
+        // Domain domain = connToThisTest.domainLookupByName(domainName);
+        // assertEquals("The test domain should not have any domain checkpoint", 0, domain.listAllCheckpoints(0).length);
+
+        // String backupXML = "<domainbackup mode=\"pull\">\n" + //
+        //     "    <server name=\"localhost\" port=\"10809\"/>\n" + //
+        //     "    <disks>\n" + //
+        //     "        <disk name=\"vda\" type=\"file\">\n" + //
+        //     "            <scratch file=\"/var/lib/libvirt/images/" + domainName +"-vda.scratch\"/>\n" + //
+        //     "        </disk>\n" + //
+        //     "        <disk name=\"vdb\" type=\"file\">\n" + //
+        //     "            <scratch file=\"/var/lib/libvirt/images/" + domainName +"-vdb.scratch\"/>\n" + //
+        //     "        </disk>\n" + //
+        //     "    </disks>\n" + //
+        //     "</domainbackup>";
+
+
+        // String checkpointXML = "<domaincheckpoint>\n" +
+        //     "    <name>" + checkpointName + "</name>\n" +
+        //     "    <disks>\n" +
+        //     "        <disk name=\"vda\" bitmap=\"" + checkpointName + "\" checkpoint=\"bitmap\"/>\n" +
+        //     "        <disk name=\"vdb\" bitmap=\"" + checkpointName + "\" checkpoint=\"bitmap\"/>\n" +
+        //     "    </disks>\n" +
+        //     "</domaincheckpoint>\n";
+        // domain.backupBegin(backupXML, checkpointXML, 0);
+        // DomainCheckpoint domainCheckpoint = domain.checkpointLookupByName(checkpointName);
+        // assertEquals(checkpointName, domainCheckpoint.getName());
+        // try {
+        //     Thread.sleep(2000);
+        // } catch (InterruptedException e) {
+        //     e.printStackTrace();
+        // }
+        // Map<String, TypedParameter> jobStats = domain.getJobStats(0);
+        // assertTrue("The jobStats should have the key 'operation'", jobStats.containsKey("operation"));
+        // assertEquals("The job type should be backup", Domain.JobOperation.BACKUP +"", jobStats.get("operation").getValueAsString());
+        // domain.abortJob();
+        // domainCheckpoint.delete(DomainCheckpoint.CheckpointDeleteFlags.CHILDREN);
+        // assertEquals("The checkpoint should be removed", 0, domain.listAllCheckpoints(0).length);
     }
 }

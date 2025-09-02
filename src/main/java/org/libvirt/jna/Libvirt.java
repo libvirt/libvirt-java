@@ -324,6 +324,8 @@ public interface Libvirt extends Library {
     int virDomainAttachDevice(DomainPointer virDomainPtr, String deviceXML);
     int virDomainAttachDeviceFlags(DomainPointer virDomainPtr,
                                    String deviceXML, int flags);
+    int virDomainBackupBegin(DomainPointer virDomainPtr, String backupXML, String checkpointXML, int flags);
+    CString virDomainBackupGetXMLDesc(DomainPointer virDomainPtr, int flags);
     int virDomainBlockCommit(DomainPointer virDomainPtr, String disk,
                              String base, String top, long bandwidth, int flags);
     int virDomainBlockCopy(DomainPointer virDomainPtr, String disk,
@@ -358,7 +360,7 @@ public interface Libvirt extends Library {
     int virDomainGetID(DomainPointer virDomainPtr);
     int virDomainGetInfo(DomainPointer virDomainPtr, virDomainInfo vInfo);
     int virDomainGetJobInfo(DomainPointer virDomainPtr, virDomainJobInfo vInfo);
-    int virDomainGetJobStats(DomainPointer virDomainPt, IntByReference type, PointerByReference params,
+    int virDomainGetJobStats(DomainPointer virDomainPtr, IntByReference type, PointerByReference params,
                              IntByReference nparams, int flags);
     NativeLong virDomainGetMaxMemory(DomainPointer virDomainPtr);
     int virDomainGetMaxVcpus(DomainPointer virDomainPtr);
