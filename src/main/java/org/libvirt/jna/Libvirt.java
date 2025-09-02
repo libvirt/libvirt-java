@@ -635,6 +635,31 @@ public interface Libvirt extends Library {
     int virStreamRecvAll(StreamPointer virStreamPtr,
                          Libvirt.VirStreamSinkFunc handler, Pointer opaque);
 
+    //DomainCheckpoint Methods
+    String virDomainCheckpointGetName(DomainCheckpointPointer virDomainCheckpointPtr);
+    DomainPointer virDomainCheckpointGetDomain(DomainCheckpointPointer virDomainCheckpointPtr);
+    ConnectionPointer virDomainCheckpointGetConnect(DomainCheckpointPointer checkpoint);
+    DomainCheckpointPointer virDomainCheckpointCreateXML(DomainPointer virDomainPtr,
+                                                         String xmlDesc, int flags);
+    CString virDomainCheckpointGetXMLDesc(DomainCheckpointPointer virDomainCheckpointPtr,
+                                          int flags);
+    int virDomainListAllCheckpoints(DomainPointer virDomainPtr,
+                                    PointerByReference virDomainCheckpointsPtr,
+                                    int flags);
+    int virDomainCheckpointListAllChildren(DomainCheckpointPointer virDomainCheckpointPtr,
+                                           PointerByReference virDomainCheckpointChildrenPtr,
+                                           int flags);
+    DomainCheckpointPointer virDomainCheckpointLookupByName(DomainPointer virDomainPtr,
+                                                            String name, int flags);
+    DomainCheckpointPointer virDomainCheckpointGetParent(DomainCheckpointPointer virDomainCheckpointPtr,
+                                                         int flags);
+    int virDomainCheckpointDelete(DomainCheckpointPointer virDomainCheckpointPtr,
+                                  int flags);
+
+    int virDomainCheckpointRef(DomainCheckpointPointer checkpoint);
+
+    int virDomainCheckpointFree(DomainCheckpointPointer virDomainCheckpointPtr);
+
     //DomainSnapshot Methods
     DomainSnapshotPointer virDomainSnapshotCreateXML(DomainPointer virDomainPtr,
                                                      String xmlDesc, int flags);

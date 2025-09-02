@@ -16,6 +16,7 @@ import org.libvirt.event.PMWakeupListener;
 import org.libvirt.event.RebootListener;
 import org.libvirt.jna.CString;
 import org.libvirt.jna.CStringByReference;
+import org.libvirt.jna.DomainCheckpointPointer;
 import org.libvirt.jna.DomainPointer;
 import org.libvirt.jna.DomainSnapshotPointer;
 import org.libvirt.jna.Libvirt;
@@ -519,6 +520,73 @@ public class Domain {
 
         /**  Use paravirt guest control */
         public static final int PARAVIRT        = bit(4);
+    }
+    
+    public static final class CheckpointCreateFlags {
+
+        /**	Restore or alter metadata (Since: 5.6.0)
+         * 
+         * @see <a href="https://libvirt.org/html/libvirt-libvirt-domain-checkpoint.html#VIR_DOMAIN_CHECKPOINT_CREATE_REDEFINE">
+         *     Libvirt Documentation</a>
+        */
+        public static final int REDEFINE    = bit(0);
+
+        /**	use guest agent to quiesce all mounted file
+         * systems within the domain  (Since: 5.6.0)
+         * 
+         * @see <a href="https://libvirt.org/html/libvirt-libvirt-domain-checkpoint.html#VIR_DOMAIN_CHECKPOINT_CREATE_QUIESCE">
+         *     Libvirt Documentation</a>
+        */
+        public static final int QUIESCE     = bit(1);
+
+        /**	validate disk data state when redefining
+         * a checkpoint (Since: 6.10.0)
+         * 
+         * @see <a href="https://libvirt.org/html/libvirt-libvirt-domain-checkpoint.html#VIR_DOMAIN_CHECKPOINT_CREATE_REDEFINE_VALIDATE">
+         *     Libvirt Documentation</a>
+        */
+        public static final int REDEFINE_VALIDATE    = bit(2);
+    }
+
+    public static final class CheckpointListFlags {
+
+        /** List all descendants, not just children, when
+         * listing a checkpoint (Since: 5.6.0)
+         * 
+         * @see <a href="https://libvirt.org/html/libvirt-libvirt-domain-checkpoint.html#VIR_DOMAIN_CHECKPOINT_LIST_DESCENDANTS">
+         *     Libvirt Documentation</a>
+        */
+        public static final int DESCENDANTS  = bit(0);
+
+        /**  Filter by checkpoints with no parents, when
+         * listing a domain (Since: 5.6.0)
+         * 
+         * @see <a href="https://libvirt.org/html/libvirt-libvirt-domain-checkpoint.html#VIR_DOMAIN_CHECKPOINT_LIST_ROOTS">
+         *     Libvirt Documentation</a>
+        */
+        public static final int ROOTS        = bit(0);
+
+        /**  Ensure parents occur before children in
+         * the resulting list (Since: 5.6.0)
+         * 
+         * @see <a href="https://libvirt.org/html/libvirt-libvirt-domain-checkpoint.html#VIR_DOMAIN_CHECKPOINT_LIST_TOPOLOGICAL">
+         *     Libvirt Documentation</a>
+        */
+        public static final int TOPOLOGICAL  = bit(1);
+
+        /** Filter by checkpoints with no children (Since: 5.6.0)
+         * 
+         * @see <a href="https://libvirt.org/html/libvirt-libvirt-domain-checkpoint.html#VIR_DOMAIN_CHECKPOINT_LIST_LEAVES">
+         *     Libvirt Documentation</a>
+        */
+        public static final int LEAVES = bit(2);
+
+        /** Filter by checkpoints that have children (Since: 5.6.0)
+         * 
+         * @see <a href="https://libvirt.org/html/libvirt-libvirt-domain-checkpoint.html#VIR_DOMAIN_CHECKPOINT_LIST_NO_LEAVES">
+         *     Libvirt Documentation</a>
+        */
+        public static final int NO_LEAVES = bit(3);
     }
 
     public static final class SnapshotCreateFlags {
@@ -2346,6 +2414,141 @@ public class Domain {
      */
     public void shutdown() throws LibvirtException {
         processError(libvirt.virDomainShutdown(vdp));
+    }
+
+    /**
+     * Creates a new checkpoint of a domain based on the checkpoint xml contained in
+     * xmlDesc.
+     *
+     * @see <a
+     *      href="https://libvirt.org/html/libvirt-libvirt-domain-checkpoint.html#virDomainCheckpointCreateXML">Libvirt
+     *      Documentation</a>
+     * @param xmlDesc
+     *            string containing an XML description of the checkpoint
+     * @param flags
+     *            flags for creating the checkpoint, see the {@link CheckpointCreateFlags} for the flag options
+     * @return the checkpoint
+     * @throws LibvirtException
+     */
+    public DomainCheckpoint checkpointCreateXML(final String xmlDesc, final int flags)
+            throws LibvirtException {
+        DomainCheckpointPointer ptr = processError(libvirt.virDomainCheckpointCreateXML(vdp, xmlDesc, flags));
+        return new DomainCheckpoint(virConnect, ptr);
+    }
+
+    /**
+     * Creates a new checkpoint of a domain based on the checkpoint xml contained in
+     * xmlDesc.
+     * <p>
+     * This is just a convenience method, it has the same effect
+     * as calling {@code checkpointCreateXML(xmlDesc, 0);}.
+     *
+     * @see #checkpointCreateXML(String, int)
+     * @see <a
+     *      href="https://libvirt.org/html/libvirt-libvirt-domain-checkpoint.html#virDomainCheckpointCreateXML">Libvirt
+     *      Documentation</a>
+     * @param xmlDesc
+     *            string containing an XML description of the checkpoint
+     * @return the checkpoint, or null on Error
+     * @throws LibvirtException
+     */
+    public DomainCheckpoint checkpointCreateXML(final String xmlDesc)
+            throws LibvirtException {
+        return checkpointCreateXML(xmlDesc, 0);
+    }
+
+    /**
+     * Array of domain checkpoints for the given domain.
+     * 
+     * @see <a 
+     *      href="https://libvirt.org/html/libvirt-libvirt-domain-checkpoint.html#virDomainListAllCheckpoints">Libvirt
+     *      Documentation</a>
+     * 
+     * @param flags
+     *            flags for list the checkpoint, see the {@link CheckpointListFlags} for the flag options
+     * @return Array with domain checkpoints of the given domain
+     * @throws LibvirtException
+     */
+    public DomainCheckpoint[] listAllCheckpoints(int flags) throws LibvirtException {
+        PointerByReference checkpoints = new PointerByReference();
+        int count = libvirt.virDomainListAllCheckpoints(vdp, checkpoints, flags);
+        if (checkpoints.getValue() == null) {
+            if (count != 0) {
+                processError(count);
+                throw new IllegalStateException("virDomainListAllCheckpoints returned " + count);
+            }
+            return new DomainCheckpoint[0];
+        }
+        
+        try {
+            if (count < 0) {
+                processError(count);
+                throw new IllegalStateException("virDomainListAllCheckpoints returned " + count);
+            } 
+            DomainCheckpoint[] result = new DomainCheckpoint[count];
+            Pointer arrayPtr = checkpoints.getValue();
+            for (int i = 0; i < count; i++) {
+                Pointer p = arrayPtr.getPointer((long) i * Native.POINTER_SIZE);
+                result[i] = new DomainCheckpoint(virConnect, new DomainCheckpointPointer(p));
+            }
+            return result;
+        } finally {
+            Library.free(checkpoints.getValue());
+        }
+    }
+
+    /**
+     * Retrieve a checkpoint based on its name
+     *
+     * @see <a
+     *      href="https://libvirt.org/html/libvirt-libvirt-domain-checkpoint.html#virDomainCheckpointLookupByName">Libvirt
+     *      Documentation</a>
+     * @param name
+     *            name for the domain checkpoint
+     * @return The domain checkpoint or null in case of not found
+     * @throws LibvirtException
+     */
+    public DomainCheckpoint checkpointLookupByName(final String name)
+            throws LibvirtException {
+        DomainCheckpointPointer ptr = libvirt.virDomainCheckpointLookupByName(vdp, name, 0);
+        if (ptr == null) {
+            return null;
+        }
+        return new DomainCheckpoint(virConnect, ptr);
+    }
+
+    /**
+     * Array of domain checkpoint names for the given domain. With the option to pass flags.
+     *
+     * This is a helper function, internally, call to listAllCheckpoints(flags), and it only get the names.
+     * @param flags {@link CheckpointListFlags}
+     * @return Array of names, or null if an error
+     * @throws LibvirtException
+     */
+    public String[] checkpointListNames(final int flags) throws LibvirtException {
+        DomainCheckpoint[] checkpoints = listAllCheckpoints(flags);
+        if(checkpoints.length > 0) {
+            String[] names = new String[checkpoints.length];
+            for(int i = 0; i < checkpoints.length; i++) {
+                names[i] = checkpoints[i].getName();
+            }
+            return names;
+        }
+        return Library.NO_STRINGS;
+    }
+
+    /**
+     * Array of domain checkpoint names for the given domain.
+     * <p>
+     * This is just a convenience method, it has the same effect
+     * as calling {@code checkpointListNames(0);}.
+     *
+     * @see #checkpointListNames(int)
+     * @return The list of names, or null if an error
+     * @throws LibvirtException
+     */
+    public String[] checkpointListNames() throws LibvirtException {
+        return checkpointListNames(0);
     }
 
     /**

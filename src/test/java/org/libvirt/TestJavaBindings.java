@@ -1,5 +1,6 @@
 package org.libvirt;
 
+import org.libvirt.Domain.CheckpointListFlags;
 import org.libvirt.event.*;
 
 import java.nio.ByteBuffer;
@@ -408,6 +409,177 @@ public final class TestJavaBindings extends TestCase {
         } finally {
             dom.destroy();
             dom.undefine();
+        }
+    }
+
+    /**
+     * Helper function to create test domains
+     * @param domainName - Domain name
+     * @return Domain created
+     * @throws LibvirtException
+     */
+    private Domain createDomainToCheckpointTest(String domainName)  throws LibvirtException{
+        String domainXML = "<domain type='test'>\n" +
+            "  <name>" + domainName + "</name>\n" +
+            "  <memory unit='MiB'>512</memory>\n" +
+            "  <vcpu>1</vcpu>\n" +
+            "  <os>\n" +
+            "    <type arch='x86_64'>hvm</type>\n" +
+            "  </os>\n" +
+            "  <devices>\n" +
+            "    <disk type='file' device='disk'>\n" +
+            "      <driver name='qemu' type='qcow2'/>\n" +
+            "      <source file='/var/lib/libvirt/images/" + domainName +"-vda.qcow2'/>\n" +
+            "      <target dev='vda' bus='virtio'/>\n" +
+            "    </disk>\n" +
+            "    <disk type='file' device='cdrom'>\n" +
+            "      <driver name='qemu' type='raw'/>\n" +
+            "      <source file='/var/lib/libvirt/images/test-checkpoint-create.iso'/>\n" +
+            "      <target dev='hdc' bus='ide'/>\n" +
+            "      <readonly/>\n" +
+            "    </disk>\n" +
+            "    <console type='pty'/>\n" +
+            "  </devices>\n" +
+            "</domain>";
+
+        Domain domain = conn.domainDefineXML(domainXML);
+        return domain;
+    }
+
+    /**
+     * Check if throw an error when try to create a checkpoint in a inactive domain
+     * @throws LibvirtException
+     */
+    public void testDomainCheckpointCreateThrowError() throws LibvirtException {
+        Domain domain = createDomainToCheckpointTest("test-vm-checkpoint-create-throw-error");
+        String domainCheckpointXML = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n" +
+            "<domaincheckpoint>\n" +
+            "    <name>test-checkpoint-create-1</name>\n" +
+            "    <disks>\n" +
+            "        <disk name=\"vda\" bitmap=\"test-checkpoint\" checkpoint=\"bitmap\"/>\n" +
+            "        <disk name=\"hdc\" checkpoint=\"no\"/>\n" +
+            "    </disks>\n" +
+            "</domaincheckpoint>\n";
+        LibvirtException virException = null;
+        try {
+            domain.checkpointCreateXML(domainCheckpointXML, 0);
+            fail("Exception should be raised because the checkpoint can not perform in a stopped domain");
+        } catch(LibvirtException e) {
+            virException = e;
+        }
+        assertNotNull(virException);
+    }
+    
+    /**
+     * Check methods to create and destroy checkpoints of a domain
+     * @throws LibvirtException
+     */
+    public void testDomainCheckpointCreateAndDestroy() throws LibvirtException {
+        Domain domain = createDomainToCheckpointTest("test-vm-checkpoint-create");
+        domain.create();
+        assertEquals("The virtual machine should not have checkpoints", 0, domain.listAllCheckpoints(0).length);
+        String domainCheckpointXML = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n" +
+            "<domaincheckpoint>\n" +
+            "    <name>test-checkpoint-create-1</name>\n" +
+            "    <disks>\n" +
+            "        <disk name=\"vda\" bitmap=\"test-checkpoint\" checkpoint=\"bitmap\"/>\n" +
+            "        <disk name=\"hdc\" checkpoint=\"no\"/>\n" +
+            "    </disks>\n" +
+            "</domaincheckpoint>\n";
+        DomainCheckpoint domainCheckpoint1 = domain.checkpointCreateXML(domainCheckpointXML, 0);
+
+        assertEquals("The checkpoint was not created", 1, domain.listAllCheckpoints(0).length);
+        domainCheckpointXML = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n" +
+            "<domaincheckpoint>\n" +
+            "    <name>test-checkpoint-create-2</name>\n" +
+            "    <disks>\n" +
+            "        <disk name=\"vda\" bitmap=\"test-checkpoint\" checkpoint=\"bitmap\"/>\n" +
+            "        <disk name=\"hdc\" checkpoint=\"no\"/>\n" +
+            "    </disks>\n" +
+            "</domaincheckpoint>\n";
+        DomainCheckpoint domainCheckpoint2 = domain.checkpointCreateXML(domainCheckpointXML, 0);
+        assertEquals("The second checkpoint was not created", 2, domain.listAllCheckpoints(0).length);
+        domainCheckpoint2.delete(DomainCheckpoint.CheckpointDeleteFlags.CHILDREN);
+        assertEquals("The checkpoint 2 was not deleted", 1, domain.listAllCheckpoints(0).length);
+        domainCheckpoint1.delete(DomainCheckpoint.CheckpointDeleteFlags.CHILDREN);
+        assertEquals("The checkpoint 1 was not deleted", 0, domain.listAllCheckpoints(0).length);
+    }
+
+    /**
+     * Check methods inside DomainCheckpoint class, like getName, getXMLDesc,...
+     * @throws LibvirtException
+     */
+    public void testDomainCheckpointMethods() throws LibvirtException {
+        Domain domain = createDomainToCheckpointTest("test-vm-checkpoint-methods");
+        domain.create();
+        String domainCheckpointXML = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n" +
+            "<domaincheckpoint>\n" +
+            "    <name>test-checkpoint-methods-1</name>\n" +
+            "    <disks>\n" +
+            "        <disk name=\"vda\" bitmap=\"test-checkpoint\" checkpoint=\"bitmap\"/>\n" +
+            "        <disk name=\"hdc\" checkpoint=\"no\"/>\n" +
+            "    </disks>\n" +
+            "</domaincheckpoint>\n";
+        DomainCheckpoint domainCheckpoint = domain.checkpointCreateXML(domainCheckpointXML, 0);
+        assertEquals("The names should match", "test-checkpoint-methods-1", domainCheckpoint.getName());
+
+
+        String domainCheckpointXMLDesc = domainCheckpoint.getXMLDesc(0);
+        assertTrue("The XML should contain the tag <domaincheckpoint>", domainCheckpointXMLDesc.contains("<domaincheckpoint>"));
+        assertTrue("The XML should contain the name of checkpoint", domainCheckpointXMLDesc.contains("test-checkpoint-methods-1"));
+        assertTrue("The XML should contain one of disks to perform the checkpoint", domainCheckpointXMLDesc.contains("vda"));
+    }
+
+    /**
+     * Check methods with hierarchy, like listAllChildren, getParent, etc.
+     * @throws LibvirtException
+     */
+    public void testDomainCheckpointHierarchy() throws LibvirtException {
+        int NUM_CHECKPOINTS = 10; // Should be bigger than 2
+        Domain domain = createDomainToCheckpointTest("test-vm-checkpoint-testDomainCheckpointHierarchy");
+        domain.create();
+        DomainCheckpoint[] testCheckpoints = new DomainCheckpoint[NUM_CHECKPOINTS];
+        String baseCheckpointName = "test-checkpoint-";
+        for(int i = 0; i < NUM_CHECKPOINTS; i++) {
+            String domainCheckpointXML = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n" +
+            "<domaincheckpoint>  <name>" + baseCheckpointName + i + "</name>  </domaincheckpoint>\n"; // We avoid disks subelement to write less code
+            testCheckpoints[i] = domain.checkpointCreateXML(domainCheckpointXML, 0);
+        }
+
+        // Test the lookup function
+        DomainCheckpoint checkpointLookedup = domain.checkpointLookupByName("test-checkpoint-1");
+        // Check if the parent is "test-checkpoint-0"
+        assertEquals(testCheckpoints[0].getName(), checkpointLookedup.getParent(0).getName());
+
+
+        DomainCheckpoint checkpointNotCreated = domain.checkpointLookupByName("not-created-checkpoint");
+        assertNull(checkpointNotCreated);
+
+        // Get all checkpoints in topological order
+        DomainCheckpoint[] domainCheckpoints = domain.listAllCheckpoints(CheckpointListFlags.TOPOLOGICAL);
+        assertEquals("One checkpoint was not created", NUM_CHECKPOINTS, domainCheckpoints.length);
+        // The checkpoints order should be the same.
+        for (int i = 0; i < NUM_CHECKPOINTS; i++) {
+            assertEquals("The created checkpoints order should be the same - " + i, testCheckpoints[i].getName(), domainCheckpoints[i].getName());
+        }
+        assertNull(testCheckpoints[0].getParent(0));
+        for (int i = 1; i < NUM_CHECKPOINTS; i++) {
+            assertEquals(domainCheckpoints[i-1].getName(), domainCheckpoints[i].getParent(0).getName());
+        }
+
+        // Check checkpointListNames function
+        String[] checkpointNames = domain.checkpointListNames(CheckpointListFlags.TOPOLOGICAL);
+        assertEquals("One checkpoint was not created", NUM_CHECKPOINTS, checkpointNames.length);
+        // The checkpoints order should be the same.
+        for (int i = 0; i < NUM_CHECKPOINTS; i++) {
+            assertEquals("The created checkpoints order should be the same - " + i, testCheckpoints[i].getName(), checkpointNames[i]);
+        }
+
+        // Check listAllChildren function
+        DomainCheckpoint[] childrenFromFirst = domainCheckpoints[0].listAllChildren(CheckpointListFlags.DESCENDANTS);
+        assertEquals("One checkpoint was not created", NUM_CHECKPOINTS - 1, childrenFromFirst.length);
+        for(int i = 1; i < NUM_CHECKPOINTS; i++) {
+            assertEquals(childrenFromFirst[i-1].getName(), domainCheckpoints[i].getName());
         }
     }
 }
