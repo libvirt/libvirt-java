@@ -23,8 +23,6 @@ import java.util.List;
  * Known api calls to be missing
  * LIBVIRT_0.1.0
  * virDefaultErrorFunc
- * virConnCopyLastError
- * virFreeError
  *
  * LIBVIRT_0_5.0
  * virEventRegisterImpl
@@ -312,6 +310,7 @@ public interface Libvirt extends Library {
                       LongByReference typeVer);
     int virInitialize();
     int virCopyLastError(virError error);
+    int virResetError(virError error);
     virError virGetLastError();
     void virResetLastError();
     void virSetErrorFunc(Pointer userData, VirErrorCallback callback);
