@@ -405,11 +405,23 @@ public interface Libvirt extends Library {
                                     ConnectionPointer virConnectPtr, String dxml,
                                     NativeLong flags, String dname, String uri,
                                     NativeLong bandwidth);
+    /**
+     * @deprecated use {@link virDomainMigrate3(DomainPointer,
+     * ConnectionPointer, virTypedParameter[], int, int)
+     * virDomainMigrate3(DomainPointer, ConnectionPointer,
+     * virTypedParameter[], int, int)} instead.
+     */
+    @Deprecated
     DomainPointer virDomainMigrate3(DomainPointer virDomainPtr,
                                     ConnectionPointer virConnectPtr,
                                     virTypedParameter[] params,
                                     int nparams,
                                     NativeLong flags);
+    DomainPointer virDomainMigrate3(DomainPointer virDomainPtr,
+                                    ConnectionPointer virConnectPtr,
+                                    virTypedParameter[] params,
+                                    int nparams,
+                                    int flags);
     int virDomainMigrateSetMaxDowntime(DomainPointer virDomainPtr,
                                        long downtime, int flags);
     int virDomainMigrateToURI(DomainPointer virDomainPtr, String duri,

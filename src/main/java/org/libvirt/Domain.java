@@ -1741,6 +1741,11 @@ public class Domain {
      * after the returned domain object is no longer needed.
      * <br> <br>
      * For more informations, please @see <a href="https://libvirt.org/html/libvirt-libvirt-domain.html#virDomainMigrate3"> virDomainMigrate3</a>
+     *
+     * @deprecated
+     *            use {@link migrate(Connect, TypedParameter[], int)
+     *            migrate(Connect, TypedParameter[], int)}
+     *            instaed
      * @param dconn
      *            destination host (a Connect object)
      * @param params
@@ -1754,10 +1759,52 @@ public class Domain {
      *            connection (dconn).
      * @throws LibvirtException
      */
+    @Deprecated
     public Domain migrate(final Connect dconn, final TypedParameter[] params, long flags) throws LibvirtException {
         assert params != null : "migrate Typed parameters cannot be null";
         virTypedParameter[] virTypedParameters = generateNativeVirTypedParameters(params);
-        DomainPointer newPtr = processError(libvirt.virDomainMigrate3(vdp, dconn.vcp, virTypedParameters, params.length, new NativeLong(flags)));
+        DomainPointer newPtr = processError(libvirt.virDomainMigrate3(vdp, dconn.vcp, virTypedParameters, params.length, (int)flags));
+        return new Domain(dconn, newPtr);
+    }
+
+    /**
+     * Migrate the domain object from its current host to the destination host
+     * given by {@code dconn} (a connection to the destination host).
+     * <p>See {@link DomainMigrateParameters DomainMigrateParameters} for
+     * detailed description of individual {@code params}.
+     * <p>See {@link MigrateFlags MigrateFlags} documentation for description
+     * of individual {@code flags}.  {@link MigrateFlags#TUNNELED TUNNELED}
+     * and {@link MigrateFlags#PEER2PEER PEER2PEER} are not supported by this
+     * API, use {@link migrateToURI(String, TypedParameter[], int)
+     * migrateToURI(String, TypedParameter[], int)} instead.
+     * <p>There are many limitations on migration imposed by the underlying
+     * technology - for example it may not be possible to migrate between
+     * different processors even with the same architecture, or between different
+     * types of hypervisor.
+     * <p>{@link free} should be used to free the resources
+     * after the returned domain object is no longer needed.
+     *
+     * @see <a
+     * href="https://libvirt.org/html/libvirt-libvirt-domain.html#virDomainMigrate3">
+     * virDomainMigrate3</a>
+     *
+     * @param dconn
+     *            destination host (a Connect object)
+     * @param params
+     *            (optional) migration parameters
+     *
+     * @param flags
+     *            bitwise-OR of {@link MigrateFlags MigrateFlags}
+     * @return
+     *            the new domain object if the migration was successful. Note that
+     *            the new domain object exists in the scope of the destination
+     *            connection ({@code dconn}).
+     * @throws LibvirtException on failure
+     */
+    public Domain migrate(final Connect dconn, final TypedParameter[] params, int flags) throws LibvirtException {
+        assert params != null : "migrate Typed parameters cannot be null";
+        virTypedParameter[] virTypedParameters = generateNativeVirTypedParameters(params);
+        DomainPointer newPtr = processError(libvirt.virDomainMigrate3(vdp, dconn.vcp, virTypedParameters, params.length, flags));
         return new Domain(dconn, newPtr);
     }
 
