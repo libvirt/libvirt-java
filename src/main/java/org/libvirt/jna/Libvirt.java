@@ -358,6 +358,8 @@ public interface Libvirt extends Library {
     int virDomainGetID(DomainPointer virDomainPtr);
     int virDomainGetInfo(DomainPointer virDomainPtr, virDomainInfo vInfo);
     int virDomainGetJobInfo(DomainPointer virDomainPtr, virDomainJobInfo vInfo);
+    int virDomainGetJobStats(DomainPointer virDomainPt, IntByReference type, PointerByReference params,
+                             IntByReference nparams, int flags);
     NativeLong virDomainGetMaxMemory(DomainPointer virDomainPtr);
     int virDomainGetMaxVcpus(DomainPointer virDomainPtr);
     String virDomainGetMetadata(DomainPointer virDomainPtr, int type, String uri, int flags);
@@ -661,4 +663,6 @@ public interface Libvirt extends Library {
 
     int virDomainSetUserPassword(DomainPointer virDomainPtr,
                                  String user, String password, int flags);
+
+    void virTypedParamsFree(virTypedParameter[] params, int nparams);
 }

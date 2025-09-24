@@ -1,5 +1,6 @@
 package org.libvirt.jna;
 
+import com.sun.jna.Pointer;
 import com.sun.jna.Structure;
 
 import java.util.Arrays;
@@ -15,6 +16,13 @@ public class virTypedParameter extends Structure {
     public byte[] field = new byte[Libvirt.VIR_TYPED_PARAM_FIELD_LENGTH];
     public int type;
     public virTypedParameterValue value;
+
+    public virTypedParameter() {
+    }
+
+    public virTypedParameter(Pointer ptr) {
+        super(ptr);
+    }
 
     private static final List<String> FIELDS = Arrays.asList(
         "field", "type", "value");

@@ -339,6 +339,31 @@ public class Domain {
         public static final int BYTES = 1;
     }
 
+    public static final class JobType {
+        /** No job is active **/
+        public static int NONE      = bit(0);
+
+        /** Job with a finite completion time **/
+        public static int BOUNDED   = bit(1);
+
+        /** Job without a finite completion time **/
+        public static int UNBOUNDED = bit(2);
+
+        /** Job has finished, but isn't cleaned up **/
+        public static int COMPLETED = bit(3);
+
+        /** Job hit error, but isn't cleaned up **/
+        public static int FAILED    = bit(4);
+
+        /** Job was aborted, but isn't cleaned up **/
+        public static int CANCELLED = bit(5);
+    }
+
+    public static final class GetJobStatsFlags {
+        public static int COMPLETED      = bit(0);
+        public static int KEEP_COMPLETED = bit(1);
+    }
+
     public static final class CreateFlags {
         /**  Default behavior */
         public static final int NONE         = 0;
@@ -1092,13 +1117,42 @@ public class Domain {
      * @see <a
      *      href="https://libvirt.org/html/libvirt-libvirt.html#virDomainGetJobInfo">Libvirt
      *      Documentation</a>
-     * @return a DomainJobInfo object describing this domain
+     * @return a DomainJobInfo object
      * @throws LibvirtException
      */
     public DomainJobInfo getJobInfo() throws LibvirtException {
         virDomainJobInfo vInfo = new virDomainJobInfo();
         processError(libvirt.virDomainGetJobInfo(vdp, vInfo));
         return new DomainJobInfo(vInfo);
+    }
+
+    /**
+     * Extract information about progress of a background job on a domain. Will
+     * return an error if the domain is not active.
+     *
+     * @see <a
+     *      href="https://libvirt.org/html/libvirt-libvirt.html#virDomainGetJobStats">Libvirt
+     *      Documentation</a>
+     * @param flags
+     *            flags
+     * @return a DomainJobStats object
+     * @throws LibvirtException
+     */
+    public DomainJobStats getJobStats(final int flags) throws LibvirtException {
+        IntByReference type = new IntByReference();
+        PointerByReference params = new PointerByReference();
+        IntByReference nParams = new IntByReference();
+
+        processError(libvirt.virDomainGetJobStats(vdp, type, params, nParams, flags));
+
+        int n = nParams.getValue();
+        virTypedParameter[] typedParams = (virTypedParameter[]) new virTypedParameter(params.getValue()).toArray(n);
+        TypedParameter[] stats = new TypedParameter[n];
+        for (int i = 0; i < n; i++) {
+            stats[i] = TypedParameter.create(typedParams[i]);
+        }
+        libvirt.virTypedParamsFree(typedParams, n);
+        return new DomainJobStats(type.getValue(), stats);
     }
 
     /**
