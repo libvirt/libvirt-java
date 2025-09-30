@@ -1145,13 +1145,7 @@ public class Domain {
 
         processError(libvirt.virDomainGetJobStats(vdp, type, params, nParams, flags));
 
-        int n = nParams.getValue();
-        virTypedParameter[] typedParams = (virTypedParameter[]) new virTypedParameter(params.getValue()).toArray(n);
-        TypedParameter[] stats = new TypedParameter[n];
-        for (int i = 0; i < n; i++) {
-            stats[i] = TypedParameter.create(typedParams[i]);
-        }
-        libvirt.virTypedParamsFree(typedParams, n);
+        TypedParameter[] stats = TypedParameter.fromPointer(params.getValue(), nParams.getValue());
         return new DomainJobStats(type.getValue(), stats);
     }
 

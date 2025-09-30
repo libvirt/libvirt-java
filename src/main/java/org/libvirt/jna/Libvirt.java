@@ -664,5 +664,5 @@ public interface Libvirt extends Library {
     int virDomainSetUserPassword(DomainPointer virDomainPtr,
                                  String user, String password, int flags);
 
-    void virTypedParamsFree(virTypedParameter[] params, int nparams);
+    void virTypedParamsFree(Pointer params, int nparams);
 }

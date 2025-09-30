@@ -1,22 +1,22 @@
 package org.libvirt;
 
 import com.sun.jna.Native;
+import com.sun.jna.Pointer;
 import org.libvirt.jna.Libvirt;
 import org.libvirt.jna.virTypedParameter;
 import org.libvirt.jna.virTypedParameterValue;
 
-import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
 public abstract class TypedParameter {
-    protected static final int TYPED_PARAM_INT = 1;
-    protected static final int TYPED_PARAM_UINT = 2;
-    protected static final int TYPED_PARAM_LONG = 3;
-    protected static final int TYPED_PARAM_ULONG = 4;
-    protected static final int TYPED_PARAM_DOUBLE = 5;
-    protected static final int TYPED_PARAM_BOOLEAN = 6;
-    protected static final int TYPED_PARAM_STRING = 7;
+    protected static final int TYPED_PARAM_INT = virTypedParameter.TYPED_PARAM_INT;
+    protected static final int TYPED_PARAM_UINT = virTypedParameter.TYPED_PARAM_UINT;
+    protected static final int TYPED_PARAM_LONG = virTypedParameter.TYPED_PARAM_LONG;
+    protected static final int TYPED_PARAM_ULONG = virTypedParameter.TYPED_PARAM_ULONG;
+    protected static final int TYPED_PARAM_DOUBLE = virTypedParameter.TYPED_PARAM_DOUBLE;
+    protected static final int TYPED_PARAM_BOOLEAN = virTypedParameter.TYPED_PARAM_BOOLEAN;
+    protected static final int TYPED_PARAM_STRING = virTypedParameter.TYPED_PARAM_STRING;
 
     /**
      * Parameter name
@@ -43,6 +43,8 @@ public abstract class TypedParameter {
      * @return the value of the parameter in String form
      */
     public abstract String getValueAsString();
+
+    private static final TypedParameter[] EMPTY = new TypedParameter[0];
 
     public static TypedParameter create(final virTypedParameter vParam) {
         TypedParameter returnValue = null;
@@ -125,5 +127,20 @@ public abstract class TypedParameter {
         Arrays.fill(returnValue, (byte) 0);
         System.arraycopy(original, 0, returnValue, 0, originalLength);
         return returnValue;
+    }
+
+    public static TypedParameter[] fromPointer(Pointer ptr, int n) {
+        if (n == 0) {
+            return EMPTY;
+        }
+        virTypedParameter param = new virTypedParameter(ptr);
+        param.read();
+        virTypedParameter[] params = (virTypedParameter[]) param.toArray(n);
+        TypedParameter[] stats = new TypedParameter[n];
+        for (int i = 0; i < n; i++) {
+            stats[i] = TypedParameter.create(params[i]);
+        }
+        Libvirt.INSTANCE.virTypedParamsFree(ptr, n);
+        return stats;
     }
 }
