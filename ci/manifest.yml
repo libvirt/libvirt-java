@@ -13,7 +13,19 @@ targets:
         variables:
           TESTS: skip
 
+  almalinux-10:
+    jobs:
+      - arch: x86_64
+        variables:
+          TESTS: skip
+
   centos-stream-9:
+    jobs:
+      - arch: x86_64
+        variables:
+          TESTS: skip
+
+  centos-stream-10:
     jobs:
       - arch: x86_64
         variables:
@@ -21,11 +33,13 @@ targets:
 
   debian-12: x86_64
 
+  debian-13: x86_64
+
   debian-sid: x86_64
 
-  fedora-39: x86_64
+  fedora-42: x86_64
 
-  fedora-40: x86_64
+  fedora-43: x86_64
 
   fedora-rawhide: x86_64
 

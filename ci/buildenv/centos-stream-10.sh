@@ -5,12 +5,10 @@
 # https://gitlab.com/libvirt/libvirt-ci
 
 function install_buildenv() {
-    dnf update -y
+    dnf distro-sync -y
     dnf install 'dnf-command(config-manager)' -y
     dnf config-manager --set-enabled -y crb
     dnf install -y epel-release
-    dnf install almalinux-release-devel -y
-    dnf config-manager --set-enabled -y devel
     dnf install -y \
         ant \
         ant-junit \

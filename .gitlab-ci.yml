@@ -53,6 +53,7 @@ website_job:
       - website
   variables:
     NAME: ubuntu-2204
+    TARGET_BASE_IMAGE: docker.io/library/ubuntu:22.04
 
 pages:
   stage: pages

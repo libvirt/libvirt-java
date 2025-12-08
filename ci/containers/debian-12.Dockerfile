@@ -26,4 +26,4 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
     dpkg-reconfigure locales && \
     dpkg-query --showformat '${Package}_${Version}_${Architecture}\n' --show > /packages.txt
 
-ENV LANG "en_US.UTF-8"
+ENV LANG="en_US.UTF-8"

@@ -4,7 +4,7 @@
 #
 # https://gitlab.com/libvirt/libvirt-ci
 
-FROM registry.fedoraproject.org/fedora:39
+FROM registry.fedoraproject.org/fedora:42
 
 RUN dnf install -y nosync && \
     printf '#!/bin/sh\n\
@@ -32,4 +32,4 @@ exec "$@"\n' > /usr/bin/nosync && \
     nosync dnf clean all -y && \
     rpm -qa | sort > /packages.txt
 
-ENV LANG "en_US.UTF-8"
+ENV LANG="en_US.UTF-8"

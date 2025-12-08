@@ -19,11 +19,11 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
                       libjna-java \
                       libvirt-dev \
                       locales \
-                      openjdk-17-jdk-headless && \
+                      openjdk-21-jdk-headless && \
     eatmydata apt-get autoremove -y && \
     eatmydata apt-get autoclean -y && \
     sed -Ei 's,^# (en_US\.UTF-8 .*)$,\1,' /etc/locale.gen && \
     dpkg-reconfigure locales && \
     dpkg-query --showformat '${Package}_${Version}_${Architecture}\n' --show > /packages.txt
 
-ENV LANG "en_US.UTF-8"
+ENV LANG="en_US.UTF-8"

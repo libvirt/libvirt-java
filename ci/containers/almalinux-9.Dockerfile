@@ -10,6 +10,8 @@ RUN dnf update -y && \
     dnf install 'dnf-command(config-manager)' -y && \
     dnf config-manager --set-enabled -y crb && \
     dnf install -y epel-release && \
+    dnf install almalinux-release-devel -y && \
+    dnf config-manager --set-enabled -y devel && \
     dnf install -y \
         ant \
         ant-junit \
@@ -25,4 +27,4 @@ RUN dnf update -y && \
     dnf clean all -y && \
     rpm -qa | sort > /packages.txt
 
-ENV LANG "en_US.UTF-8"
+ENV LANG="en_US.UTF-8"

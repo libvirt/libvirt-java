@@ -19,6 +19,18 @@ x86_64-almalinux-9:
     TESTS: skip
 
 
+x86_64-almalinux-10:
+  extends: .native_build_job
+  needs:
+    - job: x86_64-almalinux-10-container
+      optional: true
+  allow_failure: false
+  variables:
+    NAME: almalinux-10
+    TARGET_BASE_IMAGE: docker.io/library/almalinux:10
+    TESTS: skip
+
+
 x86_64-centos-stream-9:
   extends: .native_build_job
   needs:
@@ -28,6 +40,18 @@ x86_64-centos-stream-9:
   variables:
     NAME: centos-stream-9
     TARGET_BASE_IMAGE: quay.io/centos/centos:stream9
+    TESTS: skip
+
+
+x86_64-centos-stream-10:
+  extends: .native_build_job
+  needs:
+    - job: x86_64-centos-stream-10-container
+      optional: true
+  allow_failure: false
+  variables:
+    NAME: centos-stream-10
+    TARGET_BASE_IMAGE: quay.io/centos/centos:stream10
     TESTS: skip
 
 
@@ -42,6 +66,17 @@ x86_64-debian-12:
     TARGET_BASE_IMAGE: docker.io/library/debian:12-slim
 
 
+x86_64-debian-13:
+  extends: .native_build_job
+  needs:
+    - job: x86_64-debian-13-container
+      optional: true
+  allow_failure: false
+  variables:
+    NAME: debian-13
+    TARGET_BASE_IMAGE: docker.io/library/debian:13-slim
+
+
 x86_64-debian-sid:
   extends: .native_build_job
   needs:
@@ -53,26 +88,26 @@ x86_64-debian-sid:
     TARGET_BASE_IMAGE: docker.io/library/debian:sid-slim
 
 
-x86_64-fedora-39:
+x86_64-fedora-42:
   extends: .native_build_job
   needs:
-    - job: x86_64-fedora-39-container
+    - job: x86_64-fedora-42-container
       optional: true
   allow_failure: false
   variables:
-    NAME: fedora-39
-    TARGET_BASE_IMAGE: registry.fedoraproject.org/fedora:39
+    NAME: fedora-42
+    TARGET_BASE_IMAGE: registry.fedoraproject.org/fedora:42
 
 
-x86_64-fedora-40:
+x86_64-fedora-43:
   extends: .native_build_job
   needs:
-    - job: x86_64-fedora-40-container
+    - job: x86_64-fedora-43-container
       optional: true
   allow_failure: false
   variables:
-    NAME: fedora-40
-    TARGET_BASE_IMAGE: registry.fedoraproject.org/fedora:40
+    NAME: fedora-43
+    TARGET_BASE_IMAGE: registry.fedoraproject.org/fedora:43
 
 
 x86_64-fedora-rawhide:

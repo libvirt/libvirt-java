@@ -32,7 +32,7 @@ function install_buildenv() {
             make \
             meson \
             ninja-build \
-            openjdk-17-jdk-headless \
+            openjdk-21-jdk-headless \
             perl-base \
             pkgconf \
             python3 \
