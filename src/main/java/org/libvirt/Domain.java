@@ -1426,7 +1426,7 @@ public class Domain {
     /**
      * Retrieve the maximum amount of physical memory allocated to a domain.
      *
-     * @return the memory in kilobytes
+     * @return the memory size in kibibytes (blocks of 1024 bytes)
      * @throws LibvirtException
      */
     public long getMaxMemory() throws LibvirtException {
@@ -2490,7 +2490,7 @@ public class Domain {
      * domain. This function requires priviledged access to the hypervisor.
      *
      * @param memory
-     *            the amount memory in kilobytes
+     *            the memory size in kibibytes (blocks of 1024 bytes)
      * @throws LibvirtException
      */
     public void setMaxMemory(final long memory) throws LibvirtException {
@@ -2503,7 +2503,7 @@ public class Domain {
      * hypervisor.
      *
      * @param memory
-     *            in kilobytes
+     *            the memory size in kibibytes (blocks of 1024 bytes)
      * @throws LibvirtException
      */
     public void setMemory(final long memory) throws LibvirtException {
