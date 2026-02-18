@@ -263,6 +263,18 @@ public class Domain {
         public static final String VIR_MIGRATE_PARAM_MIGRATE_DISKS = "migrate_disks";
 
         /**
+         * List the block devices for which zero detection (to avoid transferring zero blocks, for
+         * storage where it can't be probed) is to be enabled. This may increase CPU overhead of
+         * the migration. Destination image will be sparse only when the disk 'discard' option is
+         * set to 'unmap'. At the moment this is only supported by the QEMU driver but not for
+         * the tunnelled migration.
+         *
+         * @see <a href="https://libvirt.org/html/libvirt-libvirt-domain.html#VIR_MIGRATE_PARAM_MIGRATE_DISKS_DETECT_ZEROES">
+         *     Libvirt Documentation</a>
+         */
+        public static final String VIR_MIGRATE_PARAM_MIGRATE_DISKS_DETECT_ZEROES = "migrate_disks_detect_zeroes";
+
+        /**
          * The new configuration to be used for the domain on the destination host as
          * TYPED_PARAM_STRING. The configuration must include an identical set of
          * virtual devices, to ensure a stable guest ABI across migration.
