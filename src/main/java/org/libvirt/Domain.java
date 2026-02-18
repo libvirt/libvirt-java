@@ -616,6 +616,17 @@ public class Domain {
          * network connections */
         public static final int PARALLEL          = bit(17);
 
+        /** Force the guest writes which happen when copying disk images
+         * for non-shared storage migration to be synchronously written to
+         * the destination. */
+        public static final int NON_SHARED_SYNCHRONOUS_WRITES = bit(18);
+
+        /** Resume migration which failed in post-copy phase */
+        public static final int POSTCOPY_RESUME   = bit(19);
+
+        /** Use zero-copy mechanism for migrating memory pages */
+        public static final int ZEROCOPY          = bit(20);
+
     }
 
     public static final class XMLFlags {
