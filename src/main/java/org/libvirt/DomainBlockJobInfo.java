@@ -13,7 +13,7 @@ public class DomainBlockJobInfo {
 
     public DomainBlockJobInfo(final virDomainBlockJobInfo virInfo) {
         type = virInfo.type;
-        bandwidth = virInfo.bandwidth;
+        bandwidth = virInfo.bandwidth.longValue();
         cur = virInfo.cur;
         end = virInfo.end;
     }

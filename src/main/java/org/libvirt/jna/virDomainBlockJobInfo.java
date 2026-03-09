@@ -1,5 +1,6 @@
 package org.libvirt.jna;
 
+import com.sun.jna.NativeLong;
 import com.sun.jna.Structure;
 
 import java.util.Arrays;
@@ -7,7 +8,7 @@ import java.util.List;
 
 public class virDomainBlockJobInfo extends Structure {
     public int type;
-    public long bandwidth;
+    public NativeLong bandwidth;
     public long cur;
     public long end;
 

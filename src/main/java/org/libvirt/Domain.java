@@ -1196,7 +1196,7 @@ public class Domain {
      * @throws LibvirtException
      */
     public void blockCommit(String disk, String base, String top, long bandwidth, int flags) throws LibvirtException {
-        processError(libvirt.virDomainBlockCommit(vdp, disk, base, top, bandwidth, flags));
+        processError(libvirt.virDomainBlockCommit(vdp, disk, base, top, new NativeLong(bandwidth), flags));
     }
 
     /**

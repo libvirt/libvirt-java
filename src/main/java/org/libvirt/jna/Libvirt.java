@@ -327,7 +327,7 @@ public interface Libvirt extends Library {
     int virDomainBackupBegin(DomainPointer virDomainPtr, String backupXML, String checkpointXML, int flags);
     CString virDomainBackupGetXMLDesc(DomainPointer virDomainPtr, int flags);
     int virDomainBlockCommit(DomainPointer virDomainPtr, String disk,
-                             String base, String top, long bandwidth, int flags);
+                             String base, String top, NativeLong bandwidth, int flags);
     int virDomainBlockCopy(DomainPointer virDomainPtr, String disk,
                            String deviceXML, virTypedParameter[] params,
                            int nparams, int flags);
