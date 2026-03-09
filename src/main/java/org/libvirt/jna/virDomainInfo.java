@@ -10,7 +10,7 @@ import com.sun.jna.Structure;
  * JNA mapping for the virDomainInfo structure
  */
 public class virDomainInfo extends Structure {
-    public int state;
+    public byte state;
     public NativeLong maxMem;
     public NativeLong memory;
     public short nrVirtCpu;

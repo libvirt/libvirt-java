@@ -79,7 +79,7 @@ public class DomainInfo {
         maxMem = info.maxMem.longValue();
         memory = info.memory.longValue();
         nrVirtCpu = info.nrVirtCpu;
-        state = DomainState.values()[info.state];
+        state = DomainState.values()[info.state & 0xFF];
     }
 
     @Override
