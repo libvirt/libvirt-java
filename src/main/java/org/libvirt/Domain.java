@@ -1458,7 +1458,7 @@ public class Domain {
      * @throws LibvirtException
      */
     public String getMetadata(int type, String uri, int flags) throws LibvirtException {
-        return processError(libvirt.virDomainGetMetadata(vdp, type, uri, flags));
+        return processError(libvirt.virDomainGetMetadata(vdp, type, uri, flags)).toString();
     }
 
     /**

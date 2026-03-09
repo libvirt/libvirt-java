@@ -364,7 +364,7 @@ public interface Libvirt extends Library {
                              IntByReference nparams, int flags);
     NativeLong virDomainGetMaxMemory(DomainPointer virDomainPtr);
     int virDomainGetMaxVcpus(DomainPointer virDomainPtr);
-    String virDomainGetMetadata(DomainPointer virDomainPtr, int type, String uri, int flags);
+    CString virDomainGetMetadata(DomainPointer virDomainPtr, int type, String uri, int flags);
     String virDomainGetName(DomainPointer virDomainPtr);
     CString virDomainGetOSType(DomainPointer virDomainPtr);
     int virDomainGetSchedulerParameters(DomainPointer virDomainPtr,
