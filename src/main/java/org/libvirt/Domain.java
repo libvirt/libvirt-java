@@ -1123,6 +1123,7 @@ public class Domain {
     public void blockPeek(final String disk, final long offset,
                           final ByteBuffer buffer) throws LibvirtException {
         SizeT size = new SizeT();
+        long currentOffset = offset;
 
         // older libvirt has a limitation on the size of data
         // transferred per request in the remote driver. So, split
@@ -1133,9 +1134,10 @@ public class Domain {
 
             size.setValue(req);
 
-            processError(libvirt.virDomainBlockPeek(this.vdp, disk, offset, size, buffer, 0));
+            processError(libvirt.virDomainBlockPeek(this.vdp, disk, currentOffset, size, buffer, 0));
 
             buffer.position(buffer.position() + req);
+            currentOffset += req;
         } while (buffer.hasRemaining());
 
         assert buffer.position() == buffer.limit();
@@ -1808,6 +1810,7 @@ public class Domain {
                            final MemoryAddressMode mode)
             throws LibvirtException {
         SizeT size = new SizeT();
+        long currentStart = start;
 
         // older libvirt has a limitation on the size of data
         // transferred per request in the remote driver. So, split
@@ -1818,9 +1821,10 @@ public class Domain {
 
             size.setValue(req);
 
-            processError(libvirt.virDomainMemoryPeek(this.vdp, start, size, buffer, mode.getValue()));
+            processError(libvirt.virDomainMemoryPeek(this.vdp, currentStart, size, buffer, mode.getValue()));
 
             buffer.position(buffer.position() + req);
+            currentStart += req;
         } while (buffer.hasRemaining());
 
         assert buffer.position() == buffer.limit();
