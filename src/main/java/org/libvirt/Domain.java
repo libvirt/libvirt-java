@@ -1286,7 +1286,7 @@ public class Domain {
      * Destroys this domain object. The running instance is shutdown if not down
      * already and all resources used by it are given back to the hypervisor.
      * The data structure is freed and should not be used thereafter if the call
-     * does not return an error. This function may requires priviledged access
+     * does not return an error. This function may require privileged access
      *
      * @throws LibvirtException
      */
@@ -2270,7 +2270,7 @@ public class Domain {
 
     /**
      * Dynamically changes the real CPUs which can be allocated to a virtual
-     * CPU. This function requires priviledged access to the hypervisor.
+     * CPU. This function requires privileged access to the hypervisor.
      *
      * @param vcpu
      *            virtual cpu number
@@ -2500,7 +2500,7 @@ public class Domain {
 
     /**
      * * Dynamically change the maximum amount of physical memory allocated to a
-     * domain. This function requires priviledged access to the hypervisor.
+     * domain. This function requires privileged access to the hypervisor.
      *
      * @param memory
      *            the memory size in kibibytes (blocks of 1024 bytes)
@@ -2512,7 +2512,7 @@ public class Domain {
 
     /**
      * Dynamically changes the target amount of physical memory allocated to
-     * this domain. This function may requires priviledged access to the
+     * this domain. This function may require privileged access to the
      * hypervisor.
      *
      * @param memory
@@ -2525,7 +2525,7 @@ public class Domain {
 
     /**
      * Dynamically changes the target amount of physical memory allocated to
-     * this domain. This function may requires priviledged access to the
+     * this domain. This function may require privileged access to the
      * hypervisor.
      *
      * @param memory
@@ -2911,7 +2911,7 @@ public class Domain {
      * Suspends this active domain, the process is frozen without further access
      * to CPU resources and I/O but the memory used by the domain at the
      * hypervisor level will stay allocated. Use Domain.resume() to reactivate
-     * the domain. This function requires priviledged access.
+     * the domain. This function requires privileged access.
      *
      * @throws LibvirtException
      */

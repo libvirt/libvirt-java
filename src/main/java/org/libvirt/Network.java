@@ -55,7 +55,7 @@ public class Network {
      * Destroy this network object. The running instance is shutdown if not down
      * already and all resources used by it are given back to the hypervisor.
      * The object becomes invalid and should not be used thereafter if the call
-     * does not return an error. This function may require priviledged access
+     * does not return an error. This function may require privileged access
      *
      * @throws LibvirtException
      */

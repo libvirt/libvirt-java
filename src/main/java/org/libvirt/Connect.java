@@ -513,7 +513,7 @@ public class Connect {
     /**
      * Launches a new Linux guest domain. The domain is based on an XML
      * description similar to the one returned by virDomainGetXMLDesc(). This
-     * function may require priviledged access to the hypervisor.
+     * function may require privileged access to the hypervisor.
      *
      * @param xmlDesc
      *            the Domain description in XML
@@ -1297,7 +1297,7 @@ public class Connect {
 
     /**
      * Gets the version level of the Hypervisor running. This may work only with
-     * hypervisor call, i.e. with priviledged access to the hypervisor, not with
+     * hypervisor call, i.e. with privileged access to the hypervisor, not with
      * a Read-Only connection. If the version can't be extracted by lack of
      * capacities returns 0.
      *
@@ -1984,7 +1984,7 @@ public class Connect {
 
     /**
      * change the amount of memory reserved to Domain0. Domain0 is the domain
-     * where the application runs. This function may requires priviledged access
+     * where the application runs. This function may requires privileged access
      * to the hypervisor.
      *
      * @param memory
