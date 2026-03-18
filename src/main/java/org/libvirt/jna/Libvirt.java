@@ -459,6 +459,7 @@ public interface Libvirt extends Library {
     int virDomainSetAutostart(DomainPointer virDomainPtr, int autoStart);
     int virDomainSetMaxMemory(DomainPointer virDomainPtr, NativeLong maxMemory);
     int virDomainSetMemory(DomainPointer virDomainPtr, NativeLong maxMemory);
+    int virDomainSetMemoryFlags(DomainPointer virDomainPtr, NativeLong maxMemory, int flags);
     int virDomainSetMetadata(DomainPointer domain, int type, String metadata, String key,
                              String uri, int flags);
     int virDomainSetSchedulerParameters(DomainPointer virDomainPtr,

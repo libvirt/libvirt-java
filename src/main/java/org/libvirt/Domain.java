@@ -861,7 +861,6 @@ public class Domain {
         public static final int FORCE   = bit(2);
     }
 
-
     public static final class VcpuFlags {
         public static final int CONFIG  = ModificationImpact.CONFIG;
         public static final int CURRENT = ModificationImpact.CURRENT;
@@ -875,6 +874,15 @@ public class Domain {
 
         /** Make vcpus added hot(un)pluggable */
         public static final int HOTPLUGGABLE = bit(4);
+    }
+
+    public static final class MemoryModFlags {
+        public static final int CONFIG  = ModificationImpact.CONFIG;
+        public static final int CURRENT = ModificationImpact.CURRENT;
+        public static final int LIVE    = ModificationImpact.LIVE;
+
+        /** Max rather than current count */
+        public static final int MAXIMUM = bit(2);
     }
 
     public static final class DomainSetUserPasswordFlags {
@@ -2513,6 +2521,21 @@ public class Domain {
      */
     public void setMemory(final long memory) throws LibvirtException {
         processError(libvirt.virDomainSetMemory(vdp, new NativeLong(memory)));
+    }
+
+    /**
+     * Dynamically changes the target amount of physical memory allocated to
+     * this domain. This function may requires priviledged access to the
+     * hypervisor.
+     *
+     * @param memory
+     *            the memory size in kibibytes (blocks of 1024 bytes)
+     * @param flags
+     *            see {@link MemoryModFlags}
+     * @throws LibvirtException
+     */
+    public void setMemoryFlags(final long memory, final int flags) throws LibvirtException {
+        processError(libvirt.virDomainSetMemoryFlags(vdp, new NativeLong(memory), flags));
     }
 
     /**
