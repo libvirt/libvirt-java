@@ -472,10 +472,11 @@ public class Domain {
     }
 
     public static final class BlockResizeFlags {
-        /**
-         * size is in bytes instead of KiB
-         */
-        public static final int BYTES = 1;
+        /** size is in bytes instead of KiB **/
+        public static final int BYTES = bit(0);
+
+        /** resize to full the capacity of the source **/
+        public static final int CAPACITY = bit(1);
     }
 
     public static final class JobType {
