@@ -569,7 +569,7 @@ public class Connect {
      * @throws           LibvirtException
      *
      * @see
-     * <a href="https://libvirt.org/html/libvirt-libvirt.html#virConnectDomainEventDeregisterAny">
+     *  <a href="https://libvirt.org/html/libvirt-libvirt-domain.html#virConnectDomainEventDeregisterAny">
         virConnectDomainEventDeregisterAny</a>
      */
     private void domainEventDeregister(final int eventID, final EventListener l)
@@ -645,6 +645,21 @@ public class Connect {
         domainEventRegister(domain, DomainEventID.BLOCK_JOB_2, virCB, cb);
     }
 
+    /**
+     * Adds the specified Block Job listener to receive Block Job events
+     * for domains of this connection.
+     *
+     * @see
+     *  <a href="https://libvirt.org/html/libvirt-libvirt-domain.html#virConnectDomainEventRegisterAny">
+        virConnectDomainEventRegisterAny</a>
+     * @param l
+     *            the Block job listener
+     * @throws LibvirtException on failure
+     */
+    public void addBlockJobListener(final BlockJobListener l) throws LibvirtException {
+        domainEventRegister(null, l);
+    }
+
     void domainEventRegister(final Domain domain, final IOErrorListener cb)
             throws LibvirtException {
         if (cb == null) {
@@ -682,8 +697,8 @@ public class Connect {
      * for domains of this connection.
      *
      * @see
-     *  <a href="https://libvirt.org/html/libvirt-libvirt.html#virConnectDomainEventRegisterAny">
-        Libvirt Documentation</a>
+     *  <a href="https://libvirt.org/html/libvirt-libvirt-domain.html#virConnectDomainEventRegisterAny">
+        virConnectDomainEventRegisterAny</a>
      * @param l
      *            the I/O error listener
      * @throws LibvirtException on failure
@@ -795,7 +810,7 @@ public class Connect {
      * @see Domain#addAgentLifecycleListener
      * @see
      *  <a href="https://libvirt.org/html/libvirt-libvirt-domain.html#virConnectDomainEventRegisterAny">
-    virConnectDomainEventRegisterAny</a>
+        virConnectDomainEventRegisterAny</a>
      */
     public void addAgentLifecycleListener(final AgentLifecycleListener cb) throws LibvirtException {
         domainEventRegister(null, cb);
@@ -883,7 +898,7 @@ public class Connect {
      * @see #removePMSuspendListener
      * @see Domain#addPMSuspendListener
      * @see
-     *  <a href="https://libvirt.org/html/libvirt-libvirt.html#virConnectDomainEventRegisterAny">
+     *  <a href="https://libvirt.org/html/libvirt-libvirt-domain.html#virConnectDomainEventRegisterAny">
         virConnectDomainEventRegisterAny</a>
      *
      * @since 1.5.2
@@ -900,7 +915,7 @@ public class Connect {
      * @throws     LibvirtException
      *
      * @see
-     *  <a href="https://libvirt.org/html/libvirt-libvirt.html#virConnectDomainEventDeregisterAny">
+     *  <a href="https://libvirt.org/html/libvirt-libvirt-domain.html#virConnectDomainEventDeregisterAny">
         virConnectDomainEventDeregisterAny</a>
      *
      * @since 1.5.2
@@ -919,7 +934,7 @@ public class Connect {
      * @see #removePMWakeupListener
      * @see Domain#addPMWakeupListener
      * @see
-     *  <a href="https://libvirt.org/html/libvirt-libvirt.html#virConnectDomainEventRegisterAny">
+     *  <a href="https://libvirt.org/html/libvirt-libvirt-domain.html#virConnectDomainEventDeregisterAny">
         virConnectDomainEventRegisterAny</a>
      *
      * @since 1.5.2
@@ -936,7 +951,7 @@ public class Connect {
      * @throws     LibvirtException
      *
      * @see
-     *  <a href="https://libvirt.org/html/libvirt-libvirt.html#virConnectDomainEventDeregisterAny">
+     *  <a href="https://libvirt.org/html/libvirt-libvirt-domain.html#virConnectDomainEventDeregisterAny">
         virConnectDomainEventDeregisterAny</a>
      */
     public void removePMWakeupListener(final PMWakeupListener l) throws LibvirtException {
@@ -951,7 +966,7 @@ public class Connect {
      * @throws     LibvirtException
      *
      * @see
-     *  <a href="https://libvirt.org/html/libvirt-libvirt.html#virConnectDomainEventDeregisterAny">
+     *  <a href="https://libvirt.org/html/libvirt-libvirt-domain.html#virConnectDomainEventDeregisterAny">
         virConnectDomainEventDeregisterAny</a>
      */
     public void removeLifecycleListener(final LifecycleListener l) throws LibvirtException {
@@ -967,7 +982,7 @@ public class Connect {
      *
      * @see
      *  <a href="https://libvirt.org/html/libvirt-libvirt-domain.html#virConnectDomainEventDeregisterAny">
-    virConnectDomainEventDeregisterAny</a>
+        virConnectDomainEventDeregisterAny</a>
      */
     public void removeAgentLifecycleListener(final AgentLifecycleListener l) throws LibvirtException {
         domainEventDeregister(DomainEventID.AGENT_LIFECYCLE, l);
@@ -980,9 +995,10 @@ public class Connect {
      * @param l   the reboot listener
      * @throws    LibvirtException on failure
      *
+     * @see #removeRebootListener
      * @see Domain#addRebootListener
      * @see
-     *  <a href="https://libvirt.org/html/libvirt-libvirt.html#virConnectDomainEventRegisterAny">
+     *  <a href="https://libvirt.org/html/libvirt-libvirt-domain.html#virConnectDomainEventRegisterAny">
         virConnectDomainEventRegisterAny</a>
      * @since 1.5.2
      */
@@ -991,12 +1007,31 @@ public class Connect {
     }
 
     /**
-     * Removes the specified Block Job listener so that it no longer
-     * receives events
-     * @param l
-     * @throws LibvirtException
+     * Removes the specified reboot listener so that it no longer
+     * receives reboot events.
+     *
+     * @param l    the reboot listener
+     * @throws     LibvirtException
+     *
+     * @see
+     *  <a href="https://libvirt.org/html/libvirt-libvirt-domain.html#virConnectDomainEventDeregisterAny">
+        virConnectDomainEventDeregisterAny</a>
      */
+    public void removeRebootListener(final RebootListener l) throws LibvirtException {
+        domainEventDeregister(DomainEventID.REBOOT, l);
+    }
 
+    /**
+     * Removes the specified Block Job listener so that it no longer
+     * receives Block Job events.
+     *
+     * @param l    the block job listener
+     * @throws     LibvirtException
+     *
+     * @see
+     *  <a href="https://libvirt.org/html/libvirt-libvirt-domain.html#virConnectDomainEventDeregisterAny">
+    virConnectDomainEventDeregisterAny</a>
+     */
     public void removeBlockJobListener(final BlockJobListener l) throws LibvirtException {
         domainEventDeregister(DomainEventID.BLOCK_JOB_2, l);
     }
@@ -1009,7 +1044,7 @@ public class Connect {
      * @throws     LibvirtException
      *
      * @see
-     *  <a href="https://libvirt.org/html/libvirt-libvirt.html#virConnectDomainEventDeregisterAny">
+     *  <a href="https://libvirt.org/html/libvirt-libvirt-domain.html#virConnectDomainEventRegisterAny">
         virConnectDomainEventDeregisterAny</a>
      */
     public void removeIOErrorListener(final IOErrorListener l) throws LibvirtException {
