@@ -472,10 +472,11 @@ public class Domain {
     }
 
     public static final class BlockResizeFlags {
-        /**
-         * size is in bytes instead of KiB
-         */
-        public static final int BYTES = 1;
+        /** size is in bytes instead of KiB **/
+        public static final int BYTES = bit(0);
+
+        /** resize to full the capacity of the source **/
+        public static final int CAPACITY = bit(1);
     }
 
     public static final class JobType {
@@ -860,7 +861,6 @@ public class Domain {
         public static final int FORCE   = bit(2);
     }
 
-
     public static final class VcpuFlags {
         public static final int CONFIG  = ModificationImpact.CONFIG;
         public static final int CURRENT = ModificationImpact.CURRENT;
@@ -874,6 +874,15 @@ public class Domain {
 
         /** Make vcpus added hot(un)pluggable */
         public static final int HOTPLUGGABLE = bit(4);
+    }
+
+    public static final class MemoryModFlags {
+        public static final int CONFIG  = ModificationImpact.CONFIG;
+        public static final int CURRENT = ModificationImpact.CURRENT;
+        public static final int LIVE    = ModificationImpact.LIVE;
+
+        /** Max rather than current count */
+        public static final int MAXIMUM = bit(2);
     }
 
     public static final class DomainSetUserPasswordFlags {
@@ -1277,7 +1286,7 @@ public class Domain {
      * Destroys this domain object. The running instance is shutdown if not down
      * already and all resources used by it are given back to the hypervisor.
      * The data structure is freed and should not be used thereafter if the call
-     * does not return an error. This function may requires priviledged access
+     * does not return an error. This function may require privileged access
      *
      * @throws LibvirtException
      */
@@ -2261,7 +2270,7 @@ public class Domain {
 
     /**
      * Dynamically changes the real CPUs which can be allocated to a virtual
-     * CPU. This function requires priviledged access to the hypervisor.
+     * CPU. This function requires privileged access to the hypervisor.
      *
      * @param vcpu
      *            virtual cpu number
@@ -2491,7 +2500,7 @@ public class Domain {
 
     /**
      * * Dynamically change the maximum amount of physical memory allocated to a
-     * domain. This function requires priviledged access to the hypervisor.
+     * domain. This function requires privileged access to the hypervisor.
      *
      * @param memory
      *            the memory size in kibibytes (blocks of 1024 bytes)
@@ -2503,7 +2512,7 @@ public class Domain {
 
     /**
      * Dynamically changes the target amount of physical memory allocated to
-     * this domain. This function may requires priviledged access to the
+     * this domain. This function may require privileged access to the
      * hypervisor.
      *
      * @param memory
@@ -2512,6 +2521,21 @@ public class Domain {
      */
     public void setMemory(final long memory) throws LibvirtException {
         processError(libvirt.virDomainSetMemory(vdp, new NativeLong(memory)));
+    }
+
+    /**
+     * Dynamically changes the target amount of physical memory allocated to
+     * this domain. This function may require privileged access to the
+     * hypervisor.
+     *
+     * @param memory
+     *            the memory size in kibibytes (blocks of 1024 bytes)
+     * @param flags
+     *            see {@link MemoryModFlags}
+     * @throws LibvirtException
+     */
+    public void setMemoryFlags(final long memory, final int flags) throws LibvirtException {
+        processError(libvirt.virDomainSetMemoryFlags(vdp, new NativeLong(memory), flags));
     }
 
     /**
@@ -2887,7 +2911,7 @@ public class Domain {
      * Suspends this active domain, the process is frozen without further access
      * to CPU resources and I/O but the memory used by the domain at the
      * hypervisor level will stay allocated. Use Domain.resume() to reactivate
-     * the domain. This function requires priviledged access.
+     * the domain. This function requires privileged access.
      *
      * @throws LibvirtException
      */
