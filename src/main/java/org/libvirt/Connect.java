@@ -22,6 +22,7 @@ import com.sun.jna.Native;
 import com.sun.jna.NativeLong;
 import com.sun.jna.Pointer;
 import com.sun.jna.ptr.LongByReference;
+import com.sun.jna.ptr.PointerByReference;
 
 /**
  * The Connect object represents a connection to a local or remote
@@ -1543,6 +1544,113 @@ public class Connect {
         Library.free(pointer);
 
         return domains;
+    }
+
+    /**
+     * Query statistics for all domains on this connection in a single RPC call.
+     *
+     * <p>Wraps
+     * <a href="https://libvirt.org/html/libvirt-libvirt-domain.html#virConnectGetAllDomainStats">
+     * {@code virConnectGetAllDomainStats}</a> (since libvirt 1.2.8).
+     *
+     * <p>Each returned record carries a {@link Domain} whose reference count
+     * has been incremented; callers are responsible for freeing those domain
+     * handles when done (e.g. via {@link Domain#free()}).
+     *
+     * @param stats bitwise-OR of {@link DomainStats} constants selecting the
+     *              stats groups to retrieve, or {@code 0} for all groups
+     *              supported by the hypervisor
+     * @param flags bitwise-OR of {@link ConnectGetAllDomainStatsFlags}
+     *              constants
+     * @return an array of per-domain stats records; empty if no domain
+     *         matched the filter
+     * @throws LibvirtException on libvirt error
+     */
+    public DomainStatsRecord[] getAllDomainStats(int stats, int flags)
+            throws LibvirtException {
+        PointerByReference out = new PointerByReference();
+        int count = processError(libvirt.virConnectGetAllDomainStats(vcp, stats, out, flags));
+        return unpackStatsRecords(out.getValue(), count);
+    }
+
+    /**
+     * Query statistics for a specific list of domains in a single RPC call.
+     *
+     * <p>Wraps
+     * <a href="https://libvirt.org/html/libvirt-libvirt-domain.html#virDomainListGetStats">
+     * {@code virDomainListGetStats}</a> (since libvirt 1.2.8).
+     *
+     * <p>All domains must belong to this connection. Each returned record
+     * carries a {@link Domain} whose reference count has been incremented;
+     * callers are responsible for freeing those domain handles when done.
+     *
+     * @param domains the domains to query; must not be {@code null}, and
+     *                every element must be non-{@code null}
+     * @param stats   bitwise-OR of {@link DomainStats} constants selecting
+     *                the stats groups to retrieve, or {@code 0} for all
+     *                groups supported by the hypervisor
+     * @param flags   bitwise-OR of {@link ConnectGetAllDomainStatsFlags}
+     *                constants
+     * @return an array of per-domain stats records; may contain fewer
+     *         entries than {@code domains} if stats could not be fetched
+     *         for some of them
+     * @throws LibvirtException on libvirt error
+     */
+    public DomainStatsRecord[] getDomainListStats(Domain[] domains,
+                                                  int stats,
+                                                  int flags)
+            throws LibvirtException {
+        // libvirt expects a NULL-terminated array.
+        DomainPointer[] doms = new DomainPointer[domains.length + 1];
+        for (int i = 0; i < domains.length; i++) {
+            doms[i] = domains[i].vdp;
+        }
+        doms[domains.length] = null;
+
+        PointerByReference out = new PointerByReference();
+        int count = processError(libvirt.virDomainListGetStats(doms, stats, out, flags));
+        return unpackStatsRecords(out.getValue(), count);
+    }
+
+    private DomainStatsRecord[] unpackStatsRecords(Pointer listBase, int count)
+            throws LibvirtException {
+        if (count <= 0 || listBase == null) {
+            return new DomainStatsRecord[0];
+        }
+        DomainStatsRecord[] result = new DomainStatsRecord[count];
+        boolean success = false;
+        try {
+            for (int i = 0; i < count; i++) {
+                Pointer recPtr = listBase.getPointer((long) i * Native.POINTER_SIZE);
+                virDomainStatsRecord rec = new virDomainStatsRecord(recPtr);
+                // Marshal params before bumping the refcount so a failure
+                // here leaves no ref to undo.
+                TypedParameter[] params = TypedParameter.toArray(rec.params, rec.nparams);
+                // virDomainStatsRecordListFree will drop the original ref on
+                // rec.dom, so bump it here before handing the pointer to our
+                // Java-side Domain wrapper.
+                Domain dom = Domain.constructIncRef(this, rec.dom);
+                result[i] = new DomainStatsRecord(dom, params);
+            }
+            success = true;
+            return result;
+        } finally {
+            if (!success) {
+                // Undo the refs we bumped on earlier iterations; otherwise
+                // virDomainStatsRecordListFree below drops the *original*
+                // refs and leaves our +1 stranded.
+                for (DomainStatsRecord rec : result) {
+                    if (rec != null) {
+                        try {
+                            rec.domain.free();
+                        } catch (LibvirtException ignored) {
+                            // best-effort cleanup during error unwind
+                        }
+                    }
+                }
+            }
+            libvirt.virDomainStatsRecordListFree(listBase);
+        }
     }
 
     /**

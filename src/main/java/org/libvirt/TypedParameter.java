@@ -130,7 +130,23 @@ public abstract class TypedParameter {
     }
 
     public static TypedParameter[] fromPointer(Pointer ptr, int n) {
-        if (n == 0) {
+        TypedParameter[] stats = toArray(ptr, n);
+        if (n != 0) {
+            Libvirt.INSTANCE.virTypedParamsFree(ptr, n);
+        }
+        return stats;
+    }
+
+    /**
+     * Convert a native virTypedParameter array to Java {@link TypedParameter}
+     * objects without releasing the native memory.
+     *
+     * <p>Use this when the native array is owned by another allocator (for
+     * example, {@code virConnectGetAllDomainStats}, whose records are freed
+     * by {@code virDomainStatsRecordListFree}).
+     */
+    public static TypedParameter[] toArray(Pointer ptr, int n) {
+        if (n == 0 || ptr == null) {
             return EMPTY;
         }
         virTypedParameter param = new virTypedParameter(ptr);
@@ -140,7 +156,6 @@ public abstract class TypedParameter {
         for (int i = 0; i < n; i++) {
             stats[i] = TypedParameter.create(params[i]);
         }
-        Libvirt.INSTANCE.virTypedParamsFree(ptr, n);
         return stats;
     }
 }

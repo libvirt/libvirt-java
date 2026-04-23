@@ -642,4 +642,80 @@ public final class TestJavaBindings extends TestCase {
         // domainCheckpoint.delete(DomainCheckpoint.CheckpointDeleteFlags.CHILDREN);
         // assertEquals("The checkpoint should be removed", 0, domain.listAllCheckpoints(0).length);
     }
+
+    public void testGetAllDomainStats() throws LibvirtException {
+        DomainStatsRecord[] records = conn.getAllDomainStats(DomainStats.STATE, 0);
+        try {
+            assertTrue("test:///default should expose at least one domain",
+                       records.length >= 1);
+
+            boolean foundState = false;
+            for (DomainStatsRecord rec : records) {
+                assertNotNull("record.domain must not be null", rec.domain);
+                assertNotNull("record.params must not be null", rec.params);
+                // The bulk-stats domain handle must outlive
+                // virDomainStatsRecordListFree -- i.e. calling APIs on it
+                // here must not blow up.
+                assertNotNull("domain name should be reachable after free",
+                              rec.domain.getName());
+                assertNotNull("domain UUID should be reachable after free",
+                              rec.domain.getUUIDString());
+                for (TypedParameter p : rec.params) {
+                    if ("state.state".equals(p.field)) {
+                        foundState = true;
+                        assertTrue("state.state should be an int parameter",
+                                   p instanceof TypedIntParameter);
+                    }
+                }
+            }
+            assertTrue("At least one record should carry 'state.state'",
+                       foundState);
+        } finally {
+            for (DomainStatsRecord rec : records) {
+                rec.domain.free();
+            }
+        }
+    }
+
+    public void testGetAllDomainStatsActiveOnly() throws LibvirtException {
+        DomainStatsRecord[] records = conn.getAllDomainStats(
+            DomainStats.STATE,
+            ConnectGetAllDomainStatsFlags.ACTIVE);
+        try {
+            for (DomainStatsRecord rec : records) {
+                assertEquals("Only active domains should be returned",
+                             1, rec.domain.isActive());
+            }
+        } finally {
+            for (DomainStatsRecord rec : records) {
+                rec.domain.free();
+            }
+        }
+    }
+
+    public void testGetDomainListStats() throws LibvirtException {
+        Domain[] all = conn.listAllDomains(0);
+        try {
+            assertTrue("test:///default should expose at least one domain",
+                       all.length >= 1);
+
+            DomainStatsRecord[] records =
+                conn.getDomainListStats(all, DomainStats.STATE, 0);
+            try {
+                assertEquals("Record count should match domain count",
+                             all.length, records.length);
+                for (DomainStatsRecord rec : records) {
+                    assertNotNull(rec.domain.getUUIDString());
+                }
+            } finally {
+                for (DomainStatsRecord rec : records) {
+                    rec.domain.free();
+                }
+            }
+        } finally {
+            for (Domain d : all) {
+                d.free();
+            }
+        }
+    }
 }

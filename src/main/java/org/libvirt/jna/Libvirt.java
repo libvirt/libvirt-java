@@ -705,4 +705,15 @@ public interface Libvirt extends Library {
                                  String user, String password, int flags);
 
     void virTypedParamsFree(Pointer params, int nparams);
+
+    // Bulk domain stats (libvirt 1.2.8+)
+    int virConnectGetAllDomainStats(ConnectionPointer virConnectPtr,
+                                    int stats,
+                                    PointerByReference retStats,
+                                    int flags);
+    int virDomainListGetStats(DomainPointer[] doms,
+                              int stats,
+                              PointerByReference retStats,
+                              int flags);
+    void virDomainStatsRecordListFree(Pointer statsList);
 }
