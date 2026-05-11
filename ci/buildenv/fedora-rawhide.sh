@@ -5,19 +5,19 @@
 # https://gitlab.com/libvirt/libvirt-ci
 
 function install_buildenv() {
-    dnf update -y --nogpgcheck fedora-gpg-keys
-    dnf distro-sync -y
-    dnf install -y \
-        ant \
-        ant-junit \
-        ca-certificates \
-        git \
-        glibc-langpack-en \
-        java-21-openjdk-headless \
-        jna \
-        junit \
-        libvirt-devel \
-        rpm-build
+    dnf --quiet update -y --nogpgcheck fedora-gpg-keys
+    dnf --quiet distro-sync -y
+    dnf --quiet install -y \
+                ant \
+                ant-junit \
+                ca-certificates \
+                git \
+                glibc-langpack-en \
+                java-25-openjdk-headless \
+                jna \
+                junit \
+                libvirt-devel \
+                rpm-build
     rpm -qa | sort > /packages.txt
 }
 

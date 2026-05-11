@@ -5,22 +5,22 @@
 # https://gitlab.com/libvirt/libvirt-ci
 
 function install_buildenv() {
-    dnf distro-sync -y
-    dnf install 'dnf-command(config-manager)' -y
-    dnf config-manager --set-enabled -y crb
-    dnf install -y epel-release
-    dnf install -y epel-next-release
-    dnf install -y \
-        ant \
-        ant-junit \
-        ca-certificates \
-        git \
-        glibc-langpack-en \
-        java-21-openjdk-headless \
-        jna \
-        junit \
-        libvirt-devel \
-        rpm-build
+    dnf --quiet distro-sync -y
+    dnf --quiet install 'dnf-command(config-manager)' -y
+    dnf --quiet config-manager --set-enabled -y crb
+    dnf --quiet install -y epel-release
+    dnf --quiet install -y epel-next-release
+    dnf --quiet install -y \
+                ant \
+                ant-junit \
+                ca-certificates \
+                git \
+                glibc-langpack-en \
+                java-25-openjdk-headless \
+                jna \
+                junit \
+                libvirt-devel \
+                rpm-build
     rpm -qa | sort > /packages.txt
 }
 

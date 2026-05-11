@@ -4,10 +4,9 @@
 #
 # https://gitlab.com/libvirt/libvirt-ci
 
-FROM registry.fedoraproject.org/fedora:rawhide
+FROM registry.fedoraproject.org/fedora:44
 
-RUN dnf --quiet update -y --nogpgcheck fedora-gpg-keys && \
-    dnf --quiet install -y nosync && \
+RUN dnf --quiet install -y nosync && \
     printf '#!/bin/sh\n\
 if test -d /usr/lib64\n\
 then\n\
@@ -17,7 +16,7 @@ else\n\
 fi\n\
 exec "$@"\n' > /usr/bin/nosync && \
     chmod +x /usr/bin/nosync && \
-    nosync dnf --quiet distro-sync -y && \
+    nosync dnf --quiet update -y && \
     nosync dnf --quiet install -y \
                        ant \
                        ant-junit \
