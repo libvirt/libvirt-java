@@ -42,7 +42,7 @@ website_job:
   extends:
     - .gitlab_native_build_job
   needs:
-    - job: x86_64-ubuntu-2204-container
+    - job: x86_64-ubuntu-2404-container
       optional: true
   script:
     - ant docs
@@ -52,8 +52,8 @@ website_job:
     paths:
       - website
   variables:
-    NAME: ubuntu-2204
-    TARGET_BASE_IMAGE: docker.io/library/ubuntu:22.04
+    NAME: ubuntu-2404
+    TARGET_BASE_IMAGE: docker.io/library/ubuntu:24.04
 
 pages:
   stage: pages
