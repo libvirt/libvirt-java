@@ -208,6 +208,31 @@ public final class TestJavaBindings extends TestCase {
         assertEquals("5540000000", cpuStats[1].getValueAsString());
         assertEquals("system_time", cpuStats[2].field);
         assertEquals("6460000000", cpuStats[2].getValueAsString());
+
+        TypedParameter[] perCpuStats0 = dom.getCPUStats(0, 1);
+        assertEquals(2, perCpuStats0.length);
+        assertEquals("cpu_time", perCpuStats0[0].field);
+        assertEquals("24386308517", perCpuStats0[0].getValueAsString());
+        assertEquals("vcpu_time", perCpuStats0[1].field);
+        assertEquals("23151740627", perCpuStats0[1].getValueAsString());
+
+        TypedParameter[] perCpuStats1 = dom.getCPUStats(1, 1);
+        assertEquals(2, perCpuStats1.length);
+        assertEquals("cpu_time", perCpuStats1[0].field);
+        assertEquals("24386308518", perCpuStats1[0].getValueAsString());
+        assertEquals("vcpu_time", perCpuStats1[1].field);
+        assertEquals("23151740628", perCpuStats1[1].getValueAsString());
+
+        TypedParameter[] perCpuStats = dom.getCPUStats(0, 2);
+        assertEquals(4, perCpuStats.length);
+        assertEquals("cpu_time", perCpuStats[0].field);
+        assertEquals("24386308517", perCpuStats[0].getValueAsString());
+        assertEquals("vcpu_time", perCpuStats[1].field);
+        assertEquals("23151740627", perCpuStats[1].getValueAsString());
+        assertEquals("cpu_time", perCpuStats[2].field);
+        assertEquals("24386308518", perCpuStats[2].getValueAsString());
+        assertEquals("vcpu_time", perCpuStats[3].field);
+        assertEquals("23151740628", perCpuStats[3].getValueAsString());
     }
 
     public void testInterfaces() throws Exception {

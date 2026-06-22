@@ -1852,10 +1852,10 @@ public class Domain {
     public TypedParameter[] getCPUStats(final int start_cpu, final int ncpus)
             throws LibvirtException {
         int number = processError(libvirt.virDomainGetCPUStats(vdp, null, 0, start_cpu, ncpus, 0));
-        virTypedParameter[] params = new virTypedParameter[number];
+        virTypedParameter[] params = new virTypedParameter[number * ncpus];
         int result = processError(libvirt.virDomainGetCPUStats(vdp, params, number, start_cpu, ncpus, 0));
-        TypedParameter[] returnStats = new TypedParameter[result];
-        for (int x = 0; x < result; x++) {
+        TypedParameter[] returnStats = new TypedParameter[result * ncpus];
+        for (int x = 0; x < result * ncpus; x++) {
             returnStats[x] = TypedParameter.create(params[x]);
         }
         return returnStats;
