@@ -85,6 +85,7 @@ public final class TestJavaBindings extends TestCase {
         assertEquals("nodeInfo.model", "i686", nodeInfo.model);
         assertEquals("nodeInfo.memory", 3145728, nodeInfo.memory);
         assertEquals("nodeInfo.cpus", 16, nodeInfo.cpus);
+        assertEquals("nodeInfo.mhz", 1400, nodeInfo.mhz);
         assertEquals("nodeInfo.nodes", 2, nodeInfo.nodes);
         assertEquals("nodeInfo.sockets", 2, nodeInfo.sockets);
         assertEquals("nodeInfo.cores", 2, nodeInfo.cores);
