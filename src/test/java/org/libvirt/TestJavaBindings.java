@@ -152,7 +152,9 @@ public final class TestJavaBindings extends TestCase {
         Domain dom2 = conn.domainCreateLinux("<domain type='test' id='3'>" + "  <name>createst</name>"
                 + "  <uuid>004b96e1-2d78-c30f-5aa5-f03c87d21e67</uuid>" + "  <memory>8388608</memory>"
                 + "  <vcpu>2</vcpu>" + "  <os><type arch='i686'>hvm</type></os>" + "  <on_reboot>restart</on_reboot>"
-                + "  <on_poweroff>destroy</on_poweroff>" + "  <on_crash>restart</on_crash>" + "</domain>", 0);
+                + "  <on_poweroff>destroy</on_poweroff>" + "  <on_crash>restart</on_crash>"
+                + "  <devices>" + "    <memballoon model='virtio'/>" + "  </devices>"
+                + "</domain>", 0);
         UUID dom2UUID = UUID.fromString("004b96e1-2d78-c30f-5aa5-f03c87d21e67");
 
         assertEquals("Number of domains", 2, conn.numOfDomains());
@@ -233,6 +235,35 @@ public final class TestJavaBindings extends TestCase {
         assertEquals("24386308518", perCpuStats[2].getValueAsString());
         assertEquals("vcpu_time", perCpuStats[3].field);
         assertEquals("23151740628", perCpuStats[3].getValueAsString());
+
+        MemoryStatistic[] memStats = dom.memoryStats(15);
+        assertEquals(13, memStats.length);
+        assertEquals(6, memStats[0].getTag());
+        assertEquals(8388608, memStats[0].getValue());
+        assertEquals(0, memStats[1].getTag());
+        assertEquals(0, memStats[1].getValue());
+        assertEquals(1, memStats[2].getTag());
+        assertEquals(0, memStats[2].getValue());
+        assertEquals(2, memStats[3].getTag());
+        assertEquals(0, memStats[3].getValue());
+        assertEquals(3, memStats[4].getTag());
+        assertEquals(0, memStats[4].getValue());
+        assertEquals(4, memStats[5].getTag());
+        assertEquals(8388608 / 2, memStats[5].getValue());
+        assertEquals(5, memStats[6].getTag());
+        assertEquals(8388608, memStats[6].getValue());
+        assertEquals(8, memStats[7].getTag());
+        assertEquals(8388608 / 2, memStats[7].getValue());
+        assertEquals(9, memStats[8].getTag());
+        assertEquals(627319920, memStats[8].getValue());
+        assertEquals(10, memStats[9].getTag());
+        assertEquals(8388608 / 8, memStats[9].getValue());
+        assertEquals(11, memStats[10].getTag());
+        assertEquals(0, memStats[10].getValue());
+        assertEquals(12, memStats[11].getTag());
+        assertEquals(0, memStats[11].getValue());
+        assertEquals(7, memStats[12].getTag());
+        assertEquals(8388608 / 2, memStats[12].getValue());
     }
 
     public void testInterfaces() throws Exception {
