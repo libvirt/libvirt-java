@@ -15,7 +15,23 @@ public class StorageVolInfo {
         /**
          * Block based volumes
          */
-        VIR_STORAGE_VOL_BLOCK
+        VIR_STORAGE_VOL_BLOCK,
+        /**
+         * Directory-passthrough based volume
+         */
+        VIR_STORAGE_VOL_DIR,
+        /**
+         * Network volumes like RBD (RADOS Block Device)
+         */
+        VIR_STORAGE_VOL_NETWORK,
+        /**
+         * Network accessible directory that can contain other network volumes
+         */
+        VIR_STORAGE_VOL_NETDIR,
+        /**
+         * Ploop based volumes
+         */
+        VIR_STORAGE_VOL_PLOOP
     }
 
     /**
@@ -48,6 +64,18 @@ public class StorageVolInfo {
                 break;
             case 1:
                 this.type = VirStorageVolType.VIR_STORAGE_VOL_BLOCK;
+                break;
+            case 2:
+                this.type = VirStorageVolType.VIR_STORAGE_VOL_DIR;
+                break;
+            case 3:
+                this.type = VirStorageVolType.VIR_STORAGE_VOL_NETWORK;
+                break;
+            case 4:
+                this.type = VirStorageVolType.VIR_STORAGE_VOL_NETDIR;
+                break;
+            case 5:
+                this.type = VirStorageVolType.VIR_STORAGE_VOL_PLOOP;
                 break;
             default:
                 assert false;
