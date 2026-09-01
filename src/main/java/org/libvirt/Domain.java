@@ -522,6 +522,9 @@ public class Domain {
 
         /**  Validate the XML document against schema */
         public static final int VALIDATE     = bit(4);
+
+        /**  Re-initialize NVRAM/varstore from template */
+        public static final int RESET_NVRAM  = bit(5);
     }
 
     public static final class InterfaceAddressesSource {
