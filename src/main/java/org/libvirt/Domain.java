@@ -895,6 +895,19 @@ public class Domain {
         public static final int DOMAIN_PASSWORD_ENCRYPTED = bit(1);
     }
 
+    public static final class CoreDumpFlags {
+        /** crash after dump **/
+        public static final int CRASH        = bit(0);
+        /** live dump **/
+        public static final int LIVE         = bit(1);
+        /** avoid file system cache pollution **/
+        public static final int BYPASS_CACHE = bit(2);
+        /** reset domain after dump finishes **/
+        public static final int RESET        = bit(3);
+        /** use dump-guest-memory **/
+        public static final int MEMORY_ONLY  = bit(4);
+    }
+
     /** the native virDomainPtr. */
     DomainPointer vdp;
 
