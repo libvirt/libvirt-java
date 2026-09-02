@@ -2555,6 +2555,20 @@ public class Domain {
     }
 
     /**
+     * Dynamically changes the domain memory balloon driver statistics
+     * collection period.
+     *
+     * @param period
+     *            collection period in seconds; 0 disables collection
+     * @param flags
+     *            see {@link ModificationImpact}
+     * @throws LibvirtException
+     */
+    public void setMemoryStatsPeriod(final int period, final int flags) throws LibvirtException {
+        processError(libvirt.virDomainSetMemoryStatsPeriod(vdp, period, flags));
+    }
+
+    /**
      * Sets the appropriate domain element given by type to the value of metadata.
      *
      * A type of MetadataType.DESCRIPTION is free-form text; MetadataType.TITLE is
