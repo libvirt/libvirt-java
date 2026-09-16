@@ -2991,6 +2991,18 @@ public class Domain {
     }
 
     /**
+     * Send NMI to the guest
+     *
+     *@see <a
+     *      href="https://libvirt.org/html/libvirt-libvirt-domain.html#virDomainInjectNMI">Libvirt
+     *      Documentation</a>
+     * @throws LibvirtException
+     */
+    public void injectNMI() throws LibvirtException {
+        processError(libvirt.virDomainInjectNMI(vdp, 0));
+    }
+
+    /**
      * Commands for  Qemu Guest Agent helper daemon
      *
      *@see <a
