@@ -102,7 +102,11 @@ public class Connect {
         int METADATA_CHANGE = 23;
         int BLOCK_THRESHOLD = 24;
         int MEMORY_FAILURE = 25;
-        int LAST = 26;
+        int MEMORY_DEVICE_SIZE_CHANGE = 26;
+        int NIC_MAC_CHANGE = 27;
+        int VCPU_REMOVED = 28;
+        int CHANNEL_LIFECYCLE = 29;
+        int LAST = 30;
     }
 
     public enum OpenFlags implements BitFlags {
