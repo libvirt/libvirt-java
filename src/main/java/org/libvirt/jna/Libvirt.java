@@ -18,7 +18,7 @@ import java.util.List;
 
 /**
  * The libvirt interface which is exposed via JNA. The complete API is
- * documented at https://libvirt.org/html/libvirt-libvirt.html.
+ * documented at https://libvirt.org/html/index.html .
  *
  * Known api calls to be missing
  * LIBVIRT_0.1.0

@@ -40,7 +40,7 @@ public class DomainSnapshot {
      * Delete the Snapshot
      *
      * @see <a
-     *      href="https://libvirt.org/html/libvirt-libvirt.html#virDomainSnapshotDelete">Libvirt
+     *      href="https://libvirt.org/html/libvirt-libvirt-domain-snapshot.html#virDomainSnapshotDelete">Libvirt
      *      Documentation</a>
      * @param flags see {@link SnapshotDeleteFlags}
      *            controls the deletion

@@ -150,7 +150,7 @@ public class Connect {
      * Get the version of a connection.
      *
      * @see <a
-     *      href="https://libvirt.org/html/libvirt-libvirt.html#virConnectGetLibVersion">Libvirt
+     *      href="https://libvirt.org/html/libvirt-libvirt-host.html#virConnectGetLibVersion">Libvirt
      *      Documentation</a>
      * @param conn
      *            the connection to use.
@@ -193,7 +193,7 @@ public class Connect {
      * Get the libvirt library version of this connection.
      *
      * @see <a
-     *      href="https://libvirt.org/html/libvirt-libvirt.html#virConnectGetLibVersion">Libvirt
+     *      href="https://libvirt.org/html/libvirt-libvirt-host.html#virConnectGetLibVersion">Libvirt
      *      Documentation</a>
      * @return The version of libvirt used by the daemon running on
      *         the connected host in the format {@code major *
@@ -477,7 +477,7 @@ public class Connect {
      * Compares the given CPU description with the host CPU
      *
      * @see <a
-     *      href="https://libvirt.org/html/libvirt-libvirt.html#virConnectCompareCPU">Libvirt
+     *      href="https://libvirt.org/html/libvirt-libvirt-host.html#virConnectCompareCPU">Libvirt
      *      Documentation</a>
      * @param xmlDesc
      * @return comparison result according to enum CPUCompareResult
@@ -831,7 +831,7 @@ public class Connect {
      * @see #removeLifecycleListener
      * @see Domain#addLifecycleListener
      * @see
-     *  <a href="https://libvirt.org/html/libvirt-libvirt.html#virConnectDomainEventRegisterAny">
+     *  <a href="https://libvirt.org/html/libvirt-libvirt-host.html#virConnectDomainEventRegisterAny">
         virConnectDomainEventRegisterAny</a>
      */
     public void addLifecycleListener(final LifecycleListener l)
@@ -1393,7 +1393,7 @@ public class Connect {
      * Determine if the connection is encrypted
      *
      * @see
-     *  <a href="https://libvirt.org/html/libvirt-libvirt.html#virConnectIsEncrypted">
+     *  <a href="https://libvirt.org/html/libvirt-libvirt-host.html#virConnectIsEncrypted">
         Libvirt Documentation</a>
      * @return 1 if encrypted, 0 if not encrypted
      * @throws LibvirtException
@@ -1406,7 +1406,7 @@ public class Connect {
      * Determine if the connection is secure
      *
      * @see
-     *  <a href="https://libvirt.org/html/libvirt-libvirt.html#virConnectIsSecure">
+     *  <a href="https://libvirt.org/html/libvirt-libvirt-host.html#virConnectIsSecure">
         Libvirt Documentation</a>
      * @return 1 if secure, 0 if not secure
      * @throws LibvirtException
@@ -1793,7 +1793,7 @@ public class Connect {
      * @return the new filer
      * @throws LibvirtException
      * @see
-     *  <a href="https://libvirt.org/html/libvirt-libvirt.html#virNWFilterDefineXML">
+     *  <a href="https://libvirt.org/html/libvirt-libvirt-host.html#virNWFilterDefineXML">
         Libvirt Documentation </a>
      */
     public NetworkFilter networkFilterDefineXML(final String xmlDesc)
@@ -1810,7 +1810,7 @@ public class Connect {
      * @return network filter object
      * @throws LibvirtException
      * @see
-     *  <a href="https://libvirt.org/html/libvirt-libvirt.html#virNWFilterLookupByName">
+     *  <a href="https://libvirt.org/html/libvirt-libvirt-host.html#virNWFilterLookupByName">
         Libvirt Documentation </a>
      */
     public NetworkFilter networkFilterLookupByName(final String name)

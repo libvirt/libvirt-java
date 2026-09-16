@@ -86,7 +86,7 @@ public class NetworkFilter {
      *
      * @throws org.libvirt.LibvirtException
      * @see <a
-     *      href="https://libvirt.org/html/libvirt-libvirt.html#virNWFilterGetXMLDesc">Libvirt
+     *      href="https://libvirt.org/html/libvirt-libvirt-nwfilter.html#virNWFilterGetXMLDesc">Libvirt
      *      Documentation</a>
      * @return the XML document
      */
